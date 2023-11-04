@@ -1,0 +1,62 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.17'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.project'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA 사용안하면 삭제
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1' // Mybatis
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid
+	implementation 'com.google.code.gson:gson:2.8.7' // Gson.  Gson = json을 자바오브젝트로 변환하거나 자바오브젝트를 json으로 변환
+
+	// lombok을 테스트 환경에서도 사용
+	testCompileOnly('org.projectlombok:lombok')
+	testAnnotationProcessor('org.projectlombok:lombok')
+
+	// ModelMapper
+	implementation 'org.modelmapper:modelmapper:3.1.0'
+
+	// 타임리프 레이아웃 기능 사용
+	// https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+
+	// SwaggerUI
+	// https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
