@@ -23,14 +23,14 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA 사용안하면 삭제
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 타임리프
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1' // Mybatis
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // 마리아 DB
+	developmentOnly 'org.springframework.boot:spring-boot-devtools' 
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid
 	implementation 'com.google.code.gson:gson:2.8.7' // Gson.  Gson = json을 자바오브젝트로 변환하거나 자바오브젝트를 json으로 변환
 
@@ -52,7 +52,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
-
+	// 네이버 메일 연동
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 
 }
