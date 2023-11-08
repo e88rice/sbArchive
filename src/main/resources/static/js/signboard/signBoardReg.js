@@ -89,7 +89,7 @@ function printSearchList(searchList) {
         element.addEventListener("click", function (){ // 검색 결과중 하나를 선택했다면
             const xOffSet = document.querySelector("input[name=xOffSet]"); // 해당 검색 결과의 x 좌표와
             const yOffSet = document.querySelector("input[name=yOffSet]"); // y 좌표를 미리 생성 해 둔 DOM에 담음
-            const name = document.querySelector("input[name=name]");       // 가게명을 미리 생성 해 둔 DOM에 담음
+            const title = document.querySelector("input[name=title]");       // 가게명을 미리 생성 해 둔 DOM에 담음
             const address = document.querySelector("input[name=address]"); // 주소를 미리 생성 해 둔 DOM에 담음
             console.log("x 좌표 : " + element.dataset.x);
             console.log("y 좌표 : " + element.dataset.y);
@@ -97,7 +97,7 @@ function printSearchList(searchList) {
             console.log("주소 : " + element.dataset.addr);
             xOffSet.value = element.dataset.x;
             yOffSet.value = element.dataset.y;
-            name.value = element.dataset.title;
+            title.value = element.dataset.title;
             address.value = element.dataset.addr;
 
             const regForm = document.forms[0];

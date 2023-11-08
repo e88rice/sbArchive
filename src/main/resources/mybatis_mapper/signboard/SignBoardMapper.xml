@@ -5,8 +5,8 @@
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardMapper">
 
     <insert id="register">
-        INSERT INTO signboard (userId, xOffSet, yOffSet, title, address, content, addDate)
-        VALUES ('admin', #{xOffSet}, #{yOffSet}, #{title}, #{address}, 'content', now())
+        INSERT INTO signboard (userId, xOffSet, yOffSet, title, address, content, addDate, modDate)
+        VALUES ('admin', #{xOffSet}, #{yOffSet}, #{title}, #{address}, 'content', now(), now())
     </insert>
 
     <select id="getList" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">
