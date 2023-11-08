@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
+
+
     void insertBoard(BoardVO boardVO);
 
     List<BoardVO> selectAll();
