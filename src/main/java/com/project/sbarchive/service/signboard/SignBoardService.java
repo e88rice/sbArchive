@@ -5,7 +5,9 @@ import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import java.util.ArrayList;
 
 public interface SignBoardService {
-    void register(SignBoardDTO signBoardDTO);
+
+    int add(SignBoardDTO signBoardDTO);
 
     ArrayList<SignBoardDTO> getList();
+
 }

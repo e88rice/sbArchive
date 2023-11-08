@@ -100,8 +100,8 @@ function printSearchList(searchList) {
             title.value = element.dataset.title;
             address.value = element.dataset.addr;
 
-            const regForm = document.forms[0];
-            regForm.submit();
+            // const regForm = document.forms[0];
+            // regForm.submit();
 
         })
     })

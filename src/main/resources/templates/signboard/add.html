@@ -30,17 +30,6 @@
             border-radius: 0.35em;
             margin: 20px 0;
         }
-
-        .btnFindZipcode {
-            border: 1px solid black;
-            border-radius: 0.35em;
-            padding: 10px;
-        }
-
-        .test-span {
-            display: inline-block;
-            width: 100px;
-        }
         .container {
             background: #fff;
             margin: 30px auto;
@@ -95,16 +84,6 @@
         .search-result-table {
             border-spacing: 0 30px;
         }
-        .xoffSet, .yoffSet {
-            display: none;
-        }
-        .search-result {
-            width: 300px;
-            text-align: center;
-        }
-        .search-result-wrap {
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -121,11 +100,13 @@
         </table>
     </div>
     <div class="sb_reg_container">
-        <form action="/signboard/add" method="post">
+        <form action="/signboard/add" method="post" enctype="multipart/form-data">
             <input type="hidden" name="xOffSet" value="">
             <input type="hidden" name="yOffSet" value="">
-            <input type="hidden" name="title" class="test-input">
-            <input type="hidden" name="address" class="test-input">
+            가게이름 : <input type="text" name="title" class="test-input" readonly> <br>
+            주소 : <input type="text" name="address" class="test-input" readonly> <br>
+            <input type="file" name="files" multiple="multiple">
+            <input type="submit" value="등록하기">
         </form>
     </div>
 </body>
