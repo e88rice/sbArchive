@@ -55,6 +55,10 @@ dependencies {
 	// 네이버 메일 연동
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	// Thumbnailator
+	// 썸네일 라이브러리. 실제 썸네일로 활용하기도 하고 이미지가 특정 크기를 넘으면 리사이즈 용도로 사용하기도 함.
+	// https://mvnrepository.com/artifact/net.coobird/thumbnailator
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
 
 }
 

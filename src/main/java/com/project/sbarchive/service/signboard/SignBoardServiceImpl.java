@@ -14,8 +14,8 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 @Log4j2
+@RequiredArgsConstructor
 public class SignBoardServiceImpl implements SignBoardService {
 
     // @Autowired 들어가면 final 없어도 되고(자동으로 주입해 주기 때문에), 안 들어가면 final 들어가야 함
@@ -24,11 +24,12 @@ public class SignBoardServiceImpl implements SignBoardService {
     private final SignBoardMapper signBoardMapper;
 
     @Override
-    public void register(SignBoardDTO signBoardDTO) {
+    public int add(SignBoardDTO signBoardDTO) {
         log.info("signBoardDTO: "+signBoardDTO);
         SignBoardVO signBoardVO = modelMapper.map(signBoardDTO, SignBoardVO.class);
         log.info("signBoardVO: " + signBoardVO);
-        signBoardMapper.register(signBoardVO);
+        signBoardMapper.add(signBoardVO);
+        return signBoardVO.getSingboardId();
     }
 
     @Override

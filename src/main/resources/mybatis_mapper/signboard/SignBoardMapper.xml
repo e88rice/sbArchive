@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardMapper">
 
-    <insert id="register">
+    <insert id="add" parameterType="com.project.sbarchive.vo.signboard.SignBoardVO" useGeneratedKeys="true" keyProperty="signboardId">
         INSERT INTO signboard (userId, xOffSet, yOffSet, title, address, content, addDate, modDate)
         VALUES ('admin', #{xOffSet}, #{yOffSet}, #{title}, #{address}, 'content', now(), now())
     </insert>

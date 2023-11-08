@@ -24,7 +24,7 @@ getSBList().then(r => {
         const item = {
             "title": r[i].title,
             "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-            "content": "가게명 : " + r[i].title + "<br>" + r[i].address
+            "content": "<img style='max-height: 50px; max-width: 50px;' src='/img/test1.jpg'>  " + " <br> " + "가게명 : " + r[i].title + "<br>" + r[i].address
         }
         positions.push(item); // 객체 배열에 추가
     }
@@ -38,6 +38,7 @@ getSBList().then(r => {
         };
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    console.log(mapContainer);
 
     // 마커 이미지의 이미지 주소입니다
     var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";

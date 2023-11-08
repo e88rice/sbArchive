@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 @Mapper
 public interface SignBoardMapper {
-    void register(SignBoardVO signBoardVO);
+    void add(SignBoardVO signBoardVO);
 
     ArrayList<SignBoardVO> getList();
 }

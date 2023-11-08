@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardFileMapper">
+
+    <insert id="add">
+        INSERT INTO signboard_file (signboardId, fileName)
+        VALUES (#{signboardId}, #{fileName});
+    </insert>
+
+<!--    <select id="getList" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">-->
+<!--        select * from signboard;-->
+<!--    </select>-->
+
+</mapper>

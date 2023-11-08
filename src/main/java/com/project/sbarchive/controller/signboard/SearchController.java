@@ -18,11 +18,9 @@ import java.util.ArrayList;
 @RequestMapping("/search")
 public class SearchController {
 
-    @Autowired
-    private PlaceSearchService placeSearchService;
+    private final PlaceSearchService placeSearchService;
 
-    @Autowired
-    private SignBoardService signBoardService;
+    private final SignBoardService signBoardService;
 
 
     @ApiOperation(value = "Search keyword", notes = "POST 방식으로 검색")
