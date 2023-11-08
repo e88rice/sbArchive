@@ -1,11 +1,9 @@
-package com.project.sbarchive.mapper;
+package com.project.sbarchive.mapper.signboard;
 
-import com.project.sbarchive.dto.SignBoardDTO;
-import com.project.sbarchive.vo.SignBoardVO;
+import com.project.sbarchive.vo.signboard.SignBoardVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Mapper
 public interface SignBoardMapper {

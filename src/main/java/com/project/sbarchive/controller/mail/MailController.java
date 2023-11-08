@@ -1,6 +1,6 @@
-package com.project.sbarchive.controller;
+package com.project.sbarchive.controller.mail;
 
-import com.project.sbarchive.service.MailSenderService;
+import com.project.sbarchive.service.mail.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;

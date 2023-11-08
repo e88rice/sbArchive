@@ -1,4 +1,4 @@
-package com.project.sbarchive.service;
+package com.project.sbarchive.service.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

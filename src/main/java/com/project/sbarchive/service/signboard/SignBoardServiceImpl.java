@@ -1,9 +1,9 @@
-package com.project.sbarchive.service;
+package com.project.sbarchive.service.signboard;
 
 
-import com.project.sbarchive.dto.SignBoardDTO;
-import com.project.sbarchive.mapper.SignBoardMapper;
-import com.project.sbarchive.vo.SignBoardVO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.mapper.signboard.SignBoardMapper;
+import com.project.sbarchive.vo.signboard.SignBoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;

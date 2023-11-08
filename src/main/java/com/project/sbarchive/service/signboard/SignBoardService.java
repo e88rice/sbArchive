@@ -1,9 +1,8 @@
-package com.project.sbarchive.service;
+package com.project.sbarchive.service.signboard;
 
-import com.project.sbarchive.dto.SignBoardDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface SignBoardService {
     void register(SignBoardDTO signBoardDTO);

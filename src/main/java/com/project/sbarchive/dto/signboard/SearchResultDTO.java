@@ -1,4 +1,4 @@
-package com.project.sbarchive.dto;
+package com.project.sbarchive.dto.signboard;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

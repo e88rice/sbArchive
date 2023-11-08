@@ -1,4 +1,4 @@
-package com.project.sbarchive.service;
+package com.project.sbarchive.service.mail;
 
 public interface MailSenderService {
 

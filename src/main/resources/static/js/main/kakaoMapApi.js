@@ -22,9 +22,9 @@ getSBList().then(r => {
     var positions = [];
     for(let i=0; i<r.length; i++){
         const item = {
-            "title": r[i].name,
+            "title": r[i].title,
             "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-            "content": "가게명 : " + r[i].name + "<br>" + r[i].address
+            "content": "가게명 : " + r[i].title + "<br>" + r[i].address
         }
         positions.push(item); // 객체 배열에 추가
     }

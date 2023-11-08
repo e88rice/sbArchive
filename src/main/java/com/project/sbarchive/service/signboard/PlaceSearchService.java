@@ -1,9 +1,8 @@
-package com.project.sbarchive.service;
+package com.project.sbarchive.service.signboard;
 
 import com.google.gson.*;
-import com.project.sbarchive.dto.SearchResultDTO;
+import com.project.sbarchive.dto.signboard.SearchResultDTO;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

@@ -1,22 +1,16 @@
-package com.project.sbarchive.controller;
+package com.project.sbarchive.controller.signboard;
 
-import com.project.sbarchive.dto.SearchResultDTO;
-import com.project.sbarchive.dto.SignBoardDTO;
-import com.project.sbarchive.service.PlaceSearchService;
-import com.project.sbarchive.service.SignBoardService;
+import com.project.sbarchive.dto.signboard.SearchResultDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.service.signboard.PlaceSearchService;
+import com.project.sbarchive.service.signboard.SignBoardService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController

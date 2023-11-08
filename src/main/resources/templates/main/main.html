@@ -18,15 +18,15 @@
 <body>
 <div class="kakao_map_container">
     <div id="map" style="width: 1000px; height: 600px;"></div>
-    <a href="/register"><button>외국어 간판 등록하기</button></a>
+    <a href="/signboard/add"><button>외국어 간판 등록하기</button></a>
 </div>
 
 
-    <script src="/js/kakaoMapApiAsync.js"></script>
+    <script src="/js/main/kakaoMapApiAsync.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!--  API 호출  -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8acb6543ebcddde72944ae402428a215&libraries=services"></script>
     <!-- API 설정 ( 지도를 담을 DOM, 중심 좌표, 지도의 확대, 축소의 정도 )을 담은 JS.  API는 해당 설정을 바탕으로 객체를 반환해줌 -->
-    <script src="/js/kakaoMapApi.js"></script>
+    <script src="/js/main/kakaoMapApi.js"></script>
 </body>
 </html>

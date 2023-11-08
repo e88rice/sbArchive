@@ -1,4 +1,4 @@
-package com.project.sbarchive.dto;
+package com.project.sbarchive.dto.page;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
