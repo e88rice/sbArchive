@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.sbarchive.mapper.reply.ReplyMapper">
+
+    <insert id="add" parameterType="com.project.sbarchive.vo.reply.ReplyVO" useGeneratedKeys="true" keyProperty="replyId">
+        INSERT INTO reply(boardId, userId, nickname, content, addDate, modDate)
+        VALUES (#{boardId}, #{userId}, #{nickname}, #{content}, NOW(), NOW())
+    </insert>
+
+    <select id="getReply" resultType="com.project.sbarchive.vo.reply.ReplyVO">
+        select * from reply where replyId=#{replyId}
+    </select>
+
+    <update id="modify">
+        update reply set content=#{content}, modDate=NOW() where replyId=#{replyId}
+    </update>
+
+    <delete id="remove">
+        delete from reply where replyId=#{replyId}
+    </delete>
+
+    <select id="getReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">
+        select * from reply where boardId=#{boardId}
+        order by replyId asc
+    </select>
+
+    <select id="getReplyCount" resultType="int">
+        select count(*) from reply where boardId=#{boardId}
+    </select>
+
+</mapper>

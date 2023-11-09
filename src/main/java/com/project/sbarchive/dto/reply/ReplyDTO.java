@@ -1,4 +1,4 @@
-package com.project.sbarchive.dto.board;
+package com.project.sbarchive.dto.reply;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,19 +16,32 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReplyDTO {
-    private Integer replyId; //리플 고유번호
 
+    // 댓글 번호
+    private int replyId;
+
+    // 보드 번호
     @NotNull
-    private Integer boardId; //게시한의 글 고유번호
+    private int boardId;
 
+    // 유저 아이디
+    @NotNull
+    private String userId;
+
+    // 유저 닉네임
+    @NotNull
+    private String nickname;
+
+    // 댓글 내용
     @NotEmpty
-    private String nickname; //리플 작성자
+    private String content;
 
-    @NotEmpty
-    private String content; // 리플 내용
-
-
+    // 댓글 등록 날짜
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addDate;
+
+    // 댓글 수정 날짜 // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonIgnore
+    private LocalDateTime modDate;
 
 }
