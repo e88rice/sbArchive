@@ -1,6 +1,7 @@
 package com.project.sbarchive.service.signboard;
 
 
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.mapper.signboard.SignBoardMapper;
 import com.project.sbarchive.vo.signboard.SignBoardVO;
@@ -29,14 +30,15 @@ public class SignBoardServiceImpl implements SignBoardService {
         SignBoardVO signBoardVO = modelMapper.map(signBoardDTO, SignBoardVO.class);
         log.info("signBoardVO: " + signBoardVO);
         signBoardMapper.add(signBoardVO);
-        return signBoardVO.getSingboardId();
+        return signBoardVO.getSignboardId();
     }
 
     @Override
-    public ArrayList<SignBoardDTO> getList() {
-        List<SignBoardVO> voList = signBoardMapper.getList();
-        ArrayList<SignBoardDTO> dtoList = new ArrayList<>();
-        voList.forEach( vo -> dtoList.add(modelMapper.map(vo, SignBoardDTO.class)));
+    public ArrayList<SignBoardAllDTO> getList() {
+        ArrayList<SignBoardAllDTO> dtoList = signBoardMapper.getList();
+        for(SignBoardAllDTO dto : dtoList) {
+            log.info(dto);
+        }
         return dtoList;
     }
 
