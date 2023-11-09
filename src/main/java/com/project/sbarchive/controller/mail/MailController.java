@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 
 @Log4j2
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/mail")
 @RequiredArgsConstructor
 public class MailController {
 
@@ -20,10 +20,10 @@ public class MailController {
 
     @GetMapping("/sendConfirmMail")
     @ResponseBody
-    public String sendCofirmMail(String mailTo, HttpSession session) throws Exception {
+    public String sendConfirmMail(String mailTo, HttpSession session) throws Exception {
         if(mailSenderService.sendMailByAddMember(mailTo)) { // 제대로 발송이 됐다면
             session.setAttribute("confirmKey", mailSenderService.getConfirmKey()); // 현재 발급한 인증키를 세션에 저장하고
-            return "true"; // "true" 반환
+            return mailSenderService.getConfirmKey(); // "confirmKey" 반환
         } else {
             return "false";
         }
