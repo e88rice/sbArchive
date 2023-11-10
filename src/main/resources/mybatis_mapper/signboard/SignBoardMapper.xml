@@ -5,7 +5,7 @@
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardMapper">
 
     <resultMap id="getListWithImages" type="com.project.sbarchive.dto.signboard.SignBoardAllDTO">
-        <result property="id" column="id"></result>
+        <result property="signboardId" column="signboardId"></result>
         <result property="userId" column="userId"></result>
         <result property="xOffSet" column="xOffSet"></result>
         <result property="yOffSet" column="yOffSet"></result>
@@ -30,6 +30,16 @@
 
     <select id="getList" resultMap="getListWithImages">
         select sb.*, sf.fileName from signboard sb LEFT JOIN signboard_file sf on sb.signboardId = sf.signboardId;
+    </select>
+
+    <select id="getListWithPaging" resultMap="getListWithImages">
+        select sb.*, sf.fileName from signboard sb
+        LEFT JOIN signboard_file sf
+        on sb.signboardId = sf.signboardId order by signboardId desc limit #{skip}, #{size};
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from signboard;
     </select>
 
 </mapper>

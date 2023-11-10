@@ -6,10 +6,12 @@ import com.project.sbarchive.service.signboard.SignBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -23,14 +25,15 @@ public class SignboardController {
 
     private final SignBoardFileService signBoardFileService;
 
-    @GetMapping("/add")
-    public String registerGET() {
+    @GetMapping("/add") // 간판 등록 페이지로 이동
+    public String registerGET(Model model) {
+        model.addAttribute("title", "ㅎㅇ");
         log.info("ㅎㅇㅎㅇ");
         return "/signboard/add";
     }
 
     // 게시글 등록
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/add") // 간판 등록, 간판 등록 시 업로드한 이미지도 등록
     public String registerPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files) {
 
         System.out.println("signboard : registerPost ...");

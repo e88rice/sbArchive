@@ -1,6 +1,8 @@
 package com.project.sbarchive.service.signboard;
 
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.mapper.signboard.SignBoardMapper;
@@ -34,12 +36,32 @@ public class SignBoardServiceImpl implements SignBoardService {
     }
 
     @Override
+    public int getCount() {
+        return signBoardMapper.getCount();
+    }
+
+    @Override
     public ArrayList<SignBoardAllDTO> getList() {
         ArrayList<SignBoardAllDTO> dtoList = signBoardMapper.getList();
-        for(SignBoardAllDTO dto : dtoList) {
-            log.info(dto);
-        }
+//        for(SignBoardAllDTO dto : dtoList) {
+//            log.info(dto);
+//        }
         return dtoList;
+    }
+
+    @Override
+    public PageResponseDTO<SignBoardAllDTO> getListWithPaging(PageRequestDTO pageRequestDTO) {
+
+        List<SignBoardAllDTO> dtoList=signBoardMapper.getListWithPaging(pageRequestDTO);
+//        for(BoardVO boardVO:voList) {
+//            dtoList.add(modelMapper.map(boardVO, BoardDTO.class));
+//        }
+        int total=signBoardMapper.getCount();
+
+        return PageResponseDTO.<SignBoardAllDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO).build();
     }
 
 }
