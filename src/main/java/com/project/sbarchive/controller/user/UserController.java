@@ -54,7 +54,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public String loginPost(String userId, String passwd, HttpSession session) {
         log.info("===== loginPost Controller =====");
         int isJoined = userService.loginCheck(userId, passwd);
@@ -63,7 +62,7 @@ public class UserController {
 
         if(isJoined == 0) {
             session.setAttribute("msg", "로그인 실패");
-            return "/user/login";
+            return "redirect:/user/login";
         } else {
             loginInfo = userService.getUserInfo(userId);
             session.setAttribute("loginInfo", loginInfo);
@@ -73,7 +72,7 @@ public class UserController {
 
             }
 
-        return "/index";
+        return "redirect:/index";
     }
 
 
