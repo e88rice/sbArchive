@@ -1,5 +1,7 @@
 package com.project.sbarchive.service.signboard;
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 
@@ -11,4 +13,7 @@ public interface SignBoardService {
 
     ArrayList<SignBoardAllDTO> getList();
 
+    int getCount();
+
+    PageResponseDTO<SignBoardAllDTO> getListWithPaging(PageRequestDTO pageRequestDTO);
 }

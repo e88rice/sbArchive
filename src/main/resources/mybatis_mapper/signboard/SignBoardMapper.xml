@@ -5,7 +5,7 @@
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardMapper">
 
     <resultMap id="getListWithImages" type="com.project.sbarchive.dto.signboard.SignBoardAllDTO">
-        <result property="id" column="id"></result>
+        <result property="signboardId" column="signboardId"></result>
         <result property="userId" column="userId"></result>
         <result property="xOffSet" column="xOffSet"></result>
         <result property="yOffSet" column="yOffSet"></result>
@@ -25,11 +25,21 @@
 
     <insert id="add" parameterType="com.project.sbarchive.vo.signboard.SignBoardVO" useGeneratedKeys="true" keyProperty="signboardId">
         INSERT INTO signboard (userId, xOffSet, yOffSet, title, address, content, addDate, modDate)
-        VALUES ('admin', #{xOffSet}, #{yOffSet}, #{title}, #{address}, 'content', now(), now())
+        VALUES (#{userId}, #{xOffSet}, #{yOffSet}, #{title}, #{address}, #{content}, now(), now())
     </insert>
 
     <select id="getList" resultMap="getListWithImages">
         select sb.*, sf.fileName from signboard sb LEFT JOIN signboard_file sf on sb.signboardId = sf.signboardId;
+    </select>
+
+    <select id="getListWithPaging" resultMap="getListWithImages">
+        select sb.*, sf.fileName from signboard sb
+        LEFT JOIN signboard_file sf
+        on sb.signboardId = sf.signboardId order by signboardId desc limit #{skip}, #{size};
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from signboard;
     </select>
 
 </mapper>

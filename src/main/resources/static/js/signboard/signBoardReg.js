@@ -95,10 +95,13 @@ function printSearchList(searchList) {
             console.log("y 좌표 : " + element.dataset.y);
             console.log("가게명 : " + element.dataset.title);
             console.log("주소 : " + element.dataset.addr);
+            console.log("b 태그를 제거한 가게명 : " + ((element.dataset.title).replace("<b>", "")).replace("</b>", ""));
             xOffSet.value = element.dataset.x;
             yOffSet.value = element.dataset.y;
-            title.value = element.dataset.title;
+            title.value = ((element.dataset.title).replace("<b>", "")).replace("</b>", "");
             address.value = element.dataset.addr;
+
+            console.log(title.value);
         })
     })
 

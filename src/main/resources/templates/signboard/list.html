@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+  .sb_list_container {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 60%;
+  }
+  .sb_wrap {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+    margin: 30px 20px;
+  }
+  .sb_img_container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #e07878;
+  }
+  .sb_img_container > img {
+    width: 100%;
+    height: 100%;
+  }
+  .sb_info_container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    opacity: 0.8;
+    color: white;
+    background-color: #5c5c81;
+  }
+</style>
+
+<div layout:fragment="content">
+  <div class="sb_list_container">
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+    <div class="sb_wrap">
+      <div class="sb_img_container">
+        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
+      </div>
+      <div class="sb_info_container">
+        <p>[[${response.dtoList[0].title}]]</p>
+        <a><i class="fa-solid fa-link"></i></a>
+      </div>
+    </div> <!-- 1개의 박스 끝 -->
+
+  </div> <!-- 모든 박스 컨테이너 끝 -->
+
+  <script layout:fragment="script">
+    // 이미지에 손을 올리면 인포가 보이는 이벤트
+    const imgContainer = document.querySelectorAll(".sb_img_container");
+    const infoContainer = document.querySelectorAll(".sb_info_container");
+
+    imgContainer.forEach(img => {
+      img.addEventListener("mouseenter", function (){
+        const info = img.nextElementSibling;
+        info.style.display = "flex";
+      })
+    })
+
+    infoContainer.forEach(info => {
+      info.addEventListener("mouseleave", function (){
+        info.style.display = "none";
+      })
+    })
+
+  </script>
+  <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->
+<!--  <div>[[${response.dtoList[0].title}]]</div>-->
+</div>
+
+
+</html>

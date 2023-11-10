@@ -33,7 +33,7 @@ getSBList().then(r => {
             item = {
                 "title": r[i].title,
                 "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                "content": "<img class='test-img' style='max-height: 150px; max-width: 150px;' src='/img/" +r[i].files[0] +"'>  " + " <br> " + "가게명 : " + r[i].title + "<br>" + r[i].address
+                "content": "<div style='width: 110%; padding: 10px;'> <img class='test-img' style='max-height: 150px; max-width: 150px;' src='/img/" +r[i].files[0] +"'>  " + " <br> " + "가게명 : " + r[i].title + "<br>" + r[i].address + "</div>"
             }
         }
         positions.push(item); // 객체 배열에 추가
