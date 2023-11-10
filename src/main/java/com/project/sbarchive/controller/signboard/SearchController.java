@@ -33,16 +33,16 @@ public class SearchController {
         return results;
     }
 
-//    @ApiOperation(value = "Search List", notes = "GET 방식으로 리스트 가져오기")
-//    @GetMapping(value = "/list") // JSON으로 처리하는 어노테이션
-//    public ArrayList<SignBoardAllDTO> list() {
-//        log.info("헤이헤이");
-//        ArrayList<SignBoardAllDTO> results = signBoardServicee.getList();
-//        for(SignBoardAllDTO dto : results) {
-//            log.info("TQ" + dto);
-//        }
+    @ApiOperation(value = "Search List", notes = "GET 방식으로 리스트 가져오기")
+    @GetMapping(value = "/list") // JSON으로 처리하는 어노테이션
+    public ArrayList<SignBoardAllDTO> list() {
+        log.info("헤이헤이");
+        ArrayList<SignBoardAllDTO> results = signBoardService.getList();
+        for(SignBoardAllDTO dto : results) {
+            log.info("TQ" + dto);
+        }
 
-//        return results;
-//    }
+        return results;
+    }
 
 }
