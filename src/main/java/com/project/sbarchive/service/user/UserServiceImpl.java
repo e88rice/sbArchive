@@ -37,4 +37,23 @@ public class UserServiceImpl implements UserService{
         log.info("cnt : " + cnt);
         return cnt;
     }
+
+    @Override
+    public int loginCheck(String userId, String passwd) {
+        log.info("===== loginCheck Service =====");
+        return  userMapper.loginCheck(userId, passwd);
+    }
+
+    @Override
+    public UserDTO getUserInfo(String userId) {
+        UserVO userVO = userMapper.getUserInfo(userId);
+        return modelMapper.map(userVO, UserDTO.class);
+    }
+
+    @Override
+    public void modifyUuid(String userId, String uuid) {
+
+    }
+
+
 }

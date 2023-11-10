@@ -5,10 +5,9 @@ import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Log4j2
 @Controller
@@ -47,4 +46,35 @@ public class UserController {
 
         return userService.userIdCheck(userId);
     }
+
+    @GetMapping("/login")
+    public String loginGet() {
+        log.info("===== loginGet Controller =====");
+        return "/user/login";
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public String loginPost(String userId, String passwd, HttpSession session) {
+        log.info("===== loginPost Controller =====");
+        int isJoined = userService.loginCheck(userId, passwd);
+
+        UserDTO loginInfo = new UserDTO();
+
+        if(isJoined == 0) {
+            session.setAttribute("msg", "로그인 실패");
+            return "/user/login";
+        } else {
+            loginInfo = userService.getUserInfo(userId);
+            session.setAttribute("loginInfo", loginInfo);
+            session.removeAttribute("msg");
+
+            log.info(loginInfo);
+
+            }
+
+        return "/index";
+    }
+
+
 }

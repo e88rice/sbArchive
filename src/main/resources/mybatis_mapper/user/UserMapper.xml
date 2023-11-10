@@ -17,4 +17,11 @@
         SELECT COUNT(*) FROM user WHERE userId = #{userId}
     </select>
 
+    <select id="loginCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE userId = #{userId} AND passwd = #{passwd}
+    </select>
+
+    <select id="getUserInfo" parameterType="String" resultType="com.project.sbarchive.vo.user.UserVO">
+        SELECT * FROM user WHERE userId = #{userId}
+    </select>
 </mapper>
