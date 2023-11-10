@@ -10,18 +10,18 @@ import java.util.List;
 public interface BoardMapper {
 
 
-    void insertBoard(BoardVO boardVO);
+    void add(BoardVO boardVO);
 
-    List<BoardVO> selectAll();
+    List<BoardVO> getBoardList();
 
-    BoardVO read(int boardId);
+    BoardVO getBoard(int boardId);
 
-    void update(BoardVO boardVO);
+    void modify(BoardVO boardVO);
 
     void hit(int boardId, int hit);
-    void like(int boardId, int like);
+    void likeUp(int boardId, int likeUp);
 
-    void delete(int boardId);
+    void remove(int boardId);
 
     List<BoardVO> selectList(PageRequestDTO pageRequestDTO);
 

@@ -15,7 +15,7 @@ public class BoardVO {
     private String title;
     private String content;
     private Integer hit;
-    private Integer like;
+    private Integer likeUp;
     private Integer replyCount;
     private LocalDateTime addDate;
     private LocalDateTime modDate;

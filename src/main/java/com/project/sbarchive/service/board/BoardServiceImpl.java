@@ -16,18 +16,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class BoardServiceImpl implements boardService{
+public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final ModelMapper modelMapper;
     @Override
     public void add(BoardDTO boardDTO) {
         BoardVO boardVO = modelMapper.map(boardDTO, BoardVO.class);
-        boardMapper.insertBoard(boardVO);
+        boardMapper.add(boardVO);
     }
 
     @Override
     public List<BoardDTO> getBoardList() {
-        List<BoardVO> boardVOList = boardMapper.selectAll();
+        List<BoardVO> boardVOList = boardMapper.getBoardList();
         List<BoardDTO> boardDTOList = new ArrayList<>();
         boardVOList.forEach(boardVO -> boardDTOList.add(modelMapper.map(boardVO,BoardDTO.class)));
         return boardDTOList;
@@ -35,10 +35,10 @@ public class BoardServiceImpl implements boardService{
 
     @Override
     public BoardDTO getBoard(int boardId, String hit) {
-        BoardVO boardVO = boardMapper.read(boardId);
+        BoardVO boardVO = boardMapper.getBoard(boardId);
         BoardDTO boardDTO = modelMapper.map(boardVO,BoardDTO.class);
         int hit1 = boardDTO.getHit();
-        if(hit.equals("view")) {
+        if(hit.equals("boardRead")) {
             boardMapper.hit(boardId,hit1);
         }
 
@@ -48,7 +48,7 @@ public class BoardServiceImpl implements boardService{
     @Override
     public void modify(BoardDTO boardDTO) {
         BoardVO boardVO = modelMapper.map(boardDTO,BoardVO.class);
-        boardMapper.update(boardVO);
+        boardMapper.modify(boardVO);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class BoardServiceImpl implements boardService{
 
     @Override
     public void remove(int boardId) {
-        boardMapper.delete(boardId);
+        boardMapper.remove(boardId);
     }
 
     @Override

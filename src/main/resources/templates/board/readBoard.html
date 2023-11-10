@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+    .readBoard_form {
+        margin: 0 auto;
+        padding-top: 150px;
+        width: 500px;
+        height: 70vh;
+    }
+</style>
+
+<div layout:fragment="content">
+    <form action="/board/readBoard" method="get" class="readBoard_form">
+        <div class="row mt-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        게시물
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">번호</span>
+                            <input type="text" class="form-control" th:value="${dto.boardId}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">제목</span>
+                            <input type="text" class="form-control" th:value="${dto.title}" readonly>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">내용</span>
+                            <textarea class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <input type="text" class="form-control" th:value="${dto.userId}" readonly>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">좋아요</span>
+                            <input type="text"  class="form-control" th:value="${dto.likeUp}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">조회수</span>
+                            <input type="text" class="form-control" name="hit" th:value="${dto.hit}" readonly>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">addDate</span>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.addDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+
+                    </div>
+                </div><!-- end card body -->
+                <div class="my-4">
+                    <div class="float-end">
+                        <button type="button" class="btn btn-primary">
+                            <a th:href="|@{/board/modifyBoard}?boardId=${dto.boardId}|" class="text-decoration-none">수정</a>
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <a th:href="|@{/board/boardList}?${pageRequestDTO.getLink()}|" class="text-decoration-none">목록</a>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+</html>

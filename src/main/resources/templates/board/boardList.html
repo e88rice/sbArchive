@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+    .boardList_form {
+        margin: 0 auto;
+        padding-top: 150px;
+        width: 500px;
+
+    }
+</style>
+
+<div layout:fragment="content">
+
+    <div style="padding-top: 50px">
+        <table class="table table-hover">
+            <div class="row mt-3 boardList_form" >
+                <form action="/board/boardList" method="get">
+                    <div class="d-flex flex-row-reverse">
+                        <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                        <div class="input-group p-2 bd-highlight">
+                            <div class="input-group-prepend">
+                                <select class="form-select" name="types">
+                                    <option value="">---</option>
+                                    <option value="n" th:selected="${pageRequestDTO.types == 'n'}">작성자</option>
+                                    <option value="s" th:selected="${pageRequestDTO.types == 's'}">제목</option>
+                                    <option value="c" th:selected="${pageRequestDTO.types == 'c'}">콘텐츠</option>
+                                    <option value="nsc" th:selected="${pageRequestDTO.types == 'nsc'}">제목 콘텐츠 작성자</option>
+                                </select>
+                            </div>
+                            <input type="text" class="form-control p-2 bd-highlight" name="keyword" th:value="${pageRequestDTO.keyword}">
+                            <div class="input-group-append p-2 bd-highlight">
+                                <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
+                                <button class="btn btn-outline-secondary clearBtn" type="reset">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회</th>
+                <th>좋아요</th>
+            </tr>
+            <tr th:each="dto:${responseDTO.dtoList}" th:with="link =${pageRequestDTO.getLink}">
+                <td>[[${dto.boardId}]]</td>
+                <td><a th:href="|@{/board/readBoard(boardId =${dto.boardId})}&${link}|">[[${dto.title}]]</a></td>
+                <td>[[${dto.userId}]]</td>
+                <td>[[${dto.addDate}]]</td>
+                <td>[[${dto.hit}]]</td>
+                <td>[[${dto.likeUp}]]</td>
+            </tr>
+        </table>
+    </div>
+    <div class="center-block">
+        <ul class="pagination flex-wrap">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
+            </li>
+            <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link" th:data-num="${responseDTO.end +1}">다음으로</a>
+            </li>
+        </ul>
+    </div>
+    <script layout:fragment="script" th:inline="javascript">
+        document.querySelector(".pagination").addEventListener("click",function (e) {
+
+
+            const target = e.target;
+
+            if (target.tagName !== 'A') {
+                return;
+            }
+            const num = target.getAttribute("data-num");
+
+            const formObj = document.querySelector("form");
+
+            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+            formObj.submit();
+        },false)
+    </script>
+</div>
+
+
+</html>

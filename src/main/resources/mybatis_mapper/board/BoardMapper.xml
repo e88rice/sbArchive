@@ -4,27 +4,55 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.board.BoardMapper">
 
-    <insert id="insertBoard">
-        INSERT INTO board (userId, title, content, hit, like, content, addDate,modDate)
-        VALUES ('admin', #{title}, #{content}, #{hit}, #{like}, #{content}, now(),now())
+    <insert id="add">
+        INSERT INTO board (userId, title, content, hit, likeUp,  addDate,modDate)
+        VALUES (#{userId} , #{title}, #{content}, 0, #{likeUp}, now(),now() )
     </insert>
-    <select id="selectAll" resultType="com.project.sbarchive.vo.board.BoardVO">
+    <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardVO">
         select * from board order by boardId desc
     </select>
-    <select id="read" resultType="com.project.sbarchive.vo.board.BoardVO">
+    <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardVO">
         select * from board where boardId =  (#{boardId})
     </select>
-    <update id="update" >
+    <update id="modify" >
         update  board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
     </update>
     <update id="hit" >
         update  board set  hit = #{hit}+1  where boardId = #{boardId}
     </update>
-    <update id="like" >
-        update  board set  like = #{like}+1  where boardId = #{boardId}
+    <update id="likeUp" >
+        update  board set  likeUp = #{likeUp}+1  where boardId = #{boardId}
     </update>
-    <delete id="delete" >
+    <delete id="remove" >
         delete  from board where boardId = (#{boardId})
     </delete>
+    <sql id="search">
+        <where>
+            <if test="types != null and types.length > 0">
+
+                <foreach collection="types" item="type" open="(" close=")" separator=" OR">
+                    <if test="type == 'n'.toString()">
+                        userId like concat('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 's'.toString()">
+                        title like concat('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 'c'.toString()">
+                        content like concat('%',#{keyword},'%')
+                    </if>
+                </foreach>
+            </if>
+
+        </where>
+    </sql>
+    <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO" >
+        select * from board
+        <include refid="search" />
+        order by boardId desc limit #{skip}, #{size}
+    </select>
+    <select id="getCount" resultType="int" >
+        select count(*) from board
+        <include refid="search" />
+    </select>
 
 </mapper>

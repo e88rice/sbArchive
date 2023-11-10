@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+    .boardModify_form {
+        margin: 0 auto;
+        padding-top: 150px;
+        width: 500px;
+
+    }
+</style>
+
+<div layout:fragment="content">
+    <form action="/board/modifyBoard" method="post" class="boardModify_form" >
+        <div class="row mt-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        게시물 수정
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">게시물번호</span>
+                            <input type="text" class="form-control" name="boardId" th:value="${dto.boardId}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">제목</span>
+                            <input type="text" class="form-control" name="title" th:value="${dto.title}" >
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">내용</span>
+                            <textarea class="form-control col-sm-5" name="content" rows="5" >[[${dto.content}]]</textarea>
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">아이디</span>
+                            <input type="text" class="form-control" name="userId" th:value="${dto.userId}" readonly >
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">좋아요</span>
+                            <input type="text" class="form-control" name="ip" th:value="${dto.likeUp}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">조회수</span>
+                            <input type="text" class="form-control" name="hit" th:value="${dto.hit}" readonly>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">addDate</span>
+                            <input type="text" class="form-control"  th:value="${#temporals.format(dto.addDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+
+                    </div>
+                </div><!-- end card body -->
+                <div class="my-4">
+                    <div class="float-end">
+                        <button type="submit" class="btn btn-primary">수정 하기</button>
+                        <a th:action="|@{/board/remove/boardId=}?${dto.boardId}|" method="post"  class="btn btn-danger" type="button"> 삭제 </a>
+                        <button type="submit" class="btn btn-primary">
+                            <a th:href="|@{/board/boardList}?${pageRequestDTO.getLink()}|" class="text-decoration-none">목록</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+    <script layout:fragment="script" th:inline="javascript">
+        const frm = document.querySelector('form');
+        const boardId = [[${dto.boardId}]];
+        const link = [[${pageRequestDTO.getLink()}]];
+
+        document.querySelector(".btn-primary").addEventListener("click",function () {
+
+            self.location = `/board/modify?boardId=${boardId}`
+        },false);
+        document.querySelector(".btn-danger").addEventListener("click",function (e){
+            frm.action = `/board/remove?${boardId}`; //삭제시 액션경로
+            frm.method = "post";
+            frm.submit();
+        } );
+        document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+            frm.action = `/board/list?${link}`;
+        })
+
+
+    </script>
+
+    <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->
+</div>
+
+
+</html>

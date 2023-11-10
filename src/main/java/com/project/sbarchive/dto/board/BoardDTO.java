@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Data
@@ -12,12 +13,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
+    @NotEmpty
     private Integer boardId;
+    @NotEmpty
     private String userId;
+    @NotEmpty
     private String title;
     private String content;
     private Integer hit;
-    private Integer like;
+    private Integer likeUp;
     private Integer replyCount;
     private LocalDateTime addDate;
     private LocalDateTime modDate;
