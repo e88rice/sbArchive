@@ -33,6 +33,7 @@ public class SignboardController {
     @PostMapping(value = "/add")
     public String registerPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files) {
 
+        System.out.println("signboard : registerPost ...");
         int signBoardId = signBoardService.add(signBoardDTO); // 등록 버튼을 누른 게시글을 DB에 저장하고 방금 등록한 게시물의 id값을 받아옴
 
         System.out.println(signBoardId);

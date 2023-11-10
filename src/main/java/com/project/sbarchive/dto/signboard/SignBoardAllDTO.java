@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignBoardDTO {
+public class SignBoardAllDTO {
 
     private int signboardId;
     private String userId;
@@ -25,5 +25,7 @@ public class SignBoardDTO {
     private String content;
     private LocalDateTime addDate;
     private LocalDateTime modDate;
+
+    ArrayList<String> files;
 
 }

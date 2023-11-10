@@ -8,9 +8,10 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class SignBoardVO {
 
-    private int singboardId;
+    private int signboardId;
     private String userId;
     private String xOffSet;
     private String yOffSet;

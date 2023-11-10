@@ -1,13 +1,13 @@
 package com.project.sbarchive.controller.signboard;
 
 import com.project.sbarchive.dto.signboard.SearchResultDTO;
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.service.signboard.PlaceSearchService;
 import com.project.sbarchive.service.signboard.SignBoardService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -34,9 +34,13 @@ public class SearchController {
 
     @ApiOperation(value = "Search List", notes = "GET 방식으로 리스트 가져오기")
     @GetMapping(value = "/list") // JSON으로 처리하는 어노테이션
-    public ArrayList<SignBoardDTO> list() {
+    public ArrayList<SignBoardAllDTO> list() {
 
-        ArrayList<SignBoardDTO> results = signBoardService.getList();
+        log.info("헤이헤이");
+        ArrayList<SignBoardAllDTO> results = signBoardService.getList();
+        for(SignBoardAllDTO dto : results) {
+            log.info("TQ" + dto);
+        }
 
         return results;
     }

@@ -17,14 +17,24 @@
 // ];
 
 
+
 getSBList().then(r => {
     // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
     var positions = [];
+    console.log("ㅎㅇㅎㅇ");
+    console.log(r[0].files)
     for(let i=0; i<r.length; i++){
-        const item = {
+        let item = {
             "title": r[i].title,
             "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-            "content": "<img style='max-height: 50px; max-width: 50px;' src='/img/test1.jpg'>  " + " <br> " + "가게명 : " + r[i].title + "<br>" + r[i].address
+            "content": "가게명 : " + r[i].title + "<br>" + r[i].address
+        }
+        if(r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
+            item = {
+                "title": r[i].title,
+                "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
+                "content": "<img class='test-img' style='max-height: 150px; max-width: 150px;' src='/img/" +r[i].files[0] +"'>  " + " <br> " + "가게명 : " + r[i].title + "<br>" + r[i].address
+            }
         }
         positions.push(item); // 객체 배열에 추가
     }
@@ -96,6 +106,7 @@ getSBList().then(r => {
             };
         }
 
+        console.log(document.querySelector('.test-img'));
     }
 }).catch(e => {
     console.log(e)

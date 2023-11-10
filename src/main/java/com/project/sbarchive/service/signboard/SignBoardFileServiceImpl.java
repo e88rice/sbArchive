@@ -30,6 +30,8 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
     @Override
     public void add(int signboardId, List<MultipartFile> files) {
 
+        uploadPath = uploadPath + "signboard\\";
+
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
             String originalName = multipartFile.getOriginalFilename(); // 전달 된 파일의 파일명
 

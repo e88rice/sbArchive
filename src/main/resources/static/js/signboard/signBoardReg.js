@@ -53,9 +53,9 @@
 /** 검색 관련 영역 **/
 
 // 검색 버튼 눌렀을 때
-const searchBtn = document.querySelector("#search-btn");
+const searchBtn = document.querySelector("#search_btn");
 const query = document.querySelector("input[name=query]");
-const resultTable = document.querySelector(".search-result-table");
+const resultTable = document.querySelector(".search_result_table");
 
 
 searchBtn.addEventListener("click", function (){
@@ -75,16 +75,16 @@ function printSearchList(searchList) {
     let str = '';
     if(searchList && searchList.length > 0) {
         for(const search of searchList) { // 비동기 방식으로 API 검색 결과값을 받아온 뒤 뷰 페이지에 출력
-            str += ` <tr class="search-result-wrap" data-title="${search.title}" data-addr="${search.address}" data-x="${search.xoffSet}" data-y="${search.yoffSet}">
-                   <td class="search-result">${search.title}</a></td>
-                   <td class="search-result">${search.category}</td>
-                   <td class="search-result">${search.address}</td>
+            str += ` <tr class="search_result_wrap" data-title="${search.title}" data-addr="${search.address}" data-x="${search.xoffSet}" data-y="${search.yoffSet}">
+                   <td class="search_result">${search.title}</a></td>
+                   <td class="search_result">${search.category}</td>
+                   <td class="search_result">${search.address}</td>
                   </tr>`
         }
     }
     resultTable.innerHTML = str;
 
-    const resultElement = document.querySelectorAll(".search-result-wrap"); // 뷰 페이지에 출력 된 하나의 결과 정보 묶음
+    const resultElement = document.querySelectorAll(".search_result_wrap"); // 뷰 페이지에 출력 된 하나의 결과 정보 묶음
     resultElement.forEach( element => {
         element.addEventListener("click", function (){ // 검색 결과중 하나를 선택했다면
             const xOffSet = document.querySelector("input[name=xOffSet]"); // 해당 검색 결과의 x 좌표와
@@ -99,11 +99,12 @@ function printSearchList(searchList) {
             yOffSet.value = element.dataset.y;
             title.value = element.dataset.title;
             address.value = element.dataset.addr;
-
-            // const regForm = document.forms[0];
-            // regForm.submit();
-
         })
+    })
+
+    document.querySelector("#addBtn").addEventListener('click', function () {
+        const regForm = document.forms[0];
+        regForm.submit();
     })
 }
 
