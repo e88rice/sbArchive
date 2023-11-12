@@ -1,11 +1,14 @@
 package com.project.sbarchive.controller.reply;
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.service.reply.ReplyService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,12 @@ import java.util.Map;
 public class ReplyController {
 
     private final ReplyService replyService;
+
+    @GetMapping(value="/add")
+    public String addGET() {
+        log.info("/reply/boardId/addGET");
+        return "/reply/add";
+    }
 
     @ApiOperation(value="Reply add POST", notes="POST 방식으로 댓글 등록")
     @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE) // consumes=데이터가 어떤 타입인지 명시
@@ -40,19 +49,22 @@ public class ReplyController {
         return resultMap;
     }
 
-    @ApiOperation(value = "ReplyList of Board", notes="GET 방식으로 특정 게시물의 댓글 목록")
+    @ApiOperation(value = "Replies of Board", notes="GET 방식으로 특정 게시물의 댓글 목록")
     @GetMapping(value = "/list/{boardId}")
-    public List<ReplyDTO> getReplyList(@PathVariable("boardId") int boardId) {
+    public PageResponseDTO<ReplyDTO> getList(@PathVariable("boardId") int boardId, PageRequestDTO pageRequestDTO) {
 
-        List<ReplyDTO> list=replyService.getReplyList(boardId);
-        return list;
+        PageResponseDTO<ReplyDTO> responseDTO=replyService.getReplyList(boardId, pageRequestDTO);
+        log.info("여기는 댓글 리스트 조회하는 곳: "+responseDTO);
+        return responseDTO;
 
     }
 
     @ApiOperation(value = "Read Reply", notes="GET 방식으로 특정 댓글 조회")
-    @GetMapping(value = "/{replyId}")
-    public ReplyDTO getReplyDTO(@PathVariable("replyId") int replyId) {
+    @GetMapping(value = {"/getReply/{replyId}", "/modify/{replyId}"})
+    public ReplyDTO getReply(@PathVariable("replyId") int replyId, Model model) {
         ReplyDTO replyDTO=replyService.getReply(replyId);
+        model.addAttribute("dto", replyDTO);
+        log.info("replyDTO::: "+replyDTO);
         return replyDTO;
     }
 

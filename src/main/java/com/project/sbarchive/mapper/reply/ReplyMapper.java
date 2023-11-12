@@ -21,10 +21,9 @@ public interface ReplyMapper {
     void remove(int replyId);
 
     // 댓글 목록 가져오기
-    List<ReplyVO> getReplyList(int boardId);
+    List<ReplyVO> getReplyList(int boardId, int skip, int size);
 
     // 댓글 개수
     int getReplyCount(int boardId);
-
 
 }

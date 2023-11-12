@@ -23,7 +23,7 @@
 
     <select id="getReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">
         select * from reply where boardId=#{boardId}
-        order by replyId asc
+        order by replyId asc limit #{skip}, #{size}
     </select>
 
     <select id="getReplyCount" resultType="int">

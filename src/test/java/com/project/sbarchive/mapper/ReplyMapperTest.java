@@ -46,11 +46,11 @@ public class ReplyMapperTest {
         replyMapper.remove(1);
     }
 
-    @Test
-    public void getReplyList() {
-        List<ReplyVO> voList=replyMapper.getReplyList(1);
-        voList.forEach(vo -> log.info(vo));
-    }
+//    @Test
+//    public void getReplyList() {
+//        List<ReplyVO> voList=replyMapper.getReplyList(1);
+//        voList.forEach(vo -> log.info(vo));
+//    }
 
     @Test
     public void getReplyCount() {

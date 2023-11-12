@@ -74,7 +74,188 @@
 
         </div>
     </form>
+
+
+
+    <!-- 댓글 등록 영역 -->
+    <script src="/js/reply/reply.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <div>
+        <div>
+            <span class="input-group-text">boardId</span>
+            <input type="text" class="boardId" th:value="${dto.boardId}" readonly>
+            <!-- 잘 받아오는지 테스트용 -->
+        </div>
+        <div>
+            <span class="input-group-text">아이디</span>
+            <input type="text" class="userId" th:value="${dto.userId}" readonly>
+        </div>
+        <div>
+            <span class="input-group-text">닉네임</span>
+            <input type="text" name="nickname" class="nickname">
+            <!-- board 테이블에 nickname 추가되면
+            <input type="text" name="nickname" class="nickname" th:value="${dto.nickname}" readonly>
+            로 수정 -->
+        </div>
+        <div>
+            <span class="input-group-text">댓글 내용</span>
+            <input type="text" placeholder="댓글을 입력해 주세요." name="content" class="acontent">
+        </div>
+        <button type="button" class="btn btn-primary addBtn">등록</button>
+    </div>
+
+    <!-- 댓글 등록 영역 끝 -->
+
+    <!-- 댓글 리스트 출력 -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <ul class="list-group replyList">
+
+            </ul>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <ul class="pagination replyPaging">
+
+                </ul>
+            </div>
+        </div>
+
+    </div> <!-- 댓글 목록 끝 -->
+
 </div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    // 여기서부터 댓글 등록 관련 자바스크립트
+    const aboardId=document.querySelector(".boardId");
+    const acontent=document.querySelector(".acontent");
+    const auserId=document.querySelector(".userId");
+    const anickname=document.querySelector(".nickname");
+    const addBtn=document.querySelector(".addBtn");
+
+    // 댓글 등록 버튼 클릭 이벤트
+    addBtn.addEventListener("click", function(e) {
+        const replyObj={boardId:aboardId.value, content:acontent.value, userId:auserId.value, nickname:anickname.value};
+        // 값 받아오는지 확인용
+        console.log("content.value: "+acontent.value);
+        console.log("userId.value: "+auserId.value);
+        console.log("nickname.value: "+anickname.value);
+        console.log("boardId.value: "+aboardId.value);
+
+        addReply(replyObj).then(result => { // reply.js(axios)
+            alert(result.data.replyId); // 확인용
+            acontent.value = ''; // 초기화
+            printReplies(1, 10, true); // 가장 최근 댓글 있는 1페이지로 이동
+        }).catch(e => {
+            alert("댓글 등록에 문제 생김");
+        });
+    });
+    // 여기까지 댓글 등록 관련 자바스크립트
+
+    // 여기서부터 댓글 리스트 출력 관련 자바스크립트
+    const boardId = [[${dto.boardId}]]; // board Idx
+
+    const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
+    const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
+
+    function printReplies(page, size, goLast) {
+        getReplyList({boardId, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
+            data => {
+                console.log("data: "+data);
+                printReplyList(data.dtoList); // pageResponseDTO의 dtoList
+                printPages(data);
+            }
+        ).catch(e => {
+            console.error();
+        });
+    }
+
+    printReplies(1, 10, true); // 무조건 댓글 맨 뒷페이지로 시작
+
+    // 댓글 a 태그를 눌렀을 때 페이지 이동
+    let page = 1;
+    let size = 10;
+
+    // 페이지 목록 클릭 이벤트
+    replyPaging.addEventListener("click", function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const target = e.target;
+
+        if(!target || target.tagName != 'A') return; // 타겟이 아니거나 a 태그가 아니면 종료
+
+        const pageNum = target.getAttribute("data-page");
+        page = pageNum;
+        printReplies(page, size);
+    });
+
+    function printPages(data) { // 페이지 목록 출력
+        // pagination
+        let pageStr = ''; // 페이지를 이동하기 위한 a 태그들을 담을 변수
+        if(data.prev) { // 받아온 data의 prev 값이 true라면 이전 버튼 활성화
+            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">이전</a></li>`;
+        }
+        for(let i = data.start; i <= data.end; i++) {
+            // 현재 페이지면 active 클래스 추가
+            pageStr += `<li class="page-item ${i === data.page ? "active" : ""}">
+                    <a class="page-link" data-page="${i}">${i}</a></li>`;
+        }
+        if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
+            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">다음</a></li>`
+        }
+        console.log(pageStr);
+        replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
+
+    }
+
+    function printReplyList(dtoList) {
+        let str = '';
+        if (dtoList && dtoList.length > 0) {
+            for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
+                str += ` <li class="list-group-item d-flex replyItem" data-replyId="${dto.replyId}">
+                <span class="col-2">${dto.boardId}</span>
+                <span class="col-2">${dto.replyId}</span>
+                <span class="col-6">${dto.content}</span>
+                <span class="col-2">${dto.userId}</span>
+                <span class="col-2">${dto.addDate}</span>
+                <span class="col-2"><a class="replyModBtn">수정</a></span>
+                <span class="col-2"><a class="replyRemoveBtn">삭제</a></span>
+              </li>`
+            }
+        }
+        replyList.innerHTML = str;
+
+        // 댓글 삭제 버튼 클릭 이벤트
+        document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
+            replyRemoveBtn.addEventListener('click', function(e) {
+                // a 태그의 parent.parent인 li에 data-replyId 속성 부여
+                const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
+                removeReply(replyId).then(result => { // reply.js(axios)
+                    alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용
+                    location.reload(); // 페이지 새로고침
+                }).catch(e => {
+                    console.log(e);
+                });
+            });
+        });
+
+        // 댓글 수정 버튼 클릭 이벤트
+        document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
+            replyModBtn.addEventListener('click', function(e) {
+                alert("replyModBtn 클릭");
+                // a 태그의 parent.parent인 li에 data-replyId 속성 부여
+                const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
+                // 아직 안 함...
+                // 댓글 수정폼 만들어서 숨겨놓고 replyModBtn 누르면 나오게 해야 할 듯
+            });
+        });
+
+    }
+
+</script>
 
 
 </html>

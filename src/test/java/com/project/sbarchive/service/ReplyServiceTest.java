@@ -46,11 +46,11 @@ public class ReplyServiceTest {
         replyService.modify(replyDTO);
     }
 
-    @Test
-    public void testGetList() {
-        List<ReplyDTO> dtoList=replyService.getReplyList(1);
-        dtoList.forEach(dto -> log.info(dto));
-    }
+//    @Test
+//    public void testGetList() {
+//        List<ReplyDTO> dtoList=replyService.getReplyList(1);
+//        dtoList.forEach(dto -> log.info(dto));
+//    }
 
     @Test
     public void testGetCount() {

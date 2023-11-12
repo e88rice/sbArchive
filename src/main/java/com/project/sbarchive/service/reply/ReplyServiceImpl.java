@@ -1,5 +1,7 @@
 package com.project.sbarchive.service.reply;
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.mapper.reply.ReplyMapper;
 import com.project.sbarchive.vo.reply.ReplyVO;
@@ -51,24 +53,25 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<ReplyDTO> getReplyList(int boardId) {
-        List<ReplyVO> voList=replyMapper.getReplyList(boardId);
+    public PageResponseDTO<ReplyDTO> getReplyList(int boardId, PageRequestDTO pageRequestDTO) {
+
+        List<ReplyVO> voList=replyMapper.getReplyList(boardId, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
         List<ReplyDTO> dtoList=new ArrayList<>();
         for(ReplyVO replyVO:voList) {
             dtoList.add(modelMapper.map(replyVO, ReplyDTO.class));
         }
-//        int total=replyMapper.getReplyCount(boardId);
+        int total=replyMapper.getReplyCount(boardId);
 
-//        return PageResponseDTO.<ReplyDTO>withAll()
-//                .dtoList(dtoList)
-//                .total(total)
-//                .pageRequestDTO(pageRequestDTO)
-//                .build();
-        return dtoList;
+        return PageResponseDTO.<ReplyDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
     }
 
     @Override
     public int getReplyCount(int boardId) {
         return replyMapper.getReplyCount(boardId);
     }
+
 }
