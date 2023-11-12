@@ -60,7 +60,7 @@ public class ReplyController {
     }
 
     @ApiOperation(value = "Read Reply", notes="GET 방식으로 특정 댓글 조회")
-    @GetMapping(value = {"/getReply/{replyId}", "/modify/{replyId}"})
+    @GetMapping(value = "/{replyId}")
     public ReplyDTO getReply(@PathVariable("replyId") int replyId, Model model) {
         ReplyDTO replyDTO=replyService.getReply(replyId);
         model.addAttribute("dto", replyDTO);

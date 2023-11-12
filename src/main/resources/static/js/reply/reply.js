@@ -22,7 +22,6 @@ async function removeReply(replyId) {
     const response=await axios.delete(`/reply/${replyId}`);
     return response.data;
 }
-////////// 여기까지 함 //////////
 
 // 댓글 조회(modify용)
 async function getReply(replyId) {
