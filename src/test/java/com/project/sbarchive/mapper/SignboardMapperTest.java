@@ -18,7 +18,7 @@ class SignboardMapperTest {
     @Test
     void register() {
         for(int i=0; i<=100; i++) {
-            signBoardMapper.add(SignBoardVO.builder()
+            signBoardMapper.addSignboard(SignBoardVO.builder()
                     .userId("admin")
                     .xOffSet("128.593835998552")
                     .yOffSet("35.8661170068962")
@@ -30,9 +30,9 @@ class SignboardMapperTest {
     }
 
     @Test
-    void getListWithPaging() {
+    void getSignboardListWithPaging() {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(11).size(10).build();
-        signBoardMapper.getListWithPaging(pageRequestDTO).forEach(signBoardAllDTO -> {
+        signBoardMapper.getSignboardListWithPaging(pageRequestDTO).forEach(signBoardAllDTO -> {
             log.info(signBoardAllDTO);
         });
     }

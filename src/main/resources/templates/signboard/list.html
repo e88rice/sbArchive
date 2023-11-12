@@ -3,15 +3,35 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{/layout/layout.html}">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>-->
 <style layout:fragment="style">
+  @font-face {
+    font-family: 'JalnanGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  .flex_column_center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
   .sb_list_container {
-    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    width: 60%;
+    margin-left: 13%;
+  }
+  .sb_page_container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     width: 60%;
+    margin-top: 100px;
   }
+
   .sb_wrap {
     position: relative;
     width: 250px;
@@ -38,78 +58,356 @@
     justify-content: space-around;
     align-items: center;
     opacity: 0.8;
+    font-family: JalnanGothic;
     color: white;
     background-color: #5c5c81;
+  }
+  .sb_list_paging_wrap {
+    display: flex;
+    list-style: none;
+    font-family: JalnanGothic;
+  }
+  .sb_page_wrap, .sb_page_prev, .sb_page_next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 40px;
+    margin: 0 10px;
+    width: 40px;
+    height: 40px;
+  }
+  .sb_page_prev, .sb_page_next {
+    width: 80px;
+  }
+  .sb_page_wrap > a {
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+  }
+  .sb_page_wrap > a:hover {
+    border: 1px solid rgba(80, 80, 80, 0.6);
+    background-color: #9f9898;
+    color: white;
+  }
+  .sb_list_paging_wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .sb_list_paging_wrap .active {
+    background-color: #000000;
+    color: white;
+  }
+
+   /*모달*/
+  .show {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+  }
+  .modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .modal_view_content {
+    width: 50vw;
+    height: 70vh;
+  }
+  .modal_view_header {
+    display: flex;
+    justify-content: right;
+    border: none;
+    height: 10%;
+  }
+  .btn-close {
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+  }
+  .modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 75%;
+  }
+  .modal_img_container, .modal_info_container {
+    width: 49%;
+    height: 100%;
+    text-align: left;
+  }
+  .modal_img_container > img {
+    width: 100%;
+    height: 450px;
+  }
+  .modal_info {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+  .modal_info p {
+    width: 70%;
+  }
+  .modal_info_span, .modal_modify_span {
+    display: inline-block;
+    font-weight: bold;
+    width: 20%;
+  }
+  .modal_info_content {
+    /*max-height: 0%;*/
+    max-height: 40%;
+    overflow: hidden scroll;
+  }
+  #map {
+    width: 100%;
+    height: 100px;
+  }
+  .modal-footer {
+    display: flex;
+    height: 10%;
+  }
+  .modal_footer_imgs > img {
+    width: 50px;
+    height: 50px;
+  }
+  .modal_footer_btns {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    left: 25%;
+    width: 50vw;
+  }
+  .leftBtn, .rightBtn {
+    margin: 0 20px;
+    background-color: transparent;
+    border: 1px solid rgba(119, 119, 119, 0.68);
+    box-shadow: 2px 2px 10px rgba(129, 94, 94, 0.54);
+    border-radius: 50%;
+    opacity: 0.2;
+  }
+  .leftBtn:hover, .rightBtn:hover {
+    border-color: black;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.54);
+    background-color: white;
+    opacity: 1;
+  }
+  .modal_footer_mod_del_btns {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+  }
+  .modifyBtn, .removeBtn{
+    border: none;
+    border-radius: 5%;
+    margin: 0 10px;
+  }
+  .modal_footer_mod_del_btns i{
+    color: #c2c2c2;
   }
 </style>
 
 <div layout:fragment="content">
-  <div class="sb_list_container">
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+  <div class="flex_column_center">
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+    <div class="sb_list_container"> <!-- 전체 박스 컨테이너 시작 -->
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+      <div class="sb_wrap" th:each="dto, status: ${response.getDtoList()}">
+        <div class="sb_img_container">
+          <img th:src="|@{/img/}${dto.files[0]}|">
+        </div>
+        <div class="sb_info_container" >
+          <p>[[${dto.title}]]</p>
+          <a><i class="fa-solid fa-link modal_show" th:attr="data-index=${status.index}"></i></a>
+        </div>
+      </div> <!-- 1개의 박스 끝 -->
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+    </div> <!-- 모든 박스 컨테이너 끝 -->
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+    <div class="sb_page_container">
+      <ul class="sb_list_paging_wrap">
+        <li class="sb_page_prev" th:if="${response.prev}">
+          <a th:href="|@{/signboard/list/}${response.start - 1}|" th:data-num="${response.start - 1}">
+            <i class="fa-solid fa-left-long" style="color: #3f4040;"></i>Prev
+          </a>
+        </li>
+        <th:block th:each="i: ${#numbers.sequence(response.start, response.end)}">
+          <li th:class="sb_page_wrap">
+            <a th:class="${response.page==i} ? 'active' : ''" th:href="|@{/signboard/list/}${i}|" th:data-num="${i}">[[${i}]]</a>
+          </li>
+        </th:block>
+        <li class="sb_page_next" th:if="${response.next}">
+          <a th:href="|@{/signboard/list/}${response.end+1}|" th:data-num="${response.end+1}">Next <i class="fa-solid fa-right-long" style="color: #3f4040;"></i></a>
+        </li>
+      </ul>
+    </div>
 
-    <div class="sb_wrap">
-      <div class="sb_img_container">
-        <img src="/img/s_4acc5ecf-df4d-45ce-80b0-ae2948d95530_1.png">
-      </div>
-      <div class="sb_info_container">
-        <p>[[${response.dtoList[0].title}]]</p>
-        <a><i class="fa-solid fa-link"></i></a>
-      </div>
-    </div> <!-- 1개의 박스 끝 -->
+    <div class="modal modal_container" tabindex="-1">
 
-  </div> <!-- 모든 박스 컨테이너 끝 -->
+      <div class="modal-dialog">
 
+        <div class="modal-content modal_view_content">
+
+          <div class="modal-header modal_view_header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="modal-body">
+
+          </div> <!-- Modal body End -->
+
+          <div class="modal-footer">
+            <div class="modal_footer_imgs">
+
+            </div>
+            <div class="modal_footer_btns">
+              <button class="leftBtn"><i class='bx bxs-left-arrow'></i></button>
+              <button class="rightBtn"><i class='bx bxs-right-arrow'></i></button>
+            </div>
+            <div class="modal_footer_mod_del_btns">
+
+            </div>
+          </div> <!-- Modal footer End -->
+
+
+
+        </div> <!-- Modal Content End -->
+
+      </div> <!-- Modal Dialog End -->
+
+    </div><!-- Modal Container End -->
+
+    <div class="modal modify_modal modal_container" tabindex="-1">
+
+      <div class="modal-dialog">
+
+        <div class="modal-content modal_view_content">
+
+          <div class="modal-header modal_view_header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="modal-body modify_modal_body">
+            <span class="modal_modify_span"></span><input type="file" id="modify_files" multiple="multiple">
+          </div> <!-- Modal body End -->
+
+          <div class="modal-footer">
+            <div class="modal_footer_mod_del_btns">
+              <button class="modify_modal_modify_btn">수정하기</button>
+            </div>
+          </div> <!-- Modal footer End -->
+
+
+
+        </div> <!-- Modal Content End -->
+
+      </div> <!-- Modal Dialog End -->
+
+    </div><!-- Modal Container End -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8acb6543ebcddde72944ae402428a215&libraries=services"></script>
+    <script src="/js/signboard/modalAsync.js"></script>
+
+  </div>
   <script layout:fragment="script">
-    // 이미지에 손을 올리면 인포가 보이는 이벤트
+
+    let page = [[${response.page}]];    // 모달창 비동기통신을 위한 page 번호
+    const last = [[${response.last}]];  // 모달창 비동기통신을 위한 마지막 page 번호
+    const size = [[${response.size}]];  // 모달창 비동기통신을 위한 size
+    const total = [[${response.total}]]; // 총 데이터 개수
+    const lpli = total % size -1; // 마지막 페이지의 마지막 인덱스
+    let idx = 0;
+
+    console.log("page = " + page);
+    console.log("last = " + last);
+    console.log("size = " + size);
+    console.log("lpli = " + lpli);
+
+    // 뷰 모달
+    const modalShowBtn = document.querySelectorAll(".modal_show"); // 모달 보이게하는 버튼들
+    const modalContainer = new bootstrap.Modal(document.querySelector(".modal_container")); // 모달 컨테이너
+    const modalCloseBtn = document.querySelector(".btn-close"); // 모달 닫기 버튼
+    const modalBody = document.querySelector(".modal-body"); // 모달 컨텐츠 영역
+    const modalImgs = document.querySelector(".modal_footer_imgs"); // 모달 이미지들 영역
+    const prevBtn = document.querySelector(".leftBtn"); // 이전 버튼
+    const nextBtn = document.querySelector(".rightBtn"); // 다음 버튼
+    // 수정 관련 모달
+    const modifyModal = new bootstrap.Modal(document.querySelector(".modify_modal")); // 수정 모달 컨테이너
+
+    // 모달 오픈
+    modalShowBtn.forEach( showBtn => {
+      showBtn.addEventListener("click", function (e){
+        modalContainer.show();
+        idx = e.target.attributes[1].value; // 선택한 객체의 인덱스 꺼내고
+        getSignboardtoModal(page, idx); // 선택한 객체로 모달창 작업
+      })
+    })
+
+    // 모달창 닫기
+    modalCloseBtn.addEventListener("click", function (){
+      page = [[${response.page}]];    // 모달창 비동기통신을 위한 page 번호
+      modalContainer.hide();
+    })
+
+    // 모달창에서 이전 버튼 클릭 시
+    prevBtn.addEventListener("click", function (){
+      console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
+      if(page === 1 && parseInt(idx) === 0){ // 이전 버튼을 눌렀을 때 첫번째 화면 이라면
+
+        if(confirm("첫 화면입니다. 마지막 화면으로 이동하시겠습니까?")) { // 예 -> true
+          page = last; // 마지막 페이지로 설정
+          idx = lpli; // 페이지 당 객체 9개. 마지막 인덱스의 객체를 보여줌
+          getSignboardtoModal(page, idx);
+        } else { // 아니오 -> false
+          page = [[${response.page}]];  // page 변수를 다시 보던 페이지의 번호로 초기화
+          modalContainer.hide();        // 모달창 종료
+        }
+      } else if(parseInt(idx) === 0) { // 현재 페이지가 2 이상이면서 인덱스는 0 일때
+        page--;
+        idx = 8;
+        getSignboardtoModal(page, idx);
+      } else { // 이전 버튼을 눌렀을 때 이전 인덱스의 객체가 있다면
+          idx--; // 인덱스 감소
+          getSignboardtoModal(page, idx);
+      }
+      console.log("이동 후 페이지 : " + page + ", 이동 후 인덱스 : " + idx);
+    })
+
+    // 모달창에서 다음 버튼 클릭 시
+    nextBtn.addEventListener("click", function (){
+      console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
+      if(page === last && parseInt(idx) === lpli){ // 다음 버튼을 눌렀을 때 마지막 페이지 마지막 객체라면
+
+        if(confirm("마지막 화면입니다. 첫 화면으로 이동하시겠습니까?")) { // 예 -> true
+          page = 1; // 첫 페이지로 설정
+          idx = 0; // 페이지 당 객체 9개. 첫번째 인덱스의 객체를 보여줌
+          getSignboardtoModal(page, idx);
+        } else { // 아니오 -> false
+          page = [[${response.page}]];  // page 변수를 다시 보던 페이지의 번호로 초기화
+          modalContainer.hide();        // 모달창 종료
+        }
+      } else if(parseInt(idx) === (size -1) ) { // 현재 페이지가 마지막 페이지가 아니면서 인덱스는 8 일때
+        page++;
+        idx = 0;
+        getSignboardtoModal(page, idx);
+      } else { // 다음 버튼을 눌렀을 때 다음 인덱스의 객체가 있다면. (인덱스가 8이 아니라면)
+        idx++; // 인덱스 증가
+        getSignboardtoModal(page, idx);
+      }
+      console.log("이동 후 페이지 : " + page + ", 이동 후 인덱스 : " + idx);
+    })
+
+    // 이미지에 손을 올리면 인포가 보이는 이벤트 (모달 X, 페이징 페이지 O)
     const imgContainer = document.querySelectorAll(".sb_img_container");
     const infoContainer = document.querySelectorAll(".sb_info_container");
 
@@ -119,12 +417,229 @@
         info.style.display = "flex";
       })
     })
-
     infoContainer.forEach(info => {
       info.addEventListener("mouseleave", function (){
         info.style.display = "none";
       })
     })
+
+    // hover시 해당 이미지로 메인 이미지가 바뀌는 이벤트 걸기
+    function changeImage() {
+      const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
+      footerImgs.forEach( img => {
+        img.addEventListener("mouseenter", function (){
+          const mainImage = document.querySelector(".modal_img_container img")
+          mainImage.src = img.src;
+        })
+      })
+    }
+
+    // 객체의 정보를 받고 HTML 요소로 추가
+    function addInfoForm(signboard) {
+      let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
+      let modDate = signboard.modDate;
+      let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
+
+      let str = "<div class=\"modal_img_container\">\n" +
+              "              <img src=\"/img/"+ signboard.files[0] +"\">\n" +
+              "            </div>\n" +
+              "            <div class=\"modal_info_container\">\n" +
+              "              <div id=\"map\"></div>\n" +
+              "              <div class=\"modal_info modal_info_title\">\n" +
+              "                <span class=\"modal_info_span\">가게명</span>\n" +
+              "                <p> " + signboard.title + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_address\">\n" +
+              "                <span class=\"modal_info_span\">주소</span>\n" +
+              "                <p> " + signboard.address + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_nickname\">\n" +
+              "                <span class=\"modal_info_span\">작성자</span>\n" +
+              "                <p>" + signboard.nickname + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_date\">\n" +
+              "                <span class=\"modal_info_span\">작성일</span>\n" +
+              "                <p>" + date +"</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info_content\">\n" +
+              "                "+ signboard.content +"\n";
+              "              </div>\n" +
+              "            </div>";
+
+      // 이미지 폼
+      let imgs = "";
+      for(let i=0; i<signboard.files.length; i++) {
+        imgs += "              <img class='footer_imgs' src=\"/img/"+ signboard.files[i] +"\">\n";
+      }
+
+      // 수정 삭제 폼
+      let btns = "";
+      let isLoginUser = signboard.userId === "admin"; // 변경 : "admin" 은 추후 로그인 정보의 userId로 변경
+      if(isLoginUser) {
+        btns += "              <button class=\"modifyBtn\">수정하기 <i class=\"fa-solid fa-wrench\"></i></button>\n" +
+                "              <button class=\"removeBtn\">삭제하기 <i class=\"fa-solid fa-trash\"></i></button>";
+        document.querySelector(".modal_footer_mod_del_btns").innerHTML = btns;
+      }
+
+
+
+      // console.log(str);
+      modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
+      modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
+
+      return isLoginUser;
+    }
+
+    // page와 인덱스번호를 받고 signboard 객체를 가져와서 기타 함수들을 호출하는 함수
+    function getSignboardtoModal(page, index) {
+      getSignboard(page, index).then(r => {
+        console.log(r);
+        const isloginUser = addInfoForm(r); // HTML 요소로써 모달창에 표시
+        changeImage();  // 모달창의 대기 이미지 hover시 메인 이미지로 바뀌게 하는 이벤트를 걸어둠
+
+        if(isloginUser) { // 만약 현재 모달이 로그인 한 유저의 모달일 시
+          modifyModalView(modifyModal); // 수정 버튼을 누를 시 수정 모달이 열리게 함
+          modifyModalAddForm(r); // 수정 모달에 폼 생성
+          modifySignboard(modalContainer, modifyModal);     // 수정 처리 후 결과값 받아옴 성공 1, 실패 0
+          removeSignboard(modalContainer, modifyModal);     // 삭제 처리 후 결과값 받아옴 성공 1, 실패 0
+
+        }
+
+
+        // 지도 설정
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+                mapOption = {
+                  center: new kakao.maps.LatLng(r.yoffSet, r.xoffSet), // 지도의 중심좌표
+                  level: 2 // 지도의 확대 레벨
+                };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 마커가 표시될 위치입니다
+        var markerPosition  = new kakao.maps.LatLng(r.yoffSet, r.xoffSet);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          position: markerPosition
+        });
+
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        marker.setMap(map);
+      }).catch(e => {
+        console.log(e)
+      });
+    }
+
+    // 수정 모달 오픈
+    function modifyModalView(modifyModal) {
+      const modifyModalShowBtn = document.querySelector(".modifyBtn"); // 수정 모달 뷰 버튼
+
+      modifyModalShowBtn.addEventListener("click", function (){
+        modifyModal.show();
+      })
+    }
+
+    // 수정 모달 폼 생성
+    function modifyModalAddForm(signboard) {
+      let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
+      let modDate = signboard.modDate;
+      let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
+
+      let str = "<div class=\"modal_img_container\">\n" +
+              "              <img src=\"/img/"+ signboard.files[0] +"\">\n" +
+              "            </div>\n" +
+              "            <div class=\"modal_info_container\">\n" +
+              "              <div id=\"map\"></div>\n" +
+              "              <div class=\"modal_info modal_info_title\">\n" +
+              "                <span class=\"modal_info_span\">가게명</span>\n" +
+              "                <p> " + signboard.title + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_address\">\n" +
+              "                <span class=\"modal_info_span\">주소</span>\n" +
+              "                <input type='hidden' class=\"modal_modify_id\" value='" + signboard.signboardId + "'>\n" +
+              "                <p> " + signboard.address + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_nickname\">\n" +
+              "                <span class=\"modal_info_span\">작성자</span>\n" +
+              "                <p>" + signboard.nickname + "</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info modal_info_date\">\n" +
+              "                <span class=\"modal_info_span\">작성일</span>\n" +
+              "                <p>" + date +"</p>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info_content modal_modify_content\">\n" +
+              "                <textarea style='width: 100%' rows='10'>"+ signboard.content +"</textarea>\n" +
+              "              </div>\n" +
+              "              <div class=\"modal_info_files modal_modify_files\">\n" +
+              "                <input type='file' multiple='multiple'>\n" +
+              "              </div>\n" +
+              "            </div>";
+
+      document.querySelector(".modify_modal_body").innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
+
+    }
+
+    // 수정 모달에서 수정 버튼 클릭 시 수정 처리 후 수정 결과 알림 후 모달창 종료
+    function modifySignboard(modalContainer, modifyModal) {
+      let result = 0;
+      const modifyBtn = document.querySelector(".modify_modal_modify_btn");
+      modifyBtn.addEventListener("click", function (){
+        const modifySignboardId = document.querySelector(".modal_modify_id").value;
+        const files = document.querySelectorAll(".modal_modify_files input[type=file]") // 파일 인풋 가져옴
+        if(files[0].files.length <= 0) { // 첨부 파일이 없다면
+          alert("외국어 간판의 이미지 파일을 첨부 해주세요");
+          files.focus();
+          return;
+        }
+
+        if(confirm("이대로 수정하시겠습니까?")){
+          const newContent = document.querySelector(".modal_modify_content textarea").value;
+          updateSignboard(modifySignboardId, newContent, files[0].files).then(r => {
+            if(r === 1) {
+              result = r;
+              alert("성공적으로 수정이 되었습니다.");
+              modifyModal.hide();
+              modalContainer.hide();
+              window.location.reload();
+            } else {
+              alert("수정에 실패했습니다.");
+              modifyModal.hide();
+            }
+          }).catch(e => {
+            console.log(e)
+          });
+        } else {
+          modifyModal.hide();
+        }
+      })
+    }
+
+    function removeSignboard(modalContainer) {
+      const removeBtn = document.querySelector(".removeBtn");
+      removeBtn.addEventListener("click", function (){
+        const signboardId = document.querySelector(".modal_modify_id").value;
+        console.log(signboardId);
+        if(confirm("삭제 후 되돌릴 수 없습니다. 삭제하시겠습니까?")){
+          let result = deleteSignboard(signboardId).then( result => {
+            if(result > 0){ // 삭제 성공
+              alert("성공적으로 삭제했습니다.");
+              modalContainer.hide();
+              window.location.reload();
+            }
+            else { // 삭제 실패
+              alert("삭제에 실패했습니다.");
+              modalContainer.hide();
+            }
+          }).catch(e => {
+            console.log(e);
+          });
+        } else {
+          modalContainer.hide();
+        }
+
+      })
+    }
 
   </script>
   <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->

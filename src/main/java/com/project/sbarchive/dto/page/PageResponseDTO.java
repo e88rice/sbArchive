@@ -27,7 +27,7 @@ public class PageResponseDTO<E> { // <제네릭> 쓴 이유: todo뿐만 아니�
         this.start=this.end-9; // 끝 페이지 -9가 곧 시작 페이지가 된다
         // ex. 끝 페이지: 10, 10-9=1: 시작 페이지
 
-        int last=(int)(Math.ceil(total/(double)size));
+        this.last = (int)(Math.ceil(total/(double)size));
         this.end = end > last ? last : end;
 
         this.prev=this.start>1;
@@ -42,6 +42,9 @@ public class PageResponseDTO<E> { // <제네릭> 쓴 이유: todo뿐만 아니�
     private int start;
     // 끝 페이지 번호
     private int end;
+
+    // 토탈 페이지
+    private int last;
 
     // 이전 페이지의 존재 여부
     private boolean prev;

@@ -11,8 +11,8 @@
         text-decoration: none;
         color: black;
     }
-    .test_input {
-        width: 200px;
+    .add_signboard_input {
+        width: 300px;
         height: 30px;
         border-radius: 0.35em;
         margin: 20px 0;
@@ -23,7 +23,7 @@
         border-radius: 2px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         width: 60%;
-        min-height: 90vh;
+        min-height: 80vh;
     }
 
     .add_wrap {
@@ -32,17 +32,19 @@
         border-radius: 2px;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         width: 100%;
-        min-height: 90vh;
+        min-height: 80vh;
         display : flex;
         justify-content: space-around;
         align-items: center;
     }
 
     .search_left_wrap, .search_right_wrap {
-        /*display: flex;*/
-        /*flex-direction: column;*/
-        /*align-items: center;*/
-        /*!*justify-content: center;*!*/
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        height: 600px;
+        width: 47%;
     }
 
     .search_header {
@@ -97,6 +99,10 @@
         color: white;
         font-weight: bold;
     }
+    .add_signboard_span {
+        display: inline-block;
+        width: 100px;
+    }
 </style>
 
 <div layout:fragment="content">
@@ -119,8 +125,9 @@
                     <form action="/signboard/add" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="xOffSet" value="">
                         <input type="hidden" name="yOffSet" value="">
-                        <span class="input">가게이름 : </span> <input type="text" name="title" class="test_input" readonly> <br>
-                        <span>주소 : </span><input type="text" name="address" class="test_input" readonly> <br>
+                        <span class="add_signboard_span">가게이름 : </span> <input type="text" name="title" class="add_signboard_input" readonly> <br>
+                        <span class="add_signboard_span">주소 : </span><input type="text" name="address" class="add_signboard_input" readonly> <br>
+                        <textarea name="content" rows="10" cols="50" maxlength="200"></textarea>
                         <input type="file" name="files" multiple="multiple">
                     </form>
                 </div>

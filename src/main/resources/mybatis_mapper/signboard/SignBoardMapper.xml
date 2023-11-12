@@ -7,6 +7,7 @@
     <resultMap id="getListWithImages" type="com.project.sbarchive.dto.signboard.SignBoardAllDTO">
         <result property="signboardId" column="signboardId"></result>
         <result property="userId" column="userId"></result>
+        <result property="nickname" column="nickname"></result>
         <result property="xOffSet" column="xOffSet"></result>
         <result property="yOffSet" column="yOffSet"></result>
         <result property="title" column="title"></result>
@@ -23,23 +24,35 @@
 <!--        <result column="fileName"></result>	&lt;!&ndash; property가 없는 이유는 List<String>이라 필드가 없어서 &ndash;&gt;-->
 <!--    </resultMap>-->
 
-    <insert id="add" parameterType="com.project.sbarchive.vo.signboard.SignBoardVO" useGeneratedKeys="true" keyProperty="signboardId">
-        INSERT INTO signboard (userId, xOffSet, yOffSet, title, address, content, addDate, modDate)
-        VALUES (#{userId}, #{xOffSet}, #{yOffSet}, #{title}, #{address}, #{content}, now(), now())
+    <insert id="addSignboard" parameterType="com.project.sbarchive.vo.signboard.SignBoardVO" useGeneratedKeys="true" keyProperty="signboardId">
+        INSERT INTO signboard (userId, nickname, xOffSet, yOffSet, title, address, content, addDate, modDate)
+        VALUES (#{userId}, #{nickname}, #{xOffSet}, #{yOffSet}, #{title}, #{address}, #{content}, now(), now())
     </insert>
 
-    <select id="getList" resultMap="getListWithImages">
+    <select id="getSignboard" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">
+        select * from signboard where signboardId = #{signboardId};
+    </select>
+
+    <select id="getSignboardList" resultMap="getListWithImages">
         select sb.*, sf.fileName from signboard sb LEFT JOIN signboard_file sf on sb.signboardId = sf.signboardId;
     </select>
 
-    <select id="getListWithPaging" resultMap="getListWithImages">
+    <select id="getSignboardListWithPaging" resultMap="getListWithImages">
         select sb.*, sf.fileName from signboard sb
         LEFT JOIN signboard_file sf
-        on sb.signboardId = sf.signboardId order by signboardId desc limit #{skip}, #{size};
+        on sb.signboardId = sf.signboardId group by signboardId order by signboardId desc limit #{skip}, #{size};
     </select>
 
     <select id="getCount" resultType="int">
         select count(*) from signboard;
     </select>
+    
+    <update id="modifySignboard">
+        update signboard set content = #{content}, modDate = now() where signboardId = #{signboardId}
+    </update>
+
+    <delete id="removeSignboard">
+        delete from signboard where signboardId = #{signboardId}
+    </delete>
 
 </mapper>

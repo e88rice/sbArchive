@@ -4,13 +4,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardFileMapper">
 
-    <insert id="add">
+    <insert id="addSignboardImages">
         INSERT INTO signboard_file (signboardId, fileName)
         VALUES (#{signboardId}, #{fileName});
     </insert>
 
-<!--    <select id="getList" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">-->
-<!--        select * from signboard;-->
-<!--    </select>-->
+    <select id="getSignboardImages" resultType="String">
+        select fileName from signboard_file sf where sf.signboardId = #{signboardId};
+    </select>
+
+
+    <delete id="removeSignboardImages">
+        delete from signboard_file where signboardId = #{signboardId}
+    </delete>
 
 </mapper>

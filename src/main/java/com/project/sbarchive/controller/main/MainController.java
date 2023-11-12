@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Log4j2
 public class MainController {
 
-    @RequestMapping("/index")
+    @RequestMapping({"/index", "/main", "/"})
     public String index() {
         log.info("HI");
 

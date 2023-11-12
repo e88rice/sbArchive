@@ -18,6 +18,7 @@ public class SignBoardDTO {
 
     private int signboardId;
     private String userId;
+    private String nickname;
     private String xOffSet;
     private String yOffSet;
     private String title;

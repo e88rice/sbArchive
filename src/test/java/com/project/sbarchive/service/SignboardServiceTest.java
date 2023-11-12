@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+
 @SpringBootTest
 @Log4j2
 public class SignboardServiceTest {
@@ -28,7 +30,7 @@ public class SignboardServiceTest {
     @Test
     public void addDummy() {
         for(int i=0; i<= 50; i++){
-            int id = signBoardService.add(SignBoardDTO.builder()
+            int id = signBoardService.addSignboard(SignBoardDTO.builder()
                     .userId("admin")
                     .xOffSet("128.593835998552")
                     .yOffSet("35.8661170068962")
@@ -44,16 +46,28 @@ public class SignboardServiceTest {
     }
 
     @Test
-    public void getList() {
-        signBoardService.getList().forEach(signBoardAllDTO -> {
+    public void getSignboardList() {
+        signBoardService.getSignboardList().forEach(signBoardAllDTO -> {
             log.info(signBoardAllDTO);
         });
     }
 
     @Test
-    public void getListWithPaging() {
+    public void getSignboard() {
+        log.info(signBoardService.getSignboard(147).getModDate());
+    }
+
+    @Test
+    public void modifySignboard() {
+        int result = signBoardService.modifySignboard(147,
+                "변경된 콘텐츠...변경된 콘텐츠...변경된 콘텐츠...변경된 콘텐츠...변경된 콘텐츠...변경된 콘텐츠...");
+        log.info(result);
+    }
+
+    @Test
+    public void getSignboardListWithPaging() {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(11).size(10).build();
-        PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getListWithPaging(pageRequestDTO);
+        PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getSignboardListWithPaging(pageRequestDTO);
         responseDTO.getDtoList().forEach(signBoardAllDTO -> log.info(signBoardAllDTO));
         log.info("getTotal : " + responseDTO.getTotal());
         log.info("getPage : " + responseDTO.getPage());
@@ -61,6 +75,20 @@ public class SignboardServiceTest {
         log.info("getSno : " + responseDTO.getSno());
         log.info("getStart : " + responseDTO.getStart());
         log.info("getEnd : " + responseDTO.getEnd());
+    }
+
+    @Test
+    public void getSignboardImages() {
+
+        ArrayList<String> files = fileService.getSignboardImages(146);
+        for(String file : files) {
+            log.info(file);
+        }
+    }
+
+    @Test
+    public void removeSignboardImages() {
+        fileService.removeSignboardImages(147);
     }
 
 

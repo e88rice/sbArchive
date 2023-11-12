@@ -73,6 +73,7 @@ pre {
 }
 .lighter {
 	font-weight:100;
+	font-size: 13px;
 }
 img {
 	max-width: 100%;
@@ -372,6 +373,7 @@ label {
 	box-shadow:0 0 5px rgba(0,0,0,.05);
 	-webkit-box-shadow:0 0 5px rgba(0,0,0,.05);
 	-moz-box-shadow: 0 0 5px rgba(0,0,0,.05);
+	border-bottom: 10px solid;
 }
 /*	Parallax Background	==================================================*/
 #parallax {

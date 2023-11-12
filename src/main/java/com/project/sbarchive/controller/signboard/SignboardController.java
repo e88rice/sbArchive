@@ -39,12 +39,18 @@ public class SignboardController {
     @PostMapping(value = "/add") // 간판 등록, 간판 등록 시 업로드한 이미지도 등록
     public String addPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files) {
 
-        System.out.println("signboard : registerPost ...");
-        int signBoardId = signBoardService.add(signBoardDTO); // 등록 버튼을 누른 게시글을 DB에 저장하고 방금 등록한 게시물의 id값을 받아옴
+        System.out.println("signboard : addPost ...");
+        signBoardDTO.setUserId("admin"); // 추후 변경
+        signBoardDTO.setNickname("admin"); // 추후 변경
+        int signBoardId = signBoardService.addSignboard(signBoardDTO); // 등록 버튼을 누른 게시글을 DB에 저장하고 방금 등록한 게시물의 id값을 받아옴
+
+        for(MultipartFile file : files) {
+            log.info(file);
+        }
 
         System.out.println(signBoardId);
         if(files.size() > 0) {
-            signBoardFileService.add(signBoardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
+            signBoardFileService.addSignboardImages(signBoardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         }
 
         return "redirect:/index";
@@ -53,8 +59,8 @@ public class SignboardController {
     // 게시글 리스트 페이지
     @GetMapping("/list/{page}")
     public String listGET(@PathVariable("page") int pageNum, Model model) {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pageNum).size(12).build();
-        PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getListWithPaging(pageRequestDTO);
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pageNum).size(9).build(); // 사이즈 9 아니면 12로 설정할거임
+        PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getSignboardListWithPaging(pageRequestDTO);
         model.addAttribute("response", responseDTO);
         return "/signboard/list";
     }

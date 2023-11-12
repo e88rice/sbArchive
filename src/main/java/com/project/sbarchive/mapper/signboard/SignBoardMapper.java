@@ -11,14 +11,22 @@ import java.util.ArrayList;
 public interface SignBoardMapper {
     
     // 등록
-    void add(SignBoardVO signBoardVO);
-    
+    void addSignboard(SignBoardVO signBoardVO);
+
+    SignBoardVO getSignboard(int signboardId);
+
     // 간판 리스트 (메인-지도용)
-    ArrayList<SignBoardAllDTO> getList();
+    ArrayList<SignBoardAllDTO> getSignboardList();
 
     // 간판 총 갯수 구하기
     int getCount();
 
     // 페이징된 간판 리스트 (간판-리스트용)
-    ArrayList<SignBoardAllDTO> getListWithPaging(PageRequestDTO pageRequestDTO);
+    ArrayList<SignBoardAllDTO> getSignboardListWithPaging(PageRequestDTO pageRequestDTO);
+
+    // 간판 게시글 콘텐츠, 수정날짜 수정
+    void modifySignboard(int signboardId, String content);
+
+    // 간판 게시글 삭제
+    int removeSignboard(int signboardId);
 }

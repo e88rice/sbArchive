@@ -5,6 +5,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.mapper.signboard.SignBoardFileMapper;
 import com.project.sbarchive.mapper.signboard.SignBoardMapper;
 import com.project.sbarchive.vo.signboard.SignBoardVO;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,17 @@ public class SignBoardServiceImpl implements SignBoardService {
     private final SignBoardMapper signBoardMapper;
 
     @Override
-    public int add(SignBoardDTO signBoardDTO) {
+    public int addSignboard(SignBoardDTO signBoardDTO) {
         log.info("signBoardDTO: "+signBoardDTO);
         SignBoardVO signBoardVO = modelMapper.map(signBoardDTO, SignBoardVO.class);
         log.info("signBoardVO: " + signBoardVO);
-        signBoardMapper.add(signBoardVO);
+        signBoardMapper.addSignboard(signBoardVO);
         return signBoardVO.getSignboardId();
+    }
+
+    @Override
+    public SignBoardDTO getSignboard(int signboardId) {
+        return modelMapper.map(signBoardMapper.getSignboard(signboardId), SignBoardDTO.class);
     }
 
     @Override
@@ -41,8 +47,8 @@ public class SignBoardServiceImpl implements SignBoardService {
     }
 
     @Override
-    public ArrayList<SignBoardAllDTO> getList() {
-        ArrayList<SignBoardAllDTO> dtoList = signBoardMapper.getList();
+    public ArrayList<SignBoardAllDTO> getSignboardList() {
+        ArrayList<SignBoardAllDTO> dtoList = signBoardMapper.getSignboardList();
 //        for(SignBoardAllDTO dto : dtoList) {
 //            log.info(dto);
 //        }
@@ -50,9 +56,9 @@ public class SignBoardServiceImpl implements SignBoardService {
     }
 
     @Override
-    public PageResponseDTO<SignBoardAllDTO> getListWithPaging(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<SignBoardAllDTO> getSignboardListWithPaging(PageRequestDTO pageRequestDTO) {
 
-        List<SignBoardAllDTO> dtoList=signBoardMapper.getListWithPaging(pageRequestDTO);
+        List<SignBoardAllDTO> dtoList=signBoardMapper.getSignboardListWithPaging(pageRequestDTO);
 //        for(BoardVO boardVO:voList) {
 //            dtoList.add(modelMapper.map(boardVO, BoardDTO.class));
 //        }
@@ -62,6 +68,24 @@ public class SignBoardServiceImpl implements SignBoardService {
                 .dtoList(dtoList)
                 .total(total)
                 .pageRequestDTO(pageRequestDTO).build();
+    }
+
+    @Override
+    public Integer modifySignboard(int signboardId, String content) {
+        String originMDate = String.valueOf(signBoardMapper.getSignboard(signboardId).getModDate()); // 기존 수정날짜 저장
+
+        signBoardMapper.modifySignboard(signboardId, content); // PK값과 변경된 내용을 전달하여 수정 처리
+
+        String newMDate = String.valueOf(signBoardMapper.getSignboard(signboardId).getModDate()); // 변경 후 수정날짜 저장
+
+        boolean result = originMDate.equals(newMDate); // 수정 결과값 true, false.  false(= 다르다가 나와야 성공)
+
+        return result ? 0 : 1; // 다르면(성공) 1, 같으면(실패) 0
+    }
+
+    @Override
+    public int removeSignboard(int signboardId) {
+        return signBoardMapper.removeSignboard(signboardId);
     }
 
 }
