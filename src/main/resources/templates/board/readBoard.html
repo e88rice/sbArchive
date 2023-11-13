@@ -84,16 +84,16 @@
     <div>
         <div>
             <span class="input-group-text">boardId</span>
-            <input type="text" class="boardId" th:value="${dto.boardId}" readonly>
+            <input type="text" name="boardId" class="aboardId" th:value="${dto.boardId}" readonly>
             <!-- 잘 받아오는지 테스트용 -->
         </div>
         <div>
             <span class="input-group-text">아이디</span>
-            <input type="text" class="userId" th:value="${dto.userId}" readonly>
+            <input type="text" name="userId" class="auserId" th:value="${dto.userId}" readonly>
         </div>
         <div>
             <span class="input-group-text">닉네임</span>
-            <input type="text" name="nickname" class="nickname">
+            <input type="text" name="nickname" class="anickname">
             <!-- board 테이블에 nickname 추가되면
             <input type="text" name="nickname" class="nickname" th:value="${dto.nickname}" readonly>
             로 수정 -->
@@ -110,6 +110,7 @@
     <!-- 댓글 리스트 출력 -->
     <div class="row mt-3">
         <div class="col-md-12">
+            <span><a class="refreshBtn">새로고침</a></span>
             <ul class="list-group replyList">
 
             </ul>
@@ -128,11 +129,17 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
+    // 새로고침 이벤트
+    const refreshBtn=document.querySelector('.refreshBtn');
+    refreshBtn.addEventListener("click", function(e) {
+        location.reload(); // 가장 마지막 페이지로 이동
+    });
+
     // 여기서부터 댓글 등록 관련 자바스크립트
-    const aboardId=document.querySelector(".boardId");
+    const aboardId=document.querySelector(".aboardId");
     const acontent=document.querySelector(".acontent");
-    const auserId=document.querySelector(".userId");
-    const anickname=document.querySelector(".nickname");
+    const auserId=document.querySelector(".auserId");
+    const anickname=document.querySelector(".anickname");
     const addBtn=document.querySelector(".addBtn");
 
     // 댓글 등록 버튼 클릭 이벤트
@@ -147,6 +154,7 @@
         addReply(replyObj).then(result => { // reply.js(axios)
             alert(result.data.replyId); // 확인용
             acontent.value = ''; // 초기화
+            location.reload();
             printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
         }).catch(e => {
             alert("댓글 등록에 문제 생김");
@@ -215,12 +223,20 @@
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
+                let addDate=dto.addDate;
+                console.log(addDate);
+                let modDate=dto.modDate;
+                //console.log(modDate);
+                console.log(dto);
+                let date=(addDate===modDate) ? addDate : (modDate+" (수정됨)");
+                console.log(date);
                 str +=` <li class="list-group-item d-flex replyItem" data-replyId="${dto.replyId}">
                 <span class="col-2">${dto.boardId}</span>
                 <span class="col-2">${dto.replyId}</span>
                 <span class="col-6">${dto.content}</span>
                 <span class="col-2">${dto.userId}</span>
-                <span class="col-2">${dto.addDate}</span>
+                <span class="col-2">${date}</span>
+
                 <!-- 수정/삭제 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치할 시 보여주게 바꿀 거임 -->
                 <span class="col-2"><a class="replyModBtn">수정</a></span>
                 <span class="col-2"><a class="replyRemoveBtn">삭제</a></span>
@@ -247,7 +263,7 @@
                     <button type="button" class="btn btn-primary modBtn">등록</button>
                  </div>
               </li>
-               `;
+               `
             }
         }
         replyList.innerHTML = str;
@@ -258,6 +274,7 @@
                 // a 태그의 parent.parent인 li에 data-replyId 속성 부여
                 const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
                 removeReply(replyId).then(result => { // reply.js(axios)
+                    if(!confirm("정말 삭제하시겠습니까?")) return;
                     alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용
                     location.reload(); // 페이지 새로고침
                 }).catch(e => {
