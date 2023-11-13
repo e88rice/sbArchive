@@ -43,7 +43,7 @@ public class ReplyVO {
     private LocalDateTime addDate;
 
     // 댓글 수정 날짜
-    @JsonIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
 
 }

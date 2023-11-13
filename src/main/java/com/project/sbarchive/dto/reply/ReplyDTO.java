@@ -40,8 +40,8 @@ public class ReplyDTO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addDate;
 
-    // 댓글 수정 날짜 // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonIgnore
+    // 댓글 수정 날짜
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
 
 }
