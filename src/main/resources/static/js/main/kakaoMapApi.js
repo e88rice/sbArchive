@@ -5,7 +5,6 @@
 getSBList().then(r => {
     // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
     var positions = [];
-    console.log("ㅎㅇㅎㅇ");
     console.log(r[0].files)
     for(let i=0; i<r.length; i++){
         let item = {

@@ -354,13 +354,13 @@
     })
 
     // 모달창 닫기
-    modalCloseBtn.addEventListener("click", function (){
+    modalCloseBtn.addEventListener("click", function (e){
       page = [[${response.page}]];    // 모달창 비동기통신을 위한 page 번호
       modalContainer.hide();
     })
 
     // 모달창에서 이전 버튼 클릭 시
-    prevBtn.addEventListener("click", function (){
+    prevBtn.addEventListener("click", function (e){
       console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
       if(page === 1 && parseInt(idx) === 0){ // 이전 버튼을 눌렀을 때 첫번째 화면 이라면
 
@@ -384,7 +384,7 @@
     })
 
     // 모달창에서 다음 버튼 클릭 시
-    nextBtn.addEventListener("click", function (){
+    nextBtn.addEventListener("click", function (e){
       console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
       if(page === last && parseInt(idx) === lpli){ // 다음 버튼을 눌렀을 때 마지막 페이지 마지막 객체라면
 
@@ -392,6 +392,7 @@
           page = 1; // 첫 페이지로 설정
           idx = 0; // 페이지 당 객체 9개. 첫번째 인덱스의 객체를 보여줌
           getSignboardtoModal(page, idx);
+          return;
         } else { // 아니오 -> false
           page = [[${response.page}]];  // page 변수를 다시 보던 페이지의 번호로 초기화
           modalContainer.hide();        // 모달창 종료
@@ -400,9 +401,11 @@
         page++;
         idx = 0;
         getSignboardtoModal(page, idx);
+        return;
       } else { // 다음 버튼을 눌렀을 때 다음 인덱스의 객체가 있다면. (인덱스가 8이 아니라면)
         idx++; // 인덱스 증가
         getSignboardtoModal(page, idx);
+        return;
       }
       console.log("이동 후 페이지 : " + page + ", 이동 후 인덱스 : " + idx);
     })
@@ -412,13 +415,13 @@
     const infoContainer = document.querySelectorAll(".sb_info_container");
 
     imgContainer.forEach(img => {
-      img.addEventListener("mouseenter", function (){
+      img.addEventListener("mouseenter", function (e){
         const info = img.nextElementSibling;
         info.style.display = "flex";
       })
     })
     infoContainer.forEach(info => {
-      info.addEventListener("mouseleave", function (){
+      info.addEventListener("mouseleave", function (e){
         info.style.display = "none";
       })
     })
@@ -427,7 +430,7 @@
     function changeImage() {
       const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
       footerImgs.forEach( img => {
-        img.addEventListener("mouseenter", function (){
+        img.addEventListener("mouseenter", function (e){
           const mainImage = document.querySelector(".modal_img_container img")
           mainImage.src = img.src;
         })
@@ -492,6 +495,7 @@
 
     // page와 인덱스번호를 받고 signboard 객체를 가져와서 기타 함수들을 호출하는 함수
     function getSignboardtoModal(page, index) {
+
       getSignboard(page, index).then(r => {
         console.log(r);
         const isloginUser = addInfoForm(r); // HTML 요소로써 모달창에 표시
@@ -502,7 +506,6 @@
           modifyModalAddForm(r); // 수정 모달에 폼 생성
           modifySignboard(modalContainer, modifyModal);     // 수정 처리 후 결과값 받아옴 성공 1, 실패 0
           removeSignboard(modalContainer, modifyModal);     // 삭제 처리 후 결과값 받아옴 성공 1, 실패 0
-
         }
 
 
@@ -535,7 +538,7 @@
     function modifyModalView(modifyModal) {
       const modifyModalShowBtn = document.querySelector(".modifyBtn"); // 수정 모달 뷰 버튼
 
-      modifyModalShowBtn.addEventListener("click", function (){
+      modifyModalShowBtn.addEventListener("click", function (e){
         modifyModal.show();
       })
     }
@@ -578,19 +581,24 @@
 
       document.querySelector(".modify_modal_body").innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
 
+
     }
+
 
     // 수정 모달에서 수정 버튼 클릭 시 수정 처리 후 수정 결과 알림 후 모달창 종료
     function modifySignboard(modalContainer, modifyModal) {
       let result = 0;
-      const modifyBtn = document.querySelector(".modify_modal_modify_btn");
-      modifyBtn.addEventListener("click", function (){
+      document.querySelector(".modify_modal_modify_btn").cloneNode(true); // 클론 생성
+      document.querySelector(".modify_modal_modify_btn").parentNode
+              .replaceChild(document.querySelector(".modify_modal_modify_btn").cloneNode(true),
+              document.querySelector(".modify_modal_modify_btn")); // 버튼을 새로운 클론으로 교체
+
+      document.querySelector(".modify_modal_modify_btn").addEventListener("click", function (){
         const modifySignboardId = document.querySelector(".modal_modify_id").value;
         const files = document.querySelectorAll(".modal_modify_files input[type=file]") // 파일 인풋 가져옴
         if(files[0].files.length <= 0) { // 첨부 파일이 없다면
           alert("외국어 간판의 이미지 파일을 첨부 해주세요");
           files.focus();
-          return;
         }
 
         if(confirm("이대로 수정하시겠습니까?")){
@@ -613,11 +621,19 @@
           modifyModal.hide();
         }
       })
+
     }
 
+
+
     function removeSignboard(modalContainer) {
+      document.querySelector(".removeBtn").cloneNode(true); // 클론 생성
+      document.querySelector(".removeBtn").parentNode
+              .replaceChild(document.querySelector(".removeBtn").cloneNode(true),
+                      document.querySelector(".removeBtn")); // 버튼을 새로운 클론으로 교체
       const removeBtn = document.querySelector(".removeBtn");
-      removeBtn.addEventListener("click", function (){
+      removeBtn.addEventListener("click", function (e){
+
         const signboardId = document.querySelector(".modal_modify_id").value;
         console.log(signboardId);
         if(confirm("삭제 후 되돌릴 수 없습니다. 삭제하시겠습니까?")){
