@@ -3,10 +3,12 @@ package com.project.sbarchive.controller.signboard;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
@@ -19,6 +21,7 @@ public class SignboardRestController {
 
     private final SignBoardService signBoardService;
     private final SignBoardFileService signBoardFileService;
+    private final ModelMapper modelMapper;
 
     // 게시글 리스트 페이지
     @GetMapping("/get/{page}/{index}")
@@ -60,6 +63,15 @@ public class SignboardRestController {
         return signBoardService.removeSignboard(signboardId);
     }
 
+    @GetMapping("/get/{signboardId}")
+    public SignBoardAllDTO getSignboard(@PathVariable("signboardId") int signboardId) {
+        SignBoardDTO signBoardDTO = signBoardService.getSignboard(signboardId);
+        ArrayList<String> fileNames = signBoardFileService.getSignboardImages(signboardId);
+        SignBoardAllDTO signBoardAllDTO = modelMapper.map(signBoardDTO, SignBoardAllDTO.class);
+        signBoardAllDTO.setFiles(fileNames);
+
+        return signBoardAllDTO;
+    }
 
 
 }

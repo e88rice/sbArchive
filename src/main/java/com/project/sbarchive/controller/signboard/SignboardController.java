@@ -8,6 +8,7 @@ import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -28,6 +29,8 @@ public class SignboardController {
     private final SignBoardService signBoardService;
 
     private final SignBoardFileService signBoardFileService;
+
+    private final ModelMapper modelMapper;
 
     // 게시글 등록 페이지
     @GetMapping("/add") // 간판 등록 페이지로 이동
@@ -43,6 +46,8 @@ public class SignboardController {
         signBoardDTO.setUserId("admin"); // 추후 변경
         signBoardDTO.setNickname("admin"); // 추후 변경
         int signBoardId = signBoardService.addSignboard(signBoardDTO); // 등록 버튼을 누른 게시글을 DB에 저장하고 방금 등록한 게시물의 id값을 받아옴
+
+        log.info(signBoardDTO.getContent());
 
         for(MultipartFile file : files) {
             log.info(file);
@@ -63,6 +68,19 @@ public class SignboardController {
         PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getSignboardListWithPaging(pageRequestDTO);
         model.addAttribute("response", responseDTO);
         return "/signboard/list";
+    }
+
+    // 게시글 상세 페이지
+    @GetMapping("/read/{page}/{signboardId}")
+    public String readSignboard(@PathVariable("page") int pageNum, @PathVariable("signboardId") int signboardId, Model model) {
+        SignBoardDTO signBoardDTO = signBoardService.getSignboard(signboardId);
+        ArrayList<String> fileNames = signBoardFileService.getSignboardImages(signboardId);
+        SignBoardAllDTO signBoardAllDTO = modelMapper.map(signBoardDTO, SignBoardAllDTO.class);
+        signBoardAllDTO.setFiles(fileNames);
+        model.addAttribute("dto", signBoardAllDTO);
+        model.addAttribute("page", pageNum);
+
+        return "/signboard/read";
     }
 
 

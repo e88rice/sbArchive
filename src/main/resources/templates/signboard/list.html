@@ -214,6 +214,16 @@
   .modal_footer_mod_del_btns i{
     color: #c2c2c2;
   }
+  .sb_info_links > a {
+    margin: 0 15px;
+    padding: 5px 15px;
+    border: 1px solid white;
+    color: white;
+    font-weight: lighter;
+  }
+  .sb_info_links > a:hover {
+    /*transition: background 2s ease-out;*/
+  }
 </style>
 
 <div layout:fragment="content">
@@ -228,7 +238,10 @@
         </div>
         <div class="sb_info_container" >
           <p>[[${dto.title}]]</p>
-          <a><i class="fa-solid fa-link modal_show" th:attr="data-index=${status.index}"></i></a>
+          <div class="sb_info_links">
+            <a th:href="|@{/signboard/read/}${response.getPage()}@{/}${dto.getSignboardId()}|"><i class="fa-solid fa-link"></i></a>
+            <a><i class="fa-solid fa-up-right-and-down-left-from-center modal_show" th:attr="data-index=${status.index}"></i></a>
+          </div>
         </div>
       </div> <!-- 1개의 박스 끝 -->
 
@@ -458,7 +471,7 @@
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_nickname\">\n" +
               "                <span class=\"modal_info_span\">작성자</span>\n" +
-              "                <p>" + signboard.nickname + "</p>\n" +
+              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/img/icon1.png'></p>\n" +
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_date\">\n" +
               "                <span class=\"modal_info_span\">작성일</span>\n" +
@@ -565,7 +578,7 @@
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_nickname\">\n" +
               "                <span class=\"modal_info_span\">작성자</span>\n" +
-              "                <p>" + signboard.nickname + "</p>\n" +
+              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/img/icon1.png'></p>\n" +
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_date\">\n" +
               "                <span class=\"modal_info_span\">작성일</span>\n" +
