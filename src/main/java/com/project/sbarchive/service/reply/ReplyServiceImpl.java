@@ -23,10 +23,10 @@ public class ReplyServiceImpl implements ReplyService {
 
 
     @Override
-    public int add(ReplyDTO replyDTO) {
+    public int addReply(ReplyDTO replyDTO) {
         log.info("ReplyServiceImpl - replyDTO: "+replyDTO);
         ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
-        replyMapper.add(replyVO);
+        replyMapper.addReply(replyVO);
         return replyVO.getReplyId();
     }
 
@@ -40,16 +40,16 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void modify(ReplyDTO replyDTO) {
+    public void modifyReply(ReplyDTO replyDTO) {
         log.info("ReplyServiceImpl - replyDTO: "+replyDTO);
         ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
-        replyMapper.modify(replyVO);
+        replyMapper.modifyReply(replyVO);
     }
 
     @Override
-    public void remove(int replyId) {
+    public void removeReply(int replyId) {
         log.info("ReplyServiceImpl - replyId: "+replyId);
-        replyMapper.remove(replyId);
+        replyMapper.removeReply(replyId);
     }
 
     @Override

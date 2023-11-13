@@ -9,16 +9,16 @@ import java.util.List;
 public interface ReplyMapper {
 
     // 댓글 추가
-    void add(ReplyVO replyVO);
+    void addReply(ReplyVO replyVO);
 
     // 댓글 가져오기
     ReplyVO getReply(int replyId);
 
     // 댓글 수정
-    void modify(ReplyVO replyVO);
+    void modifyReply(ReplyVO replyVO);
 
     // 댓글 삭제
-    void remove(int replyId);
+    void removeReply(int replyId);
 
     // 댓글 목록 가져오기
     List<ReplyVO> getReplyList(int boardId, int skip, int size);

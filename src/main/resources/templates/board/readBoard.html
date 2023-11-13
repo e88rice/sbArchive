@@ -110,7 +110,9 @@
     <!-- 댓글 리스트 출력 -->
     <div class="row mt-3">
         <div class="col-md-12">
-            <span><a class="refreshBtn">새로고침</a></span>
+            <span><i class="fa-solid fa-comment fa-flip-horizontal"></i>&nbsp;총 ㅇ개</span>
+<!--            <span>총 [[${dto.replyCount}]]개</span>-->
+            <span style="margin: 20px">새로고침&nbsp;<a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a></span>
             <ul class="list-group replyList">
 
             </ul>
@@ -154,7 +156,7 @@
         addReply(replyObj).then(result => { // reply.js(axios)
             alert(result.data.replyId); // 확인용
             acontent.value = ''; // 초기화
-            location.reload();
+            location.reload(); // 새로고침
             printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
         }).catch(e => {
             alert("댓글 등록에 문제 생김");
@@ -179,7 +181,6 @@
             console.error();
         });
     }
-
     printReplies(1, 10, true); // 무조건 댓글 맨 뒷페이지로 시작
 
     // 댓글 a 태그를 눌렀을 때 페이지 이동
@@ -223,12 +224,7 @@
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
-                let addDate=dto.addDate;
-                console.log(addDate);
-                let modDate=dto.modDate;
-                //console.log(modDate);
-                console.log(dto);
-                let date=(addDate===modDate) ? addDate : (modDate+" (수정됨)");
+                let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
                 console.log(date);
                 str +=` <li class="list-group-item d-flex replyItem" data-replyId="${dto.replyId}">
                 <span class="col-2">${dto.boardId}</span>
@@ -240,6 +236,8 @@
                 <!-- 수정/삭제 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치할 시 보여주게 바꿀 거임 -->
                 <span class="col-2"><a class="replyModBtn">수정</a></span>
                 <span class="col-2"><a class="replyRemoveBtn">삭제</a></span>
+                <!-- 신고 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치하지 않을 경우에만 보이게 바꿀 거임 -->
+                <span class="col-2"><a class="replyReportBtn">신고</a></span>
 
                 <!-- 댓글 수정 폼 -->
                  <div style="display: none" class="replyModifyForm">
@@ -254,7 +252,7 @@
                     </div>
                     <div>
                         <span class="input-group-text">닉네임</span>
-                        <input type="text" name="nickname" class="mnickname">
+                        <input type="text" name="nickname" class="mnickname" th:value="admin">
                     </div>
                     <div>
                         <span class="input-group-text">댓글 내용</span>
@@ -275,7 +273,7 @@
                 const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
                 removeReply(replyId).then(result => { // reply.js(axios)
                     if(!confirm("정말 삭제하시겠습니까?")) return;
-                    alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용
+                    alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용. 나중에 지울 거임
                     location.reload(); // 페이지 새로고침
                 }).catch(e => {
                     console.log(e);

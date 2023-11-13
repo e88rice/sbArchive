@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.reply.ReplyMapper">
 
-    <insert id="add" parameterType="com.project.sbarchive.vo.reply.ReplyVO" useGeneratedKeys="true" keyProperty="replyId">
+    <insert id="addReply" parameterType="com.project.sbarchive.vo.reply.ReplyVO" useGeneratedKeys="true" keyProperty="replyId">
         INSERT INTO reply(boardId, userId, nickname, content, addDate, modDate)
         VALUES (#{boardId}, #{userId}, #{nickname}, #{content}, NOW(), NOW())
     </insert>
@@ -13,11 +13,11 @@
         select * from reply where replyId=#{replyId}
     </select>
 
-    <update id="modify">
+    <update id="modifyReply">
         update reply set content=#{content}, modDate=NOW() where replyId=#{replyId}
     </update>
 
-    <delete id="remove">
+    <delete id="removeReply">
         delete from reply where replyId=#{replyId}
     </delete>
 

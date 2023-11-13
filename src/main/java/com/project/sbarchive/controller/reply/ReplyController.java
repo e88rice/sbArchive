@@ -27,14 +27,14 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @GetMapping(value="/add")
-    public String addGET() {
+    public String addReplyGET() {
         log.info("/reply/boardId/addGET");
         return "/reply/add";
     }
 
     @ApiOperation(value="Reply add POST", notes="POST 방식으로 댓글 등록")
     @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE) // consumes=데이터가 어떤 타입인지 명시
-    public Map<String, Integer> add(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
+    public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
 
         log.info("replyDTO: "+replyDTO);
         if(bindingResult.hasErrors()) {
@@ -43,7 +43,7 @@ public class ReplyController {
 
         Map<String, Integer> resultMap=new HashMap<>();
 
-        int replyId=replyService.add(replyDTO);
+        int replyId=replyService.addReply(replyDTO);
         resultMap.put("replyId", replyId);
 
         return resultMap;
@@ -51,7 +51,7 @@ public class ReplyController {
 
     @ApiOperation(value = "Replies of Board", notes="GET 방식으로 특정 게시물의 댓글 목록")
     @GetMapping(value = "/list/{boardId}")
-    public PageResponseDTO<ReplyDTO> getList(@PathVariable("boardId") int boardId, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<ReplyDTO> getReplyList(@PathVariable("boardId") int boardId, PageRequestDTO pageRequestDTO) {
 
         PageResponseDTO<ReplyDTO> responseDTO=replyService.getReplyList(boardId, pageRequestDTO);
         log.info("여기는 댓글 리스트 조회하는 곳: "+responseDTO);
@@ -70,8 +70,8 @@ public class ReplyController {
 
     @ApiOperation(value = "Delete Reply", notes="DELETE 방식으로 특정 댓글 삭제")
     @DeleteMapping(value = "/{replyId}")
-    public Map<String, Integer> remove(@PathVariable("replyId") int replyId) {
-        replyService.remove(replyId);
+    public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId) {
+        replyService.removeReply(replyId);
         Map<String, Integer> resultMap=new HashMap<>();
         resultMap.put("replyId", replyId);
         return resultMap;
@@ -79,10 +79,10 @@ public class ReplyController {
 
     @ApiOperation(value = "Update Reply", notes="PUT 방식으로 특정 댓글 수정")
     @PutMapping(value = "/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Integer> modify(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
+    public Map<String, Integer> modifyReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
         // @RequestBody가 있어야 입력할 수 있는 게 나옴
         replyDTO.setReplyId(replyId); // 번호 일치시킴
-        replyService.modify(replyDTO);
+        replyService.modifyReply(replyDTO);
         Map<String, Integer> resultMap=new HashMap<>();
 
         resultMap.put("replyId", replyId);
