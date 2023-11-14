@@ -32,10 +32,27 @@
     }
     .left_wrap > img {
         width: 100%;
-        height: 505px;
-        max-height: 505px;
+        height: 455px;
+        max-height: 455px;
         padding: 5px;
         border-radius: 20px;
+    }
+    .left_wrap_subImg {
+        display: flex;
+        flex-direction: row;
+        position: relative;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 65px;
+        max-height: 80px;
+        overflow-x: auto;
+    }
+    .left_wrap_subImg img {
+        border: 2px solid;
+        border-radius: 12px;
+        padding: 3px;
+        height: 100%;
     }
     .right-wrap {
         width: 65%;
@@ -187,6 +204,9 @@
 
             <div class="left_wrap">
                 <img th:src="|@{/img/}${dto.getFiles()[0]}|">
+                <div class="left_wrap_subImg">
+                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
+                </div>
             </div>
 
             <div class="right-wrap">
@@ -242,6 +262,19 @@
     <script src="/js/signboard/signBoardReadAsync.js"></script>
     <script src="/js/signboard/modalAsync.js"></script>
     <script>
+
+        changeMainImage();
+        // hover시 해당 이미지로 메인 이미지가 바뀌는 이벤트 걸기
+        function changeMainImage() {
+            const footerImgs = document.querySelectorAll(".left_wrap_subImg img");
+            footerImgs.forEach( img => {
+                img.addEventListener("mouseenter", function (e){
+                    const mainImage = document.querySelector(".left_wrap img")
+                    mainImage.src = img.src;
+                })
+            })
+        }
+
         // 목록으로 돌아가기
         document.querySelector(".backBtn").addEventListener("click", function (e){
             e.preventDefault();
