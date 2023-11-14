@@ -23,4 +23,12 @@ public class UserMapperTest {
                 .build();
         userMapper.registerUser(userVO);
     }
+
+    @Test
+    public void getUserInfoTest() {
+        String userId = "member1";
+        UserVO userVO = userMapper.getUserInfo(userId);
+
+        log.info(userVO);
+    }
 }

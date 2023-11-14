@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class ReplyController {
         return "/reply/add";
     }
 
+    @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @ApiOperation(value="Reply add POST", notes="POST 방식으로 댓글 등록")
     @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE) // consumes=데이터가 어떤 타입인지 명시
     public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
@@ -68,6 +70,7 @@ public class ReplyController {
         return replyDTO;
     }
 
+    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @ApiOperation(value = "Delete Reply", notes="DELETE 방식으로 특정 댓글 삭제")
     @DeleteMapping(value = "/{replyId}")
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId) {
@@ -77,6 +80,7 @@ public class ReplyController {
         return resultMap;
     }
 
+    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @ApiOperation(value = "Update Reply", notes="PUT 방식으로 특정 댓글 수정")
     @PutMapping(value = "/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Integer> modifyReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {

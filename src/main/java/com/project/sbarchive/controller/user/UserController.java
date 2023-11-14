@@ -48,32 +48,36 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginGet() {
+    public void loginGet(String error, String logout) {
         log.info("===== loginGet Controller =====");
-        return "/user/login";
+        log.info("logout : " + logout);
+
+        if(logout != null) {
+            log.info("user logout...");
+        }
     }
 
-    @PostMapping("/login")
-    public String loginPost(String userId, String passwd, HttpSession session) {
-        log.info("===== loginPost Controller =====");
-        int isJoined = userService.loginCheck(userId, passwd);
-
-        UserDTO loginInfo = new UserDTO();
-
-        if(isJoined == 0) {
-            session.setAttribute("msg", "로그인 실패");
-            return "redirect:/user/login";
-        } else {
-            loginInfo = userService.getUserInfo(userId);
-            session.setAttribute("loginInfo", loginInfo);
-            session.removeAttribute("msg");
-
-            log.info(loginInfo);
-
-            }
-
-        return "redirect:/index";
-    }
+//    @PostMapping("/login")
+//    public String loginPost(String userId, String passwd, HttpSession session) {
+//        log.info("===== loginPost Controller =====");
+//        int isJoined = userService.loginCheck(userId, passwd);
+//
+//        UserDTO loginInfo = new UserDTO();
+//
+//        if(isJoined == 0) {
+//            session.setAttribute("msg", "로그인 실패");
+//            return "redirect:/user/login";
+//        } else {
+//            loginInfo = userService.getUserInfo(userId);
+//            session.setAttribute("loginInfo", loginInfo);
+//            session.removeAttribute("msg");
+//
+//            log.info(loginInfo);
+//
+//            }
+//
+//        return "redirect:/index";
+//    }
 
 
 }

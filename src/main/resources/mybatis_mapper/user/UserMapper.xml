@@ -4,9 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.user.UserMapper">
 
+    <resultMap id="getUser" type="com.project.sbarchive.vo.user.UserVO">
+        <id property="userId" column="userId"></id>
+        <result property="passwd" column="passwd"></result>
+        <result property="nickname" column="nickname"></result>
+        <result property="email" column="email"></result>
+        <result property="regDate" column="regDate"></result>
+        <result property="level" column="level"></result>
+        <result property="lvPoint" column="lvPoint"></result>
+        <result property="regDate" column="regDate"></result>
+        <result property="del" column="del"></result>
+        <result property="social" column="social"></result>
+        <collection property="roleSet" javaType="java.util.HashSet" ofType="int">
+            <result property="role_set" column="role_set"></result>
+        </collection>
+    </resultMap>
+
     <insert id="registerUser">
-        INSERT INTO user (userId, passwd, nickname, email, regDate)
-        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now())
+        INSERT INTO user (userId, passwd, nickname, email, regDate, del, social)
+        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now(), 0, 0)
+    </insert>
+
+    <insert id="addUserRole">
+        insert into user_role_set (userId, role_set)
+        VALUES (#{userId}, #{role_set})
     </insert>
 
     <select id="emailCheck" parameterType="String" resultType="int">
@@ -21,7 +42,7 @@
         SELECT COUNT(*) FROM user WHERE userId = #{userId} AND passwd = #{passwd}
     </select>
 
-    <select id="getUserInfo" parameterType="String" resultType="com.project.sbarchive.vo.user.UserVO">
-        SELECT * FROM user WHERE userId = #{userId}
+    <select id="getUserInfo" resultMap="getUser" resultType="com.project.sbarchive.vo.user.UserVO">
+        SELECT u.*, urs.role_set FROM user u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId};
     </select>
 </mapper>

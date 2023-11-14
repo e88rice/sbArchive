@@ -23,7 +23,7 @@ public class ReplyServiceTest {
                 .userId("admin")
                 .nickname("admin")
                 .boardId(2).build();
-        replyService.add(replyDTO);
+        replyService.addReply(replyDTO);
     }
 
     @Test
@@ -34,7 +34,7 @@ public class ReplyServiceTest {
 
     @Test
     public void testRemove() {
-        replyService.remove(7);
+        replyService.removeReply(7);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class ReplyServiceTest {
                 .replyId(7)
                 .content("수정한 거임")
                 .build();
-        replyService.modify(replyDTO);
+        replyService.modifyReply(replyDTO);
     }
 
 //    @Test

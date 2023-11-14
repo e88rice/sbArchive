@@ -5,6 +5,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,9 +25,11 @@ public class BoardController {
     private final BoardService boardService;
 
 
+    @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @GetMapping("/addBoard")
     public void addBoard() {
     }
+    @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @PostMapping("/addBoard")
     public String addBoard(BoardDTO boardDTO, HttpServletRequest httpServletRequest) {
         log.info("addBoard -------" +  boardDTO);
@@ -44,6 +47,8 @@ public class BoardController {
         model.addAttribute("responseDTO", boardService.getList(pageRequestDTO));
 
     }
+
+    @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping({"/readBoard","/modifyBoard"})
     public void view(Model model,int boardId,HttpServletRequest request,PageRequestDTO pageRequestDTO) {
 
@@ -60,6 +65,7 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @PostMapping("/modifyBoard")
     public String modify(@Valid BoardDTO boardDTO,
                          PageRequestDTO pageRequestDTO,
@@ -74,6 +80,7 @@ public class BoardController {
         return "redirect:/board/boardList";
     }
 
+    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @PostMapping("/remove")
     public String remove(int boardId, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
         log.info(boardId+"번 삭제!!!!!!!!!!!!!!");

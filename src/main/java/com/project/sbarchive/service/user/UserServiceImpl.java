@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor
 @Service
@@ -17,14 +19,22 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void registerUser(UserDTO userDTO) {
-        log.info("===== registerUser Service =====");
+        log.info("============= registerUser Service =============");
         UserVO userVO = modelMapper.map(userDTO, UserVO.class);
         userMapper.registerUser(userVO);
     }
 
     @Override
+    public void addUserRole(String userId, List<Integer> role_set) {
+        log.info("============= addUserRole Service =============");
+        for(int i=0; i<role_set.size(); i++) {
+            userMapper.addUserRole(userId, role_set.get(i));
+        }
+    }
+
+    @Override
     public int emailCheck(String email) {
-        log.info("===== emailCheck Service =====");
+        log.info("============= emailCheck Service =============");
         int cnt = userMapper.emailCheck(email);
         log.info("cnt : " + cnt);
         return cnt;
@@ -32,27 +42,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int userIdCheck(String userId) {
-        log.info("===== userIdCheck Service =====");
+        log.info("============= userIdCheck Service =============");
         int cnt = userMapper.userIdCheck(userId);
         log.info("cnt : " + cnt);
         return cnt;
     }
 
-    @Override
-    public int loginCheck(String userId, String passwd) {
-        log.info("===== loginCheck Service =====");
-        return  userMapper.loginCheck(userId, passwd);
-    }
 
     @Override
-    public UserDTO getUserInfo(String userId) {
-        UserVO userVO = userMapper.getUserInfo(userId);
-        return modelMapper.map(userVO, UserDTO.class);
-    }
-
-    @Override
-    public void modifyUuid(String userId, String uuid) {
-
+    public UserVO getUserInfo(String userId) {
+        log.info("============= getUserInfo Service =============");
+        return userMapper.getUserInfo(userId);
     }
 
 

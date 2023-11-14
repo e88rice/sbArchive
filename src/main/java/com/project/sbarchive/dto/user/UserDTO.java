@@ -21,5 +21,7 @@ public class UserDTO {
     private int lvPoint;
     private String iconName;
     private LocalDate regDate;
+    private boolean del;
+    private boolean social;
 
 }

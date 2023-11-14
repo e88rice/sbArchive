@@ -17,14 +17,14 @@ public class ReplyMapperTest {
     @Autowired(required = false)
     private ReplyMapper replyMapper;
 
-    @Test
-    public void addReply() {
-        replyMapper.add(ReplyVO.builder()
-                        .content("댓글 등록")
-                        .boardId(1)
-                        .userId("admin")
-                        .nickname("admin").build());
-    }
+//    @Test
+//    public void addReply() {
+//        replyMapper.add(ReplyVO.builder()
+//                        .content("댓글 등록")
+//                        .boardId(1)
+//                        .userId("admin")
+//                        .nickname("admin").build());
+//    }
 
     @Test
     public void getReply() {
@@ -38,12 +38,12 @@ public class ReplyMapperTest {
                 .replyId(1)
                 .content("내용 수정함")
                 .build();
-        replyMapper.modify(replyVO);
+        replyMapper.modifyReply(replyVO);
     }
 
     @Test
     public void removeReply() {
-        replyMapper.remove(1);
+        replyMapper.removeReply(1);
     }
 
 //    @Test
