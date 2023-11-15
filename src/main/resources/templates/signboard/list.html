@@ -226,7 +226,6 @@
 </style>
 
 <div layout:fragment="content">
-
   <div class="flex_column_center">
 
     <div class="sb_list_container"> <!-- 전체 박스 컨테이너 시작 -->
@@ -339,6 +338,7 @@
     const total = [[${response.total}]]; // 총 데이터 개수
     const lpli = total % size -1; // 마지막 페이지의 마지막 인덱스
     let idx = 0;
+    const username = '[[${username}]]';
 
     console.log("page = " + page);
     console.log("last = " + last);
@@ -353,6 +353,7 @@
     const modalImgs = document.querySelector(".modal_footer_imgs"); // 모달 이미지들 영역
     const prevBtn = document.querySelector(".leftBtn"); // 이전 버튼
     const nextBtn = document.querySelector(".rightBtn"); // 다음 버튼
+    let isLogin = false;
     // 수정 관련 모달
     const modifyModal = new bootstrap.Modal(document.querySelector(".modify_modal")); // 수정 모달 컨테이너
 
@@ -489,11 +490,14 @@
 
       // 수정 삭제 폼
       let btns = "";
-      let isLoginUser = signboard.userId === "admin"; // 변경 : "admin" 은 추후 로그인 정보의 userId로 변경
-      if(isLoginUser) {
+      isLogin = signboard.userId === username;
+      console.log(isLogin);
+      if(isLogin) { // 내꺼
         btns += "              <button class=\"modifyBtn\">수정하기 <i class=\"fa-solid fa-wrench\"></i></button>\n" +
                 "              <button class=\"removeBtn\">삭제하기 <i class=\"fa-solid fa-trash\"></i></button>";
         document.querySelector(".modal_footer_mod_del_btns").innerHTML = btns;
+      } else {
+        document.querySelector(".modal_footer_mod_del_btns").innerHTML ='';
       }
 
 
@@ -502,7 +506,7 @@
       modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
       modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
 
-      return isLoginUser;
+      return isLogin;
     }
 
     // page와 인덱스번호를 받고 signboard 객체를 가져와서 기타 함수들을 호출하는 함수
@@ -510,10 +514,11 @@
 
       getSignboard(page, index).then(r => {
         console.log(r);
-        const isloginUser = addInfoForm(r); // HTML 요소로써 모달창에 표시
+        isLogin = false;
+        isLogin = addInfoForm(r); // HTML 요소로써 모달창에 표시
         changeImage();  // 모달창의 대기 이미지 hover시 메인 이미지로 바뀌게 하는 이벤트를 걸어둠
 
-        if(isloginUser) { // 만약 현재 모달이 로그인 한 유저의 모달일 시
+        if(isLogin) { // 만약 현재 모달이 로그인 한 유저의 모달일 시
           modifyModalView(modifyModal); // 수정 버튼을 누를 시 수정 모달이 열리게 함
           modifyModalAddForm(r); // 수정 모달에 폼 생성
           modifySignboard(modalContainer, modifyModal);     // 수정 처리 후 결과값 받아옴 성공 1, 실패 0

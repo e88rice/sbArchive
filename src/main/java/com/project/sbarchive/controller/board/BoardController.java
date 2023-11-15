@@ -62,10 +62,9 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getBoard(boardId,"modify");
         model.addAttribute("dto",boardDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
-
     }
 
-    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
+    @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @PostMapping("/modifyBoard")
     public String modify(@Valid BoardDTO boardDTO,
                          PageRequestDTO pageRequestDTO,
@@ -80,11 +79,11 @@ public class BoardController {
         return "redirect:/board/boardList";
     }
 
-    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
-    @PostMapping("/remove")
-    public String remove(int boardId, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
-        log.info(boardId+"번 삭제!!!!!!!!!!!!!!");
-        boardService.remove(boardId);
+    @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
+    @PostMapping("/removeBoard")
+    public String remove(BoardDTO boardDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
+        log.info(boardDTO.getBoardId() + "번 삭제!!!!!!!!!!!!!!");
+        boardService.remove(boardDTO.getBoardId());
         redirectAttributes.addAttribute("page",1);
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/board/boardList?"+pageRequestDTO.getLink();

@@ -63,10 +63,8 @@
                 <div class="my-4">
                     <div class="float-end">
                         <button type="submit" class="btn btn-primary">수정 하기</button>
-                        <a th:action="|@{/board/remove/boardId=}?${dto.boardId}|" method="post"  class="btn btn-danger" type="button"> 삭제 </a>
-                        <button type="submit" class="btn btn-primary">
-                            <a th:href="|@{/board/boardList}?${pageRequestDTO.getLink()}|" class="text-decoration-none">목록</a>
-                        </button>
+                        <button type="button" class="btn btn-danger btnRemove"> 삭제 </button>
+                        <button type="button" class="btn btn-secondary">목록</button>
                     </div>
                 </div>
             </div>
@@ -78,18 +76,18 @@
         const boardId = [[${dto.boardId}]];
         const link = [[${pageRequestDTO.getLink()}]];
 
-        document.querySelector(".btn-primary").addEventListener("click",function () {
-
-            self.location = `/board/modify?boardId=${boardId}`
-        },false);
-        document.querySelector(".btn-danger").addEventListener("click",function (e){
-            frm.action = `/board/remove?${boardId}`; //삭제시 액션경로
+        // document.querySelector(".btn-primary").addEventListener("click",function () {
+        //     self.location = `/board/modify/${boardId}`
+        // },false);
+        document.querySelector(".btnRemove").addEventListener("click",function (e){
+            frm.action = `/board/removeBoard`; //삭제시 액션경로
             frm.method = "post";
             frm.submit();
         } );
         document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-            frm.action = `/board/list?${link}`;
+            location.href = `/board/boardList?${link}`;
         })
+
 
 
     </script>

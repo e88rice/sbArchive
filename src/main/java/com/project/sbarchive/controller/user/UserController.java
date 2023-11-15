@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,8 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    @ResponseBody
-    public String registerUser(UserDTO userDTO) {
+    public String registerUser(UserDTO userDTO, RedirectAttributes redirectAttributes) {
         log.info("===== registerUser Post Controller =====");
         userService.registerUser(userDTO);
 

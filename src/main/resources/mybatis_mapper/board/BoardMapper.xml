@@ -15,16 +15,16 @@
         select * from board where boardId =  (#{boardId})
     </select>
     <update id="modify" >
-        update  board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
+        update board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
     </update>
     <update id="hit" >
-        update  board set  hit = #{hit}+1  where boardId = #{boardId}
+        update board set  hit = #{hit}+1  where boardId = #{boardId}
     </update>
     <update id="likeUp" >
-        update  board set  likeUp = #{likeUp}+1  where boardId = #{boardId}
+        update board set  likeUp = #{likeUp}+1  where boardId = #{boardId}
     </update>
     <delete id="remove" >
-        delete  from board where boardId = (#{boardId})
+        delete from board where boardId = (#{boardId})
     </delete>
     <sql id="search">
         <where>
