@@ -21,6 +21,5 @@ public interface UserMapper {
     // 아이디 찾기
     String getUserId(String email);
 
-    UserVO getByUuid(String uuid);
 
 }

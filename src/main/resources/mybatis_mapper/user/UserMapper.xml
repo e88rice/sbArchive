@@ -50,8 +50,5 @@
         SELECT userId FROM user WHERE email = #{email}
     </select>
 
-    <select id="getByUuid" parameterType="String" resultType="com.project.sbarchive.vo.user.UserVO">
-        SELECT * FROM user WHERE uuid = #{uuid}
-    </select>
 
 </mapper>

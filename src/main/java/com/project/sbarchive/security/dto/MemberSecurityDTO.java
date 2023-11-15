@@ -1,4 +1,4 @@
-package com.project.sbarchive.dto.user;
+package com.project.sbarchive.security.dto;
 
 import lombok.Builder;
 import lombok.Getter;

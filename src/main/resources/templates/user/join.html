@@ -25,7 +25,7 @@
                     <div class="failure-message hide">사용할 수 없는 이메일입니다 <br>다른 이메일을 입력하고 인증번호 전송을 다시 시도하세요</div>
                 </div>
                 <div class="input-group-btn">
-                    <button type="button" id="send_email" class="btn btn-secondary">인증번호전송</button>
+                    <button type="button" id="btnSendEmail" class="btn btn-secondary">인증번호전송</button>
                 </div>
             </div>
             <div class="form-group">
@@ -94,7 +94,7 @@
         let confirmKey = "";
 
         // ***** email 인증키 보내기 *****
-        const send_email = document.getElementById("send_email");
+        const btnSendEmail = document.getElementById("btnSendEmail");
         const email = document.getElementById("email");
         let failureMessage = document.querySelector(".failure-message"); // 사용할 수 없는 이메일입니다.
 
@@ -105,7 +105,7 @@
             }
         }
 
-        send_email.addEventListener('click', function (e){
+        btnSendEmail.addEventListener('click', function (e){
             e.preventDefault();
 
             const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성

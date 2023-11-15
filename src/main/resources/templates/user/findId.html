@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+
+    .find_div {
+        margin: 0 auto;
+        padding-top: 150px;
+        width: 500px;
+    }
+
+    .hide{
+        display: none;
+    }
+
+</style>
+
+<div layout:fragment="content" class="find_div">
+    <h1>아이디 찾기</h1>
+    <p>가입한 이메일을 입력해주세요</p>
+    <form action="/user/foundId" method="post">
+        <div class="form-group">
+            <label for="email" class="form-label">Email</label>
+            <div class="input-group">
+                <input type="email" placeholder="email@email.com" name="email" id="email" class="form-control">
+                <div class="failure-message hide">이메일 정보를 찾을 수 없습니다</div>
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-secondary" id="btnSendEmail">인증번호 전송</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="emailCheck" class="form-label">인증번호</label>
+                <div class="input-group">
+                    <input type="text" placeholder="인증번호" name="emailCheck" id="emailCheck" class="form-control">
+                </div>
+                <div class="input-group-btn">
+                    <button type="button" id="auth_check" class="btn btn-secondary">인증확인</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <a href="/user/login">로그인</a>
+    <a href="/index">메인</a>
+</div>
+<script th:inline="javascript">
+    const email = document.getElementById("email");
+    let msg = [[${msg}]];
+
+    if(msg !== '') {
+        alert(msg);
+    }
+
+    // let confirmKey = "";
+    //
+    // // ***** email 인증키 보내기 *****
+    // const btnSendEmail = document.getElementById("btnSendEmail");
+    // const email = document.getElementById("email");
+    // let failureMessage = document.querySelector(".failure-message"); // 이메일 정보를 찾을 수 없습니다
+    //
+    //
+    // btnSendEmail.addEventListener('click', function (e){
+    //     e.preventDefault();
+    //
+    //     const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
+    //     xhr.open('POST', '/user/emailCheck?email=' + email.value );
+    //     xhr.onload = function() {
+    //         if (xhr.status === 200) {
+    //             // 서버 응답이 성공인 경우
+    //             console.log(xhr.response);
+    //             if(xhr.response == 0){ // 서버에 이메일이 없는 경우
+    //                 failureMessage.classList.remove('hide'); // 이메일 정보를 찾을 수 없습니다
+    //
+    //             } else if (xhr.response == 1) { // 서버에 이메일이 있는 경우 인증키 보냄
+    //                 failureMessage.classList.add('hide');
+    //
+    //                 const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
+    //                 let mailTo = email.value;
+    //                 console.log(mailTo);
+    //                 xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
+    //                 xhr.onload = function() {
+    //                     if (xhr.status === 200) {
+    //                         // 서버 응답이 성공인 경우
+    //                         alert("이메일로 인증키를 확인해주세요");
+    //                         console.log(xhr.response); //(추후에 삭제하기)
+    //                         confirmKey = xhr.response; //(controller 에서 반환된 confirmKey 불러오기)
+    //
+    //                     } else {
+    //                         // 서버 응답이 실패인 경우
+    //                         alert("이메일 인증키 전송에 실패했습니다");
+    //                     }
+    //                 };
+    //                 xhr.send();
+    //             }
+    //         } else {
+    //             // 서버 응답이 실패인 경우
+    //             alert("서버 응답 실패");
+    //         }
+    //     };
+    //     xhr.send();
+    // });
+    //
+    // // ***** 인증 완료하면  *****
+    // const auth_check = document.getElementById("auth_check");
+    // const emailCheck = document.getElementById("emailCheck");
+    //
+    // auth_check.addEventListener("click", function (e){
+    //     e.preventDefault();
+    //
+    //     console.log(confirmKey)
+    //     if(confirmKey == emailCheck.value) {
+    //         location.href="/user/foundId"
+    //
+    //     } else {
+    //         alert("인증 코드를 다시 확인해주세요")
+    //     }
+    // });
+</script>
+
+</html>

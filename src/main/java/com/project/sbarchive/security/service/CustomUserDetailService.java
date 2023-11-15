@@ -1,7 +1,7 @@
 package com.project.sbarchive.security.service;
 
 
-import com.project.sbarchive.dto.user.MemberSecurityDTO;
+import com.project.sbarchive.security.dto.MemberSecurityDTO;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;

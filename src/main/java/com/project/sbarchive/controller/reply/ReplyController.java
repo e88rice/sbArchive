@@ -70,7 +70,6 @@ public class ReplyController {
         return replyDTO;
     }
 
-    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @ApiOperation(value = "Delete Reply", notes="DELETE 방식으로 특정 댓글 삭제")
     @DeleteMapping(value = "/{replyId}")
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId) {
@@ -80,7 +79,6 @@ public class ReplyController {
         return resultMap;
     }
 
-    @PreAuthorize("principal.username == #boardDTO.name") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @ApiOperation(value = "Update Reply", notes="PUT 방식으로 특정 댓글 수정")
     @PutMapping(value = "/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Integer> modifyReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {

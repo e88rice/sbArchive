@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Log4j2
 @Controller
@@ -49,13 +50,18 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public void loginGet(String error, String logout) {
+    public String loginGet(String error, String logout, Principal principal) {
         log.info("===== loginGet Controller =====");
         log.info("logout : " + logout);
 
         if(logout != null) {
             log.info("user logout...");
         }
+
+        if(principal != null){ // 로그인 상태면 인덱스로 돌아감. 로그인페이지로 접근금지.
+            return "redirect:/index";
+        }
+        return "/user/login";
     }
 
 //    @PostMapping("/login")
