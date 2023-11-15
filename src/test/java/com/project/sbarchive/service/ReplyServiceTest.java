@@ -18,12 +18,14 @@ public class ReplyServiceTest {
 
     @Test
     public void addReply() {
-        ReplyDTO replyDTO = ReplyDTO.builder()
-                .content("댓글 서비스 등록 테스트")
-                .userId("admin")
-                .nickname("admin")
-                .boardId(2).build();
-        replyService.addReply(replyDTO);
+        for(int i = 0; i < 100; i ++) {
+            ReplyDTO replyDTO = ReplyDTO.builder()
+                    .content("댓글 서비스 등록 테스트" + i)
+                    .userId("admin")
+                    .nickname("admin")
+                    .boardId(203).build();
+            replyService.addReply(replyDTO);
+        }
     }
 
     @Test

@@ -10,11 +10,11 @@ public interface BoardService {
     void add(BoardDTO boardDTO);
     List<BoardDTO> getBoardList();
 
-    BoardDTO getBoard(int boardId,String hit);
+    BoardDTO getBoard(int boardId);
 
     void modify(BoardDTO boardDTO);
 
-    void hit(int boardId,int hit);
+    void hit(int boardId);
 
     void remove(int boardId);
     //페이징

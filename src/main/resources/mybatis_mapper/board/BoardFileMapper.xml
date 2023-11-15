@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardFileMapper">
+
+    <insert id="addBoardImages">
+        INSERT INTO board_file (boardId, fileName)
+        VALUES (#{boardId}, #{fileName});
+    </insert>
+
+    <select id="getBoardImages" resultType="String">
+        select fileName from board_file  where boardId = #{boardId};
+    </select>
+
+
+    <delete id="removeBoardImages">
+        delete from board_file where boardId = #{boardId}
+    </delete>
+
+</mapper>

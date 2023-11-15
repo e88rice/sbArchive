@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -25,34 +26,29 @@ public class PageRequestDTO {
     }
 
     // 검색 관련
-    private String type; // 검색의 종류
+    private String[] types; // 검색의 종류
+
 
     private String keyword;
 
-    public String[] getTypes() { // 검색
-        if(this.type==null || type.isEmpty()) {
-            return null;
-        }
-        return this.type.split("");
-    }
-
-    private String link; // 상세페이지 누른 후 뒤로가기나 list 버튼 누르면 1 페이지로 돌아가는 걸 막기 위해서 상세페이지에 전달해줌
-
     public String getLink() {
-        if(link==null) {
-            StringBuilder stringBuilder=new StringBuilder();
-            stringBuilder.append("page=").append(this.page);
-            stringBuilder.append("&size=").append(this.size);
-
-            if(type!=null && type.length()>0) {
-                stringBuilder.append("&type=").append(this.type);
+        StringBuilder builder = new StringBuilder();
+        builder.append("page=" + this.page);
+        builder.append("&size=" + this.size);
+        if(this.types != null && this.types.length > 0) {
+            for (int i = 0; i < this.types.length ; i++) {
+                builder.append("&types=" + types[i]);
             }
-            if(keyword!=null) {
-                stringBuilder.append("&keyword=").append(URLEncoder.encode(this.keyword, StandardCharsets.UTF_8));
-            }
-            link=stringBuilder.toString();
         }
-        return link;
+        if (this.keyword != null) {
+            try{
+                builder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));
+            }catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return builder.toString();
     }
 
 }

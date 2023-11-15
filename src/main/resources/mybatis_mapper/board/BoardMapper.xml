@@ -5,23 +5,23 @@
 <mapper namespace="com.project.sbarchive.mapper.board.BoardMapper">
 
     <insert id="add">
-        INSERT INTO board (userId, title, content, hit, likeUp,  addDate,modDate)
-        VALUES (#{userId} , #{title}, #{content}, 0, #{likeUp}, now(),now() )
+        INSERT INTO board (userId, title, content, hit, likeUp,  addDate,modDate, nickname)
+        VALUES (#{userId} , #{title}, #{content}, 0, #{likeUp}, now(),now(),#{nickname} )
     </insert>
     <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardVO">
         select * from board order by boardId desc
     </select>
     <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardVO">
-        select * from board where boardId =  (#{boardId})
+        select * from board where boardId =  #{boardId}
     </select>
     <update id="modify" >
         update board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
     </update>
     <update id="hit" >
-        update board set  hit = #{hit}+1  where boardId = #{boardId}
+        UPDATE board  SET hit = hit + 1  WHERE boardId = #{boardId}
     </update>
     <update id="likeUp" >
-        update board set  likeUp = #{likeUp}+1  where boardId = #{boardId}
+        update board set  likeUp = likeup + 1  where boardId = #{boardId}
     </update>
     <delete id="remove" >
         delete from board where boardId = (#{boardId})
@@ -32,17 +32,16 @@
 
                 <foreach collection="types" item="type" open="(" close=")" separator=" OR">
                     <if test="type == 'n'.toString()">
-                        userId like concat('%',#{keyword},'%')
+                        `userId` like concat('%',#{keyword},'%')
                     </if>
                     <if test="type == 's'.toString()">
-                        title like concat('%',#{keyword},'%')
+                        `title` like concat('%',#{keyword},'%')
                     </if>
                     <if test="type == 'c'.toString()">
-                        content like concat('%',#{keyword},'%')
+                        `content` like concat('%',#{keyword},'%')
                     </if>
                 </foreach>
             </if>
-
         </where>
     </sql>
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO" >

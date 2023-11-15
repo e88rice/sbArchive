@@ -26,12 +26,17 @@
                 <input type="text" id="userId" name="userId" th:value="${#authentication.principal.username}" class="form-control" readonly>
             </div>
             <div class="mb-3">
+                <label for="userId" class="form-label">닉네임</label>
+                <input type="text" id="nickname" name="nickname" th:value="${#authentication.principal.nickname}" class="form-control" readonly>
+            </div>
+
+            <div class="mb-3">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" id="title" name="title" class="form-control" placeholder="제목" required>
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
-                <textarea class="form-control" id="content" rows="5" name="content" placeholder="내용" required></textarea>
+                <textarea class="form-control" id="content" rows="10" name="content" placeholder="내용" required></textarea>
             </div>
 
             <div class="mb-4">

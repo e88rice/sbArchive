@@ -32,6 +32,11 @@
                             <input type="text" class="form-control" th:value="${dto.title}" readonly>
                         </div>
 
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">닉네임</span>
+                            <input type="text" class="form-control" th:value="${dto.nickname}" readonly>
+                        </div>
+
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">내용</span>
@@ -62,12 +67,10 @@
                 </div><!-- end card body -->
                 <div class="my-4">
                     <div class="float-end">
-                        <button type="button" class="btn btn-primary">
-                            <a th:href="|@{/board/modifyBoard}?boardId=${dto.boardId}|" class="text-decoration-none">수정</a>
-                        </button>
-                        <button type="button" class="btn btn-primary">
-                            <a th:href="|@{/board/boardList}?${pageRequestDTO.getLink()}|" class="text-decoration-none">목록</a>
-                        </button>
+                        <div class="float-end">
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" class="btn btn-secondary">목록</button>
+                        </div>
 
                     </div>
                 </div>
@@ -95,9 +98,9 @@
         <div>
             <span class="input-group-text">닉네임</span>
             <input type="text" name="nickname" class="anickname">
-            <!-- board 테이블에 nickname 추가되면
+
             <input type="text" name="nickname" class="nickname" th:value="${dto.nickname}" readonly>
-            로 수정 -->
+
         </div>
         <div>
             <span class="input-group-text">댓글 내용</span>
@@ -131,6 +134,19 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+
+    const frm = document.querySelector('form');
+    const boardId = [[${dto.boardId}]];
+    const link = [[${pageRequestDTO.getLink()}]];
+
+    document.querySelector(".btn-primary").addEventListener("click",function () {
+        self.location = `/board/modify/${boardId}`
+    },false);
+
+    document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+        location.href = `/board/boardList?${link}`;
+    })
+
 
     // 새로고침 이벤트
     const refreshBtn=document.querySelector('.refreshBtn');

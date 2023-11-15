@@ -34,13 +34,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDTO getBoard(int boardId, String hit) {
+    public BoardDTO getBoard(int boardId) {
         BoardVO boardVO = boardMapper.getBoard(boardId);
         BoardDTO boardDTO = modelMapper.map(boardVO,BoardDTO.class);
-        int hit1 = boardDTO.getHit();
-        if(hit.equals("boardRead")) {
-            boardMapper.hit(boardId,hit1);
-        }
 
         return boardDTO;
     }
@@ -52,8 +48,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void hit(int boardId, int hit) {
-        boardMapper.hit(boardId,hit);
+    public void hit(int boardId) {
+        boardMapper.hit(boardId);
     }
 
     @Override

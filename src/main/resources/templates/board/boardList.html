@@ -15,7 +15,7 @@
 
 <div layout:fragment="content">
 
-    <div style="padding-top: 50px">
+    <div style="padding-top: 50px; padding: 80px">
         <table class="table table-hover">
             <div class="row mt-3 boardList_form" >
                 <form action="/board/boardList" method="get">
@@ -24,11 +24,9 @@
                         <div class="input-group p-2 bd-highlight">
                             <div class="input-group-prepend">
                                 <select class="form-select" name="types">
-                                    <option value="">---</option>
-                                    <option value="n" th:selected="${pageRequestDTO.types == 'n'}">작성자</option>
+                                    <option value="n" th:selected="${pageRequestDTO.types == 'n'}">아이디</option>
                                     <option value="s" th:selected="${pageRequestDTO.types == 's'}">제목</option>
-                                    <option value="c" th:selected="${pageRequestDTO.types == 'c'}">콘텐츠</option>
-                                    <option value="nsc" th:selected="${pageRequestDTO.types == 'nsc'}">제목 콘텐츠 작성자</option>
+                                    <option value="c" th:selected="${pageRequestDTO.types == 'c'}">내용</option>
                                 </select>
                             </div>
                             <input type="text" class="form-control p-2 bd-highlight" name="keyword" th:value="${pageRequestDTO.keyword}">
@@ -43,7 +41,8 @@
             <tr>
                 <th>번호</th>
                 <th>제목</th>
-                <th>작성자</th>
+                <th>아이디</th>
+                <th>닉네임</th>
                 <th>작성일</th>
                 <th>조회</th>
                 <th>좋아요</th>
@@ -52,6 +51,7 @@
                 <td>[[${dto.boardId}]]</td>
                 <td><a th:href="|@{/board/readBoard(boardId =${dto.boardId})}&${link}|">[[${dto.title}]]</a></td>
                 <td>[[${dto.userId}]]</td>
+                <td>[[${dto.nickname}]]</td>
                 <td>[[${dto.addDate}]]</td>
                 <td>[[${dto.hit}]]</td>
                 <td>[[${dto.likeUp}]]</td>

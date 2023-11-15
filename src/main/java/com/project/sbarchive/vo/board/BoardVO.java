@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class BoardVO {
     private Integer boardId;
     private String userId;
+    private String nickname;
     private String title;
     private String content;
     private Integer hit;

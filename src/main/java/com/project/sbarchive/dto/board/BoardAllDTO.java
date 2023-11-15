@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDTO {
-    @NotNull
+public class BoardAllDTO {
+
     private Integer boardId;
     @NotEmpty
     private String userId;
@@ -34,4 +34,8 @@ public class BoardDTO {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
+
+    //image --
+    private int index;
+    ArrayList<String> files;
 }

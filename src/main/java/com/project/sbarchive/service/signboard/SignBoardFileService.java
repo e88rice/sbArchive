@@ -16,5 +16,4 @@ public interface SignBoardFileService {
     // 해당 signboardId를 참조하는 이미지 데이터들을 삭제
     void removeSignboardImages(int signboardId);
 
-
 }
