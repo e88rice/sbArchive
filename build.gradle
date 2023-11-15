@@ -69,6 +69,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5' // 스프링 시큐리티 화면에서 인증 처리
 
+
+
 }
 
 tasks.named('test') {

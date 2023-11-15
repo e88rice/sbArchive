@@ -19,4 +19,7 @@ public interface UserService {
     // 로그인
     UserVO getUserInfo (String userId);
 
+    // 아이디 찾기
+    String getUserId (String email);
+
 }

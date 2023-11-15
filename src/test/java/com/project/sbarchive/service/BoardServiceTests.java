@@ -24,7 +24,7 @@ public class BoardServiceTests {
         }
     }
     @Test
-    public void modifyBOard() {
+    public void modifyBoard() {
         BoardDTO boardDTO = BoardDTO.builder()
                 .title("update...")
                 .content("modify....")

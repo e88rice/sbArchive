@@ -45,4 +45,13 @@
     <select id="getUserInfo" resultMap="getUser" resultType="com.project.sbarchive.vo.user.UserVO">
         SELECT u.*, urs.role_set FROM user u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId};
     </select>
+
+    <select id="getUserId" parameterType="String" resultType="String">
+        SELECT userId FROM user WHERE email = #{email}
+    </select>
+
+    <select id="getByUuid" parameterType="String" resultType="com.project.sbarchive.vo.user.UserVO">
+        SELECT * FROM user WHERE uuid = #{uuid}
+    </select>
+
 </mapper>

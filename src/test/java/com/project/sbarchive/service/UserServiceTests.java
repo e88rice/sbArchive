@@ -35,12 +35,12 @@ public class UserServiceTests {
     @Test
     public void registerUserTest() {
         passwordEncoder = new BCryptPasswordEncoder();
-        String userId = "member2";
+        String userId = "member";
         UserDTO userDTO = UserDTO.builder()
                 .userId(userId)
-                .passwd(passwordEncoder.encode("2222"))
+                .passwd("1111")
                 .nickname("member")
-                .email("member@bbb.com")
+                .email("mem@bbb.com")
                 .del(false)
                 .social(false).build();
         List<Integer> role_set = new ArrayList<>();

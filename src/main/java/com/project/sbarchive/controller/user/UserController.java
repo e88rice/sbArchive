@@ -5,6 +5,7 @@ import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -28,7 +29,7 @@ public class UserController {
         log.info("===== registerUser Post Controller =====");
         userService.registerUser(userDTO);
 
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     @PostMapping("/emailCheck")
@@ -79,5 +80,29 @@ public class UserController {
 //        return "redirect:/index";
 //    }
 
+    @GetMapping("/findId")
+    public String findId(){
+        log.info("===== findId GET Controller =====");
+        return "/user/findId";
+    }
+
+    @PostMapping("/foundId")
+    public String findId(String email, Model model){
+        log.info("===== findId POST Controller =====");
+        if(userService.emailCheck(email) == 0){
+            model.addAttribute("msg", "이메일을 확인해주세요");
+            return "/user/findId";
+        } else {
+            model.addAttribute("userId", userService.getUserId(email));
+            log.info(userService.getUserId(email));
+            return "/user/foundId";
+        }
+    }
+
+    @GetMapping("/foundId")
+    public String foundId() {
+        log.info("===== foundId Get Controller =====");
+        return "/user/foundId";
+    }
 
 }

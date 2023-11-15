@@ -71,11 +71,6 @@ public class CustomSecurityConfig {
         return (web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations()));
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() { // 같은 문자열일 패스워드라도 매번 다른 해시 알고리즘으로 처리해 줌 (암호화)
-        return new BCryptPasswordEncoder();
-    }
-
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {

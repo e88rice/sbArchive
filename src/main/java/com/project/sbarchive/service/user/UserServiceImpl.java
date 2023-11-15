@@ -2,10 +2,12 @@ package com.project.sbarchive.service.user;
 
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.user.UserMapper;
+import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
     private final UserMapper userMapper;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void registerUser(UserDTO userDTO) {
         log.info("============= registerUser Service =============");
         UserVO userVO = modelMapper.map(userDTO, UserVO.class);
+        userVO.changeMpw(passwordEncoder.encode(userVO.getPasswd()));
+        userVO.addRole(UserRole.USER);
+
         userMapper.registerUser(userVO);
     }
 
@@ -53,6 +59,11 @@ public class UserServiceImpl implements UserService{
     public UserVO getUserInfo(String userId) {
         log.info("============= getUserInfo Service =============");
         return userMapper.getUserInfo(userId);
+    }
+
+    @Override
+    public String getUserId(String email) {
+        return userMapper.getUserId(email);
     }
 
 
