@@ -2,7 +2,6 @@ package com.project.sbarchive.controller.board;
 
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
-import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class BoardController {
 
     private final UserService userService;
 
-    private final BoardFileService boardFileService;
+//    private final BoardFileService boardFileService;
 
 
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능

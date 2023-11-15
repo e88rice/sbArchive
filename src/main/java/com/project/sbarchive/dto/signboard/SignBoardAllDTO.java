@@ -25,6 +25,7 @@ public class SignBoardAllDTO {
     private String title;
     private String address;
     private String content;
+
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addDate;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

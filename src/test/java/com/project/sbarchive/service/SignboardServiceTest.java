@@ -54,7 +54,7 @@ public class SignboardServiceTest {
 
     @Test
     public void getSignboard() {
-        log.info(signBoardService.getSignboard(147).getModDate());
+        log.info(signBoardService.getSignboard(357));
     }
 
     @Test

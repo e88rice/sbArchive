@@ -11,6 +11,7 @@ import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -41,21 +42,22 @@ public class SignboardController {
     private final UserService userService;
 
     // 게시글 등록 페이지
+    @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/add") // 간판 등록 페이지로 이동
-    public String addGET() {
+    public String addGET(Principal principal, Model model) {
+
+        UserVO userVO = userService.getUserInfo(principal.getName());
+        model.addAttribute("user", userVO);
         return "/signboard/add";
     }
 
     // 게시글 등록
+    @PreAuthorize("principal.username == #signBoardDTO.userId")
     @PostMapping(value = "/add") // 간판 등록, 간판 등록 시 업로드한 이미지도 등록
-    public String addPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files, Principal principal) {
+    public String addPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files) {
 
         System.out.println("signboard : addPost ...");
 
-        UserVO userVO = userService.getUserInfo(principal.getName());
-
-        signBoardDTO.setUserId(userVO.getUserId());
-        signBoardDTO.setNickname(userVO.getNickname());
         int signBoardId = signBoardService.addSignboard(signBoardDTO); // 등록 버튼을 누른 게시글을 DB에 저장하고 방금 등록한 게시물의 id값을 받아옴
 
         log.info(signBoardDTO.getContent());
@@ -78,7 +80,12 @@ public class SignboardController {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(pageNum).size(9).build(); // 사이즈 9 아니면 12로 설정할거임
         PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getSignboardListWithPaging(pageRequestDTO);
         model.addAttribute("response", responseDTO);
-        model.addAttribute("username", principal.getName());
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        String username = null;
+        if(principal != null) { // 로그인 상태라면
+            username = principal.getName();
+        };
+        model.addAttribute("username", username);
         return "/signboard/list";
     }
 

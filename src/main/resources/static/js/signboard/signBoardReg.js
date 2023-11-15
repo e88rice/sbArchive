@@ -56,6 +56,9 @@
 const searchBtn = document.querySelector("#search_btn");
 const query = document.querySelector("input[name=query]");
 const resultTable = document.querySelector(".search_result_table");
+const addModalContainer = new bootstrap.Modal(document.querySelector(".add_modal"));
+
+addModalContainer.show(); // 페이지 로딩과 동시에 검색창 오픈
 
 
 searchBtn.addEventListener("click", function (){
@@ -69,6 +72,23 @@ searchBtn.addEventListener("click", function (){
     }).catch(e => {
         console.log(e)
     });
+})
+// 파일 이름을 표시하는 div에 파일 이름을 전달하는 이벤트
+const files = document.getElementById("files");
+const uploadName = document.querySelector(".upload-name");
+let fileNames = "";
+files.addEventListener("change", function () {
+    let fileName = "첨부된 파일 : " + files.files[0].name;
+    if(files.files.length > 1) { // 2개 이상이 첨부되었다면
+        fileName += "외 " + (files.files.length-1) + "개"
+    }
+    uploadName.value = fileName;
+})
+
+// 다시 검색 모달창을 여는 버튼
+const researchBtn = document.querySelector(".researchBtn");
+researchBtn.addEventListener("click", function (){
+    addModalContainer.show();
 })
 
 function printSearchList(searchList) {
@@ -102,6 +122,8 @@ function printSearchList(searchList) {
             address.value = element.dataset.addr;
 
             console.log(title.value);
+            
+            addModalContainer.hide(); // 검색 모달창 숨김
         })
     })
 

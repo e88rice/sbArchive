@@ -7,15 +7,15 @@
 <style layout:fragment="style">
     @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
     @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+    @font-face {
+        font-family: 'JalnanGothic';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
     a {
         text-decoration: none;
         color: black;
-    }
-    .add_signboard_input {
-        width: 300px;
-        height: 30px;
-        border-radius: 0.35em;
-        margin: 20px 0;
     }
     .add_container {
         background: #fff;
@@ -24,27 +24,6 @@
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         width: 60%;
         min-height: 80vh;
-    }
-
-    .add_wrap {
-        background: #fff;
-        margin: 30px auto;
-        border-radius: 2px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        width: 100%;
-        min-height: 80vh;
-        display : flex;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    .search_left_wrap, .search_right_wrap {
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-        height: 600px;
-        width: 47%;
     }
 
     .search_header {
@@ -94,46 +73,202 @@
     }
     #addBtn {
         position: relative;
+        left: 0;
+        bottom: 0;
         width: 100%;
-        background-color: black;
+        height: 8vh;
+        background: rgba(31, 40, 37, 0.79);
         color: white;
-        font-weight: bold;
+        font-family: JalnanGothic;
+        font-size: 30px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 80%;
+    }
+    .researchBtn {
+        border: none;
+        border-radius: 20px;
+        width: 15%;
+        background: transparent;
+        color: white;
+        font-family: JalnanGothic;
+    }
+    .sb_reg_container {
+        background: rgba(31, 40, 37, 0.79);
+        margin: 20px auto;
+        border-radius: 2px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        width: 100%;
+        min-height: 80vh;
+        display : flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: JalnanGothic;
+        color: white;
+    }
+    .add_sb_wrap {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 5%;
+        line-height: 420%;
+        margin: 15px 0;
     }
     .add_signboard_span {
         display: inline-block;
-        width: 100px;
+        width: 25%;
+        border: 2px solid white;
+        border-radius: 20px;
+        text-align: center;
+    }
+    .add_signboard_input {
+        border-radius: 20px;
+        border: 2px solid white;
+        width: 70%;
+        height: 5vh;
+        color: black;
+        padding: 0 30px;
+    }
+    .add_signboard_content {
+        border: none;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    }
+    .add_sb_fileWrap {
+        display: flex;
+        justify-content: end;
+    }
+    .add_sb_fileWrap .upload-name {
+        display: inline-block;
+        width: 77%;
+        height: 40px;
+        padding: 0 10px;
+        vertical-align: middle;
+        font-size: 16px;
+        border: 1px solid #dddddd;
+        color: #999999;
+    }
+    .add_sb_fileWrap label {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #fff;
+        vertical-align: middle;
+        background-color: #999999;
+        cursor: pointer;
+        height: 40px;
+        margin-left: 10px;
+    }
+    .add_sb_fileWrap input[type="file"] {
+        position: absolute;
+        width: 0;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        border: 0;
+    }
+
+    /*모달*/
+    .show {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent !important;
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+    }
+    .modal-dialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    .modal_view_content {
+        width: 50vw;
+        height: 70vh;
+    }
+    .modal_view_header {
+        display: flex;
+        justify-content: right;
+        border: none;
+        height: 10%;
+    }
+    .btn-close {
+        border: none;
+        background-color: transparent;
+        font-size: 20px;
+    }
+
+    .modal-footer {
+        display: flex;
+        height: 10%;
     }
 </style>
 
 <div layout:fragment="content">
-    <div class="add_container">
-        <div class="add_wrap">
-            <div class="search_left_wrap">
-                <div class="search_header">
-                    검색할 가게명을 입력해주세요
-                </div>
-                <div class="search_content">
-                    <input id="search_input" name="query" type="text" minlength="1" placeholder="  search...">
-                    <button id="search_btn"><span id="btn_icon">search</span></button>
-                </div>
-                <table class="search_result_table">
 
-                </table>
-            </div>
-            <div class="search_right_wrap">
-                <div class="sb_reg_container">
-                    <form action="/signboard/add" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="xOffSet" value="">
-                        <input type="hidden" name="yOffSet" value="">
-                        <span class="add_signboard_span">가게이름 : </span> <input type="text" name="title" class="add_signboard_input" readonly> <br>
-                        <span class="add_signboard_span">주소 : </span><input type="text" name="address" class="add_signboard_input" readonly> <br>
-                        <textarea name="content" rows="10" cols="50" maxlength="200"></textarea>
-                        <input type="file" name="files" multiple="multiple">
-                    </form>
+    <div class="modal add_modal modal_container" tabindex="-1">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content modal_view_content">
+
+                <div class="modal-header modal_view_header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-            </div>
+
+                <div class="modal-body add_modal_body">
+                    <div class="search_header">
+                        검색할 가게명을 입력해주세요
+                    </div>
+                    <div class="search_content">
+                        <input id="search_input" name="query" type="text" minlength="1" placeholder="  search...">
+                        <button id="search_btn"><span id="btn_icon">search</span></button>
+                    </div>
+                    <table class="search_result_table">
+
+                    </table>
+                </div> <!-- Modal body End -->
+
+                <div class="modal-footer">
+
+                </div> <!-- Modal footer End -->
+
+
+
+            </div> <!-- Modal Content End -->
+
+        </div> <!-- Modal Dialog End -->
+
+    </div><!-- Modal Container End -->
+
+
+
+    <div class="add_container">
+        <div class="sb_reg_container">
+            <button class="researchBtn fa-bounce"><i class="fa-solid fa-magnifying-glass"></i> 가게 찾기 </button>
+            <form action="/signboard/add" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="userId" th:value="${user.userId}">
+                <input type="hidden" name="xOffSet" value="">
+                <input type="hidden" name="yOffSet" value="">
+                <div class="add_sb_wrap"><span class="add_signboard_span">작성자 </span> <input type="text" name="nickname" class="add_signboard_input" th:value="${user.nickname}" readonly></div>
+                <div class="add_sb_wrap"><span class="add_signboard_span">가게이름 </span> <input type="text" name="title" class="add_signboard_input" readonly></div>
+                <div class="add_sb_wrap"><span class="add_signboard_span">주소 </span><input type="text" name="address" class="add_signboard_input" readonly></div>
+                <textarea class="add_signboard_content" name="content" rows="10" cols="50" maxlength="200"></textarea>
+                <div class="add_sb_fileWrap">
+                    <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                    <label for="files">파일찾기</label>
+                    <input type="file" id="files" name="files" multiple="multiple">
+                </div>
+            </form>
         </div>
-        <button type="button" id="addBtn">등록하기</button>
+        <button type="button" id="addBtn"> 등록 </button>
     </div>
 
     <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->
@@ -142,7 +277,8 @@
     <script src="/js/signboard/signBoardReg.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</div>
+
+</div> <!-- 콘텐츠 레이아웃 박스 끝 -->
 
 
 </html>
