@@ -1,25 +1,30 @@
 package com.project.sbarchive.controller.board;
 
+import com.project.sbarchive.dto.board.BoardAllDTO;
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -29,25 +34,35 @@ import javax.validation.Valid;
 public class BoardController {
     private final BoardService boardService;
 
+    private final BoardFileService boardFileService;
+
     private final UserService userService;
+
+    private final ModelMapper modelMapper;
 
 //    private final BoardFileService boardFileService;
 
 
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
-    @GetMapping("/addBoard")
+    @GetMapping("/add")
     public void addBoard() {
     }
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
-    @PostMapping("/addBoard")
-    public String addBoard(BoardDTO boardDTO, HttpServletRequest httpServletRequest,
+    @PostMapping("/add")
+    public String addBoard(BoardDTO boardDTO, List<MultipartFile> files,
                            RedirectAttributes redirectAttributes) {
         log.info("addBoard -------" +  boardDTO);
-        boardService.add(boardDTO);
-        return "redirect:/board/boardList";
+        int boardId = boardService.add(boardDTO);
+        for(MultipartFile file : files) {
+            log.info(file);
+        }
+        if(files.size() >0) {
+            boardFileService.addBoardImages(boardId, files);
+        }
+        return "redirect:/board/list";
     }
 
-    @GetMapping("/boardList")
+    @GetMapping("/list")
     public void list(Model model, @Valid PageRequestDTO pageRequestDTO,
                      BindingResult bindingResult) {
         log.info(pageRequestDTO);
@@ -61,12 +76,14 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
-    @GetMapping({"/readBoard","/modifyBoard"})
-    public void view(Model model, int boardId, HttpServletRequest request,
+    @GetMapping({"/read","/modify"})
+    public void view(Model model, int boardId, HttpServletRequest request,List<MultipartFile> files,
                      PageRequestDTO pageRequestDTO) {
         boardService.hit(boardId);
         BoardDTO boardDTO = boardService.getBoard(boardId);
-        model.addAttribute("dto", boardDTO);
+        BoardAllDTO boardAllDTO = modelMapper.map(boardDTO,BoardAllDTO.class);
+        boardAllDTO.setFiles( boardFileService.getBoardImages(boardId));
+        model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
 
 
@@ -75,34 +92,44 @@ public class BoardController {
 
 
     @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
-    @PostMapping("/modifyBoard")
+    @PostMapping("/modify")
     public String modify(@Valid BoardDTO boardDTO,
+                         List<MultipartFile> files,
                          PageRequestDTO pageRequestDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             log.info("CONTROLL ERROR!!");
-            return "redirect:/board/modifyBoard";
+            return "redirect:/board/modify";
         }
         log.info(boardDTO+"CONTROLLER MODIFY!!");
         boardService.modify(boardDTO);
-        return "redirect:/board/boardList";
+        int boardId = boardDTO.getBoardId();
+        boardFileService.removeBoardImages(boardId);
+
+        if(files.size() >0) {
+            boardFileService.addBoardImages(boardId, files);
+        }
+        return "redirect:/board/read?boardId="+boardId;
     }
 
     @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
-    @PostMapping("/removeBoard")
+    @PostMapping("/remove")
     public String remove(BoardDTO boardDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
         log.info(boardDTO.getBoardId() + "번 삭제!!!!!!!!!!!!!!");
         boardService.remove(boardDTO.getBoardId());
         redirectAttributes.addAttribute("page",1);
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
-        return "redirect:/board/boardList?"+pageRequestDTO.getLink();
+        return "redirect:/board/list?"+pageRequestDTO.getLink();
     }
 
-    @GetMapping(value = "/list/{boardId}")
-    public int getReplyCount(int boardId) {
-        return boardService.getReplyCount(boardId);
+    @ApiOperation(value = "remove 파일",notes = "DELETE 방식으로 삭제")
+    @DeleteMapping("/board/remove/{boardId}")
+    public void removeFile(@PathVariable int boardId) {
+    boardFileService.removeBoardImages(boardId);
     }
+
+
 
 
 }

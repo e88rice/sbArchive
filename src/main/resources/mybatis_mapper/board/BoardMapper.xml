@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.board.BoardMapper">
 
-    <insert id="add">
+    <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO board (userId, title, content, hit, likeUp,  addDate,modDate, nickname)
         VALUES (#{userId} , #{title}, #{content}, 0, #{likeUp}, now(),now(),#{nickname} )
     </insert>

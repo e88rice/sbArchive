@@ -7,7 +7,7 @@ import com.project.sbarchive.dto.page.PageResponseDTO;
 import java.util.List;
 
 public interface BoardService {
-    void add(BoardDTO boardDTO);
+    int add(BoardDTO boardDTO);
     List<BoardDTO> getBoardList();
 
     BoardDTO getBoard(int boardId);

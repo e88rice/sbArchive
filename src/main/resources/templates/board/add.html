@@ -18,9 +18,9 @@
 
 
 <div layout:fragment="content">
-    <div class="container board_form">
+    <div class="container board_form" >
         <h2 class="mb-4">게시판 글 등록</h2>
-        <form action="/board/addBoard" method="post" name="frmAdd">
+        <form action="/board/add" method="post" name="frmAdd" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="userId" class="form-label">아이디</label>
                 <input type="text" id="userId" name="userId" th:value="${#authentication.principal.username}" class="form-control" readonly>
@@ -37,6 +37,12 @@
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
                 <textarea class="form-control" id="content" rows="10" name="content" placeholder="내용" required></textarea>
+            </div>
+
+            <div class="add_sb_fileWrap">
+                <input class="upload-name" value="첨부파일" placeholder="첨부파일">
+                <label for="files">파일찾기</label>
+                <input type="file" id="files" name="files" multiple="multiple">
             </div>
 
             <div class="mb-4">

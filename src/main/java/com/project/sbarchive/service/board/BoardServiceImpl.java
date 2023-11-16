@@ -26,9 +26,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void add(BoardDTO boardDTO) {
+    public int add(BoardDTO boardDTO) {
         BoardVO boardVO = modelMapper.map(boardDTO, BoardVO.class);
         boardMapper.add(boardVO);
+        return boardVO.getBoardId();
     }
 
     @Override
