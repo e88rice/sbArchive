@@ -19,6 +19,12 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final ModelMapper modelMapper;
+
+    @Override
+    public int getReplyCount(int boardId) { // 보드고유번호값을대임해 리플갯수반환 int
+        return boardMapper.getReplyCount(boardId);
+    }
+
     @Override
     public void add(BoardDTO boardDTO) {
         BoardVO boardVO = modelMapper.map(boardDTO, BoardVO.class);
@@ -64,6 +70,9 @@ public class BoardServiceImpl implements BoardService {
         List<BoardDTO> dtoList = new ArrayList<>();
         for (BoardVO boardVO : voList) {
             dtoList.add(modelMapper.map(boardVO, BoardDTO.class));
+            for(BoardDTO boardDTOLists : dtoList) {
+                boardDTOLists.setReplyCount( boardMapper.getReplyCount(boardDTOLists.getBoardId()));
+            }
         }
 
         int total = boardMapper.getCount(pageRequestDTO);

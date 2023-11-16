@@ -42,6 +42,7 @@
                 <th>번호</th>
                 <th>제목</th>
                 <th>아이디</th>
+                <th>댓글수</th>
                 <th>닉네임</th>
                 <th>작성일</th>
                 <th>조회</th>
@@ -51,6 +52,7 @@
                 <td>[[${dto.boardId}]]</td>
                 <td><a th:href="|@{/board/readBoard(boardId =${dto.boardId})}&${link}|">[[${dto.title}]]</a></td>
                 <td>[[${dto.userId}]]</td>
+                <td>[[${dto.replyCount}]]</td>
                 <td>[[${dto.nickname}]]</td>
                 <td>[[${dto.addDate}]]</td>
                 <td>[[${dto.hit}]]</td>
@@ -74,6 +76,10 @@
         </ul>
     </div>
     <script layout:fragment="script" th:inline="javascript">
+
+
+
+
         document.querySelector(".pagination").addEventListener("click",function (e) {
 
 
@@ -90,6 +96,8 @@
 
             formObj.submit();
         },false)
+
+
     </script>
 </div>
 

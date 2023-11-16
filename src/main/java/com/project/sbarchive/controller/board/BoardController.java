@@ -2,6 +2,7 @@ package com.project.sbarchive.controller.board;
 
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -52,8 +53,10 @@ public class BoardController {
         log.info(pageRequestDTO);
         if(bindingResult.hasErrors()) {
             pageRequestDTO = PageRequestDTO.builder().build();
+
         }
-        model.addAttribute("responseDTO", boardService.getList(pageRequestDTO));
+        PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
+        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
 
     }
 
@@ -95,4 +98,11 @@ public class BoardController {
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/board/boardList?"+pageRequestDTO.getLink();
     }
+
+    @GetMapping(value = "/list/{boardId}")
+    public int getReplyCount(int boardId) {
+        return boardService.getReplyCount(boardId);
+    }
+
+
 }

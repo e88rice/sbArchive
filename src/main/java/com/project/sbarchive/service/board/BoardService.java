@@ -17,6 +17,8 @@ public interface BoardService {
     void hit(int boardId);
 
     void remove(int boardId);
+
+    int getReplyCount(int boardId);
     //페이징
     PageResponseDTO<BoardDTO> getList(PageRequestDTO pageRequestDTO);
 }

@@ -19,6 +19,7 @@ public class BoardServiceTests {
                     .userId("admin")
                     .content("testContent..." + i)
                     .title("제목" + i)
+                    .nickname("nick")
                     .build();
             boardService.add(boardDTO);
         }

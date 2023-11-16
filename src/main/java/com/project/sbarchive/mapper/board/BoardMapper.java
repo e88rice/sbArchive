@@ -26,4 +26,6 @@ public interface BoardMapper {
     List<BoardVO> selectList(PageRequestDTO pageRequestDTO);
 
     int getCount(PageRequestDTO pageRequestDTO);
+
+    int getReplyCount(int boardId);
 }

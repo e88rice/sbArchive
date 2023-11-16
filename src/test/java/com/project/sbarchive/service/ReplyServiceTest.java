@@ -23,7 +23,7 @@ public class ReplyServiceTest {
                     .content("댓글 서비스 등록 테스트" + i)
                     .userId("admin")
                     .nickname("admin")
-                    .boardId(203).build();
+                    .boardId(200).build();
             replyService.addReply(replyDTO);
         }
     }

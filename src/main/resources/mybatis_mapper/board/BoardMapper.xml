@@ -54,4 +54,8 @@
         <include refid="search" />
     </select>
 
+    <select id="getReplyCount" resultType="int">
+        select count(*) from reply where boardId = #{boardID}
+    </select>
+
 </mapper>
