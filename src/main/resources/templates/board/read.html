@@ -6,15 +6,26 @@
       layout:decorate="~{/layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
 <style layout:fragment="style">
+    /* 여기서부터 /board/read 관련 css */
     .readBoard_form {
         margin: 0 auto;
         padding-top: 150px;
         width: 500px;
     }
 
+    /* 여기까지 /board/read 관련 css */
+
+
+
+
     /* 여기서부터 댓글 관련 css */
-    .replyItem {
+    li {
         list-style: none;
+    }
+    .user_image {
+        padding: 20px 0;
+        width: 50px;
+        height: 90px;
     }
     .reply_page_container {
         display: flex;
@@ -25,7 +36,6 @@
     }
     .reply_list_paging_wrap {
         display: flex;
-        list-style: none;
     }
     .reply_page_wrap, .reply_page_prev, .reply_page_next {
         display: flex;
@@ -40,6 +50,94 @@
     .active {
         font-weight: bold;
     }
+    .reply_add_wrap {
+        margin: 50px;
+    }
+    .reply_add_inner_wrap {
+        width: 65vw;
+        padding: 10px;
+        margin: 0 auto;
+        border: 2px solid #d3d3d3;
+        border-radius: 10px;
+    }
+    .reply_add_form {
+        display:flex;
+        flex-direction: row;
+    }
+    .acontent {
+        padding: 10px;
+        margin: 5px;
+    }
+    .addBtn {
+        width: 70px;
+        height: 40px;
+        margin-top: 15px;
+    }
+    .reply_list_wrap {
+        width: 65vw;
+        margin: 0 auto;
+    }
+    .reply_count {
+        margin-left: 10px;
+    }
+    .replyList {
+        margin: 10px;
+    }
+    .if_reply_writer {
+        border: 1px solid red;
+        border-radius: 1em;
+        padding: 4px;
+        font-size: 12px;
+        margin-left: 5px;
+        font-weight: bold;
+        color: red;
+    }
+    .list_of_reply {
+        display: flex;
+        justify-content: space-between;
+        width: 65vw;
+        border-bottom: 1px solid #d3d3d3;
+        padding-bottom: 10px;
+    }
+    .img_wrap {
+        width: 12%;
+    }
+    .writer_btn_wrap {
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+    }
+    .writer_btn_area {
+        display: flex;
+        justify-content: space-between;
+        height: 60px;
+        padding: 20px 0;
+    }
+    .date_of_reply {
+        color: gray;
+        font-size: 12px;
+    }
+    .replyModifyForm {
+        display: none;
+        border-bottom: 1px solid #d3d3d3;
+        padding:20px;
+        width: 65vw;
+    }
+    .textarea_btn_area {
+        display:flex;
+        flex-direction: row;
+    }
+    .mcontent {
+        padding: 10px;
+    }
+    .modBtn {
+        width: 60px;
+        height: 40px;
+        margin: 10px;
+    }
+
+
+    /* 여기까지 댓글 관련 css */
 </style>
 
 <div layout:fragment="content">
@@ -113,15 +211,15 @@
     <script src="/js/reply/reply.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <div style="margin: 50px;">
-        <div style="border: 2px solid #d3d3d3; border-radius: 10px; width: 65vw; padding: 10px; margin: 0 auto;">
+    <div class="reply_add_wrap">
+        <div class="reply_add_inner_wrap">
             <div>
-                <div style="display:flex; flex-direction: row;">
+                <div class="reply_add_form">
                     <input type="hidden" name="nickname" class="anickname" th:value="${#authentication.principal.nickname}">
                     <input type="hidden" name="userId" class="auserId" th:value="${#authentication.principal.username}">
-                    <div class="anickname">[[${#authentication.principal.nickname}]]<span class="auserId">([[${#authentication.principal.username}]])</span></div>
-                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control" style="padding: 10px; margin: 5px"></textarea>
-                    <button type="button" class="btn btn-primary addBtn" style="width: 70px; height: 40px; margin-top: 15px">등록</button>
+                    <div>[[${#authentication.principal.nickname}]]<span>([[${#authentication.principal.username}]])</span></div>
+                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control"></textarea>
+                    <button type="button" class="btn btn-primary addBtn">등록</button>
                 </div>
             </div>
         </div>
@@ -130,11 +228,11 @@
     <!-- 댓글 등록 영역 끝 -->
 
     <!-- 댓글 리스트 출력 -->
-    <div style="width: 65vw; margin: 0 auto">
+    <div class="reply_list_wrap">
         <div>
-            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span style="margin-left: 10px;">댓글 총 ㅇ개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
+            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count">댓글 총 ㅇ개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
             <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
-            <ul class="list-group replyList" style="margin: 10px">
+            <ul class="list-group replyList">
                 <!-- 댓글 출력 -->
             </ul>
         </div>
@@ -152,7 +250,7 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
-    const frm = document.querySelector('form');
+    // const frm = document.querySelector('form');
     const boardId = [[${dto.boardId}]]; // board Idx
     const link = [[${pageRequestDTO.getLink()}]];
 
@@ -186,7 +284,7 @@
         const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
 
         addReply(replyObj).then(result => { // reply.js(axios)
-            alert(result.data.replyId); // 확인용
+            // alert(result.data.replyId); // 확인용
             acontent.value = ''; // 초기화
             location.reload(); // 새로고침
             printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
@@ -249,52 +347,61 @@
         replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
     }
 
+    const username = [[${#authentication.principal.username}]];
+    console.log("username: "+username);
+    let isLogin = false;
+
     function printReplyList(dtoList) {
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
                 let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
                 console.log(date);
+                let id=dto.userId;
+                console.log("id: "+id);
+                function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
+                    return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
+                }
+                let maskedId = maskId(id);
+                isLogin = id === username;
+                console.log("isLogin:"+isLogin);
 
                 str +=`
                 <li class="replyItem" data-replyId="${dto.replyId}">
 
-                    <div class="list" style="display: flex; width: 65vw; justify-content: space-between; border-bottom: 1px solid #d3d3d3; padding-bottom: 10px">
-                        <div class="img" style="width: 12%">
-                            <img style="padding: 20px 0; width: 50px; height: 90px;" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt="">
+                    <div class="list_of_reply">
+                        <div class="img_wrap">
+                            <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt="">
                         </div>
 
-                        <div style="display: flex; flex-direction: column; width: 85%">
-                            <div style="display: flex; justify-content: space-between; height: 60px; padding: 20px 0">
-                                <div>${dto.nickname}(${dto.userId})</div>
+                        <div class="writer_btn_wrap">
+                            <div class="writer_btn_area">
+                                <div>${dto.nickname}(${maskedId})${isLogin ? '<span class="if_reply_writer">작성자</span>' : ""}</div>
                                 <div>
-                                    <!-- 수정/삭제 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치할 시 보여주게 바꿀 거임 -->
-                                    <a class="replyModBtn">수정</a>
-                                    <a class="replyRemoveBtn">삭제</a>
-                                    <!-- 신고 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치하지 않을 경우에만 보이게 바꿀 거임 -->
-                                    <a class="replyReportBtn">신고</a>
+                                 ${isLogin ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="replyReportBtn">신고</a>'}
                                 </div>
                             </div>
 
-                            <div style="overflow: auto">${dto.content}</div>
-                            <div style="color: gray; font-size: 12px">${date}</div>
+                            <div>${dto.content}</div>
+                            <div class="date_of_reply">${date}</div>
                         </div>
                     </div>
 
                     <!-- 댓글 수정 폼 -->
-                     <div style="display: none; border-bottom: 1px solid #d3d3d3; padding:20px; width: 65vw;" class="replyModifyForm">
+                     <div class="replyModifyForm">
                         <div>
-                            <div>${dto.nickname}(${dto.userId})</div>
+                            <div>${dto.nickname}(${id})</div>
                         </div>
-                        <div style="display:flex; flex-direction: row;">
-                            <textarea placeholder="댓글을 입력해 주세요." name="content" class="mcontent form-control" style="padding: 10px; height: auto">${dto.content}</textarea>
-                            <button type="button" style="width: 60px; height: 40px; margin: 10px" class="btn btn-primary modBtn">수정</button>
+                        <div class="textarea_btn_area">
+                            <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control">${dto.content}</textarea>
+                            <button type="button" class="btn btn-primary modReplyBtn">수정</button>
                         </div>
                      </div>
                 </li>
                `
             }
         }
+        // replyList.insertAdjacentHTML('afterbegin', str);
         replyList.innerHTML = str;
 
         // 댓글 삭제 버튼 클릭 이벤트
@@ -304,7 +411,7 @@
                 const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                 removeReply(replyId).then(result => { // reply.js(axios)
                     if(!confirm("정말 삭제하시겠습니까?")) return;
-                    alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용. 나중에 지울 거임
+                    alert("삭제되었습니다.");
                     location.reload(); // 페이지 새로고침
                 }).catch(e => {
                     console.log(e);
@@ -315,29 +422,27 @@
         // 댓글 수정 버튼 클릭 이벤트
         document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
             replyModBtn.addEventListener('click', function(e) {
-                alert("replyModBtn 클릭");
-                // a 태그의 parent.parent인 li에 data-replyId 속성 부여
+                // li에 data-replyId 속성 부여
                 const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
 
-                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list'); // 나중에 수정 버튼 누르면 해당 댓글 숨기게, 해당 댓글 수정 폼은 보이게 만들 거임
+                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply');
                 const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
                 const mcontent = replyModifyForm.querySelector('.mcontent');
-                const modBtn = replyModifyForm.querySelector('.modBtn');
+                const modBtn = replyModifyForm.querySelector('.modReplyBtn');
 
                 getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
-                    console.log(reply); // 제대로 가져왔는지 확인용
                     replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
-                    list.style.display='none';
+                    list.style.display='none'; // list가 안 보이게
                 }).catch(e => alert('댓글 가져오기(getReply) 실패'));
 
                 modBtn.addEventListener("click", function(e) { // 수정 완료 버튼 클릭 이벤트
-                    alert("수정 완료 버튼이 클릭되었습니다"); // 버튼 눌렸는지 확인용
+                    if(!confirm('이대로 수정하시겠습니까?')) return;
                     const replyObj={content:mcontent.value, replyId:replyId};
                     modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
-                        alert(result.replyId + '번째 댓글이 수정되었습니다.'); // 확인용
+                        alert('수정되었습니다.');
                         mcontent.value = ''; // 초기화
                         replyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
-                        printReplies(1, 10, true); // 가장 최근 댓글이 달린 페이지로 이동
+                        location.reload(); // 새로고침
                     }).catch(e => {
                         alert('댓글 수정 실패');
                     });
