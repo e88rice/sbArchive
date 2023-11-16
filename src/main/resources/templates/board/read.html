@@ -10,12 +10,40 @@
         margin: 0 auto;
         padding-top: 150px;
         width: 500px;
+    }
 
+    /* 여기서부터 댓글 관련 css */
+    .replyItem {
+        list-style: none;
+    }
+    .reply_page_container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 65vw;
+        margin-top: 10px;
+    }
+    .reply_list_paging_wrap {
+        display: flex;
+        list-style: none;
+    }
+    .reply_page_wrap, .reply_page_prev, .reply_page_next {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        line-height: 40px;
+        margin: 0 10px;
+        width: 40px;
+        height: 40px;
+    }
+    .active {
+        font-weight: bold;
     }
 </style>
 
 <div layout:fragment="content">
-    <form action="/board/modify" method="get" class="readBoard_form">
+    <form action="/board/readBoard" method="get" class="readBoard_form">
         <div class="row mt-3">
             <div class="col">
                 <div class="card">
@@ -25,34 +53,27 @@
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <span class="input-group-text">번호</span>
-                            <input type="text" name="boardId" class="form-control" th:value="${dto.boardId}" readonly>
+                            <input type="text" class="form-control" th:value="${dto.boardId}" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">제목</span>
-                            <input type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
+                            <input type="text" class="form-control" th:value="${dto.title}" readonly>
                         </div>
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">닉네임</span>
-                            <input name="nickname" type="text" class="form-control" th:value="${dto.nickname}" readonly>
+                            <input type="text" class="form-control" th:value="${dto.nickname}" readonly>
                         </div>
 
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">내용</span>
-                            <textarea name="content" class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
-                        </div>
-
-
-                        <div class="left_wrap">
-                            <div class="left_wrap_subImg">
-                                <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
-                            </div>
+                            <textarea class="form-control col-sm-5" rows="5" readonly>[[${dto.content}]]</textarea>
                         </div>
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">아이디</span>
-                            <input type="text" name="userId" class="form-control" th:value="${dto.userId}" readonly>
+                            <input type="text" class="form-control" th:value="${dto.userId}" readonly>
                         </div>
 
                         <div class="input-group mb-3">
@@ -67,15 +88,16 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">addDate</span>
-                            <input type="text" name="addDate" class="form-control" th:value="${#temporals.format(dto.addDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.addDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
                         </div>
+
                     </div>
                 </div><!-- end card body -->
                 <div class="my-4">
                     <div class="float-end">
                         <div class="float-end">
-                            <button type="submit" class="btn btn-primary modifyBtn">수정</button>
-                            <button type="button" class="btn btn-secondary listBtn">목록</button>
+                            <button type="submit" class="btn btn-primary">수정</button>
+                            <button type="button" class="btn btn-secondary">목록</button>
                         </div>
 
                     </div>
@@ -91,46 +113,35 @@
     <script src="/js/reply/reply.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <div>
-        <div>
-            <span class="input-group-text">boardId</span>
-            <input type="text" name="boardId" class="aboardId" th:value="${dto.boardId}" readonly>
-            <!-- 잘 받아오는지 테스트용 -->
+    <div style="margin: 50px;">
+        <div style="border: 2px solid #d3d3d3; border-radius: 10px; width: 65vw; padding: 10px; margin: 0 auto;">
+            <div>
+                <div style="display:flex; flex-direction: row;">
+                    <input type="hidden" name="nickname" class="anickname" th:value="${#authentication.principal.nickname}">
+                    <input type="hidden" name="userId" class="auserId" th:value="${#authentication.principal.username}">
+                    <div class="anickname">[[${#authentication.principal.nickname}]]<span class="auserId">([[${#authentication.principal.username}]])</span></div>
+                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control" style="padding: 10px; margin: 5px"></textarea>
+                    <button type="button" class="btn btn-primary addBtn" style="width: 70px; height: 40px; margin-top: 15px">등록</button>
+                </div>
+            </div>
         </div>
-        <div>
-            <span class="input-group-text">아이디</span>
-            <input type="text" name="userId" class="auserId" th:value="${dto.userId}" readonly>
-        </div>
-        <div>
-            <span class="input-group-text">닉네임</span>
-            <input type="text" name="nickname" class="anickname">
-
-            <input type="text" name="nickname" class="nickname" th:value="${dto.nickname}" readonly>
-
-        </div>
-        <div>
-            <span class="input-group-text">댓글 내용</span>
-            <input type="text" placeholder="댓글을 입력해 주세요." name="content" class="acontent">
-        </div>
-        <button type="button" class="btn btn-primary addBtn">등록</button>
     </div>
 
     <!-- 댓글 등록 영역 끝 -->
 
     <!-- 댓글 리스트 출력 -->
-    <div class="row mt-3">
-        <div class="col-md-12">
-            <span><i class="fa-solid fa-comment fa-flip-horizontal"></i>&nbsp;총 ㅇ개</span>
-            <span>총 [[${dto.replyCount}]]개</span>
-            <span style="margin: 20px">새로고침&nbsp;<a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a></span>
-            <ul class="list-group replyList">
-
+    <div style="width: 65vw; margin: 0 auto">
+        <div>
+            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span style="margin-left: 10px;">댓글 총 ㅇ개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
+            <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
+            <ul class="list-group replyList" style="margin: 10px">
+                <!-- 댓글 출력 -->
             </ul>
         </div>
-        <div class="row mt-3">
-            <div class="col">
-                <ul class="pagination replyPaging">
-
+        <div>
+            <div class="reply_page_container">
+                <ul class="reply_list_paging_wrap replyPaging">
+                    <!-- 댓글 페이징 출력 -->
                 </ul>
             </div>
         </div>
@@ -139,26 +150,31 @@
 
 </div>
 
-<script layout:fragment="script" th:inline="javascript" >
+<script layout:fragment="script" th:inline="javascript">
 
     const frm = document.querySelector('form');
-
-
+    const boardId = [[${dto.boardId}]]; // board Idx
     const link = [[${pageRequestDTO.getLink()}]];
 
-    document.querySelector('.listBtn').addEventListener('click', function (){
-        location.href = "/board/list?"+link;
-    })
+    document.querySelector(".btn-primary").addEventListener("click",function () {
+        self.location = `/board/modify/${boardId}`
+    },false);
+
+    document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+        location.href = `/board/boardList?${link}`;
+    });
 
 
+
+
+    // 여기서부터 댓글 관련 자바스크립트
     // 새로고침 이벤트
     const refreshBtn=document.querySelector('.refreshBtn');
     refreshBtn.addEventListener("click", function(e) {
         location.reload(); // 가장 마지막 페이지로 이동
     });
 
-    // 여기서부터 댓글 등록 관련 자바스크립트
-    const aboardId=document.querySelector(".aboardId");
+    // 댓글 등록 관련 자바스크립트
     const acontent=document.querySelector(".acontent");
     const auserId=document.querySelector(".auserId");
     const anickname=document.querySelector(".anickname");
@@ -166,12 +182,8 @@
 
     // 댓글 등록 버튼 클릭 이벤트
     addBtn.addEventListener("click", function(e) {
-        const replyObj={boardId:aboardId.value, content:acontent.value, userId:auserId.value, nickname:anickname.value};
-        // 값 받아오는지 확인용
-        console.log("content.value: "+acontent.value);
-        console.log("userId.value: "+auserId.value);
-        console.log("nickname.value: "+anickname.value);
-        console.log("boardId.value: "+aboardId.value);
+        alert("addBtn 클릭함");
+        const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
 
         addReply(replyObj).then(result => { // reply.js(axios)
             alert(result.data.replyId); // 확인용
@@ -185,8 +197,6 @@
     // 여기까지 댓글 등록 관련 자바스크립트
 
     // 여기서부터 댓글 리스트 출력 관련 자바스크립트
-    const boardId = [[${dto.boardId}]]; // board Idx
-
     const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
     const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
 
@@ -221,23 +231,22 @@
         printReplies(page, size);
     });
 
-    function printPages(data) { // 페이지 목록 출력
+    function printPages(data) { // 댓글 페이징 목록 출력
         // pagination
         let pageStr = ''; // 페이지를 이동하기 위한 a 태그들을 담을 변수
         if(data.prev) { // 받아온 data의 prev 값이 true라면 이전 버튼 활성화
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.start - 1}">이전</a></li>`;
+            pageStr += `<li class="reply_page_prev"><a data-page="${data.start - 1}">이전</a></li>`;
         }
         for(let i = data.start; i <= data.end; i++) {
             // 현재 페이지면 active 클래스 추가
-            pageStr += `<li class="page-item ${i === data.page ? "active" : ""}">
-                    <a class="page-link" data-page="${i}">${i}</a></li>`;
+            pageStr += `<li class="reply_page_wrap ${i === data.page ? "active" : ""}">
+                    <a data-page="${i}">${i}</a></li>`;
         }
         if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
-            pageStr += `<li class="page-item"><a class="page-link" data-page="${data.end + 1}">다음</a></li>`
+            pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
         }
         console.log(pageStr);
         replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
-
     }
 
     function printReplyList(dtoList) {
@@ -246,41 +255,43 @@
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
                 let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
                 console.log(date);
-                str +=` <li class="list-group-item d-flex replyItem" data-replyId="${dto.replyId}">
-                <span class="col-2">${dto.boardId}</span>
-                <span class="col-2">${dto.replyId}</span>
-                <span class="col-6">${dto.content}</span>
-                <span class="col-2">${dto.userId}</span>
-                <span class="col-2">${date}</span>
 
-                <!-- 수정/삭제 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치할 시 보여주게 바꿀 거임 -->
-                <span class="col-2"><a class="replyModBtn">수정</a></span>
-                <span class="col-2"><a class="replyRemoveBtn">삭제</a></span>
-                <!-- 신고 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치하지 않을 경우에만 보이게 바꿀 거임 -->
-                <span class="col-2"><a class="replyReportBtn">신고</a></span>
+                str +=`
+                <li class="replyItem" data-replyId="${dto.replyId}">
 
-                <!-- 댓글 수정 폼 -->
-                 <div style="display: none" class="replyModifyForm">
-                    <div>
-                        <span class="input-group-text">boardId</span>
-                        <input type="text" class="mboardId" th:value="${dto.boardId}" readonly>
-                        <!-- 잘 받아오는지 테스트용 -->
+                    <div class="list" style="display: flex; width: 65vw; justify-content: space-between; border-bottom: 1px solid #d3d3d3; padding-bottom: 10px">
+                        <div class="img" style="width: 12%">
+                            <img style="padding: 20px 0; width: 50px; height: 90px;" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt="">
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; width: 85%">
+                            <div style="display: flex; justify-content: space-between; height: 60px; padding: 20px 0">
+                                <div>${dto.nickname}(${dto.userId})</div>
+                                <div>
+                                    <!-- 수정/삭제 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치할 시 보여주게 바꿀 거임 -->
+                                    <a class="replyModBtn">수정</a>
+                                    <a class="replyRemoveBtn">삭제</a>
+                                    <!-- 신고 버튼은 thymeleaf 사용해서 로그인정보의 아이디와 댓글 작성자 아이디가 일치하지 않을 경우에만 보이게 바꿀 거임 -->
+                                    <a class="replyReportBtn">신고</a>
+                                </div>
+                            </div>
+
+                            <div style="overflow: auto">${dto.content}</div>
+                            <div style="color: gray; font-size: 12px">${date}</div>
+                        </div>
                     </div>
-                    <div>
-                        <span class="input-group-text">아이디</span>
-                        <input type="text" class="muserId" th:value="${dto.userId}" readonly>
-                    </div>
-                    <div>
-                        <span class="input-group-text">닉네임</span>
-                        <input type="text" name="nickname" class="mnickname" th:value="admin">
-                    </div>
-                    <div>
-                        <span class="input-group-text">댓글 내용</span>
-                        <input type="text" placeholder="댓글을 입력해 주세요." name="content" class="mcontent">
-                    </div>
-                    <button type="button" class="btn btn-primary modBtn">등록</button>
-                 </div>
-              </li>
+
+                    <!-- 댓글 수정 폼 -->
+                     <div style="display: none; border-bottom: 1px solid #d3d3d3; padding:20px; width: 65vw;" class="replyModifyForm">
+                        <div>
+                            <div>${dto.nickname}(${dto.userId})</div>
+                        </div>
+                        <div style="display:flex; flex-direction: row;">
+                            <textarea placeholder="댓글을 입력해 주세요." name="content" class="mcontent form-control" style="padding: 10px; height: auto">${dto.content}</textarea>
+                            <button type="button" style="width: 60px; height: 40px; margin: 10px" class="btn btn-primary modBtn">수정</button>
+                        </div>
+                     </div>
+                </li>
                `
             }
         }
@@ -290,7 +301,7 @@
         document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
             replyRemoveBtn.addEventListener('click', function(e) {
                 // a 태그의 parent.parent인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
+                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                 removeReply(replyId).then(result => { // reply.js(axios)
                     if(!confirm("정말 삭제하시겠습니까?")) return;
                     alert(result.replyId + " 번 댓글이 삭제되었습니다."); // 확인용. 나중에 지울 거임
@@ -306,23 +317,17 @@
             replyModBtn.addEventListener('click', function(e) {
                 alert("replyModBtn 클릭");
                 // a 태그의 parent.parent인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.getAttribute("data-replyId");
+                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
 
-                const li = e.target.parentNode.parentNode; // 나중에 수정 버튼 누르면 해당 댓글 숨기게, 해당 댓글 수정 폼은 보이게 만들 거임
-                const replyModifyForm = e.target.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
-                const mboardId = replyModifyForm.querySelector('.mboardId');
-                const muserId = replyModifyForm.querySelector('.muserId');
-                const mnickname = replyModifyForm.querySelector('.mnickname');
+                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list'); // 나중에 수정 버튼 누르면 해당 댓글 숨기게, 해당 댓글 수정 폼은 보이게 만들 거임
+                const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
                 const mcontent = replyModifyForm.querySelector('.mcontent');
                 const modBtn = replyModifyForm.querySelector('.modBtn');
 
                 getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
                     console.log(reply); // 제대로 가져왔는지 확인용
                     replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
-                    mnickname.value = reply.nickname;
-                    muserId.value = reply.userId;
-                    mboardId.value = reply.boardId;
-                    mcontent.value = reply.content; // 값 채워넣기
+                    list.style.display='none';
                 }).catch(e => alert('댓글 가져오기(getReply) 실패'));
 
                 modBtn.addEventListener("click", function(e) { // 수정 완료 버튼 클릭 이벤트
@@ -341,9 +346,6 @@
 
             });
         });
-
-
-
 
     }
 

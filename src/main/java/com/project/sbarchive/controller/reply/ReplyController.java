@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class ReplyController {
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @ApiOperation(value="Reply add POST", notes="POST 방식으로 댓글 등록")
     @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE) // consumes=데이터가 어떤 타입인지 명시
-    public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
+    public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult, Principal principal) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
 
         log.info("replyDTO: "+replyDTO);
         if(bindingResult.hasErrors()) {
@@ -45,6 +46,7 @@ public class ReplyController {
 
         Map<String, Integer> resultMap=new HashMap<>();
 
+        replyDTO.setUserId(principal.getName());
         int replyId=replyService.addReply(replyDTO);
         resultMap.put("replyId", replyId);
 
