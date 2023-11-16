@@ -10,12 +10,22 @@
     </insert>
 
     <select id="getAllMsgByReceiver" resultType="com.project.sbarchive.vo.message.MessageVO">
-        SELECT * FROM message where receiverId = #{receiverId} AND isReceiverDeleted = false;
+        SELECT * FROM message where receiverId = #{receiverId} AND isReceiverDeleted = false
+        order by `index` desc limit #{skip}, #{size};
+    </select>
+
+    <select id="getAllMsgByReceiverCount" resultType="int">
+        SELECT count(*) FROM message where receiverId = #{receiverId} AND isReceiverDeleted = false;
     </select>
 
 
     <select id="getAllMsgBySender" resultType="com.project.sbarchive.vo.message.MessageVO">
-        SELECT * FROM message where senderId = #{senderId} AND isSenderDeleted = false;
+        SELECT * FROM message where senderId = #{senderId} AND isSenderDeleted = false
+        order by `index` desc limit #{skip}, #{size};
+    </select>
+
+    <select id="getAllMsgBySenderCount" resultType="int">
+        SELECT count(*) FROM message where senderId = #{senderId} AND isSenderDeleted = false;
     </select>
 
     <select id="getMessage" resultType="com.project.sbarchive.vo.message.MessageVO">
@@ -23,7 +33,15 @@
     </select>
 
     <update id="checkMessage">
-        update message SET isRead = true, readDate = now() WHERE `index` = #{index};
+        UPDATE message SET isRead = true, readDate = now() WHERE `index` = #{index};
+    </update>
+    
+    <update id="removeByReceiver">
+        UPDATE message SET isReceiverDeleted = true WHERE `index` = #{index}
+    </update>
+
+    <update id="removeBySender">
+        UPDATE message SET isSenderDeleted = true WHERE `index` = #{index}
     </update>
 
 

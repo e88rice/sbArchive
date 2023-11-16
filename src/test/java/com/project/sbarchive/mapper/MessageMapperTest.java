@@ -1,5 +1,6 @@
 package com.project.sbarchive.mapper;
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.mapper.message.MessageMapper;
 import com.project.sbarchive.vo.message.MessageVO;
 import lombok.extern.log4j.Log4j2;
@@ -18,23 +19,36 @@ public class MessageMapperTest {
 
     @Test
     public void add() {
-        messageMapper.add("test", "test2", "ㅎㅇㅎㅇ");
+        messageMapper.add("test", "test1", "ㅎㅇㅎㅇ");
     }
 
     @Test
     public void getAllMsgByReceiver() {
-        List<MessageVO> receiveMessages = messageMapper.getAllMsgByReceiver("test");
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
+        log.info(pageRequestDTO.getSkip());
+        List<MessageVO> receiveMessages = messageMapper.getAllMsgByReceiver("test1", pageRequestDTO.getSkip(), pageRequestDTO.getSize());
         for(MessageVO message : receiveMessages) {
             log.info(message);
         }
     }
 
     @Test
+    public void getAllMsgByReceiverCount() {
+        log.info("total received : " + messageMapper.getAllMsgByReceiverCount("test1"));
+    }
+
+    @Test
     public void getAllMsgBySender() {
-        List<MessageVO> sendMessages = messageMapper.getAllMsgBySender("test1");
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(2).size(10).build();
+        List<MessageVO> sendMessages = messageMapper.getAllMsgBySender("test", pageRequestDTO.getSkip(), pageRequestDTO.getSize());
         for(MessageVO message : sendMessages) {
             log.info(message);
         }
+    }
+
+    @Test
+    public void getAllMsgBySenderCount() {
+        log.info("total sent : " + messageMapper.getAllMsgByReceiverCount("test1"));
     }
 
     @Test
@@ -51,5 +65,16 @@ public class MessageMapperTest {
         log.info(messageMapper.getMessage(index));
     }
 
+    @Test
+    public void removeByReceiver() {
+        int index = 1;
+        messageMapper.removeByReceiver(index);
+    }
+
+    @Test
+    public void removeBySender() {
+        int index = 1;
+        messageMapper.removeBySender(index);
+    }
 
 }

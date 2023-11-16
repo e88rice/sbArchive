@@ -4,6 +4,141 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>암행어사 - 외국어 간판 아카이브</title>
+  <style>
+    @font-face {
+      font-family: 'JalnanGothic';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    .show {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: transparent !important;
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+    }
+    .message_modal_dialog {
+      font-family: JalnanGothic;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .message_modal_view_content {
+      width: 50vw !important;
+      height: 70vh !important;
+    }
+    .message_modal_view_header {
+      display: flex !important;
+      justify-content: right !important;
+      border: none !important;
+      height: 10% !important;
+    }
+    .message_btn_close {
+      border: none !important;
+      background-color: transparent !important;
+      font-size: 20px !important;
+    }
+    .message_modal_body {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: start !important;
+      width: 100% !important;
+      height: 80% !important;
+    }
+
+    .message_modal_footer {
+      display: flex !important;
+      justify-content: end;
+      height: 10% !important;
+    }
+    .message_nav {
+      display: flex;
+      align-items: start;
+      width: 100%;
+    }
+    .message_nav_received, .message_nav_sent {
+      width: 50%;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .message_nav .active {
+      color: #60609f;
+      font-weight: bold;
+      border: 1px solid #7fa1c2;
+      box-shadow: 2px 2px 5px black;
+    }
+
+    .disnone {
+      display: none !important;
+    }
+    .received_message_container, .sent_message_container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .received_message_content_container, .sent_message_content_container {
+      text-align: left !important;
+      border-collapse: separate;
+      border-spacing: 20px;
+    }
+    .received_message_content_container th, .sent_message_content_container th {
+      text-align: left !important;
+    }
+    .message_content_wrap {
+      cursor: pointer;
+    }
+    .message_checkbox {
+      width: 10%;
+    }
+    .message_checkbox input[type=checkbox] {
+      zoom: 2.0;
+    }
+    .message_sender, .message_receiver {
+      width: 20%;
+    }
+    .message_content {
+      width: 60%;
+      overflow: hidden;
+    }
+    .message_sendDate {
+      width: 10%;
+    }
+    /*.received_page_container, .sent_page_container {*/
+    /*  position: relative;*/
+    /*  bottom: 0;*/
+    /*  left: 0;*/
+    /*}*/
+    .received_page_container ul, .sent_message_container ul{
+      display: flex;
+    }
+    .page_wrap {
+      list-style: none;
+      text-align: center;
+    }
+    .page_wrap .active {
+      font-weight: bold;
+      background-color: #000000;
+    }
+    .active a {
+      color: #ffffff;
+    }
+    .page-item {
+      line-height: 25px;
+      width: 25px;
+      height: 25px;
+      margin: 0 6px;
+    }
+  </style>
 </head>
   <!-- Meta, title, CSS, favicons, etc. -->
   <meta charset="utf-8">
@@ -78,6 +213,9 @@
           <a class="dropdown-item" href="/user/join" sec:authorize="!isAuthenticated()">회원가입</a>
           <a class="dropdown-item" href="/my/mypage" sec:authorize="isAuthenticated()">마이페이지</a>
         </li>
+        <li>
+          <button id="message-box" sec:authorize="isAuthenticated()">쪽지함</button>
+        </li>
       </ul>
     </nav>
   </div>
@@ -85,6 +223,84 @@
 
 <div class="margin-block"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="modal message_modal modal_container" tabindex="-1">
+
+  <div class="modal-dialog message_modal_dialog">
+
+    <div class="modal-content modal_view_content message_modal_view_content">
+
+      <div class="modal-header modal_view_header message_modal_view_header">
+        <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body message_modal_body">
+
+        <nav class="message_nav"> <!-- 쪽지함 네비게이션 -->
+          <div class="message_nav_received active">받은 쪽지함</div>
+          <div class="message_nav_sent">보낸 쪽지함</div>
+        </nav>
+
+        <div class="received_message_container">
+          <table class="received_message_content_container">
+            <tr>
+              <th>선택</th>
+              <th>발신인</th>
+              <th>내용</th>
+              <th>날짜</th>
+            </tr>
+            <tr class="message_content_wrap">
+              <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
+              <td class="message_sender"> <p>dddddd</p> </td>
+              <td class="message_content"> <p>ddddddd</p> </td>
+              <td class="message_sendDate"> <p>ddddddd</p> </td>
+            </tr>
+          </table>
+
+          <div class="received_page_container">
+
+          </div>
+        </div>
+
+        <div class="sent_message_container disnone">
+
+          <table class="sent_message_content_container">
+            <tr>
+              <th>선택</th>
+              <th>수신인</th>
+              <th>내용</th>
+              <th>날짜</th>
+            </tr>
+            <tr class="message_content_wrap">
+              <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
+              <td class="message_receiver"> <p>dddddd</p> </td>
+              <td class="message_content"> <p>ddddddd</p> </td>
+              <td class="message_sendDate"> <p>ddddddd</p> </td>
+            </tr>
+          </table>
+
+          <div class="sent_page_container">
+
+          </div>
+
+        </div>
+
+      </div> <!-- Modal body End -->
+
+      <div class="modal-footer message_modal_footer">
+        <div>
+          <button>선택 삭제</button>
+          <button>전체 삭제</button>
+        </div>
+      </div> <!-- Modal footer End -->
+
+
+
+    </div> <!-- Modal Content End -->
+
+  </div> <!-- Modal Dialog End -->
+
+</div><!-- Modal Container End -->
 <th:block class="content" layout:fragment="content">
 
 
@@ -107,6 +323,135 @@
 <!-- Bootstrap core JavaScript
 	================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/message/messageAsync.js"></script>
+<script>
+  const userId = '[[${#authentication.principal.username}]]';
+  let recievedPage = 1; // 수신 처음 페이지는 1
+  let sentPage = 1; // 발신 처음 페이지는 1
+  // let receivedTotal = 0; // 수신 토탈 카운트를 저장할 변수
+  // let sentTotal = 0; // 발신 토탈 카운트를 저장할 변수
+
+  const messageBoxBtn = document.querySelector("#message-box");                       // 헤더 쪽지함 버튼
+  const messageModal = new bootstrap.Modal(document.querySelector(".message_modal")); // 모달 컨테이너
+  const receivedTab = document.querySelector(".message_nav_received");                // 받은 쪽지함 탭
+  const sentTab = document.querySelector(".message_nav_sent");                        // 보낸 쪽지함 탭
+  const receivedMessageContainer = document.querySelector(".received_message_container"); // 받은 쪽지함 컨텐츠 영역
+  const sentMessageContainer = document.querySelector(".sent_message_container");         // 보낸 쪽지함 컨텐츠 영역
+
+  // 쪽지함 열기 이벤트
+  messageBoxBtn.addEventListener("click", function (){
+    messageModal.show();
+    ReceivedMsgByPage(recievedPage, userId);
+  })
+
+  function ReceivedMsgByPage(rPage, Id) {
+    getReceivedMessage(rPage, Id).then( r => { // 1페이지 기준
+      console.log(r);
+      addMsgPagingForm("received", r); // 1페이지 기준 페이징
+      addMsgForm("received", r);       // 1페이지 기준 쪽지 리스트
+    }).catch( e => {
+      console.log(e)
+    })
+  }
+
+  // 받은 쪽지함 탭 열기 이벤트
+  receivedTab.addEventListener("click", function (){
+    receivedMessageContainer.classList.remove("disnone");  // 받은 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 삭제
+    receivedTab.classList.add("active");                   // 받은 쪽지함 = 선택 디자인 css를 만들어주는 클래스 추가
+    sentMessageContainer.classList.add("disnone");         // 보낸 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 추가
+    sentTab.classList.remove("active");                    // 보낸 쪽지함 = 선택 디자인 css를 만들어주는 클래스 삭제
+    ReceivedMsgByPage(recievedPage, userId);
+  })
+
+  // 보낸 쪽지함 탭 열기 이벤트
+  sentTab.addEventListener("click", function (){
+    sentMessageContainer.classList.remove("disnone");   // 보낸 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 삭제
+    sentTab.classList.add("active");                    // 보낸 쪽지함 = 선택 디자인 css를 만들어주는 클래스 추가
+    receivedMessageContainer.classList.add("disnone");  // 받은 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 추가
+    receivedTab.classList.remove("active")              // 받은 쪽지함 = 선택 디자인 css를 만들어주는 클래스 삭제
+    getSentMessage(sentPage, userId).then( r => {
+      console.log(r);
+      addMsgPagingForm("sent", r);  // 1페이지 기준 페이징
+      addMsgForm("sent", r);        // 1페이지 기준 쪽지 리스트
+    }).catch( e => {
+      console.log(e)
+    })
+  })
+
+  function addMsgPagingForm(type, response) {
+    let str = "<div class=\"page_container\">\n" +
+            "    <ul class=\"page_wrap\">\n";
+    if(response.prev) {
+      str +=             "      <li class=\"page_item\">\n" +
+              "        <a class=\"page-link\" data-num=\""+ (response.start-1) +"\"><i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev</a>\n" +
+              "      </li>\n";
+    }
+    for(let i=response.start; i<=response.end; i++) {
+      if(response.page===i) {
+        str +=             "        <li class=\"page-item active\">\n" +
+                "          <a class=\"page-link\" data-num=\""+ i + "\">"+i+"</a>\n" +
+                "        </li>\n";
+      } else {
+        str +=             "        <li class=\"page-item\">\n" +
+                "          <a class=\"page-link\" data-num=\""+ i + "\">"+i+"</a>\n" +
+                "        </li>\n";
+      }
+    }
+    if(response.next) {
+      str +=             "      <li class=\"page-item\">\n" +
+              "        <a class=\"page-link\" data-num=\"" + (response.end+1) +"\">Next</a>\n" +
+              "      </li>\n";
+    }
+    str +=             "    </ul>\n" +
+            "  </div>";
+
+    if(type === "received") {
+      document.querySelector(".received_page_container").innerHTML = str;
+    } else {
+      document.querySelector(".sent_page_container").innerHTML = str;
+    }
+  }
+
+  function addMsgForm(type, response) {
+    let str = "            <tr>\n" +
+            "              <th>선택</th>\n" +
+            "              <th>";
+    if(type === "received") str += "발신인";
+    else str += "수신인";
+    str +=  "</th>\n" +
+            "              <th>내용</th>\n" +
+            "              <th>날짜</th>\n" +
+            "            </tr>";
+    if(type === "received") {
+      for(let i=0; i<response.dtoList.length; i++) {
+        let msg = response.dtoList[i];
+        str += "            <tr class=\"message_content_wrap\">\n" +
+                "              <td class=\"message_checkbox\"> <input type=\"checkbox\" value=\"" + msg.index + "\"> </td>\n" +
+                "              <td class=\"message_sender\"> <p>" + msg.senderId + "</p> </td>\n" +
+                "              <td class=\"message_content\"> <p>" + msg.content + "</p> </td>\n" +
+                "              <td class=\"message_sendDate\"> <p> " + msg.sendDate + "</p> </td>\n" +
+                "            </tr>"
+      }
+      document.querySelector(".received_message_content_container").innerHTML = str;
+    } else {
+      for(let i=0; i<response.dtoList.length; i++) {
+        let msg = response.dtoList[i];
+        str += "            <tr class=\"message_content_wrap\">\n" +
+                "              <td class=\"message_checkbox\"> <input type=\"checkbox\" value=\"" + msg.index + "\"> </td>\n" +
+                "              <td class=\"message_receiver\"> <p>" + msg.receiverId + "</p> </td>\n" +
+                "              <td class=\"message_content\"> <p>" + msg.content + "</p> </td>\n" +
+                "              <td class=\"message_sendDate\"> <p> " + msg.sendDate + "</p> </td>\n" +
+                "            </tr>"
+        document.querySelector(".sent_message_content_container").innerHTML = str;
+      }
+    }
+  }
+
+
+
+</script>
+
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
 <script src="/assets/js/waypoints.min.js"></script>
