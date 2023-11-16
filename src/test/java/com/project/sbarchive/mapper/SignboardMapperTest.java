@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Log4j2
 @SpringBootTest
-class SignboardMapperTest {
+class SignBoardMapperTest {
 
     @Autowired(required = false)
     private SignBoardMapper signBoardMapper;
