@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -28,6 +29,11 @@ public class UserServiceImpl implements UserService{
         userVO.addRole(UserRole.USER);
 
         userMapper.registerUser(userVO);
+        List<Integer> role_set = new ArrayList<>();
+        for(int i = 0; i < userVO.getRoleSet().size(); i++ ){
+            role_set.add(i);
+        }
+        addUserRole(userDTO.getUserId(), role_set);
     }
 
     @Override
