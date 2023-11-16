@@ -1,8 +1,6 @@
 package com.project.sbarchive.service.board;
 
 import com.project.sbarchive.mapper.board.BoardFileMapper;
-import com.project.sbarchive.mapper.signboard.SignBoardFileMapper;
-import com.project.sbarchive.service.signboard.SignBoardFileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
