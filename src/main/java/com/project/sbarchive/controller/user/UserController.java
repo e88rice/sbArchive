@@ -21,13 +21,13 @@ public class UserController {
 
     @GetMapping("/join")
     public String registerGET() {
-        log.info("===== registerUser Get Controller =====");
+        log.info("=============== registerUser Get Controller ===============");
         return "/user/join";
     }
 
     @PostMapping("/join")
     public String registerUser(UserDTO userDTO, RedirectAttributes redirectAttributes) {
-        log.info("===== registerUser Post Controller =====");
+        log.info("=============== registerUser Post Controller ===============");
         userService.registerUser(userDTO);
 
         return "redirect:/user/login";
@@ -36,7 +36,7 @@ public class UserController {
     @PostMapping("/emailCheck")
     @ResponseBody
     public int emailCheck(String email) {
-        log.info("===== emailCheck Post Controller =====");
+        log.info("=============== emailCheck Post Controller ===============");
 
         return userService.emailCheck(email);
     }
@@ -44,14 +44,14 @@ public class UserController {
     @PostMapping("/userIdCheck")
     @ResponseBody
     public int userIdCheck(String userId) {
-        log.info("===== userIdCheck Post Controller =====");
+        log.info("=============== userIdCheck Post Controller ===============");
 
         return userService.userIdCheck(userId);
     }
 
     @GetMapping("/login")
     public String loginGet(String error, String logout, Principal principal) {
-        log.info("===== loginGet Controller =====");
+        log.info("=============== loginGet Controller ===============");
         log.info("logout : " + logout);
 
         if(logout != null) {
@@ -88,27 +88,38 @@ public class UserController {
 
     @GetMapping("/findId")
     public String findId(){
-        log.info("===== findId GET Controller =====");
+        log.info("=============== findId GET Controller ===============");
         return "/user/findId";
     }
 
     @PostMapping("/foundId")
     public String findId(String email, Model model){
-        log.info("===== findId POST Controller =====");
-        if(userService.emailCheck(email) == 0){
-            model.addAttribute("msg", "이메일을 확인해주세요");
-            return "/user/findId";
-        } else {
-            model.addAttribute("userId", userService.getUserId(email));
-            log.info(userService.getUserId(email));
-            return "/user/foundId";
-        }
+        log.info("=============== findId POST Controller ===============");
+
+        model.addAttribute("userId", userService.getUserId(email));
+        log.info(userService.getUserId(email));
+        return "/user/foundId";
+
     }
 
     @GetMapping("/foundId")
     public String foundId() {
-        log.info("===== foundId Get Controller =====");
+        log.info("=============== foundId Get Controller ===============");
         return "/user/foundId";
     }
+
+    @GetMapping("/findPassword")
+    public String findPasswordGet() {
+        log.info("=============== findPassword Get Controller ===============");
+        return "/user/findPassword";
+    }
+
+    @PostMapping("/accountCheck")
+    @ResponseBody
+    public int accountCheck(String userId, String email) {
+        log.info("=============== accountCheck Get Controller ===============");
+        return userService.accountCheck(userId, email);
+    }
+
 
 }

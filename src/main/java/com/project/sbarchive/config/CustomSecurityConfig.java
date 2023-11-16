@@ -1,7 +1,9 @@
 package com.project.sbarchive.config;
 
 import com.project.sbarchive.security.handler.Custom403Handler;
+import com.project.sbarchive.security.handler.CustomTempLoginSuccessHandler;
 import com.project.sbarchive.security.service.CustomUserDetailService;
+import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -24,7 +27,7 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 어노테이션으로 권한을 설정할 수 있게 하는 어노테이션
 public class CustomSecurityConfig {
-
+    private final UserService userService;
     private final DataSource dataSource;
     private final CustomUserDetailService customUserDetailService;
 
@@ -34,7 +37,8 @@ public class CustomSecurityConfig {
 
         // 커스텀 로그인 페이지
         httpSecurity.formLogin()
-                .loginPage("/user/login"); // 로그인을 진행할 페이지
+                .loginPage("/user/login") // 로그인을 진행할 페이지
+                .successHandler(authenticationSuccessHandler()); // 임시 로그인인지 체크하기
 
         // CSRF 토큰 비활성화
         httpSecurity.csrf().disable();
@@ -78,6 +82,11 @@ public class CustomSecurityConfig {
         JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
         repository.setDataSource(dataSource);
         return repository;
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomTempLoginSuccessHandler(userService);
     }
 
 

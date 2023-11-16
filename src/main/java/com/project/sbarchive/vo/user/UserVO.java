@@ -60,4 +60,15 @@ public class UserVO {
     public void clearRole() {
         this.roleSet.clear();
     }
+
+    @Builder.Default
+    private Set<UserPwLog> passwordLog = new HashSet<>();
+
+    public void addLog(UserPwLog userPwLog){
+        this.passwordLog.add(userPwLog);
+    }
+
+    public void updateLog(Set<UserPwLog> passwordLog) {
+        this.passwordLog = passwordLog;
+    }
 }

@@ -1,10 +1,13 @@
 package com.project.sbarchive.service.mail;
 
+import com.project.sbarchive.mapper.user.UserMapper;
+import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,7 +25,9 @@ public class MailSenderServiceImpl implements MailSenderService{
     private final JavaMailSender mailSender; // 메일을 보내는 역할
 
     private final TemplateEngine templateEngine;
-    
+
+    private final UserService userService;
+
     private String confirmKey; // 인증번호
 
     @Value("${myapp.custom.mail.sender.mailFrom}")
@@ -30,7 +35,7 @@ public class MailSenderServiceImpl implements MailSenderService{
 
     @Value("${myapp.custom.mail.sender.mailFromName}")
     private String mailFromName;
-    
+
     @Override
     public boolean sendMailByAddMember(String mailTo) throws Exception { // 회원 가입시 인증 메일 발송
         this.confirmKey = createConfirmKey(); // 키 생성
@@ -97,4 +102,64 @@ public class MailSenderServiceImpl implements MailSenderService{
 
         return key.toString();
     }
+
+
+
+    @Override
+    public boolean sendMailByTempPassword(String mailTo) throws Exception { // 회원 가입시 인증 메일 발송
+        MimeMessage message = createMailAndChangePassword(mailTo); // 메일 내용 작성
+        try { // 예외처리
+            mailSender.send(message); // 메일 발송
+            return true;
+        } catch (MailException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public MimeMessage createMailAndChangePassword(String email) throws Exception{
+        // 회원 가입시 인증 메일 관련 내용 작성
+        log.info("보내는 대상 : " + email);
+        String str = getTempPassword();
+
+        // 메일 템플릿에 전달할 데이터 설정
+        Context context = new Context();
+        context.setVariable("tempPassword", str);
+
+        // Thymeleaf 템플릿 엔진을 사용하여 메일 본문 생성
+        String messageText = templateEngine.process("/mail/temp_password", context);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        message.addRecipients(Message.RecipientType.TO, email); // 보내는 대상
+        message.setSubject(mailFromName + "임시비밀번호 안내"); // 제목
+        message.setText(messageText, "utf-8", "html");
+        message.setFrom(new InternetAddress(mailFrom, mailFromName));  // 보내는 사람
+
+        updateTempPassword(str, email);
+
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  " + str + "  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+        return message;
+    }
+
+    public void updateTempPassword(String str,String email){
+        String id = userService.getUserId(email);
+        userService.updateTempPassword(id, str);
+    }
+
+    public String getTempPassword(){
+        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+
+        String str = "";
+
+        int idx = 0;
+        for (int i = 0; i < 10; i++) {
+            idx = (int) (charSet.length * Math.random());
+            str += charSet[idx];
+        }
+        return str;
+    }
+
+
 }

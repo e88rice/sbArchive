@@ -33,7 +33,8 @@ public class UserServiceImpl implements UserService{
         for(int i = 0; i < userVO.getRoleSet().size(); i++ ){
             role_set.add(i);
         }
-        addUserRole(userDTO.getUserId(), role_set);
+        addUserRole(userVO.getUserId(), role_set);
+        addLog(userVO.getUserId(), userVO.getPasswd());
     }
 
     @Override
@@ -42,6 +43,12 @@ public class UserServiceImpl implements UserService{
         for(int i=0; i<role_set.size(); i++) {
             userMapper.addUserRole(userId, role_set.get(i));
         }
+    }
+
+    @Override
+    public void addLog(String userId, String passwd) {
+        log.info("============= addUserRole Service =============");
+        userMapper.addLog(userId, passwd);
     }
 
     @Override
@@ -72,5 +79,59 @@ public class UserServiceImpl implements UserService{
         return userMapper.getUserId(email);
     }
 
+    @Override
+    public boolean isConfirmPassword(String userId, String passwd) {
+        log.info("============= isConfirmPassword Service =============");
+
+        String dbPassword = userMapper.userPasswdCheck(userId);
+        boolean result = passwordEncoder.matches(passwd, dbPassword);
+
+        log.info("@@@@@@@@@@@@@@@@@@@@ " + result + " @@@@@@@@@@@@@@@@@@@@");
+
+        return result;
+    }
+
+
+
+    @Override
+    public void updateTempPassword(String userId, String passwd) {
+        log.info("============= updateTempPassword Service =============");
+
+        String pw = passwordEncoder.encode(passwd);
+        userMapper.updatePassword(userId, pw);
+        updateLogTemp(userId, pw);
+    }
+
+    @Override
+    public void updateLogTemp(String userId, String passwd) {
+        userMapper.updateLogTemp(userId, passwd);
+    }
+
+    @Override
+    public int isTempPassword(String userId) {
+        return userMapper.isTempPassword(userId);
+    }
+
+    @Override
+    public void updatePassword(String userId, String passwd) {
+        log.info("============= updatePassword Service =============");
+
+        String pw = passwordEncoder.encode(passwd);
+        userMapper.updatePassword(userId, pw);
+        updateLog(userId, pw);
+    }
+
+    @Override
+    public void updateLog(String userId, String passwd) {
+        userMapper.updateLog(userId, passwd);
+    }
+
+    @Override
+    public int accountCheck(String userId, String email) {
+        log.info("============= accountCheck Service =============");
+        int cnt = userMapper.accountCheck(userId, email);
+        log.info("cnt : " + cnt);
+        return cnt;
+    }
 
 }

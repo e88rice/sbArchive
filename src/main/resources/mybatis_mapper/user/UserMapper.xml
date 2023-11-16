@@ -30,6 +30,11 @@
         VALUES (#{userId}, #{role_set})
     </insert>
 
+    <insert id="addLog">
+        insert into user_pw_log (userId, passwd, modDate)
+        VALUES (#{userId}, #{passwd}, now())
+    </insert>
+
     <select id="emailCheck" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM user WHERE email = #{email}
     </select>
@@ -43,12 +48,35 @@
     </select>
 
     <select id="getUserInfo" resultMap="getUser" resultType="com.project.sbarchive.vo.user.UserVO">
-        SELECT u.*, urs.role_set FROM user u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId};
+        SELECT u.*, urs.role_set FROM user u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId}
     </select>
 
     <select id="getUserId" parameterType="String" resultType="String">
         SELECT userId FROM user WHERE email = #{email}
     </select>
 
+    <select id="userPasswdCheck" resultType="String">
+        SELECT passwd FROM user WHERE userId = #{userId}
+    </select>
+
+    <select id="accountCheck" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE userId = #{userId} AND email = #{email}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE user set passwd = #{passwd} WHERE userId = #{userId};
+    </update>
+
+    <update id="updateLogTemp">
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 1 WHERE userId = #{userId};
+    </update>
+
+    <update id="updateLog">
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0 WHERE userId = #{userId};
+    </update>
+
+    <select id="isTempPassword" resultType="int">
+        SELECT isTempPassword FROM user_pw_log WHERE userId = #{userId}
+    </select>
 
 </mapper>
