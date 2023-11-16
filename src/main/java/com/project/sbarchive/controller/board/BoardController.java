@@ -107,7 +107,9 @@ public class BoardController {
         int boardId = boardDTO.getBoardId();
         boardFileService.removeBoardImages(boardId);
 
-        if(files.size() >0) {
+        log.info("removeIMG!!!!!!!!!!!!");
+        if(files!=null && files.size() > 0 ) {
+            log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             boardFileService.addBoardImages(boardId, files);
         }
         return "redirect:/board/read?boardId="+boardId;
