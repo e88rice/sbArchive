@@ -74,4 +74,13 @@ public class ReplyServiceImpl implements ReplyService {
         return replyMapper.getReplyCount(boardId);
     }
 
+    @Override
+    public void upReplyCount(int boardId) {
+        replyMapper.upReplyCount(boardId);
+    }
+
+    @Override
+    public void downReplyCount(int boardId) {
+        replyMapper.downReplyCount(boardId);
+    }
 }

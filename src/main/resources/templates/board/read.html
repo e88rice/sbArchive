@@ -139,7 +139,7 @@
 </style>
 
 <div layout:fragment="content">
-    <form  action="/board/modify" method="post" class="readBoard_form"  enctype="multipart/form-data">
+    <form  action="/board/modify" method="get" class="readBoard_form"  enctype="multipart/form-data">
         <div class="row mt-3">
             <div class="col">
                 <div class="card">
@@ -258,10 +258,7 @@
     const boardId = [[${dto.boardId}]]; // board Idx
     const link = [[${pageRequestDTO.getLink()}]];
 
-    document.querySelector(".btn-primary").addEventListener("click",function () {
-        console.log(boardId+"!!!!!!!!!!!!!!!!")
-        self.location = `/board/modify/boardId=?${boardId}`
-    },false);
+
 
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
         location.href = `/board/boardList?${link}`;

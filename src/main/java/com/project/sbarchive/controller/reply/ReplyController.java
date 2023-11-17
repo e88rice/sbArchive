@@ -48,6 +48,7 @@ public class ReplyController {
 
         replyDTO.setUserId(principal.getName());
         int replyId=replyService.addReply(replyDTO);
+        replyService.upReplyCount(replyDTO.getBoardId()); // 게시판 리플카운트 +1 DB = board
         resultMap.put("replyId", replyId);
 
         return resultMap;
@@ -76,6 +77,8 @@ public class ReplyController {
     @DeleteMapping(value = "/{replyId}")
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId) {
         replyService.removeReply(replyId);
+        ReplyDTO replyDTO = replyService.getReply(replyId);
+        replyService.downReplyCount(replyDTO.getBoardId());
         Map<String, Integer> resultMap=new HashMap<>();
         resultMap.put("replyId", replyId);
         return resultMap;

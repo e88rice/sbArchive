@@ -27,4 +27,8 @@ public interface ReplyService {
     // 댓글 개수
     int getReplyCount(int boardId);
 
+    void upReplyCount(int boardId);
+
+    void downReplyCount(int boardId);
+
 }

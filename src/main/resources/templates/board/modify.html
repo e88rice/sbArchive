@@ -50,7 +50,7 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">좋아요</span>
-                            <input type="text" class="form-control" name="ip" th:value="${dto.likeUp}" readonly>
+                            <input type="text" class="form-control" name="likeUp" th:value="${dto.likeUp}" readonly>
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">조회수</span>
@@ -64,8 +64,6 @@
                         </div>
 
                         <div class="add_sb_fileWrap">
-                            <input class="upload-name" th:value="${dto.files}" placeholder="첨부파일">
-                            <label for="files">파일찾기</label>
                             <input type="file" th:value="${dto.files}" id="files" name="files" multiple="multiple">
                         </div>
 
@@ -95,9 +93,7 @@
         const boardId = [[${dto.boardId}]];
         const link = [[${pageRequestDTO.getLink()}]];
 
-        // document.querySelector(".btn-primary").addEventListener("click",function () {
-        //     self.location = `/board/modify/${boardId}`
-        // },false);
+
         document.querySelector(".btnRemove").addEventListener("click",function (e){
             frm.action = `/board/remove?boardId=${boardId}`; //삭제시 액션경로
             frm.method = "post";
