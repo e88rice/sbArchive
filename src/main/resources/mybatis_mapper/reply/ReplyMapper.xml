@@ -30,4 +30,12 @@
         select count(*) from reply where boardId=#{boardId}
     </select>
 
+    <update id="upReplyCount">
+        update board set replyCount = replyCount + 1 where boardId=#{boardId}
+    </update>
+
+    <update id="downReplyCount">
+        update board set replyCount = replyCount - 1 where boardId=#{boardId}
+    </update>
+
 </mapper>

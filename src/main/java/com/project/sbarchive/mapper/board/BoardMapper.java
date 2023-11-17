@@ -27,5 +27,5 @@ public interface BoardMapper {
 
     int getCount(PageRequestDTO pageRequestDTO);
 
-    int getReplyCount(int boardId);
+
 }
