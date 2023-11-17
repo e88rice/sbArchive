@@ -67,6 +67,50 @@
         </div>
         <div class="row my_content">
             <h1>작성 아카이브 보기</h1>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="card-title">total : [[${responseDTO.total}]]</h6>
+                        <button type="button" class="btn btn-primary">선택삭제</button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox"></th>
+                                    <th scope="col">번호</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">작성일</th>
+                                </tr>
+                            </thead>
+                            <tbody th:with="link = ${pageRequestDTO.getLink()}">
+                                <tr th:each="dto:${responseDTO.dtoList}">
+                                    <th><input type="checkbox"></th>
+                                    <th scope="col" th:text="${responseDTO.startNum - dtoStat.index}"></th>
+                                    <td><a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                    <td>[[${dto.add_date}]]</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="float-end">
+                            <ul class="pagination flex-wrap">
+                                <li class="page-item" th:if="${responseDTO.prev}">
+                                    <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
+                                </li>
+                                <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                    <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                                        <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                                    </li>
+                                </th:block>
+                                <li class="page-item" th:if="${responseDTO.next}">
+                                    <a class="page-link" th:data-num="${responseDTO.end + 1}">다음으로</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--    end row-->
     </div>
 
 </div>

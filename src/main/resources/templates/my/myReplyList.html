@@ -56,10 +56,10 @@
                     <li>
                         <a href="/my/mySignBoardList">작성 아카이브 보기</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="/my/myBoardList">작성 글 보기</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/my/myReplyList">작성 댓글 보기</a>
                     </li>
                 </ul>
@@ -80,15 +80,13 @@
                                 <th scope="col">번호</th>
                                 <th scope="col">제목</th>
                                 <th scope="col">작성일</th>
-                                <th scope="col">조회</th>
                             </tr>
                             </thead>
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
                             <tr th:each="dto:${responseDTO.dtoList}">
                                 <th scope="col" th:text="${responseDTO.startNum - dtoStat.index}"></th>
-                                <td><a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                <td><a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none">[[${dto.content}]]</a></td>
                                 <td>[[${dto.add_date}]]</td>
-                                <td>[[${dto.hit}]]</td>
                             </tr>
                             </tbody>
                         </table>

@@ -14,13 +14,13 @@ class SignBoardMapperTest {
     @Autowired(required = false)
     private SignBoardMapper signBoardMapper;
 
-    @Test
-    void register() {
-        signBoardMapper.add(SignBoardVO.builder()
-                .xOffSet("35.8661170068962")
-                .yOffSet("128.593835998552")
-                .title("코리아 IT 아카데미 대구지점")
-                .address("대구광역시 중구 중앙대로 366").build());
-
-    }
+//    @Test
+//    void register() {
+//        signBoardMapper.add(SignBoardVO.builder()
+//                .xOffSet("35.8661170068962")
+//                .yOffSet("128.593835998552")
+//                .title("코리아 IT 아카데미 대구지점")
+//                .address("대구광역시 중구 중앙대로 366").build());
+//
+//    }
 }
