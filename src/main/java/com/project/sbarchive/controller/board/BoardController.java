@@ -79,7 +79,7 @@ public class BoardController {
     @GetMapping({"/read","/modify"})
     public void view(Model model, int boardId, HttpServletRequest request,List<MultipartFile> files,
                      PageRequestDTO pageRequestDTO) {
-        boardService.hit(boardId);
+//        boardService.hit(boardId);
         BoardDTO boardDTO = boardService.getBoard(boardId);
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO,BoardAllDTO.class);
         boardAllDTO.setFiles( boardFileService.getBoardImages(boardId));

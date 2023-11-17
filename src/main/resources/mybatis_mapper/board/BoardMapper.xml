@@ -17,7 +17,7 @@
     <update id="modify" >
         update board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
     </update>
-    <update id="hit" >
+    <update id="hitCount" >
         UPDATE board  SET hit = hit + 1  WHERE boardId = #{boardId}
     </update>
     <update id="likeUp" >

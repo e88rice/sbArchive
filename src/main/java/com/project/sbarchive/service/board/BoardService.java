@@ -14,7 +14,7 @@ public interface BoardService {
 
     void modify(BoardDTO boardDTO);
 
-    void hit(int boardId);
+    void hitCount(int boardId);
 
     void remove(int boardId);
 

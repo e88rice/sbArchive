@@ -55,8 +55,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void hit(int boardId) {
-        boardMapper.hit(boardId);
+    public void hitCount(int boardId) {
+        boardMapper.hitCount(boardId);
     }
 
     @Override
