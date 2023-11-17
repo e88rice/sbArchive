@@ -9,103 +9,482 @@
     .mypage_div {
         margin: 0 auto;
         width: 1000px;
+        padding-top: 100px;
     }
 
-    .border_line_bottom {
-        border-bottom: 1px solid #ededed;
+    /*  미안합니다.. 여기 좀 쓰겠습니다  */
+    /*  쪽지함 주인 올림 - */
+    @font-face {
+        font-family: 'JalnanGothic';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .show {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent !important;
+        -webkit-backdrop-filter: blur(3px);
+        backdrop-filter: blur(3px);
+    }
+    .message_modal_dialog {
+        font-family: JalnanGothic;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .message_view_modal_dialog {
+        font-family: JalnanGothic;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 60% !important;
+        height: 100% !important;
     }
 
-    .tab_wrap {
-        height: 61px;
+    .message_modal_view_content {
+        width: 50vw !important;
+        height: 70vh !important;
+    }
+    .message_view_modal_content {
+        width: 40vw !important;
+        height: 40vh !important;
+    }
+    .message_modal_view_header {
+        display: flex !important;
+        justify-content: right !important;
+        border: none !important;
+        height: 10% !important;
+    }
+    .message_btn_close {
+        border: none !important;
+        background-color: transparent !important;
+        font-size: 20px !important;
+    }
+    .message_modal_body, .message_view_modal_body {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: start !important;
+        width: 100% !important;
+        height: 80% !important;
     }
 
-    .tab {
-        position: relative;
-        top: 1px;
-        list-style: none;
-        height: 70px;
+    .message_modal_footer {
+        display: flex !important;
+        justify-content: end;
+        height: 10% !important;
     }
-
-    .tab > li {
-        float: left;
+    .message_nav {
+        display: flex;
+        align-items: start;
+        width: 100%;
+    }
+    .message_nav_received, .message_nav_sent {
+        width: 50%;
         text-align: center;
-        width: 200px;
-        height: 60px;
+        cursor: pointer;
     }
 
-    .active {
-        border-bottom: 2px solid deepskyblue;
-    }
-    .active > a {
-        color: deepskyblue;
+    .message_nav .active {
+        color: #60609f;
+        font-weight: bold;
+        border: 1px solid #7fa1c2;
+        box-shadow: 2px 2px 5px black;
     }
 
-    .my_content {
-        padding-top: 30px;
+    .disnone {
+        display: none !important;
+    }
+    .received_message_container, .sent_message_container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .received_message_content_container, .sent_message_content_container {
+        text-align: left !important;
+        border-collapse: separate;
+        border-spacing: 20px;
+    }
+    .received_message_content_container th, .sent_message_content_container th {
+        text-align: left !important;
+    }
+    .message_content_wrap {
+        cursor: pointer;
+    }
+    .message_checkbox {
+        width: 10%;
+    }
+    .message_checkbox input[type=checkbox] {
+        zoom: 2.0;
+    }
+    .message_sender, .message_receiver {
+        width: 20%;
+    }
+    .message_content {
+        width: 57%;
+        overflow: hidden;
+    }
+    .message_sendDate {
+        width: 13%;
+    }
+    .received_page_container ul, .sent_message_container ul{
+        display: flex;
+    }
+    .page_wrap {
+        list-style: none;
+        text-align: center;
+    }
+    .page_wrap .active {
+        font-weight: bold;
+        background-color: #000000;
+    }
+    .active .message_page {
+        color: #ffffff;
+    }
+    .page-item {
+        line-height: 25px;
+        width: 25px;
+        height: 25px;
+        margin: 0 6px;
     }
 </style>
 
 <div layout:fragment="content">
     <div class="mypage_div">
-        <div class="border_line_bottom">
-            <div class="tab_wrap">
-                <ul class="tab">
-                    <li class="active">
-                        <a href="/my/mypage">회원정보 보기</a>
-                    </li>
-                    <li>
-                        <a href="/my/mySignBoardList">작성 아카이브 보기</a>
-                    </li>
-                    <li>
-                        <a href="/my/myBoardList">작성 글 보기</a>
-                    </li>
-                    <li>
-                        <a href="/my/myReplyList">작성 댓글 보기</a>
-                    </li>
-                </ul>
-            </div>
+        <div>
+            <span>이메일 : </span>
+            <span sec:authentication="principal.email"></span>
         </div>
-        <div class="row my_content">
-            <h1>회원정보</h1>
-            <div class="col-sm-9">
-                <div>
-                    <span>이메일 : </span>
-                    <span th:text="${userInfo.email}"></span>
-                </div>
-                <div>
-                    <span>아이디 : </span>
-                    <span th:text="${userInfo.userId}"></span>
-                </div>
-                <div>
-                    <span>닉네임 : </span>
-                    <span th:text="${userInfo.nickname}"></span>
-                </div>
-                <div>
-                    <span>가입일 : </span>
-                    <span th:text="${userInfo.regDate}"></span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div>
-                    <ul>
-                        <li>
-                            <a href="/my/auth" >회원정보 변경</a>
-                        </li>
-                        <li>
-                            <a href="#" >이메일 주소 변경</a>
-                        </li>
-                        <li>
-                            <a href="/my/modifyPasswd" >비밀번호 재설정</a>
-                        </li>
-                        <li>
-                            <a href="#" >탈퇴</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div>
+            <span>아이디 : </span>
+            <span sec:authentication="name"></span>
+        </div>
+        <div>
+            <span>닉네임 : </span>
+            <span sec:authentication="principal.nickname"></span>
+        </div>
+        <div>
+            <button type="button" href="#" class="btn btn-primary modifyBtn">회원정보수정</button>
+            <button id="message-box" sec:authorize="isAuthenticated()">쪽지함</button>
+        </div>
+        <div>
+            <ul>
+                <li>
+                    <a href="/my/mySignBoardList">내가 쓴 간판아카이브</a>
+                </li>
+                <li>
+                    <a href="/my/myBoardList">내가 쓴 글</a>
+                </li>
+                <li>
+                    <a href="/my/myReplyList">내가 쓴 댓글</a>
+                </li>
+                <li>
+                    <a>쪽지</a>
+                </li>
+            </ul>
         </div>
     </div>
 
+
+    <div class="modal message_modal modal_container" tabindex="-1">
+
+        <div class="modal-dialog message_modal_dialog">
+
+            <div class="modal-content modal_view_content message_modal_view_content">
+
+                <div class="modal-header modal_view_header message_modal_view_header">
+                    <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <div class="modal-body message_modal_body">
+
+                    <nav class="message_nav"> <!-- 쪽지함 네비게이션 -->
+                        <div class="message_nav_received active">받은 쪽지함</div>
+                        <div class="message_nav_sent">보낸 쪽지함</div>
+                    </nav>
+
+                    <div class="received_message_container">
+                        <table class="received_message_content_container">
+                            <tr>
+                                <th>선택</th>
+                                <th>발신인</th>
+                                <th>내용</th>
+                                <th>날짜</th>
+                            </tr>
+                            <tr class="message_content_wrap">
+                                <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
+                                <td class="message_sender"> <p>dddddd</p> </td>
+                                <td class="message_content"> <p>ddddddd</p> </td>
+                                <td class="message_sendDate"> <p>ddddddd</p> </td>
+                            </tr>
+                        </table>
+
+                        <div class="received_page_container">
+
+                        </div>
+                    </div>
+
+                    <div class="sent_message_container disnone">
+
+                        <table class="sent_message_content_container">
+                            <tr>
+                                <th>선택</th>
+                                <th>수신인</th>
+                                <th>내용</th>
+                                <th>날짜</th>
+                            </tr>
+                            <tr class="message_content_wrap">
+                                <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
+                                <td class="message_receiver"> <p>dddddd</p> </td>
+                                <td class="message_content"> <p>ddddddd</p> </td>
+                                <td class="message_sendDate"> <p>ddddddd</p> </td>
+                            </tr>
+                        </table>
+
+                        <div class="sent_page_container">
+
+                        </div>
+
+                    </div>
+
+                </div> <!-- Modal body End -->
+
+                <div class="modal-footer message_modal_footer">
+                    <div>
+                        <button id="msgSelectRemove">선택 삭제</button>
+                        <button id="msgAllSelect">전체 선택</button>
+                    </div>
+                </div> <!-- Modal footer End -->
+
+
+
+            </div> <!-- Modal Content End -->
+
+        </div> <!-- Modal Dialog End -->
+
+    </div><!-- Modal Container End -->
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/message/messageAsync.js"></script>
+    <script>
+        let isAnonymous = '';
+        getUsername().then(r => {
+            console.log(r[0] === 'null');
+            isAnonymous = r[0];
+            console.log(isAnonymous);
+
+            let receivedPage = 1; // 수신 처음 페이지는 1
+            let sentPage = 1; // 발신 처음 페이지는 1
+
+            // 현재 사용자가 로그인 상태라면
+            if(isAnonymous !== 'null') {
+
+                const messageBoxBtn = document.querySelector("#message-box");                       // 헤더 쪽지함 버튼
+                const messageModal = new bootstrap.Modal(document.querySelector(".message_modal")); // 모달 컨테이너
+                const receivedTab = document.querySelector(".message_nav_received");                // 받은 쪽지함 탭
+                const sentTab = document.querySelector(".message_nav_sent");                        // 보낸 쪽지함 탭
+                const receivedMessageContainer = document.querySelector(".received_message_container"); // 받은 쪽지함 컨텐츠 영역
+                const sentMessageContainer = document.querySelector(".sent_message_container");         // 보낸 쪽지함 컨텐츠 영역
+                const msgSelectRemoveBtn = document.getElementById("msgSelectRemove");                // 선택 삭제 버튼
+                const msgAllSelectBtn = document.getElementById("msgAllSelect");                      // 전체 선택 버튼
+                const msgViewModal = new bootstrap.Modal(document.querySelector(".message_view_modal")); // 쪽지 보는 모달 컨테이너
+
+                console.log("ㅎㅇ");
+
+                // 쪽지함 열기 이벤트
+                messageBoxBtn.addEventListener("click", function (){
+                    messageModal.show();
+                    ReceivedMsgByPage(receivedPage, isAnonymous);
+                })
+
+                // 페이지와 유저의 아이디를 받아 받은 쪽지함을 갱신해주는 함수
+                function ReceivedMsgByPage(rPage, Id) {
+                    getReceivedMessage(rPage, Id).then( r => { // 1페이지 기준
+                        console.log(r);
+                        addMsgPagingForm("received", r); // 1페이지 기준 페이징
+                        addMsgForm("received", r);       // 1페이지 기준 쪽지 리스트
+                        getPageNum("received");          // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
+                        // viewModalShow();                 // 클릭 시 모달 열리는 이벤트
+                    }).catch( e => {
+                        console.log(e)
+                    })
+                }
+
+                // 페이지와 유저의 아이디를 받아 보낸 쪽지함을 갱신해주는 함수
+                function SentMsgByPage(rPage, Id) {
+                    getSentMessage(rPage, Id).then( r => { // 1페이지 기준
+                        console.log(r);
+                        addMsgPagingForm("sent", r);       // 1페이지 기준 페이징
+                        addMsgForm("sent", r);            // 1페이지 기준 쪽지 리스트
+                        getPageNum("sent");               // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
+                        // viewModalShow();                 // 클릭 시 모달 열리는 이벤트
+                    }).catch( e => {
+                        console.log(e)
+                    })
+                }
+
+                // 받은 쪽지함 탭 열기 이벤트
+                receivedTab.addEventListener("click", function (){
+                    receivedMessageContainer.classList.remove("disnone");  // 받은 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 삭제
+                    receivedTab.classList.add("active");                   // 받은 쪽지함 = 선택 디자인 css를 만들어주는 클래스 추가
+                    sentMessageContainer.classList.add("disnone");         // 보낸 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 추가
+                    sentTab.classList.remove("active");                    // 보낸 쪽지함 = 선택 디자인 css를 만들어주는 클래스 삭제
+                    receivedPage = 1;
+                    ReceivedMsgByPage(receivedPage, isAnonymous);        // 페이지와 id를 전달받아 객체를 받아 여러가지 설정을 해주는 함수
+                })
+
+                // 보낸 쪽지함 탭 열기 이벤트
+                sentTab.addEventListener("click", function (){
+                    sentMessageContainer.classList.remove("disnone");   // 보낸 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 삭제
+                    sentTab.classList.add("active");                    // 보낸 쪽지함 = 선택 디자인 css를 만들어주는 클래스 추가
+                    receivedMessageContainer.classList.add("disnone");  // 받은 쪽지함 = 디스플레이 none 으로 만들어주는 클래스 추가
+                    receivedTab.classList.remove("active")              // 받은 쪽지함 = 선택 디자인 css를 만들어주는 클래스 삭제
+                    sentPage = 1;
+                    SentMsgByPage(sentPage, isAnonymous);             // 페이지와 id를 전달받아 객체를 받아 여러가지 설정을 해주는 함수
+                })
+
+                function addMsgPagingForm(type, response) {
+                    let str = "<div class=\"page_container\">\n" +
+                        "    <ul class=\"page_wrap\">\n";
+                    if(response.prev) {
+                        str +=             "      <li class=\"page_item\">\n" +
+                            "        <a class=\"msg_page_link\" data-num=\""+ (response.start-1) +"\"><i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev</a>\n" +
+                            "      </li>\n";
+                    }
+                    for(let i=response.start; i<=response.end; i++) {
+                        if(response.page===i) {
+                            str +=             "        <li class=\"page-item active\">\n" +
+                                "          <a class=\"msg_page_link message_page\" data-num=\""+ i + "\">"+i+"</a>\n" +
+                                "        </li>\n";
+                        } else {
+                            str +=             "        <li class=\"page-item\">\n" +
+                                "          <a class=\"msg_page_link\" data-num=\""+ i + "\">"+i+"</a>\n" +
+                                "        </li>\n";
+                        }
+                    }
+                    if(response.next) {
+                        str +=             "      <li class=\"page-item\">\n" +
+                            "        <a class=\"msg_page_link\" data-num=\"" + (response.end+1) +"\">Next</a>\n" +
+                            "      </li>\n";
+                    }
+                    str +=             "    </ul>\n" +
+                        "  </div>";
+
+                    if(type === "received") {
+                        document.querySelector(".received_page_container").innerHTML = str;
+                    } else {
+                        document.querySelector(".sent_page_container").innerHTML = str;
+                    }
+                }
+
+                function addMsgForm(type, response) {
+                    let str = "            <tr>\n" +
+                        "              <th>선택</th>\n" +
+                        "              <th>";
+                    if(type === "received") str += "발신인";
+                    else str += "수신인";
+                    str +=  "</th>\n" +
+                        "              <th>내용</th>\n" +
+                        "              <th>날짜</th>\n" +
+                        "            </tr>";
+                    if(type === "received") {
+                        for(let i=0; i<response.dtoList.length; i++) {
+                            let msg = response.dtoList[i];
+                            str += "            <tr class=\"message_content_wrap\">\n" +
+                                "              <td class=\"message_checkbox\"> <input type=\"checkbox\" value=\"" + msg.index + "\"> </td>\n" +
+                                "              <td class=\"message_sender\"> <p>" + msg.senderId + "</p> </td>\n" +
+                                "              <td class=\"message_content\"> <p>" + msg.content + "</p> </td>\n" +
+                                "              <td class=\"message_sendDate\"> <p> " + msg.sendDate[0]+"-"+msg.sendDate[1]+"-"+msg.sendDate[2] + "</p> </td>\n" +
+                                "            </tr>"
+                        }
+                        document.querySelector(".received_message_content_container").innerHTML = str;
+                    } else {
+                        for(let i=0; i<response.dtoList.length; i++) {
+                            let msg = response.dtoList[i];
+                            str += "            <tr class=\"message_content_wrap\">\n" +
+                                "              <td class=\"message_checkbox\"> <input type=\"checkbox\" value=\"" + msg.index + "\"> </td>\n" +
+                                "              <td class=\"message_receiver\"> <p>" + msg.receiverId + "</p> </td>\n" +
+                                "              <td class=\"message_content\"> <p>" + msg.content + "</p> </td>\n" +
+                                "              <td class=\"message_sendDate\"> <p> " + msg.sendDate[0]+"-"+msg.sendDate[1]+"-"+msg.sendDate[2] + "</p> </td>\n" +
+                                "            </tr>"
+                            document.querySelector(".sent_message_content_container").innerHTML = str;
+                        }
+                    }
+                }
+
+                // 전체 선택 버튼 누르면 체크가 토글 처리
+                msgAllSelectBtn.addEventListener("click", function () {
+                    document.querySelectorAll(".message_checkbox input[type=checkbox]").forEach( message => {
+                        message.checked = true;
+                    })
+                })
+
+                // 선택 삭제 버튼을 누르면 선택된 것만 삭제 처리
+                msgSelectRemoveBtn.addEventListener("click", function () {
+                    alert("ㅎㅇ");
+                    document.querySelectorAll(".message_checkbox input[type=checkbox]:checked").forEach( message => {
+                        console.log(message)
+                        let type = message.parentElement.nextElementSibling.className.split("_")[1]; // message_sender
+                        console.log(message.value + " : " + type);
+                        removeByIdxAndType(message.value, type);
+                        if(type === "sender") { // 받은 쪽지함에서 삭제했을 경우
+                            ReceivedMsgByPage(receivedPage, isAnonymous); // 받은 쪽지함 갱신
+                        } else { // 보낸 쪽지함에서 삭제한 경우
+                            SentMsgByPage(sentPage, isAnonymous); // 보낸 쪽지함 갱신
+                        }
+                    })
+                })
+
+                function removeByIdxAndType(index, type) {
+                    removeByIndexAndType(index, type).then(r => {
+                        console.log(r);
+                    }).catch(e => {
+                        console.log(e);
+                    })
+                }
+
+                function getPageNum(type) {
+                    const pageLinks = document.querySelectorAll(".msg_page_link");
+                    pageLinks.forEach(pageLink => {
+                        pageLink.addEventListener("click", function (e){
+                            e.preventDefault();
+                            if(type === "received") {
+                                receivedPage = pageLink.dataset.num;
+                                ReceivedMsgByPage(receivedPage, isAnonymous);
+                            } else {
+                                sentPage = pageLink.dataset.num;
+                                SentMsgByPage(sentPage, isAnonymous);
+                            }
+                        })
+                    })
+                }
+
+                function viewModalShow() {
+                    document.querySelectorAll(".message_content_wrap").forEach( wrap => {
+                        wrap.addEventListener("click", function (){
+                            console.log(wrap.firstElementChild.firstElementChild.value);
+                            msgViewModal.show();
+                            let str = "";
+                        })
+                    })
+                }
+
+
+
+            }
+        }).catch( e => {
+            console.log(e);
+        })
+
+    </script>
 </div>
 
 

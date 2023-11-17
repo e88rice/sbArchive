@@ -9,3 +9,13 @@ async function getSentMessage(page, senderId) {
     const result = await axios.get(`/message/getSentMsg/${page}/${senderId}`);
     return result.data;
 }
+
+async function removeByIndexAndType(index, type) {
+    const result = await axios.delete(`/message/remove/${index}/${type}`);
+    return result.data;
+}
+
+async function getUsername() {
+    const result = await axios.get(`/message/getUsername`);
+    return result.data;
+}

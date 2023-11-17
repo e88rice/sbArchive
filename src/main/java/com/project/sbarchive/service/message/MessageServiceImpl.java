@@ -34,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> dtoList = messageMapper.getAllMsgByReceiver(receiverId, pageRequestDTO.getSkip(), pageRequestDTO.getSize())
                 .stream().map(messageVO -> modelMapper.map(messageVO, MessageDTO.class)).collect(Collectors.toList());
 
-
+        log.info(dtoList);
         // 받은 쪽지 총 개수
         int total = messageMapper.getAllMsgByReceiverCount(receiverId);
 
@@ -52,11 +52,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public PageResponseDTO<MessageDTO> getAllMsgBySender(String senderId, PageRequestDTO pageRequestDTO) {
         // 보낸 쪽지 리스트
-        List<MessageDTO> dtoList = messageMapper.getAllMsgByReceiver(senderId, pageRequestDTO.getSkip(), pageRequestDTO.getSize())
+        List<MessageDTO> dtoList = messageMapper.getAllMsgBySender(senderId, pageRequestDTO.getSkip(), pageRequestDTO.getSize())
                 .stream().map(messageVO -> modelMapper.map(messageVO, MessageDTO.class)).collect(Collectors.toList());
 
         // 보낸 쪽지 총 개수
-        int total = messageMapper.getAllMsgByReceiverCount(senderId);
+        int total = messageMapper.getAllMsgBySenderCount(senderId);
 
         return PageResponseDTO.<MessageDTO>withAll()
                 .dtoList(dtoList)

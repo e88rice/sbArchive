@@ -22,6 +22,7 @@ public class MessageDTO {
     private boolean isRead;
     private boolean isSenderDeleted;
     private boolean isReceiverDeleted;
+
     private LocalDate sendDate;
     private LocalDate readDate;
 

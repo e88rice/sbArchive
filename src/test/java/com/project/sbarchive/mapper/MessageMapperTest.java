@@ -24,8 +24,7 @@ public class MessageMapperTest {
 
     @Test
     public void getAllMsgByReceiver() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
-        log.info(pageRequestDTO.getSkip());
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(7).build();
         List<MessageVO> receiveMessages = messageMapper.getAllMsgByReceiver("test1", pageRequestDTO.getSkip(), pageRequestDTO.getSize());
         for(MessageVO message : receiveMessages) {
             log.info(message);
@@ -39,7 +38,7 @@ public class MessageMapperTest {
 
     @Test
     public void getAllMsgBySender() {
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(2).size(10).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(7).build();
         List<MessageVO> sendMessages = messageMapper.getAllMsgBySender("test", pageRequestDTO.getSkip(), pageRequestDTO.getSize());
         for(MessageVO message : sendMessages) {
             log.info(message);
@@ -48,7 +47,7 @@ public class MessageMapperTest {
 
     @Test
     public void getAllMsgBySenderCount() {
-        log.info("total sent : " + messageMapper.getAllMsgByReceiverCount("test1"));
+        log.info("total sent : " + messageMapper.getAllMsgBySenderCount("test1"));
     }
 
     @Test

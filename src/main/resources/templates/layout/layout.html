@@ -4,175 +4,40 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>암행어사 - 외국어 간판 아카이브</title>
-  <style>
-    @font-face {
-      font-family: 'JalnanGothic';
-      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
-      font-weight: normal;
-      font-style: normal;
-    }
-    .show {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: transparent !important;
-      -webkit-backdrop-filter: blur(3px);
-      backdrop-filter: blur(3px);
-    }
-    .message_modal_dialog {
-      font-family: JalnanGothic;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
-      width: 100% !important;
-      height: 100% !important;
-    }
-    .message_modal_view_content {
-      width: 50vw !important;
-      height: 70vh !important;
-    }
-    .message_modal_view_header {
-      display: flex !important;
-      justify-content: right !important;
-      border: none !important;
-      height: 10% !important;
-    }
-    .message_btn_close {
-      border: none !important;
-      background-color: transparent !important;
-      font-size: 20px !important;
-    }
-    .message_modal_body {
-      display: flex !important;
-      flex-direction: column;
-      justify-content: start !important;
-      width: 100% !important;
-      height: 80% !important;
-    }
-
-    .message_modal_footer {
-      display: flex !important;
-      justify-content: end;
-      height: 10% !important;
-    }
-    .message_nav {
-      display: flex;
-      align-items: start;
-      width: 100%;
-    }
-    .message_nav_received, .message_nav_sent {
-      width: 50%;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .message_nav .active {
-      color: #60609f;
-      font-weight: bold;
-      border: 1px solid #7fa1c2;
-      box-shadow: 2px 2px 5px black;
-    }
-
-    .disnone {
-      display: none !important;
-    }
-    .received_message_container, .sent_message_container {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    .received_message_content_container, .sent_message_content_container {
-      text-align: left !important;
-      border-collapse: separate;
-      border-spacing: 20px;
-    }
-    .received_message_content_container th, .sent_message_content_container th {
-      text-align: left !important;
-    }
-    .message_content_wrap {
-      cursor: pointer;
-    }
-    .message_checkbox {
-      width: 10%;
-    }
-    .message_checkbox input[type=checkbox] {
-      zoom: 2.0;
-    }
-    .message_sender, .message_receiver {
-      width: 20%;
-    }
-    .message_content {
-      width: 60%;
-      overflow: hidden;
-    }
-    .message_sendDate {
-      width: 10%;
-    }
-    /*.received_page_container, .sent_page_container {*/
-    /*  position: relative;*/
-    /*  bottom: 0;*/
-    /*  left: 0;*/
-    /*}*/
-    .received_page_container ul, .sent_message_container ul{
-      display: flex;
-    }
-    .page_wrap {
-      list-style: none;
-      text-align: center;
-    }
-    .page_wrap .active {
-      font-weight: bold;
-      background-color: #000000;
-    }
-    .active a {
-      color: #ffffff;
-    }
-    .page-item {
-      line-height: 25px;
-      width: 25px;
-      height: 25px;
-      margin: 0 6px;
-    }
-  </style>
 </head>
-  <!-- Meta, title, CSS, favicons, etc. -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <title>RUN CHARITY </title>
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>RUN CHARITY </title>
 
-  <!-- 폰트어썸 -->
-  <script src="https://kit.fontawesome.com/4ae8b5f015.js" crossorigin="anonymous"></script>
+<!-- 폰트어썸 -->
+<script src="https://kit.fontawesome.com/4ae8b5f015.js" crossorigin="anonymous"></script>
 
-  <!-- boxicon -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <!-- Styles -->
-  <link rel='stylesheet' href='/assets/css/bootstrap.min.css'>
-  <link rel='stylesheet' href='/assets/css/animate.min.css'>
-  <link rel='stylesheet' href="/assets/css/font-awesome.min.css"/>
-  <link rel='stylesheet' href="/assets/css/style.css?"/>
+<!-- boxicon -->
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<!-- Styles -->
+<link rel='stylesheet' href='/assets/css/bootstrap.min.css'>
+<link rel='stylesheet' href='/assets/css/animate.min.css'>
+<link rel='stylesheet' href="/assets/css/font-awesome.min.css"/>
+<link rel='stylesheet' href="/assets/css/style.css?"/>
 
-  <!-- Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
+<!-- Fonts -->
+<link href='http://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
 
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 
-  <![endif]-->
+<![endif]-->
 
-  <!-- Favicon -->
-  <link rel="shortcut icon" href="#">
-  <th:block layout:fragment="style">
+<!-- Favicon -->
+<link rel="shortcut icon" href="#">
+<th:block layout:fragment="style">
 
-  </th:block>
+</th:block>
 <body>
 <!-- End Hero Bg
 	================================================== -->
@@ -213,9 +78,9 @@
           <a class="dropdown-item" href="/user/join" sec:authorize="!isAuthenticated()">회원가입</a>
           <a class="dropdown-item" href="/my/mypage" sec:authorize="isAuthenticated()">마이페이지</a>
         </li>
-        <li>
-          <button id="message-box" sec:authorize="isAuthenticated()">쪽지함</button>
-        </li>
+        <!--        <li>-->
+        <!--          <button id="message-box" sec:authorize="isAuthenticated()">쪽지함</button>-->
+        <!--        </li>-->
       </ul>
     </nav>
   </div>
@@ -224,83 +89,7 @@
 <div class="margin-block"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<div class="modal message_modal modal_container" tabindex="-1">
 
-  <div class="modal-dialog message_modal_dialog">
-
-    <div class="modal-content modal_view_content message_modal_view_content">
-
-      <div class="modal-header modal_view_header message_modal_view_header">
-        <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="modal-body message_modal_body">
-
-        <nav class="message_nav"> <!-- 쪽지함 네비게이션 -->
-          <div class="message_nav_received active">받은 쪽지함</div>
-          <div class="message_nav_sent">보낸 쪽지함</div>
-        </nav>
-
-        <div class="received_message_container">
-          <table class="received_message_content_container">
-            <tr>
-              <th>선택</th>
-              <th>발신인</th>
-              <th>내용</th>
-              <th>날짜</th>
-            </tr>
-            <tr class="message_content_wrap">
-              <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
-              <td class="message_sender"> <p>dddddd</p> </td>
-              <td class="message_content"> <p>ddddddd</p> </td>
-              <td class="message_sendDate"> <p>ddddddd</p> </td>
-            </tr>
-          </table>
-
-          <div class="received_page_container">
-
-          </div>
-        </div>
-
-        <div class="sent_message_container disnone">
-
-          <table class="sent_message_content_container">
-            <tr>
-              <th>선택</th>
-              <th>수신인</th>
-              <th>내용</th>
-              <th>날짜</th>
-            </tr>
-            <tr class="message_content_wrap">
-              <td class="message_checkbox"> <input type="checkbox" value="쪽지인덱스번호"> </td>
-              <td class="message_receiver"> <p>dddddd</p> </td>
-              <td class="message_content"> <p>ddddddd</p> </td>
-              <td class="message_sendDate"> <p>ddddddd</p> </td>
-            </tr>
-          </table>
-
-          <div class="sent_page_container">
-
-          </div>
-
-        </div>
-
-      </div> <!-- Modal body End -->
-
-      <div class="modal-footer message_modal_footer">
-        <div>
-          <button>선택 삭제</button>
-          <button>전체 삭제</button>
-        </div>
-      </div> <!-- Modal footer End -->
-
-
-
-    </div> <!-- Modal Content End -->
-
-  </div> <!-- Modal Dialog End -->
-
-</div><!-- Modal Container End -->
 <th:block class="content" layout:fragment="content">
 
 
@@ -323,16 +112,14 @@
 <!-- Bootstrap core JavaScript
 	================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
-<script src="/assets/js/waypoints.min.js"></script>
-<script src="/assets/js/jquery.scrollTo.min.js"></script>
-<script src="/assets/js/jquery.localScroll.min.js"></script>
-<script src="/assets/js/jquery.magnific-popup.min.js"></script>
-<script src="/assets/js/validate.js"></script>
-<script src="/assets/js/common.js"></script>
+<!--<script src="/assets/js/jquery.min.js"></script>-->
+<!--<script src="/assets/js/bootstrap.min.js"></script>-->
+<!--<script src="/assets/js/waypoints.min.js"></script>-->
+<!--<script src="/assets/js/jquery.scrollTo.min.js"></script>-->
+<!--<script src="/assets/js/jquery.localScroll.min.js"></script>-->
+<!--<script src="/assets/js/jquery.magnific-popup.min.js"></script>-->
+<!--<script src="/assets/js/validate.js"></script>-->
+<!--<script src="/assets/js/common.js"></script>-->
 <script src="/js/main/easterEgg.js"></script>
 </body>
 <th:block layout:fragment="script" th:inline="javascript">

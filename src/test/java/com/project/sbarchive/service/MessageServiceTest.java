@@ -26,7 +26,7 @@ public class MessageServiceTest {
 
     @Test
     public void getAllMsgByReceiver() { // 받은 사람 기준 삭제 안한 쪽지들 전체 가져오기
-        PageResponseDTO<MessageDTO> response = messageService.getAllMsgByReceiver("test1", PageRequestDTO.builder().build());
+        PageResponseDTO<MessageDTO> response = messageService.getAllMsgByReceiver("test1", PageRequestDTO.builder().page(1).size(7).build());
         for(MessageDTO message : response.getDtoList()) {
             log.info(message);
         }
@@ -34,7 +34,7 @@ public class MessageServiceTest {
 
     @Test
     public void getAllMsgBySender() { // 보낸 사람 기준 삭제 안한 쪽지들 전체 가져오기
-        PageResponseDTO<MessageDTO> response = messageService.getAllMsgBySender("test1", PageRequestDTO.builder().page(2).build());
+        PageResponseDTO<MessageDTO> response = messageService.getAllMsgBySender("test1", PageRequestDTO.builder().page(1).size(7).build());
         for(MessageDTO message : response.getDtoList()) {
             log.info(message);
         }
