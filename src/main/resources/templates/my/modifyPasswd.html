@@ -7,8 +7,8 @@
 <style layout:fragment="style">
   .modify_div {
     margin: 0 auto;
-    padding-top: 150px;
-    width: 500px;
+    width: 1000px;
+    padding-top: 100px;
   }
   .hide {
     display: none;
@@ -16,24 +16,29 @@
 </style>
 
 <div layout:fragment="content" class="modify_div">
-  <form action="/my/modifyPasswd" method="post">
-    <div class="form-group">
-      <label for="passwd" class="form-label">새로운 비밀번호</label>
-      <div class="input-group">
-        <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control">
-        <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&amp;)를 사용하세요</div>
-      </div>
+  <div class="modifyMyInfo_div">
+    <h1>비밀번호 재설정</h1>
+    <form action="/my/modifyPasswd" method="post">
+      <div class="form-group">
+        <label for="passwd" class="form-label">새로운 비밀번호</label>
+        <div class="input-group">
+          <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control">
+          <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&amp;)를 사용하세요</div>
+        </div>
 
-      <label for="passwdCheck" class="form-label">새로운 비밀번호 확인</label>
-      <div class="input-group">
-        <input type="password" placeholder="비밀번호 확인" name="passwdCheck" id="passwdCheck" class="form-control">
-        <div class="mismatch-message2 hide">비밀번호가 일치하지 않습니다</div>
+        <label for="passwdCheck" class="form-label">새로운 비밀번호 확인</label>
+        <div class="input-group">
+          <input type="password" placeholder="비밀번호 확인" name="passwdCheck" id="passwdCheck" class="form-control">
+          <div class="mismatch-message2 hide">비밀번호가 일치하지 않습니다</div>
+        </div>
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-secondary modifyBtn">비밀번호 재설정</button>
+          <button type="button" class="btn btn-info laterBtn">메인화면으로</button>
+        </div>
       </div>
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-secondary modifyBtn">비밀번호 재설정</button>
-      </div>
-    </div>
-  </form>
+    </form>
+  </div>
+
   <script th:inline="javascript">
     // ***** 유효성 검사 - 비밀번호 *****
     const passwd = document.getElementById("passwd");
@@ -99,6 +104,13 @@
       }
 
       document.querySelector('form').submit();
+    });
+
+    document.querySelector('.laterBtn').addEventListener('click', function (e){
+      e.stopPropagation();
+      e.preventDefault();
+
+      location.href = "/index";
     });
   </script>
 </div>

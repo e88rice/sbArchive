@@ -39,4 +39,7 @@ public interface UserService {
     // 비밀번호 재설정
     void updatePassword (String userId, String passwd);
     void updateLog (String userId, String passwd);
+
+    // 닉네임 재설정
+    void modifyNickname(String userId, String email, String nickname);
 }

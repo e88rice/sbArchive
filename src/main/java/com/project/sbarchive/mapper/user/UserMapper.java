@@ -34,4 +34,7 @@ public interface UserMapper {
     void updateLog(String userId, String passwd);
 
     int isTempPassword(String userId);
+
+    // 닉네임 재설정
+    void modifyNickname(String userId, String email, String nickname);
 }

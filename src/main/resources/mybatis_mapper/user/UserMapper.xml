@@ -68,15 +68,19 @@
     </update>
 
     <update id="updateLogTemp">
-        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 1 WHERE userId = #{userId};
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 1 WHERE userId = #{userId}
     </update>
 
     <update id="updateLog">
-        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0 WHERE userId = #{userId};
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0 WHERE userId = #{userId}
     </update>
 
     <select id="isTempPassword" resultType="int">
         SELECT isTempPassword FROM user_pw_log WHERE userId = #{userId}
     </select>
+
+    <update id="modifyNickname">
+        UPDATE user set nickname = #{nickname} WHERE userId = #{userId} AND email = #{email}
+    </update>
 
 </mapper>

@@ -15,16 +15,17 @@
 
 <div layout:fragment="content">
     <div class="auth_div">
+        <h1>비밀번호 재확인</h1>
+        <p>회원의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인 합니다.</p>
         <form action="/my/auth" method="post">
             <div class="form-group">
-                <input type="hidden" name="userId" th:value="${username}">
-                <label for="passwd" class="form-label">비밀번호</label>
                 <div class="input-group">
-                    <input type="password" placeholder="비밀번호" name="password" id="passwd" class="form-control">
+                    <input type="text" name="userId" class="form-control" th:value="${username}" readonly>
+                    <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control">
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-primary passwdCheck">비밀번호 확인</button>
+                <button type="submit" class="btn btn-primary passwdCheck">확인</button>
             </div>
         </form>
     </div>

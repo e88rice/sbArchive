@@ -127,6 +127,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void modifyNickname(String userId, String email, String nickname) {
+        log.info("============= modifyNickname Service =============");
+        userMapper.modifyNickname(userId, email, nickname);
+    }
+
+    @Override
     public int accountCheck(String userId, String email) {
         log.info("============= accountCheck Service =============");
         int cnt = userMapper.accountCheck(userId, email);
