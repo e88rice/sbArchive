@@ -1,8 +1,11 @@
 package com.project.sbarchive.controller.my;
 
+import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.user.UserService;
+import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +21,16 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class MyController {
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/mypage")
-    public String myPageGET() {
+    public void myPageGET(Principal principal, Model model) {
         log.info("===== myPage Get Controller =====");
         log.info("==================== myPage Get Controller ====================");
-        return "/my/mypage";
+        UserVO userVO = userService.getUserInfo(principal.getName());
+        UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
+
+        model.addAttribute("userInfo", userDTO);
     }
 
     @GetMapping("/auth")
@@ -56,6 +63,14 @@ public class MyController {
         log.info("==================== modifyMyInfo Get Controller ====================");
     }
 
+    @PostMapping("/modifyNickname")
+    public String modifyNickname(String userId, String email, String nickname) {
+        log.info("==================== modifyNickname POST Controller ====================");
+        userService.modifyNickname(userId, email, nickname);
+
+        return "redirect:/my/mypage";
+    }
+
     @GetMapping("/modifyPasswd")
     public void modifyPasswdGET() {
         log.info("==================== modifyPasswd Get Controller ====================");
@@ -74,5 +89,15 @@ public class MyController {
     public boolean existPasswdChecked(Principal principal, String passwd){
         log.info("==================== existPasswdChecked GET Controller ====================");
         return userService.isConfirmPassword(principal.getName(), passwd);
+    }
+
+    @GetMapping("/mySignBoardList")
+    public void mySignBoardList() {
+        log.info("==================== mySignBoardList Get Controller ====================");
+    }
+
+    @GetMapping("/myBoardList")
+    public void myBoardList() {
+        log.info("==================== myBoardList Get Controller ====================");
     }
 }

@@ -50,10 +50,10 @@
         <div class="border_line_bottom">
             <div class="tab_wrap">
                 <ul class="tab">
-                    <li class="active">
+                    <li>
                         <a href="/my/mypage">회원정보 보기</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/my/mySignBoardList">작성 아카이브 보기</a>
                     </li>
                     <li>
@@ -66,44 +66,7 @@
             </div>
         </div>
         <div class="row my_content">
-            <h1>회원정보</h1>
-            <div class="col-sm-9">
-                <div>
-                    <span>이메일 : </span>
-                    <span th:text="${userInfo.email}"></span>
-                </div>
-                <div>
-                    <span>아이디 : </span>
-                    <span th:text="${userInfo.userId}"></span>
-                </div>
-                <div>
-                    <span>닉네임 : </span>
-                    <span th:text="${userInfo.nickname}"></span>
-                </div>
-                <div>
-                    <span>가입일 : </span>
-                    <span th:text="${userInfo.regDate}"></span>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div>
-                    <ul>
-                        <li>
-                            <a href="/my/auth" >회원정보 변경</a>
-                        </li>
-                        <li>
-                            <a href="#" >이메일 주소 변경</a>
-                        </li>
-                        <li>
-                            <a href="/my/modifyPasswd" >비밀번호 재설정</a>
-                        </li>
-                        <li>
-                            <a href="#" >탈퇴</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            <h1>작성 아카이브 보기</h1>
     </div>
 
 </div>
