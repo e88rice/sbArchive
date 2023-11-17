@@ -1,10 +1,13 @@
 package com.project.sbarchive.controller.message;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.project.sbarchive.dto.message.MessageDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.service.message.MessageService;
+import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 public class MessageController {
 
     private final MessageService messageService;
+    private final UserService userService;
 
     // 받은 쪽지함 페이지
     @PreAuthorize("principal.username == #receiverId")
@@ -66,6 +70,7 @@ public class MessageController {
         }
     }
 
+    // 유저 이름 가져오기
     @GetMapping("/getUsername")
     public ArrayList<String> getUsername(Principal principal) {
         ArrayList<String> msgUserId = new ArrayList<>();
@@ -75,5 +80,22 @@ public class MessageController {
             msgUserId.add("null");
         }
         return msgUserId;
+    }
+
+    @GetMapping("/get/{index}")
+    public MessageDTO getMessage(@PathVariable("index") int index) {
+        messageService.checkMessage(index);
+        return messageService.getMessage(index);
+    }
+
+    @PutMapping("/add/{receiverId}/{content}")
+    public boolean addMessage(@PathVariable("receiverId") String receiverId, @PathVariable("content") String content, Principal principal) {
+        String userName = principal.getName();
+        if( (!userName.equals(receiverId)) && userService.userIdCheck(receiverId) > 0) { // 나에게 보내는게 아니고 쪽지를 받는 사용자가 존재하는 사용자라면
+            messageService.add(userName, receiverId, content);
+            return true;
+        } else { // 나에게 보냈거나 보내는 사용자의 아이디가 존재하지 않는다면
+            return false;
+        }
     }
 }
