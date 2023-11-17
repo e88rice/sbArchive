@@ -48,7 +48,7 @@
         height: 40px;
     }
     .active {
-        font-weight: bold;
+        font-weight: bold !important;
     }
     .reply_add_wrap {
         margin: 50px;
@@ -129,11 +129,6 @@
     }
     .mcontent {
         padding: 10px;
-    }
-    .modReplyBtn {
-        width: 60px;
-        height: 40px;
-        margin: 10px;
     }
     .moreReply {
         font-size: 11px;
@@ -344,7 +339,7 @@
         if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
             pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
         }
-        // console.log(pageStr);
+        console.log(pageStr);
         replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
     }
 
@@ -380,7 +375,7 @@
                             <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
                         </div>
 
-                        <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼,  나오는 부분 -->
+                        <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                             <div class="writer_btn_area">
                                 <div>
                                     ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
@@ -405,6 +400,7 @@
                         <div class="textarea_btn_area">
                             <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control">${dto.content}</textarea>
                             <button type="button" class="btn btn-primary modReplyBtn">수정</button>
+                            <button type="button" class="btn btn-done">취소</button>
                         </div>
                      </div>
                 </li>
@@ -412,6 +408,7 @@
             }
         }
         replyList.innerHTML = str; // replyList 부분에 추가
+
 
         // 댓글 삭제 버튼 클릭 이벤트
         document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
@@ -438,6 +435,7 @@
                 const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
                 const mcontent = replyModifyForm.querySelector('.mcontent');
                 const modBtn = replyModifyForm.querySelector('.modReplyBtn');
+                const cancelBtn=replyModifyForm.querySelector(".btn-done");
 
                 getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
                     replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
@@ -455,6 +453,11 @@
                     }).catch(e => {
                         alert('댓글 수정 실패');
                     });
+                });
+
+                cancelBtn.addEventListener("click", function(e) { // 수정 폼에서 취소 버튼 클릭 이벤트
+                    replyModifyForm.style.display='none';
+                    list.style.display='flex';
                 });
 
 
