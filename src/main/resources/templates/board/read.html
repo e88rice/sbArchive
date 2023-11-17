@@ -234,7 +234,7 @@
     <!-- 댓글 리스트 출력 -->
     <div class="reply_list_wrap">
         <div>
-            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count">댓글 총 ㅇ개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
+            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count">댓글 총 [[${dto.replyCount}]]개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
             <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
             <ul class="list-group replyList">
                 <!-- 댓글 출력 -->
@@ -259,9 +259,8 @@
     const link = [[${pageRequestDTO.getLink()}]];
 
 
-
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        location.href = `/board/boardList?${link}`;
+        location.href = `/board/list?${link}`;
     });
 
 
