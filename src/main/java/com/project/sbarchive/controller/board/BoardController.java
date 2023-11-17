@@ -23,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -76,15 +77,15 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
-    @GetMapping({"/read","/modify"})
-    public void view(Model model, int boardId, HttpServletRequest request,List<MultipartFile> files,
-                     PageRequestDTO pageRequestDTO) {
-        boardService.hitCount(boardId);
+    @GetMapping({"/read", "/modify"})
+    public void view(Model model, int boardId, HttpServletRequest request, List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
-        BoardAllDTO boardAllDTO = modelMapper.map(boardDTO,BoardAllDTO.class);
-        boardAllDTO.setFiles( boardFileService.getBoardImages(boardId));
+        BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
+        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
+        boardService.hitCount(boardId);
+        String requestedUrl = request.getRequestURI();
 
 
     }
@@ -96,23 +97,20 @@ public class BoardController {
     public String modify(@Valid BoardDTO boardDTO,
                          List<MultipartFile> files,
                          PageRequestDTO pageRequestDTO,
-                         BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()) {
-            log.info("CONTROLL ERROR!!");
-            return "redirect:/board/modify";
-        }
+
         log.info(boardDTO+"CONTROLLER MODIFY!!");
         boardService.modify(boardDTO);
         int boardId = boardDTO.getBoardId();
         boardFileService.removeBoardImages(boardId);
 
         log.info("removeIMG!!!!!!!!!!!!");
-        if(files!=null && files.size() > 0 ) {
-            log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            boardFileService.addBoardImages(boardId, files);
+        if(files.size() == 0) {
+            return "redirect:/board/read?boardId="+boardId;
         }
+        boardFileService.addBoardImages(boardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         return "redirect:/board/read?boardId="+boardId;
+
     }
 
     @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
@@ -130,8 +128,5 @@ public class BoardController {
     public void removeFile(@PathVariable int boardId) {
     boardFileService.removeBoardImages(boardId);
     }
-
-
-
 
 }
