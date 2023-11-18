@@ -29,3 +29,9 @@ async function deleteSignboard(signboardId) {
     const result = await axios.delete(`/signboard/remove/${signboardId}`);
     return result.data;
 }
+
+// 그냥 간판 하나 가져오기
+async function justGetSignboard(signboardId) {
+    const result = await axios.get(`/signboard/get/${signboardId}`);
+    return result.data;
+}

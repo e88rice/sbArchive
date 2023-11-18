@@ -6,6 +6,7 @@ import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class MyController {
     private final UserService userService;
     private final ModelMapper modelMapper;
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public void myPageGET(Principal principal, Model model) {
         log.info("===== myPage Get Controller =====");

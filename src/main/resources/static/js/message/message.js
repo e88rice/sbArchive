@@ -211,21 +211,29 @@ getUsername().then(r => {
                     const type = wrap.firstElementChild.nextElementSibling.className.split("_")[1];
                     msgViewModal.show();
                     console.log("index : " + Messageindex + " & type : " + type);
-                    getMessage(Messageindex).then( r => {
-                    console.log(r);
-                    let str = "";
-                    if(type === "receiver") {
-                        str += "<div class=\"message_writer\"><span>받은 사람 </span> " + r.senderId +"</div>\n" +
-                        "                        <hr>\n" +
-                        "                        <p class=\"message_view_p\">"+ r.content +"</p>";
-                    } else {
-                        wrap.style.fontWeight = "lighter";
-                        wrap.style.color = "#9a9a9a";
-                        str += "<div class=\"message_writer\"><span>보낸 사람 </span> " + r.receiverId + "</div>\n" +
-                        "                        <hr>\n" +
-                        "                        <p class=\"message_view_p\">"+ r.content +"</p>";
-                    }
-                    document.querySelector(".message_view_content_wrap").innerHTML = str;
+                    getMessage(Messageindex, type).then( r => {
+                        console.log(r);
+                        let str = "";
+                        if(type === "receiver") {
+                            str += "<div class=\"message_writer\"><span>받은 사람 </span> " + r.receiverId +"</div>\n" +
+                            "                        <hr>\n" +
+                            "                        <p class=\"message_view_p\">"+ r.content +"</p>";
+                            document.querySelector(".message_view_modal_footer").innerHTML = "";
+                        } else {
+                            wrap.style.fontWeight = "lighter";
+                            wrap.style.color = "#9a9a9a";
+                            str += "<div class=\"message_writer\"><span>보낸 사람 </span> " + r.senderId + "</div>\n" +
+                            "                        <hr>\n" +
+                            "                        <p class=\"message_view_p\">"+ r.content +"</p>";
+                            const replyBtn = "<div><button class=\"msgViewReplyBtn\">답장하기</button></div>";
+                            document.querySelector(".message_view_modal_footer").innerHTML = replyBtn;
+                            // 답장하기 클릭 시
+                            document.querySelector(".msgViewReplyBtn").addEventListener("click", function (){
+                                msgWriteModal.show(); // 쪽지 작성 폼 등장
+                                SendMsg(r.senderId);
+                            })
+                        }
+                        document.querySelector(".message_view_content_wrap").innerHTML = str;
                     }).catch(e => {
                         console.log(e);
                     })
@@ -234,31 +242,39 @@ getUsername().then(r => {
         }
 
         function writeModalShow() {
+            // 쪽지 보내기 버튼 클릭 시
             msgWriteBtn.addEventListener("click", function () {
                 msgWriteModal.show();
-                document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
-                document.querySelector(".sendMsg").parentNode
-                    .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
+                SendMsg(null);
+            })
+        }
+
+        function SendMsg(receiverName) {
+            const rcvName = document.querySelector(".msgReceiverName");
+            const msgContent = document.querySelector(".msgContent");
+            if(receiverName !== null) {
+                rcvName.value = receiverName;
+            }
+            document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
+            document.querySelector(".sendMsg").parentNode
+                .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
                     document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
-                document.querySelector(".sendMsg").addEventListener("click", function (){
-                    const rcvName = document.querySelector(".msgReceiverName");
-                    const msgContent = document.querySelector(".msgContent");
-                    if(msgContent.value.length < 5) {
-                        alert("내용은 최소 5자 이상 입력해야 합니다.")
-                        return;
+            document.querySelector(".sendMsg").addEventListener("click", function (){
+                if(msgContent.value.length < 5) {
+                    alert("내용은 최소 5자 이상 입력해야 합니다.")
+                    return;
+                }
+                addMessage(rcvName.value, msgContent.value).then( r => {
+                    console.log(r);
+                    if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
+                    else {
+                        alert("쪽지 전송 완료");
+                        msgWriteModal.hide();
+                        rcvName.value = "";
+                        msgContent.value = "";
                     }
-                    addMessage(rcvName.value, msgContent.value).then( r => {
-                        console.log(r);
-                        if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
-                        else {
-                            alert("쪽지 전송 완료");
-                            msgWriteModal.hide();
-                            rcvName.value = "";
-                            msgContent.value = "";
-                        }
-                    }).catch(e => {
-                        console.log(e);
-                    })
+                }).catch(e => {
+                    console.log(e);
                 })
             })
         }

@@ -23,8 +23,8 @@ async function getUsername() {
 }
 
 // 메세지 1개를 받아옴
-async function getMessage(index) {
-    const result = await axios.get(`/message/get/${index}`);
+async function getMessage(index, type) {
+    const result = await axios.get(`/message/get/${index}/${type}`);
     return result.data;
 }
 
