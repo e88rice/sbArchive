@@ -49,20 +49,21 @@
             </div>
             <tr>
                 <th>번호</th>
-                <th>제목</th>
-                <th>아이디</th>
+                <th style="width: 50%; text-align: center">제목</th>
+                <th>글쓴이</th>
                 <th>작성일</th>
                 <th>조회</th>
                 <th>좋아요</th>
             </tr>
-            <tr th:each="dto:${responseDTO.dtoList}" th:with="link =${pageRequestDTO.getLink}">
-                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|"> [[${dto.boardId}]] <span style="color: red;">[[${dto.replyCount}]]</span></a></td>
-                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|">[[${dto.title}]]</a></td>
-                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|"> [[${dto.userId.substring(0, 3) + '****'}]]
+            <tr th:each="dto:${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}">
+                <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.boardId}]]</a></td>
+                <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
+                <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|"> [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]]
                     <span>([[${dto.nickname}]])</span></a></td>
-                <td>[[${dto.addDate}]]</td>
-                <td>[[${dto.hit}]]</td>
-                <td>[[${dto.likeUp}]]</td>
+                <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                <td th:text="${dto.hit}"></td> <!-- 이 부분 수정 -->
+                <td th:text="${dto.likeUp}"></td>
             </tr>
         </table>
     </div>
@@ -103,12 +104,9 @@
             formObj.submit();
         },false)
 
-        const nick = document.querySelector(".nick");
-        console.log(nick+",................");
 
-        function maskId(nick) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-            return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
-        }
+
+
 
 
     </script>

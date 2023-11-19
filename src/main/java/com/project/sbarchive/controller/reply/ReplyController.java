@@ -78,6 +78,7 @@ public class ReplyController {
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId) {
         replyService.removeReply(replyId);
         ReplyDTO replyDTO = replyService.getReply(replyId);
+        log.info(replyDTO.getBoardId() + " replyBoardId!!!!!!!!!!!!!!!!!!!!!!");
         replyService.downReplyCount(replyDTO.getBoardId());
         Map<String, Integer> resultMap=new HashMap<>();
         resultMap.put("replyId", replyId);

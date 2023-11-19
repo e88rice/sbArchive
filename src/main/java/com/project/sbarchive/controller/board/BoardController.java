@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,7 @@ import java.util.Map;
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/board")
+@CrossOrigin(origins = "http://localhost:8484")
 public class BoardController {
     private final BoardService boardService;
 
@@ -47,6 +49,7 @@ public class BoardController {
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @GetMapping("/add")
     public void addBoard() {
+
     }
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @PostMapping("/add")
