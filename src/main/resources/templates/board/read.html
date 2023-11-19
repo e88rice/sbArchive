@@ -134,7 +134,7 @@
     .mcontent {
         padding: 10px;
     }
-    .moreReply {
+    .moreReplyBtn {
         font-size: 11px;
         color: #606060;
         margin-top: 5px;
@@ -159,7 +159,7 @@
                                 [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
                             </div>
                             <div>
-                                좋 [[${dto.likeUp}]]  조회 [[${dto.hit}]] <span class="reply_count">
+                                좋아요 [[${dto.likeUp}]]개  조회 [[${dto.hit}]] <span class="reply_count">
                                 <li class="fa-solid fa-comment fa-flip-horizontal"></li> 댓글 총 [[${dto.replyCount}]]개</span>
 
 
@@ -173,11 +173,24 @@
                             <textarea name="content" id="content" class="form-control" rows="25"  readonly
                             style="padding: 20px; background: none">[[${dto.content}]]  </textarea>
                         </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">조회수</span>
+                            <input type="text" class="form-control" name="hit" th:value="${dto.hit}" readonly>
+                        </div>
+
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">addDate</span>
+                            <input type="text" name="addDate" class="form-control" th:value="${#temporals.format(dto.addDate,'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+
                         <div class="left_wrap">
                             <div class="left_wrap_subImg">
                                 <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
                             </div>
                         </div>
+
+                    </div>
                 </div><!-- end card body -->
                 <div class="my-4">
                     <div class="float-end">
@@ -190,7 +203,6 @@
                 </div>
             </div>
             </div>
-        </div>
     </form>
 
 
@@ -293,7 +305,12 @@
         const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
 
         addReply(replyObj).then(result => { // reply.js(axios)
-            // alert(result.data.replyId); // 확인용
+            const newReplyId = result.data.replyId; // replyId를 추출해서
+
+            // parentReplyId와 replyId 값 일치시킴
+            const updateReplyObj={newReplyId:newReplyId, parentReplyId: newReplyId};
+            modifyReplyId(updateReplyObj);
+
             acontent.value = ''; // 초기화
             location.reload(); // 새로고침
             printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
@@ -303,12 +320,15 @@
     });
     // 여기까지 댓글 등록 관련 자바스크립트
 
+
     // 여기서부터 댓글 리스트 출력 관련 자바스크립트
     const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
     const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
+    const replyDepth=0; // 원댓글임(대댓글이 아님)
 
     function printReplies(page, size, goLast) { // 댓글 리스트, 댓글 페이징 출력
-        getReplyList({boardId, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
+        // 대댓글이 아닌, 원댓글만 출력
+        getReplyList({boardId, replyDepth, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
             data => {
                 console.log("data: "+data);
                 printReplyList(data.dtoList); // pageResponseDTO의 dtoList
@@ -351,16 +371,17 @@
         if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
             pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
         }
-        console.log(pageStr);
+        console.log(pageStr); // 나중에 삭제
         replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
     }
 
     const username = [[${#authentication.principal.username}]]; // 현재 로그인된 아이디
+    const nickname = [[${#authentication.principal.nickname}]]; // 현재 로그인된 아이디의 닉네임
 
     let isReplyWriter = false;
     let isBoardWriter = false;
 
-    function printReplyList(dtoList) { // 댓글 리스트 출력
+    function printReplyList(dtoList) { // 원댓글 리스트 출력
         let str = '';
         if (dtoList && dtoList.length > 0) {
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
@@ -374,35 +395,57 @@
                 function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
                     return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
                 }
-
+                // maskId의 결과를 담을 변수
                 let maskedId = maskId(id);
+
                 isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
                 isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
-                str +=`
-                <li class="replyItem" data-replyId="${dto.replyId}">
+                // 대댓글 여부 구분
+                let replyDepth=dto.replyDepth;
+                // replyDepth 결과를 담을 변수
+                let isOriginReply='';
 
-                    <div class="list_of_reply">
-                        <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
-                            <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
-                        </div>
+                // 대댓글이 아니면
+                if (replyDepth===false) {
+                    isOriginReply = `
+                        <div class="list_of_reply">
 
-                        <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
-                            <div class="writer_btn_area">
-                                <div>
-                                    ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                    ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
-                                </div>
-                                <div>
-                                 ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReply">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
-                                </div>
+                            <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
+                                <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
                             </div>
 
-                            <div>${dto.content}</div>
-                            <div class="date_of_reply">${date}</div>
-                            <a class="moreReply">▽ 답글 ㅇ개 더보기</a> <!-- 대댓글 구현 후 수정 예정 -->
+                            <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
+                                <div class="writer_btn_area">
+                                    <div>
+                                        ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                        ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
+                                    </div>
+                                    <div>
+                                     ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                    </div>
+                                </div>
+
+                                <div>${dto.content}</div>
+                                <div class="date_of_reply">${date}</div>
+                                <a class="moreReplyBtn">▽ 답글 보기</a> <!-- 나중에 대댓글이 달린 원댓글에만 답글 보기 버튼 나오도록 수정 예정 -->
+
+                            </div>
+
                         </div>
-                    </div>
+                    `;
+                    } else {
+                    isOriginReply = '';
+                    }
+
+                str +=`
+                <li class="replyItem" data-replyId="${dto.replyId}">
+                    ${isOriginReply}
+
+                    <ul class="list_of_reReply">
+                        <!-- 대댓글 출력 -->
+                    </ul>
+
 
                     <!-- 댓글 수정 폼 -->
                      <div class="replyModifyForm">
@@ -415,6 +458,14 @@
                             <button type="button" class="btn btn-done">취소</button>
                         </div>
                      </div>
+
+                     <!-- 대댓글 등록 폼 -->
+                     <div style="display:none; border-bottom: 1px solid #d3d3d3; height: 100px; padding: 20px" class="reReplyAddForm">
+                        <div>${nickname}<span>(${username})</span></div>
+                        <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control"></textarea>
+                        <button type="button" class="btn btn-primary addReBtn">등록</button>
+                    </div>
+
                 </li>
                `
             }
@@ -422,22 +473,133 @@
         replyList.innerHTML = str; // replyList 부분에 추가
 
 
-        // 댓글 삭제 버튼 클릭 이벤트
-        document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
-            replyRemoveBtn.addEventListener('click', function(e) {
-                // a 태그(replyRemoveBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                removeReply(replyId).then(result => { // reply.js(axios)
-                    if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
-                    alert("삭제되었습니다.");
-                    location.reload(); // 페이지 새로고침
-                }).catch(e => {
-                    console.log(e);
+        // 답글 더보기 버튼 클릭 이벤트
+        document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
+            moreReplyBtn.addEventListener('click', function (e) {
+                alert("답글 더보기 버튼 클릭");
+
+                const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                console.log("replyID: " + parentReplyId);
+                const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
+
+                // 대댓글 여부
+                const replyDepth = true;
+
+                // 대댓글 목록만 가져옴
+                getReReplies(boardId, parentReplyId, replyDepth).then(function (replies) { // reply.js(axios)
+
+                    let reReplyHTML = '';
+                    replies.forEach(function (dto) {
+
+                        let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
+                        // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
+
+                        let id=dto.userId; // 댓글 단 아이디
+                        let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
+                        // console.log("id: "+id);
+
+                        function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
+                            return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
+                        }
+                        // maskId의 결과를 담을 변수
+                        let maskedId = maskId(id);
+                        isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
+                        isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
+
+                        reReplyHTML += `
+                    <li class="replyItem" data-replyId="${dto.replyId}">
+                        <div class="list_of_reply2" style="display: flex; border-bottom: 1px solid #d3d3d3; padding: 10px 0 10px 0;">
+                        <!-- 여기서부터 디자인 확정되면 클래스로 묶을 예정 -->
+
+                            ↳ <div class="img_wrap" style="margin-left: 10px"> <!-- 이미지 나오는 부분 -->
+                                <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
+                            </div>
+
+                            <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
+                                <div class="writer_btn_area">
+                                    <div>
+                                        ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                        ${isReplyWriter ? '' : '<a class="message"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
+                                    </div>
+                                    <div>
+                                     ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                    </div>
+                                </div>
+
+                                <div>${dto.content}</div>
+                                <div class="date_of_reply">${date}</div>
+                            </div>
+
+                        </div>
+                    </li>
+                `;
+                    });
+
+                    listOfReReply.innerHTML = reReplyHTML;
+
                 });
             });
         });
 
-        // 댓글 수정 버튼 클릭 이벤트
+
+        // 답글 쓰기 버튼 클릭 이벤트
+        document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
+            reReplyAddBtn.addEventListener('click', function(e) {
+                alert("답글쓰기 버튼 클릭"); // 삭제 예정
+                const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                reReplyAddForm.style.display='flex';
+            });
+        });
+
+
+        // 대댓글(답글) 등록
+        document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
+            addReBtn.addEventListener('click', function(e) {
+                alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
+                const reReplyAddForm = e.target.parentNode.parentNode.querySelector('.reReplyAddForm');
+                const rcontent=reReplyAddForm.children[1];
+                console.log("nickname: "+nickname); // 삭제 예정
+                console.log("userId: "+username); // 삭제 예정
+                console.log("rcontent.value: "+rcontent.value); // 삭제 예정
+                const parentReplyId=e.target.parentNode.parentNode.getAttribute("data-replyId");
+                console.log("parentReplyId: "+parentReplyId); // 삭제 예정
+                const replyObj={boardId:boardId, content:rcontent.value, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+
+                addReReply(replyObj).then(result => { // reply.js(axios)
+                    // alert(result.data.replyId); // 확인용
+                    rcontent.value='';
+                    reReplyAddForm.style.display='none';
+                    location.reload();
+                }).catch(e => {
+                    alert("대댓글 등록에 문제 생김");
+                });
+            });
+        });
+
+
+        // 댓글 삭제 버튼 클릭 이벤트
+        // 원댓글 논리 삭제랑 대댓글 찐 삭제로 나눠야 함... 아직 안 함~
+        document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
+            replyRemoveBtn.addEventListener('click', function(e) {
+                // a 태그(replyRemoveBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
+                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                console.log("replyId: "+replyId);
+                alert("replyRemoveBtn 눌림"); // 삭제 예정
+
+                removeReReply(replyId).then(result => { // reply.js(axios)
+                    if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
+                    alert("삭제되었습니다.");
+                    location.reload(); // 페이지 새로고침
+                }).catch(e => {
+                    console.log("대댓글 삭제에 문제 생김");
+                });
+            });
+        });
+
+        // 대댓글 수정 버튼 클릭 이벤트 만들어야 됨
+
+
+        // 원댓글 수정 버튼 클릭 이벤트
         document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
             replyModBtn.addEventListener('click', function(e) {
                 // a 태그(replyModBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
@@ -476,7 +638,9 @@
             });
         });
 
-        // 쪽지 모달 시작
+
+
+        // 여기서부터 쪽지 모달 시작
         const msgWriteBtn = document.querySelectorAll(".messageBtn");
         const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
 
@@ -526,6 +690,9 @@
         }
 
     }
+
+    // 여기까지 쪽지 모달 끝
+
 
 </script>
 

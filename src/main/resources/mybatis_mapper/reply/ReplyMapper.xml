@@ -4,32 +4,65 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.reply.ReplyMapper">
 
+    <!-- 그냥 댓글 추가 -->
     <insert id="addReply" parameterType="com.project.sbarchive.vo.reply.ReplyVO" useGeneratedKeys="true" keyProperty="replyId">
         INSERT INTO reply(boardId, userId, nickname, content, addDate, modDate)
         VALUES (#{boardId}, #{userId}, #{nickname}, #{content}, NOW(), NOW())
     </insert>
 
+    <!-- 댓글 추가한 후, replyId 값 가져와서 parentReplyId에 넣어줌 -->
+    <update id="modifyReplyId">
+        update reply set parentReplyId=#{parentReplyId} where replyId=#{replyId}
+    </update>
+
+    <!-- 그냥 댓글 조회 -->
     <select id="getReply" resultType="com.project.sbarchive.vo.reply.ReplyVO">
         select * from reply where replyId=#{replyId}
     </select>
 
+    <!-- 그냥 댓글 수정 -->
     <update id="modifyReply">
         update reply set content=#{content}, modDate=NOW() where replyId=#{replyId}
     </update>
 
-    <delete id="removeReply">
+    <!-- 대댓글 삭제용(진짜 삭제) -->
+    <delete id="removeReReply">
         delete from reply where replyId=#{replyId}
     </delete>
 
+    <!-- 원댓글 논리 삭제(원댓글을 진짜 삭제하지 않고 isParentReplyDeleted=1이면 '삭제된 댓글입니다' 출력되게 할 예정 -->
+    <update id="removeReply">
+        update reply set isParentReplyDeleted=1 where replyId=#{replyId}
+    </update>
+
+    <!-- 원댓글만 가져옴 -->
     <select id="getReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">
-        select * from reply where boardId=#{boardId}
-        order by replyId asc limit #{skip}, #{size}
+        SELECT * FROM reply WHERE boardId = #{boardId} AND replyDepth=0
+        ORDER BY parentReplyId ASC limit #{skip}, #{size}
     </select>
 
+    <!-- 대댓글만 가져옴 -->
+    <select id="getReReplies" resultType="com.project.sbarchive.vo.reply.ReplyVO">
+        select * from reply where boardId=#{boardId} and parentReplyId=#{parentReplyId} and replyDepth=1
+        order by parentReplyId asc
+    </select>
+
+    <!-- 원댓글의 개수만 가져옴 -->
     <select id="getReplyCount" resultType="int">
-        select count(*) from reply where boardId=#{boardId}
+        select count(*) from reply where boardId=#{boardId} and replyDepth=0
     </select>
 
+    <!-- 대댓글 추가 -->
+    <insert id="addReReply" parameterType="com.project.sbarchive.vo.reply.ReplyVO" useGeneratedKeys="true" keyProperty="parentReplyId">
+        INSERT INTO reply(boardId, userId, nickname, content, addDate, modDate, replyDepth, parentReplyId)
+        VALUES (#{boardId}, #{userId}, #{nickname}, #{content}, NOW(), NOW(), 1, #{parentReplyId})
+    </insert>
+
+
+
+
+
+    <!-- 여기서부터 Board에서 replyCount 나타낼 때 사용하는 메서드 -->
     <update id="upReplyCount">
         update board set replyCount = replyCount + 1 where boardId=#{boardId}
     </update>

@@ -17,18 +17,18 @@ public class ReplyMapperTest {
     @Autowired(required = false)
     private ReplyMapper replyMapper;
 
-//    @Test
-//    public void addReply() {
-//        replyMapper.add(ReplyVO.builder()
-//                        .content("댓글 등록")
-//                        .boardId(1)
-//                        .userId("admin")
-//                        .nickname("admin").build());
-//    }
+    @Test
+    public void addReply() {
+        replyMapper.addReply(ReplyVO.builder()
+                        .content("댓글 등록")
+                        .boardId(1)
+                        .userId("admin")
+                        .nickname("admin").build());
+    }
 
     @Test
     public void getReply() {
-        ReplyVO replyVO=replyMapper.getReply(1);
+        ReplyVO replyVO=replyMapper.getReply(320);
         log.info("1번째 댓글의 내용은: "+replyVO);
     }
 
@@ -42,8 +42,16 @@ public class ReplyMapperTest {
     }
 
     @Test
-    public void removeReply() {
-        replyMapper.removeReply(1);
+    public void removeReply() { // 논리 삭제
+        ReplyVO replyVO = ReplyVO.builder()
+                .replyId(320)
+                .build();
+        replyMapper.removeReply(replyVO);
+    }
+
+    @Test
+    public void removeReReply() {
+        replyMapper.removeReReply(325);
     }
 
 //    @Test
@@ -55,6 +63,26 @@ public class ReplyMapperTest {
     @Test
     public void getReplyCount() {
         log.info(replyMapper.getReplyCount(1));
+    }
+
+
+
+
+
+
+    // 대댓글 영역
+    // 대댓글 추가
+    @Test
+    public void addReReply() {
+        replyMapper.addReReply(
+                ReplyVO.builder()
+                        .content("대댓글 등록")
+                        .boardId(109)
+                        .userId("abab")
+                        .nickname("abab")
+                        .parentReplyId(320)
+                        .build()
+        );
     }
 
 

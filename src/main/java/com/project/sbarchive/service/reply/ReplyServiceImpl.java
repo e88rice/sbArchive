@@ -24,7 +24,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public int addReply(ReplyDTO replyDTO) {
-        log.info("ReplyServiceImpl - replyDTO: "+replyDTO);
+        log.info("ReplyServiceImpl - addReply replyDTO: "+replyDTO);
         ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
         replyMapper.addReply(replyVO);
         return replyVO.getReplyId();
@@ -32,7 +32,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ReplyDTO getReply(int replyId) {
-        log.info("ReplyServiceImpl - replyId: "+replyId);
+        log.info("ReplyServiceImpl - getReply replyId: "+replyId);
         ReplyVO replyVO=replyMapper.getReply(replyId);
         ReplyDTO replyDTO=modelMapper.map(replyVO, ReplyDTO.class);
         log.info("ReplyServiceImpl - replyDTO: "+replyDTO);
@@ -41,26 +41,60 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public void modifyReply(ReplyDTO replyDTO) {
-        log.info("ReplyServiceImpl - replyDTO: "+replyDTO);
+        log.info("ReplyServiceImpl - modifyReply replyDTO: "+replyDTO);
         ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
         replyMapper.modifyReply(replyVO);
     }
 
     @Override
-    public void removeReply(int replyId) {
-        log.info("ReplyServiceImpl - replyId: "+replyId);
-        replyMapper.removeReply(replyId);
+    public void modifyReplyId(ReplyDTO replyDTO) {
+        log.info("ReplyServiceImpl - modifyReplyId replyDTO: "+replyDTO);
+        ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
+        replyMapper.modifyReplyId(replyVO);
+    }
+
+
+    // 대댓글 추가하면서 바뀐 부분 시작
+    @Override
+    public void removeReply(ReplyDTO replyDTO) { // 원 댓글 논리 삭제
+        log.info("ReplyServiceImpl - removeReply(원 댓글 논리 삭제) replyDTO: "+replyDTO);
+        ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
+        replyMapper.removeReply(replyVO);
     }
 
     @Override
-    public PageResponseDTO<ReplyDTO> getReplyList(int boardId, PageRequestDTO pageRequestDTO) {
+    public void removeReReply(int replyId) { // 대댓글 삭제
+        log.info("ReplyServiceImpl - removeReReply(대댓글 실제 삭제) replyId: "+replyId);
+        replyMapper.removeReReply(replyId);
+    }
 
-        List<ReplyVO> voList=replyMapper.getReplyList(boardId, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
-        List<ReplyDTO> dtoList=new ArrayList<>();
-        for(ReplyVO replyVO:voList) {
-            dtoList.add(modelMapper.map(replyVO, ReplyDTO.class));
+    @Override
+    public int addReReply(ReplyDTO replyDTO) {
+        log.info("ReplyServiceImpl - addReReply(대댓글 추가) replyDTO: "+replyDTO);
+        ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
+        replyMapper.addReReply(replyVO);
+        return replyVO.getReplyId();
+    }
+
+    // 대댓글 추가하면서 바뀐 부분 끝
+
+    @Override
+    public PageResponseDTO<ReplyDTO> getReplyList(int boardId, boolean replyDepth, PageRequestDTO pageRequestDTO) {
+        log.info("ReplyServiceImpl - getReplyList boardId: " + boardId);
+
+        // 댓글 목록을 가져올 때 대댓글 개수를 함께 가져오도록 수정
+        List<ReplyVO> voList = replyMapper.getReplyList(boardId, replyDepth, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
+
+        List<ReplyDTO> dtoList = new ArrayList<>();
+        for (ReplyVO replyVO : voList) {
+            ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
+            dtoList.add(replyDTO);
         }
-        int total=replyMapper.getReplyCount(boardId);
+
+        int total = replyMapper.getReplyCount(boardId);
+
+        log.info("dtoList: " + dtoList);
+        log.info("pageRequestDTO: " + pageRequestDTO);
 
         return PageResponseDTO.<ReplyDTO>withAll()
                 .dtoList(dtoList)
@@ -70,9 +104,29 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
+    public List<ReplyDTO> getReReplies(int boardId, int parentReplyId, boolean replyDepth) {
+        List<ReplyVO> voList=replyMapper.getReReplies(boardId, parentReplyId, replyDepth);
+        List<ReplyDTO> dtoList=new ArrayList<>();
+        for(ReplyVO replyVO:voList) {
+            dtoList.add(modelMapper.map(replyVO, ReplyDTO.class));
+        }
+        log.info("dtoList: "+dtoList);
+
+        return dtoList;
+    }
+
+    @Override
     public int getReplyCount(int boardId) {
+        log.info("ReplyServiceImpl - getReplyCount boardId: "+boardId);
         return replyMapper.getReplyCount(boardId);
     }
+
+
+
+
+
+
+    // 여기서부터 Board에서 replyCount 나타낼 때 사용하는 메서드
 
     @Override
     public void upReplyCount(int boardId) {
@@ -83,4 +137,5 @@ public class ReplyServiceImpl implements ReplyService {
     public void downReplyCount(int boardId) {
         replyMapper.downReplyCount(boardId);
     }
+
 }
