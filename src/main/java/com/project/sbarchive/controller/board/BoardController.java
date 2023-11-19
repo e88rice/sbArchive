@@ -24,7 +24,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,6 @@ import java.util.Map;
 @Log4j2
 @RequiredArgsConstructor
 @RequestMapping("/board")
-@CrossOrigin(origins = "http://localhost:8484")
 public class BoardController {
     private final BoardService boardService;
 
@@ -60,7 +58,10 @@ public class BoardController {
         for(MultipartFile file : files) {
             log.info(file);
         }
-        if(files.size() >0) {
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                log.info("File: " + file.getOriginalFilename());
+            }
             boardFileService.addBoardImages(boardId, files);
         }
         return "redirect:/board/list";

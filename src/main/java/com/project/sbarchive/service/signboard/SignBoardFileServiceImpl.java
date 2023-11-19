@@ -47,12 +47,11 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
             try {
                 multipartFile.transferTo(savePath); // 실제 파일 저장
                 // 이미지 파일이라면
-                if (Files.probeContentType(savePath).startsWith("image")) {
+                if ( Files.probeContentType(savePath).startsWith("image")) {
                     log.info(Files.probeContentType(savePath)); // image/jpeg
                     isImage = true;
                     File thumbFile = new File(uploadPath1, "s_" + uuid + "_" + originalName);
                     log.info("1" + savePath.toFile());
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 200, 200); // 썸네일 설정.
                     // savePath.toFile() = 원본 파일의 경로. c:\\upload\\6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // thumbFile = 새로 생기는 파일의 경로 및 파일 이름. c:\\upload\\s_6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // width, height = 이미지 파일의 최대 크기

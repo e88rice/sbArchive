@@ -20,6 +20,5 @@ public class CustomServletConfig implements WebMvcConfigurer { // Swagger를 이
         registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/fonts/");
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/static/assets/");
-        registry.addResourceHandler("/smarteditor2/**").addResourceLocations("classpath:/static/smarteditor2/");
     }
 }
