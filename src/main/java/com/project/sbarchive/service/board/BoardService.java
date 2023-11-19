@@ -20,4 +20,6 @@ public interface BoardService {
 
     //페이징
     PageResponseDTO<BoardDTO> getList(PageRequestDTO pageRequestDTO);
+
+
 }

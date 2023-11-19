@@ -11,6 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +77,6 @@ public class BoardController {
         log.info(pageRequestDTO);
         if(bindingResult.hasErrors()) {
             pageRequestDTO = PageRequestDTO.builder().build();
-
         }
         PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
@@ -81,20 +84,29 @@ public class BoardController {
     }
 
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
-    @GetMapping({"/read", "/modify"})
-    public void view(Model model, int boardId, HttpServletRequest request, List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
+    @GetMapping("/read")
+    public void view(Model model, int boardId, HttpServletRequest request,
+                     List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
         boardService.hitCount(boardId);
-        String requestedUrl = request.getRequestURI();
+
 
 
     }
+    @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
+    @GetMapping("/modify")
+    public void modify(Model model, int boardId, HttpServletRequest request,
+                         List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
+        BoardDTO boardDTO = boardService.getBoard(boardId);
+        BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
+        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
+        model.addAttribute("dto", boardAllDTO);
 
-
+    }
 
     @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
     @PostMapping("/modify")

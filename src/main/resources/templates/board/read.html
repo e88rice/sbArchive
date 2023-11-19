@@ -4,7 +4,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{/layout/layout.html}">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+
+
 <style layout:fragment="style">
     /* 여기서부터 /board/read 관련 css */
     .readBoard_form {
@@ -169,7 +171,7 @@
                         </div>
                         <div class="form-group">
                             <textarea name="content" id="content" class="form-control" rows="25"  readonly
-                            style="padding: 20px; background: none">[[${dto.content}]]</textarea>
+                            style="padding: 20px; background: none">[[${dto.content}]]  </textarea>
                         </div>
                         <div class="left_wrap">
                             <div class="left_wrap_subImg">
@@ -196,7 +198,6 @@
     <!-- 댓글 등록 영역 -->
     <script src="/js/reply/reply.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <div class="reply_add_wrap">
         <div class="reply_add_inner_wrap">
             <div>
