@@ -124,6 +124,10 @@
     width: 57%;
     overflow: hidden;
 }
+.message_content p {
+    height: 20px;
+    overflow: hidden;
+}
 .sent_message_container .message_content {
     width: 52%;
     overflow: hidden;

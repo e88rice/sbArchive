@@ -84,7 +84,7 @@
     .reply_count {
         margin-left: 10px;
     }
-    .replyList, .message {
+    .replyList, .messageBtn {
         margin: 10px;
     }
     .if_reply_writer {
@@ -198,6 +198,7 @@
     <!-- 댓글 등록 영역 -->
     <script src="/js/reply/reply.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <div class="reply_add_wrap">
         <div class="reply_add_inner_wrap">
             <div>
@@ -232,6 +233,31 @@
         </div>
 
     </div> <!-- 댓글 목록 끝 -->
+
+
+    <!-- 쪽지 모달 영역 시작 -->
+    <link rel="stylesheet" href="/css/message.css">
+    <div class="modal message_write_modal modal_container" tabindex="-1">
+        <div class="modal-dialog message_write_modal_dialog">
+            <div class="modal-content message_write_modal_content">
+                <div class="modal-header modal_write_header">
+                    <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body message_write_modal_body">
+                    <div class="message_write_content_wrap">
+                        <div class="message_writer"><span>받는 사람 </span> <input type="text" class="msgReceiverName" placeholder="받는 사람의 아이디를 입력해주세요."> </div>
+                        <hr>
+                        <textarea cols="68" rows="7" class="msgContent"></textarea>
+                    </div>
+                </div> <!-- Modal body End -->
+                <div class="modal-footer message_modal_footer">
+                    <div><button class="sendMsg">보내기</button></div>
+                </div> <!-- Modal footer End -->
+            </div> <!-- Modal Content End -->
+        </div> <!-- Modal Dialog End -->
+    </div><!-- Modal Container End -->
+    <script src="/js/message/messageAsync.js"></script>
+    <!-- 쪽지 모달 영역 끝 -->
 
 </div>
 
@@ -365,7 +391,7 @@
                             <div class="writer_btn_area">
                                 <div>
                                     ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                    ${isReplyWriter ? '' : '<a class="message"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
+                                    ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
                                 </div>
                                 <div>
                                  ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReply">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
@@ -449,6 +475,55 @@
 
             });
         });
+
+        // 쪽지 모달 시작
+        const msgWriteBtn = document.querySelectorAll(".messageBtn");
+        const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
+
+        msgWriteBtn.forEach(messageBtn => {
+            messageBtn.addEventListener("click", function () {
+                const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
+                writeModalShow();
+                SendMsg(replyUserId);
+            })
+        })
+
+        function writeModalShow() {
+            msgWriteModal.show();
+        }
+
+        function SendMsg(receiverName) {
+            const rcvName = document.querySelector(".msgReceiverName");
+            const msgContent = document.querySelector(".msgContent");
+            rcvName.value = "";
+            rcvName.readOnly = false;
+            if(receiverName !== null) { // 답장하기 버튼으로 접근 시
+                rcvName.value = receiverName;
+                rcvName.readOnly = true; // 작성자 변경 불가능
+            }
+            document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
+            document.querySelector(".sendMsg").parentNode
+                .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
+                    document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
+            document.querySelector(".sendMsg").addEventListener("click", function (){
+                if(msgContent.value.length < 5) {
+                    alert("내용은 최소 5자 이상 입력해야 합니다.")
+                    return;
+                }
+                addMessage(rcvName.value, msgContent.value).then( r => {
+                    console.log(r);
+                    if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
+                    else {
+                        alert("쪽지 전송 완료");
+                        msgWriteModal.hide();
+                        rcvName.value = "";
+                        msgContent.value = "";
+                    }
+                }).catch(e => {
+                    console.log(e);
+                })
+            })
+        }
 
     }
 

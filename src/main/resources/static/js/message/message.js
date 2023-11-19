@@ -252,8 +252,11 @@ getUsername().then(r => {
         function SendMsg(receiverName) {
             const rcvName = document.querySelector(".msgReceiverName");
             const msgContent = document.querySelector(".msgContent");
-            if(receiverName !== null) {
+            rcvName.value = "";
+            rcvName.readOnly = false;
+            if(receiverName !== null) { // 답장하기 버튼으로 접근 시
                 rcvName.value = receiverName;
+                rcvName.readOnly = true; // 작성자 변경 불가능
             }
             document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
             document.querySelector(".sendMsg").parentNode
