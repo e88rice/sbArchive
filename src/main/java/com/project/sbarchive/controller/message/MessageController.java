@@ -82,9 +82,11 @@ public class MessageController {
         return msgUserId;
     }
 
-    @GetMapping("/get/{index}")
-    public MessageDTO getMessage(@PathVariable("index") int index) {
-        messageService.checkMessage(index);
+    @GetMapping("/get/{index}/{type}")
+    public MessageDTO getMessage(@PathVariable("index") int index, @PathVariable("type") String type) {
+        if(type.equals("sender")) {
+            messageService.checkMessage(index);
+        }
         return messageService.getMessage(index);
     }
 

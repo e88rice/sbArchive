@@ -57,7 +57,7 @@
     width: 100%;
     height: 80%;
 }
-.message_write_modal_body {
+.message_write_modal_body, .message_view_modal_body {
     height: 75%;
 }
 
