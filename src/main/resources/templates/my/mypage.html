@@ -9,44 +9,101 @@
     .mypage_div {
         margin: 0 auto;
         width: 1000px;
-        padding-top: 100px;
+    }
+
+    .border_line_bottom {
+        border-bottom: 1px solid #ededed;
+    }
+
+    .tab_wrap {
+        height: 61px;
+    }
+
+    .tab {
+        position: relative;
+        top: 1px;
+        list-style: none;
+        height: 70px;
+    }
+
+    .tab > li {
+        float: left;
+        text-align: center;
+        width: 200px;
+        height: 60px;
+    }
+
+    .active {
+        border-bottom: 2px solid deepskyblue;
+    }
+    .active > a {
+        color: deepskyblue;
+    }
+
+    .my_content {
+        padding-top: 30px;
     }
 </style>
 
 
 <div layout:fragment="content">
     <div class="mypage_div">
-        <div>
-            <span>이메일 : </span>
-            <span sec:authentication="principal.email"></span>
-        </div>
-        <div>
-            <span>아이디 : </span>
-            <span sec:authentication="name"></span>
-        </div>
-        <div>
-            <span>닉네임 : </span>
-            <span sec:authentication="principal.nickname"></span>
-        </div>
-        <div>
-            <button type="button" href="#" class="btn btn-primary modifyBtn">회원정보수정</button>
-            <button id="message-box" sec:authorize="isAuthenticated()">쪽지함</button>
-        </div>
-        <div>
-            <ul>
-                <li>
-                    <a href="/my/mySignBoardList">내가 쓴 간판아카이브</a>
-                </li>
-                <li>
-                    <a href="/my/myBoardList">내가 쓴 글</a>
-                </li>
-                <li>
-                    <a href="/my/myReplyList">내가 쓴 댓글</a>
-                </li>
-                <li>
-                    <a>쪽지</a>
-                </li>
-            </ul>
+        <div class="border_line_bottom">
+            <div class="tab_wrap">
+                <ul class="tab">
+                    <li class="active">
+                        <a href="/my/mypage">회원정보 보기</a>
+                    </li>
+                    <li>
+                        <a href="/my/mySignBoardList">작성 아카이브 보기</a>
+                    </li>
+                    <li>
+                        <a href="/my/myBoardList">작성 글 보기</a>
+                    </li>
+                    <li>
+                        <a href="/my/myReplyList">작성 댓글 보기</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row my_content">
+                <h1>회원정보</h1>
+                <div class="col-sm-9">
+                    <div>
+                        <span>이메일 : </span>
+                        <span th:text="${userInfo.email}"></span>
+                    </div>
+                    <div>
+                        <span>아이디 : </span>
+                        <span th:text="${userInfo.userId}"></span>
+                    </div>
+                    <div>
+                        <span>닉네임 : </span>
+                        <span th:text="${userInfo.nickname}"></span>
+                    </div>
+                    <div>
+                        <span>가입일 : </span>
+                        <span th:text="${userInfo.regDate}"></span>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <ul>
+                            <li>
+                                <a href="/my/auth" >회원정보 변경</a>
+                            </li>
+                            <li>
+                                <a href="#" >이메일 주소 변경</a>
+                            </li>
+                            <li>
+                                <a href="/my/modifyPasswd" >비밀번호 재설정</a>
+                            </li>
+                            <li>
+                                <a href="#" >탈퇴</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

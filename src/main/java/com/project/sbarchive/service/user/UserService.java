@@ -1,5 +1,8 @@
 package com.project.sbarchive.service.user;
 
+import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.vo.user.UserVO;
 
@@ -42,4 +45,6 @@ public interface UserService {
 
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
+
+    PageResponseDTO<BoardDTO> getMyBoardList(String userId, PageRequestDTO pageRequestDTO);
 }

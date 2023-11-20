@@ -86,9 +86,9 @@
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
                                 <tr th:each="dto:${responseDTO.dtoList}">
                                     <th><input type="checkbox"></th>
-                                    <th scope="col" th:text="${responseDTO.startNum - dtoStat.index}"></th>
-                                    <td><a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
-                                    <td>[[${dto.add_date}]]</td>
+                                    <th scope="col" th:text="${responseDTO.sno - dtoStat.index}"></th>
+                                    <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                    <td>[[${dto.addDate}]]</td>
                                 </tr>
                             </tbody>
                         </table>

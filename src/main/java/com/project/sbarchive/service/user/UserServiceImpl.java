@@ -1,5 +1,8 @@
 package com.project.sbarchive.service.user;
 
+import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.user.UserMapper;
 import com.project.sbarchive.vo.user.UserRole;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -130,6 +134,28 @@ public class UserServiceImpl implements UserService{
     public void modifyNickname(String userId, String email, String nickname) {
         log.info("============= modifyNickname Service =============");
         userMapper.modifyNickname(userId, email, nickname);
+    }
+
+    @Override
+    public PageResponseDTO<BoardDTO> getMyBoardList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyBoardList Service =============");
+
+        List<BoardDTO> dtoList = userMapper.getMyBoardList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(boardVO -> modelMapper.map(boardVO, BoardDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMyCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<BoardDTO> pageResponseDTO = PageResponseDTO.<BoardDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
     }
 
     @Override

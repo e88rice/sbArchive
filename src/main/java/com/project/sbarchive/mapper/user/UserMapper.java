@@ -1,7 +1,10 @@
 package com.project.sbarchive.mapper.user;
 
+import com.project.sbarchive.vo.board.BoardVO;
 import com.project.sbarchive.vo.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -37,4 +40,7 @@ public interface UserMapper {
 
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
+
+    List<BoardVO> getMyBoardList(String userId, int skip, int size, String[] types, String keyword);
+    int getMyCount(String userId, String[] types, String keyword);
 }
