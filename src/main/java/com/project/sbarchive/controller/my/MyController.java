@@ -134,16 +134,16 @@ public class MyController {
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 
-//    @GetMapping("/myReplyList")
-//    public void myReplyList(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
-//                            BindingResult bindingResult) {
-//        log.info("==================== myReplyList Get Controller ====================");
-//        log.info(pageRequestDTO);
-//
-//        if(bindingResult.hasErrors()) {
-//            pageRequestDTO = PageRequestDTO.builder().build();
-//        }
-//        PageResponseDTO<ReplyDTO> boardDTOPageResponseDTO = userService.getMyReplyList(principal.getName(), pageRequestDTO);
-//        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
-//    }
+    @GetMapping("/myReplyList")
+    public void myReplyList(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
+                            BindingResult bindingResult) {
+        log.info("==================== myReplyList Get Controller ====================");
+        log.info(pageRequestDTO);
+
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        PageResponseDTO<ReplyDTO> boardDTOPageResponseDTO = userService.getMyReplyList(principal.getName(), pageRequestDTO);
+        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+    }
 }

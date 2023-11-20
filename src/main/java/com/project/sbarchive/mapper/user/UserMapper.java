@@ -52,6 +52,6 @@ public interface UserMapper {
     int getMySignboardCount(String userId, String[] types, String keyword);
 
     // 내가 쓴 댓글 목록 출력
-//    List<ReplyVO> getMyReplyList(String userId, int skip, int size);
-//    int getMyReplyCount(String userId);
+    List<ReplyVO> getMyReplyList(String userId, int skip, int size, String[] types, String keyword);
+    int getMyReplyCount(String userId, String[] types, String keyword);
 }

@@ -56,5 +56,5 @@ public interface UserService {
     PageResponseDTO<SignBoardDTO> getMySignBoardList(String userId, PageRequestDTO pageRequestDTO);
 
     // 내가 쓴 댓글 목록 출력
-//    PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO);
+    PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO);
 }

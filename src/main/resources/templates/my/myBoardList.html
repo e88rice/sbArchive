@@ -86,7 +86,7 @@
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
                             <tr th:each="dto:${responseDTO.dtoList}">
                                 <th scope="col" th:text="${responseDTO.sno - dtoStat.index}"></th>
-                                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=board|" class="text-decoration-none">[[${dto.title}]]</a></td>
                                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                                 <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
                                 <td>[[${dto.hit}]]</td>
@@ -131,7 +131,7 @@
                             </form>
                         </div>
                     </div>
-<!--                    card body end-->
+<!--                    card body end&ndash-->
                 </div>
             </div>
         </div>

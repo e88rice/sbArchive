@@ -293,7 +293,18 @@
 
 
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        location.href = `/board/list?${link}`;
+        const urlParams = new URL(window.location.href).searchParams;
+        let my = urlParams.get('my');
+
+        if(my === 'board') {
+            self.location.href = `/my/myBoardList?${link}`;
+        }
+        else if (my === 'reply') {
+            self.location.href = `/my/myReplyList?${link}`;
+        }
+        else {
+            self.location.href = `/board/list?${link}`;
+        }
     });
 
 

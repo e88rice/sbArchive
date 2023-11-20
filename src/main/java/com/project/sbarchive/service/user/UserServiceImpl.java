@@ -183,26 +183,27 @@ public class UserServiceImpl implements UserService{
         return pageResponseDTO;
     }
 
-//    @Override
-//    public PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO) {
-//        log.info("============= getMyBoardList Service =============");
-//
-//        List<ReplyDTO> dtoList = userMapper.getMyReplyList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize())
-//                .stream().map(replyVO -> modelMapper.map(replyVO, ReplyDTO.class)).collect(Collectors.toList());
-//
-//        log.info(dtoList);
-//
-//        int total = userMapper.getMyReplyCount(userId);
-//
-//        log.info("total : " + total);
-//
-//        PageResponseDTO<ReplyDTO> pageResponseDTO = PageResponseDTO.<ReplyDTO>withAll()
-//                .dtoList(dtoList)
-//                .total(total)
-//                .pageRequestDTO(pageRequestDTO)
-//                .build();
-//        return pageResponseDTO;
-//    }
+    @Override
+    public PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyBoardList Service =============");
+
+        List<ReplyDTO> dtoList = userMapper.getMyReplyList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(replyVO -> modelMapper.map(replyVO, ReplyDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMyReplyCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<ReplyDTO> pageResponseDTO = PageResponseDTO.<ReplyDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
 
     @Override
     public int accountCheck(String userId, String email) {

@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="row my_content">
-            <h1>작성 글 보기</h1>
+            <h1>작성 댓글 보기</h1>
             <div class="col">
                 <div class="card">
                     <div class="card-header">
@@ -78,15 +78,17 @@
                             <thead>
                             <tr>
                                 <th scope="col">번호</th>
-                                <th scope="col">제목</th>
+                                <th scope="col">댓글내용</th>
+                                <th scope="col">글 제목</th>
                                 <th scope="col">작성일</th>
                             </tr>
                             </thead>
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
                             <tr th:each="dto:${responseDTO.dtoList}">
                                 <th scope="col" th:text="${responseDTO.sno - dtoStat.index}"></th>
-                                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.content}]]</a></td>
-                                <td>[[${dto.addDate}]]</td>
+                                <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=reply|" class="text-decoration-none">[[${dto.content}]]</a></td>
+                                <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -105,12 +107,51 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="d-flexd-flex flex-row-reverse">
+                            <form action="/my/myReplyList" method="get">
+                                <div class="d-flex flex-row-reverse">
+                                    <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                                    <div class="input-group searchline">
+                                        <div class="input-group-prepend" style="display: none">
+                                            <select class="form-select" name="types" style="margin-right: 20px;margin-bottom: 10px">
+                                                <option value="c" th:selected="${pageRequestDTO.types == 'c'}">댓글내용</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <!--                    card body end-->
                 </div>
             </div>
         </div>
     </div>
+    <script layout:fragment="script" th:inline="javascript">
+        document.querySelector(".pagination").addEventListener("click",function (e) {
 
+
+            const target = e.target;
+
+            if (target.tagName !== 'A') {
+                return;
+            }
+            const num = target.getAttribute("data-num");
+
+            const formObj = document.querySelector("form");
+
+            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+            formObj.submit();
+        },false)
+    </script>
 </div>
 
 

@@ -118,11 +118,11 @@
 
 
 <!--    내가 쓴 댓글 목록-->
-<!--    <select id="getMyReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">-->
-<!--        select * from reply where userId = #{userId} order by replyId desc limit #{skip}, #{size}-->
-<!--    </select>-->
-<!--    <select id="getMyBoardCount" resultType="int" >-->
-<!--        select count(*) from reply where userId = #{userId}-->
-<!--    </select>-->
+    <select id="getMyReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">
+        select * from reply where userId = #{userId} order by replyId desc limit #{skip}, #{size}
+    </select>
+    <select id="getMyReplyCount" resultType="int" >
+        select count(*) from reply where userId = #{userId} <include refid="search" />
+    </select>
 
 </mapper>
