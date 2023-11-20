@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.sbarchive.mapper.board.BoardReportMapper">
+
+    <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
+        INSERT INTO board ( userId, title, content, hit, replyCount, isAnswered, addDate)
+        VALUES (#{userId},#{title},#{content}, 0, 0,  0, now() )
+    </insert>
+    <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
+        select * from report_board order by boardId desc
+    </select>
+    <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardReportVO">
+        select * from report_board where rBoardId =  #{rBoardId}
+    </select>
+    <update id="hitCount" >
+        UPDATE report_board  SET hit = hit + 1  WHERE rBoardId = #{rBoardId}
+    </update>
+
+
+</mapper>
