@@ -87,8 +87,18 @@ public class ReplyServiceImpl implements ReplyService {
 
         List<ReplyDTO> dtoList = new ArrayList<>();
         for (ReplyVO replyVO : voList) {
+            // 대댓글 수 조회
+            int reReplyCount = replyMapper.countReReplies(replyVO.getReplyId());
+
+            // ReplyDTO에 대댓글 수를 추가하고 세팅
             ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
+            replyDTO.setReReplyCount(reReplyCount);
+
+            // DTO로 변환하여 리스트에 추가
             dtoList.add(replyDTO);
+
+//            ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
+//            dtoList.add(replyDTO);
         }
 
         int total = replyMapper.getReplyCount(boardId);
@@ -105,9 +115,11 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public List<ReplyDTO> getReReplies(int boardId, int parentReplyId, boolean replyDepth) {
+
         List<ReplyVO> voList=replyMapper.getReReplies(boardId, parentReplyId, replyDepth);
         List<ReplyDTO> dtoList=new ArrayList<>();
         for(ReplyVO replyVO:voList) {
+
             dtoList.add(modelMapper.map(replyVO, ReplyDTO.class));
         }
         log.info("dtoList: "+dtoList);
@@ -121,6 +133,10 @@ public class ReplyServiceImpl implements ReplyService {
         return replyMapper.getReplyCount(boardId);
     }
 
+    @Override
+    public int countReReplies(int parentReplyId) {
+        return replyMapper.countReReplies(parentReplyId);
+    }
 
 
 

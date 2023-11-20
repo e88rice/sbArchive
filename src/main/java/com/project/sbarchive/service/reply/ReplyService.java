@@ -39,6 +39,8 @@ public interface ReplyService {
     // 댓글 개수
     int getReplyCount(int boardId);
 
+    // 대댓글 개수
+    int countReReplies(int parentReplyId);
 
 
 

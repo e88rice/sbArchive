@@ -142,6 +142,7 @@ public class ReplyController {
 
         return resultMap;
     }
+
     @GetMapping(value="/addRe")
     public String addReReplyGET() {
         log.info("/reply/boardId/addReGET");

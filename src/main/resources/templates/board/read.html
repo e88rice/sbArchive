@@ -134,10 +134,22 @@
     .mcontent {
         padding: 10px;
     }
-    .moreReplyBtn {
+    .moreReplyBtn, .noMoreReplyBtn {
         font-size: 11px;
         color: #606060;
         margin-top: 5px;
+    }
+    .list_of_reply_re {
+        display: flex;
+        border-bottom: 1px solid #d3d3d3;
+        padding: 10px 0 10px 0;
+    }
+    .replyItem_re {
+        background: #f8f9fa;
+    }
+    .img_wrap_re {
+        width: 12%;
+        margin-left: 10px;
     }
     /* 여기까지 댓글 관련 css */
 </style>
@@ -384,7 +396,9 @@
     function printReplyList(dtoList) { // 원댓글 리스트 출력
         let str = '';
         if (dtoList && dtoList.length > 0) {
+
             for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
+
                 let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
                 // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
 
@@ -401,14 +415,15 @@
                 isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
                 isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
-                // 대댓글 여부 구분
-                let replyDepth=dto.replyDepth;
                 // replyDepth 결과를 담을 변수
-                let isOriginReply='';
+                let isThereReReply='';
 
+
+                // replyDepth가 true인 경우가 1개 이상인지 확인
+                const reReplyCount = dto.reReplyCount;
                 // 대댓글이 아니면
-                if (replyDepth===false) {
-                    isOriginReply = `
+                if (reReplyCount > 0) {
+                    isThereReReply= `
                         <div class="list_of_reply">
 
                             <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
@@ -428,19 +443,37 @@
 
                                 <div>${dto.content}</div>
                                 <div class="date_of_reply">${date}</div>
-                                <a class="moreReplyBtn">▽ 답글 보기</a> <!-- 나중에 대댓글이 달린 원댓글에만 답글 보기 버튼 나오도록 수정 예정 -->
+                                <a class="moreReplyBtn">▽ 답글 보기</a><a class="noMoreReplyBtn" style="display: none">△ 답글 닫기</a>
+                            </div>
+                        </div>`;
+                } else {
+                    isThereReReply=`<div class="list_of_reply">
 
+                        <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
+                            <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
+                        </div>
+
+                        <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
+                            <div class="writer_btn_area">
+                                <div>
+                                    ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                    ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
+                                </div>
+                                <div>
+                                    ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                </div>
                             </div>
 
+                            <div>${dto.content}</div>
+                            <div class="date_of_reply">${date}</div>
                         </div>
-                    `;
-                    } else {
-                    isOriginReply = '';
-                    }
+                    </div>`;
+                }
+
 
                 str +=`
                 <li class="replyItem" data-replyId="${dto.replyId}">
-                    ${isOriginReply}
+                    ${isThereReReply}
 
                     <ul class="list_of_reReply">
                         <!-- 대댓글 출력 -->
@@ -462,12 +495,21 @@
                      <!-- 대댓글 등록 폼 -->
                      <div style="display:none; border-bottom: 1px solid #d3d3d3; height: 100px; padding: 20px" class="reReplyAddForm">
                         <div>${nickname}<span>(${username})</span></div>
-                        <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control"></textarea>
+                        <div>
+                            <p style="position: relative; top:0; left:0">@${dto.nickname} 님에 대한 답글</p>
+                            <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control" style="padding-top: 20px; position: relative; bottom:0; left:0;">
+
+                            </textarea>
+                        </div>
+
                         <button type="button" class="btn btn-primary addReBtn">등록</button>
                     </div>
 
+
+
                 </li>
                `
+
             }
         }
         replyList.innerHTML = str; // replyList 부분에 추가
@@ -476,11 +518,12 @@
         // 답글 더보기 버튼 클릭 이벤트
         document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
             moreReplyBtn.addEventListener('click', function (e) {
-                alert("답글 더보기 버튼 클릭");
+                // alert("답글 더보기 버튼 클릭");
 
                 const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                 console.log("replyID: " + parentReplyId);
                 const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
+                const noMoreReplyBtn = moreReplyBtn.nextElementSibling;
 
                 // 대댓글 여부
                 const replyDepth = true;
@@ -507,11 +550,10 @@
                         isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
                         reReplyHTML += `
-                    <li class="replyItem" data-replyId="${dto.replyId}">
-                        <div class="list_of_reply2" style="display: flex; border-bottom: 1px solid #d3d3d3; padding: 10px 0 10px 0;">
-                        <!-- 여기서부터 디자인 확정되면 클래스로 묶을 예정 -->
+                    <li class="replyItem_re" data-replyId="${dto.replyId}">
+                        <div class="list_of_reply_re">
 
-                            ↳ <div class="img_wrap" style="margin-left: 10px"> <!-- 이미지 나오는 부분 -->
+                            ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
                                 <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
                             </div>
 
@@ -522,7 +564,7 @@
                                         ${isReplyWriter ? '' : '<a class="message"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
                                     </div>
                                     <div>
-                                     ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                     ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
                                     </div>
                                 </div>
 
@@ -531,11 +573,76 @@
                             </div>
 
                         </div>
+
+                        <!-- 대댓글에 대한 대댓글 등록 폼 -->
+                         <div style="display:none; border-bottom: 1px solid #d3d3d3; height: 100px; padding: 20px" class="reReReplyAddForm">
+                            <div>${nickname}<span>(${username})</span></div>
+                            <div>
+                                <p style="position: relative; top:0; left:0">@${dto.nickname} 님에 대한 답글</p>
+                                <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control" style="padding-top: 20px; position: relative; bottom:0; left:0;">
+
+                                </textarea>
+                            </div>
+
+                            <button type="button" class="btn btn-primary addReReBtn">등록</button>
+                        </div>
                     </li>
                 `;
                     });
-
+                    // <ul class="list_of_reReply">에 출력됨
                     listOfReReply.innerHTML = reReplyHTML;
+
+                    // 답글 보기 버튼 클릭 시, 답글 보기 버튼은 사라지고 답글 닫기 버튼만 보이게 함
+                    moreReplyBtn.style.display='none';
+                    noMoreReplyBtn.style.display='inline';
+
+                    // 답글 닫기 버튼 클릭 이벤트
+                    noMoreReplyBtn.addEventListener("click", function(e) {
+                        // alert('답글 닫기 버튼 눌렀습니다');
+
+                        // 출력된 대댓글 초기화
+                        listOfReReply.innerHTML='';
+
+                        // 답글 보기 버튼이 보이고 답글 닫기 버튼 사라짐
+                        moreReplyBtn.style.display='inline';
+                        noMoreReplyBtn.style.display='none';
+                    });
+
+                    // 대댓글에 대댓글 등록
+                    document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
+                        reReplyAddBtn.addEventListener('click', function(e) {
+                            // alert("대댓글의 대댓글 등록 버튼");
+                            const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
+                            reReReplyAddForm.style.display='flex';
+
+                        });
+                    });
+
+                    document.querySelectorAll(".addReReBtn").forEach(function(addReReBtn) {
+                        addReReBtn.addEventListener('click', function(e) {
+                            const reReReplyAddForm = e.target.parentNode.parentNode.querySelector('.reReReplyAddForm');
+                            const replycontent=reReReplyAddForm.children[1].children[1];
+                            const annotation=replycontent.previousElementSibling.textContent;
+                            const rcontent=annotation+"<br>"+replycontent.value;
+                            // console.log("rcontent: "+rcontent); // 삭제 예정
+                            // console.log("annotation: "+annotation); // 삭제 예정
+                            // console.log("nickname: "+nickname); // 삭제 예정
+                            // console.log("userId: "+username); // 삭제 예정
+                            // console.log("rcontent.value: "+rcontent); // 삭제 예정
+                            const parentReplyId=reReReplyAddForm.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                            // console.log("parentReplyId: "+parentReplyId); // 삭제 예정
+                            const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+
+                            addReReply(replyObj).then(result => { // reply.js(axios)
+                                // alert(result.data.replyId); // 확인용
+                                replycontent.value='';
+                                reReReplyAddForm.style.display='none';
+                                location.reload();
+                            }).catch(e => {
+                                alert("대댓글에 대한 대댓글 등록에 문제 생김");
+                            });
+                        })
+                    })
 
                 });
             });
@@ -552,22 +659,26 @@
         });
 
 
-        // 대댓글(답글) 등록
+        // 원 댓글에 대댓글(답글) 등록
         document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
             addReBtn.addEventListener('click', function(e) {
-                alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
+                // alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
                 const reReplyAddForm = e.target.parentNode.parentNode.querySelector('.reReplyAddForm');
-                const rcontent=reReplyAddForm.children[1];
+                let replycontent=reReplyAddForm.children[1].children[1];
+                const annotation=replycontent.previousElementSibling.textContent;
+                const rcontent=annotation+"<br>"+replycontent.value;
+                console.log("rcontent: "+rcontent); // 삭제 예정
+                console.log("annotation: "+annotation); // 삭제 예정
                 console.log("nickname: "+nickname); // 삭제 예정
                 console.log("userId: "+username); // 삭제 예정
-                console.log("rcontent.value: "+rcontent.value); // 삭제 예정
+                console.log("rcontent.value: "+rcontent); // 삭제 예정
                 const parentReplyId=e.target.parentNode.parentNode.getAttribute("data-replyId");
                 console.log("parentReplyId: "+parentReplyId); // 삭제 예정
-                const replyObj={boardId:boardId, content:rcontent.value, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+                const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
 
                 addReReply(replyObj).then(result => { // reply.js(axios)
                     // alert(result.data.replyId); // 확인용
-                    rcontent.value='';
+                    replycontent.value='';
                     reReplyAddForm.style.display='none';
                     location.reload();
                 }).catch(e => {
@@ -597,6 +708,7 @@
         });
 
         // 대댓글 수정 버튼 클릭 이벤트 만들어야 됨
+
 
 
         // 원댓글 수정 버튼 클릭 이벤트
