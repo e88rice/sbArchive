@@ -57,6 +57,9 @@ public interface UserService {
     // 내가 쓴 댓글 목록 출력
     PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO);
 
+    // 회원 탈퇴
+    boolean withdrawal(String userId, String passwd);
+
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10
     void lvPointUp(String userId);

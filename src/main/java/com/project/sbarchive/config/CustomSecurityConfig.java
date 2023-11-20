@@ -63,8 +63,6 @@ public class CustomSecurityConfig {
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandler()); // 403
 
 
-
-
         return httpSecurity.build();
         // filterChain() 메소드가 동작하면 이전과 달리 /board/list에 바로 접근 가능.
         // '/login' 에는 접근이 안 됨.

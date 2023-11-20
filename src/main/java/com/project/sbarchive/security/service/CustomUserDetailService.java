@@ -39,7 +39,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         member.setRoleSet(newRoles);
 
-        if(member == null) { // 해당 아이디를 가진 사용자가 없다면
+        if(member == null || member.isDel()) { // 해당 아이디를 가진 사용자가 없다면
             throw new UsernameNotFoundException("username not found...");
         }
 

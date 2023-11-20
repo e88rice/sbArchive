@@ -55,6 +55,9 @@ public interface UserMapper {
     List<ReplyVO> getMyReplyList(String userId, int skip, int size, String[] types, String keyword);
     int getMyReplyCount(String userId, String[] types, String keyword);
 
+    // 회원 탈퇴
+    void withdrawal (String userId, String passwd);
+
 
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10

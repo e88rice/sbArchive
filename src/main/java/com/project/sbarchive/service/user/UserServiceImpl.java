@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO) {
-        log.info("============= getMyBoardList Service =============");
+        log.info("============= getMyReplyList Service =============");
 
         List<ReplyDTO> dtoList = userMapper.getMyReplyList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
                         pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
@@ -216,6 +216,20 @@ public class UserServiceImpl implements UserService{
     @Override
     public void checkLevelUp(String userId, int level, int lvPoint) {
         userMapper.checkLevelUp(userId, level, lvPoint);
+    }
+
+    @Override
+    public boolean withdrawal(String userId, String passwd) {
+        log.info("============= withdrawal Service =============");
+
+        String dbPassword = userMapper.userPasswdCheck(userId);
+
+        if(passwordEncoder.matches(passwd, dbPassword)) {
+            userMapper.withdrawal(userId, passwd);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

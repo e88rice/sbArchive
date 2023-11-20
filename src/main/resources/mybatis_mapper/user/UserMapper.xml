@@ -36,31 +36,31 @@
     </insert>
 
     <select id="emailCheck" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM user WHERE email = #{email}
+        SELECT COUNT(*) FROM `user` WHERE email = #{email}
     </select>
 
     <select id="userIdCheck" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM user WHERE userId = #{userId}
+        SELECT COUNT(*) FROM `user` WHERE userId = #{userId}
     </select>
 
     <select id="loginCheck" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM user WHERE userId = #{userId} AND passwd = #{passwd}
+        SELECT COUNT(*) FROM `user` WHERE userId = #{userId} AND passwd = #{passwd}
     </select>
 
     <select id="getUserInfo" resultMap="getUser" resultType="com.project.sbarchive.vo.user.UserVO">
-        SELECT u.*, urs.role_set FROM user u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId}
+        SELECT u.*, urs.role_set FROM `user` u left join user_role_set urs on u.userId = urs.userId WHERE u.userId = #{userId}
     </select>
 
     <select id="getUserId" parameterType="String" resultType="String">
-        SELECT userId FROM user WHERE email = #{email}
+        SELECT userId FROM `user` WHERE email = #{email}
     </select>
 
     <select id="userPasswdCheck" resultType="String">
-        SELECT passwd FROM user WHERE userId = #{userId}
+        SELECT passwd FROM `user` WHERE userId = #{userId}
     </select>
 
     <select id="accountCheck" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM user WHERE userId = #{userId} AND email = #{email}
+        SELECT COUNT(*) FROM `user` WHERE userId = #{userId} AND email = #{email}
     </select>
 
     <update id="updatePassword">
@@ -125,6 +125,9 @@
         select count(*) from reply where userId = #{userId} <include refid="search" />
     </select>
 
+    <update id="withdrawal">
+        update `user` set del = 1  where userId = #{userId}
+    </update>
 
     <!--  레벨 관련 쿼리 추가  -->
     <update id="lvPointUp">
