@@ -280,7 +280,11 @@
             e.preventDefault();
             e.stopPropagation();
 
-            self.location.href = "/signboard/list/"+[[${page}]];
+            if([[${page}]] === 0) {
+                self.location.href = "/my/mySignBoardList";
+            } else {
+                self.location.href = "/signboard/list/"+[[${page}]];
+            }
         })
 
         // 수정 관련 모달

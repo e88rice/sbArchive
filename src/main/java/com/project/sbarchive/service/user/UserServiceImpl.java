@@ -3,6 +3,9 @@ package com.project.sbarchive.service.user;
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.dto.reply.ReplyDTO;
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.user.UserMapper;
 import com.project.sbarchive.vo.user.UserRole;
@@ -146,7 +149,7 @@ public class UserServiceImpl implements UserService{
 
         log.info(dtoList);
 
-        int total = userMapper.getMyCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+        int total = userMapper.getMyBoardCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
 
         log.info("total : " + total);
 
@@ -157,6 +160,49 @@ public class UserServiceImpl implements UserService{
                 .build();
         return pageResponseDTO;
     }
+
+    @Override
+    public PageResponseDTO<SignBoardDTO> getMySignBoardList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyBoardList Service =============");
+
+        List<SignBoardDTO> dtoList = userMapper.getMySignboardList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(signboardVO -> modelMapper.map(signboardVO, SignBoardDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMySignboardCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<SignBoardDTO> pageResponseDTO = PageResponseDTO.<SignBoardDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
+
+//    @Override
+//    public PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO) {
+//        log.info("============= getMyBoardList Service =============");
+//
+//        List<ReplyDTO> dtoList = userMapper.getMyReplyList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize())
+//                .stream().map(replyVO -> modelMapper.map(replyVO, ReplyDTO.class)).collect(Collectors.toList());
+//
+//        log.info(dtoList);
+//
+//        int total = userMapper.getMyReplyCount(userId);
+//
+//        log.info("total : " + total);
+//
+//        PageResponseDTO<ReplyDTO> pageResponseDTO = PageResponseDTO.<ReplyDTO>withAll()
+//                .dtoList(dtoList)
+//                .total(total)
+//                .pageRequestDTO(pageRequestDTO)
+//                .build();
+//        return pageResponseDTO;
+//    }
 
     @Override
     public int accountCheck(String userId, String email) {

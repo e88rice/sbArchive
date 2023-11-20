@@ -98,13 +98,31 @@
             </if>
     </sql>
 
+<!--    내가 쓴 글 목록-->
     <select id="getMyBoardList" resultType="com.project.sbarchive.vo.board.BoardVO">
         select * from board where userId = #{userId} <include refid="search" />
         order by boardId desc limit #{skip}, #{size}
     </select>
-
-    <select id="getMyCount" resultType="int" >
+    <select id="getMyBoardCount" resultType="int" >
         select count(*) from board where userId = #{userId} <include refid="search" />
     </select>
+
+
+<!--    내가 쓴 아카이브 목록-->
+    <select id="getMySignboardList" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">
+        select * from signboard where userId = #{userId} order by signboardId desc limit #{skip}, #{size}
+    </select>
+    <select id="getMySignboardCount" resultType="int" >
+        select count(*) from signboard where userId = #{userId} <include refid="search" />
+    </select>
+
+
+<!--    내가 쓴 댓글 목록-->
+<!--    <select id="getMyReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">-->
+<!--        select * from reply where userId = #{userId} order by replyId desc limit #{skip}, #{size}-->
+<!--    </select>-->
+<!--    <select id="getMyBoardCount" resultType="int" >-->
+<!--        select count(*) from reply where userId = #{userId}-->
+<!--    </select>-->
 
 </mapper>

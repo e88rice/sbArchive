@@ -1,7 +1,9 @@
 package com.project.sbarchive.mapper.user;
 
 import com.project.sbarchive.vo.board.BoardVO;
+import com.project.sbarchive.vo.signboard.SignBoardVO;
 import com.project.sbarchive.vo.user.UserVO;
+import com.project.sbarchive.vo.reply.ReplyVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -41,6 +43,15 @@ public interface UserMapper {
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
 
+    // 내가 쓴 글 목록 출력
     List<BoardVO> getMyBoardList(String userId, int skip, int size, String[] types, String keyword);
-    int getMyCount(String userId, String[] types, String keyword);
+    int getMyBoardCount(String userId, String[] types, String keyword);
+
+    // 내가 쓴 아카이브 목록 출력
+    List<SignBoardVO> getMySignboardList(String userId, int skip, int size, String[] types, String keyword);
+    int getMySignboardCount(String userId, String[] types, String keyword);
+
+    // 내가 쓴 댓글 목록 출력
+//    List<ReplyVO> getMyReplyList(String userId, int skip, int size);
+//    int getMyReplyCount(String userId);
 }

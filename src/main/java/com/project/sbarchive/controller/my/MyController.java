@@ -3,6 +3,9 @@ package com.project.sbarchive.controller.my;
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.dto.reply.ReplyDTO;
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
@@ -105,14 +108,17 @@ public class MyController {
     }
 
     @GetMapping("/mySignBoardList")
-    public void mySignBoardList(Model model, @Valid PageRequestDTO pageRequestDTO,
+    public void mySignBoardList(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
                                 BindingResult bindingResult) {
         log.info("==================== mySignBoardList Get Controller ====================");
-//        if(bindingResult.hasErrors()) {
-//            pageRequestDTO = PageRequestDTO.builder().build();
-//        }
-//        PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
-//        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+        log.info(pageRequestDTO);
+
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+
+        PageResponseDTO<SignBoardDTO> boardDTOPageResponseDTO = userService.getMySignBoardList(principal.getName(), pageRequestDTO);
+        model.addAttribute("responseDTO", boardDTOPageResponseDTO);
     }
 
     @GetMapping("/myBoardList")
@@ -127,4 +133,17 @@ public class MyController {
         PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = userService.getMyBoardList(principal.getName(), pageRequestDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
+
+//    @GetMapping("/myReplyList")
+//    public void myReplyList(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
+//                            BindingResult bindingResult) {
+//        log.info("==================== myReplyList Get Controller ====================");
+//        log.info(pageRequestDTO);
+//
+//        if(bindingResult.hasErrors()) {
+//            pageRequestDTO = PageRequestDTO.builder().build();
+//        }
+//        PageResponseDTO<ReplyDTO> boardDTOPageResponseDTO = userService.getMyReplyList(principal.getName(), pageRequestDTO);
+//        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+//    }
 }
