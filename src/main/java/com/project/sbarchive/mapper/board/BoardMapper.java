@@ -19,6 +19,7 @@ public interface BoardMapper {
     void modify(BoardVO boardVO);
 
     void hitCount(int boardId);
+
     void likeUp(int boardId, int likeUp);
 
     void remove(int boardId);

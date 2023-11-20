@@ -4,7 +4,6 @@ import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
-import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.vo.user.UserVO;
@@ -57,4 +56,12 @@ public interface UserService {
 
     // 내가 쓴 댓글 목록 출력
     PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO);
+
+
+    // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10
+    void lvPointUp(String userId);
+
+    // lvPoint 업데이트 할 때 마다 lvPoint를 검사해서 조건을 만족할 시 레벨업을 시켜줌
+    void checkLevelUp(String userId, int level, int lvPoint);
+
 }

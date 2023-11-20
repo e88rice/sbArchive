@@ -4,6 +4,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.security.service.CustomUserDetailService;
 import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
 import com.project.sbarchive.service.user.UserService;
@@ -44,6 +45,8 @@ public class SignboardController {
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/add") // 간판 등록 페이지로 이동
     public String addGET(Principal principal, Model model) {
+
+
 
         log.info(count);
 

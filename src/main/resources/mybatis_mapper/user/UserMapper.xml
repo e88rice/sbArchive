@@ -125,4 +125,24 @@
         select count(*) from reply where userId = #{userId} <include refid="search" />
     </select>
 
+
+    <!--  레벨 관련 쿼리 추가  -->
+    <update id="lvPointUp">
+        UPDATE user SET lvPoint = lvPoint + 10 WHERE `userId` = #{userId};
+    </update>
+
+    <update id="checkLevelUp">
+        UPDATE USER
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="level == 1 and lvPoint == 200">
+                level = level + 1,
+            </if>
+            <if test="level == 2 and lvPoint == 500">
+                level = level + 1,
+            </if>
+            userId = userId
+        </trim>
+        WHERE `userId` = #{userId}
+    </update>
+<!--    <if test='(level == 1 and lvPoint gt 200) or (level == 2 and lvPoint gt 500)'> level = level + 1 </if>-->
 </mapper>

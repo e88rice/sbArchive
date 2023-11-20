@@ -54,4 +54,13 @@ public interface UserMapper {
     // 내가 쓴 댓글 목록 출력
     List<ReplyVO> getMyReplyList(String userId, int skip, int size, String[] types, String keyword);
     int getMyReplyCount(String userId, String[] types, String keyword);
+
+
+
+    // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10
+    void lvPointUp(String userId);
+
+    // lvPoint 업데이트 할 때 마다 lvPoint를 검사해서 조건을 만족할 시 레벨업을 시켜줌
+    void checkLevelUp(String userId, int level, int lvPoint);
+
 }

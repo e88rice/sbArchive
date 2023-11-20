@@ -8,12 +8,16 @@ import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.board.BoardService;
+import com.project.sbarchive.security.dto.MemberSecurityDTO;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +44,11 @@ public class MyController {
         log.info("==================== myPage Get Controller ====================");
         UserVO userVO = userService.getUserInfo(principal.getName());
         UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
+        log.info(userVO);
 
         model.addAttribute("userInfo", userDTO);
     }
@@ -76,9 +85,13 @@ public class MyController {
     }
 
     @PostMapping("/modifyNickname")
-    public String modifyNickname(String userId, String email, String nickname) {
+    public String modifyNickname(String userId, String email, String nickname, Authentication authentication) {
         log.info("==================== modifyNickname POST Controller ====================");
         userService.modifyNickname(userId, email, nickname);
+        // MemberSecurityDTO는 참조 변수라 현재 로그인한 UserDetails 객체랑 동기화 되어있음
+        // 그래서 Setter를 이용해 값을 변경하면 세션에 있는 UserDetails 값도 변경이 됨.
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
+        memberSecurityDTO.setNickname(nickname);
 
         return "redirect:/my/mypage";
     }
