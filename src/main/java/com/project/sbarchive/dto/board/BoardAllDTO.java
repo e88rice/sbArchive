@@ -20,6 +20,8 @@ public class BoardAllDTO {
     private Integer boardId;
     @NotEmpty
     private String userId;
+
+    private int likeId;
     @NotEmpty
     private String title;
     @NotEmpty

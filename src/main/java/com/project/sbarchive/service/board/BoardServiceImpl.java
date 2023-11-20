@@ -1,9 +1,11 @@
 package com.project.sbarchive.service.board;
 
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.mapper.board.BoardMapper;
+import com.project.sbarchive.vo.board.BoardLikeVO;
 import com.project.sbarchive.vo.board.BoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -78,5 +80,33 @@ public class BoardServiceImpl implements BoardService {
                 .pageRequestDTO(pageRequestDTO)
                 .build();
         return pageResponseDTO;
+    }
+
+    @Override
+    public void likeUp(int boardId, String userId) {
+        boardMapper.likeUp(boardId,userId);
+
+        log.info(boardId + "like!!");
+    }
+
+    @Override
+    public void likeDown(int boardId, String userId) {
+        boardMapper.likeDown(boardId,userId);
+        log.info(boardId + userId + "unlike!!");
+    }
+
+    @Override
+    public int getLike(int boardId, String userId) {
+        return  boardMapper.getLike(boardId,userId);
+    }
+
+    @Override
+    public void boardlikeUp(int boardId) {
+        boardMapper.boardlikeUp(boardId);
+    }
+
+    @Override
+    public void boardlikeDown(int boardId) {
+        boardMapper.boardlikeDown(boardId);
     }
 }

@@ -2,6 +2,7 @@ package com.project.sbarchive.controller.board;
 
 import com.project.sbarchive.dto.board.BoardAllDTO;
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.service.board.BoardFileService;
@@ -11,12 +12,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.ui.Model;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.http.HttpResponse;
+import java.security.Principal;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -85,11 +88,14 @@ public class BoardController {
 
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/read")
-    public void view(Model model, int boardId, HttpServletRequest request,
+    public void view(Model model, int boardId, HttpServletRequest request, Principal principal,
                      List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
+        int getlikeCount = boardService.getLike(boardId, principal.getName());
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
+        log.info(getlikeCount);
+        boardAllDTO.setLikeId(getlikeCount);
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
         boardService.hitCount(boardId);
