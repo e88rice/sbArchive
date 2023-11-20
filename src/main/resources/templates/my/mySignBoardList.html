@@ -43,6 +43,18 @@
     .my_content {
         padding-top: 30px;
     }
+
+    td {
+        text-align: center;
+    }
+
+    .division > th {
+        text-align: center;
+    }
+
+    .division :first-child {
+        text-align: left;
+    }
 </style>
 
 <div layout:fragment="content">
@@ -69,29 +81,32 @@
             <h1>작성 아카이브 보기</h1>
             <div class="col">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" style="display: flex; justify-content: space-between">
                         <h6 class="card-title">total : [[${responseDTO.total}]]</h6>
-                        <button type="button" class="btn btn-primary">선택삭제</button>
+                        <button type="button" class="btn btn-primary btnRemoveSelected">선택삭제</button>
                     </div>
                     <div class="card-body">
+                        <form action="/my/deleteSelectedSignBoard" method="post" name="deleteSelected">
                         <table class="table">
                             <thead>
-                                <tr>
-                                    <th><input type="checkbox"></th>
-                                    <th scope="col">번호</th>
-                                    <th scope="col">제목</th>
-                                    <th scope="col">작성일</th>
-                                </tr>
+                            <tr class="division">
+                                <th scope="col">번호</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">작성일</th>
+                                <th scope="col">선택</th>
+                            </tr>
                             </thead>
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                                <tr th:each="dto:${responseDTO.dtoList}">
-                                    <th><input type="checkbox"></th>
-                                    <th scope="col" th:text="${responseDTO.startNum - dtoStat.index}"></th>
-                                    <td><a th:href="|@{/board/read(bno =${dto.bno})}&${link}|" class="text-decoration-none">[[${dto.title}]]</a></td>
-                                    <td>[[${dto.add_date}]]</td>
-                                </tr>
+                            <tr th:each="dto:${responseDTO.dtoList}">
+                                <th scope="col" th:text="${responseDTO.sno - dtoStat.index}"></th>
+                                <td><a th:href="|@{/signboard/read/0/}${dto.signboardId}|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                                <td><input type="checkbox" name="signboardId" th:value="${dto.signboardId}"></td>
+                            </tr>
                             </tbody>
                         </table>
+                        </form>
                         <div class="float-end">
                             <ul class="pagination flex-wrap">
                                 <li class="page-item" th:if="${responseDTO.prev}">
@@ -107,12 +122,60 @@
                                 </li>
                             </ul>
                         </div>
+                        <div class="d-flexd-flex flex-row-reverse">
+                            <form action="/my/myBoardList" method="get" name="search">
+                                <div class="d-flex flex-row-reverse">
+                                    <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                                    <div class="input-group searchline">
+                                        <div class="input-group-prepend">
+                                            <select class="form-select" name="types" style="margin-right: 20px;margin-bottom: 10px">
+                                                <option value="s" th:selected="${pageRequestDTO.types == 's'}">제목</option>
+                                                <option value="c" th:selected="${pageRequestDTO.types == 'c'}">내용</option>
+                                            </select>
+                                        </div>
+                                        <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <!--                    card body end-->
                 </div>
             </div>
-        </div><!--    end row-->
+        </div>
     </div>
+    <script layout:fragment="script" th:inline="javascript">
+        document.querySelector(".pagination").addEventListener("click",function (e) {
 
+
+            const target = e.target;
+
+            if (target.tagName !== 'A') {
+                return;
+            }
+            const num = target.getAttribute("data-num");
+
+            const formObj = document.querySelector("form[name=search]");
+
+            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+            formObj.submit();
+        },false)
+
+        const btnRemoveSelected = document.querySelector('.btnRemoveSelected');
+        const deleteSelected = document.querySelector("form[name=deleteSelected]");
+        btnRemoveSelected.addEventListener('click', function () {
+            if(confirm("정말 삭제하시겠습니까?")){
+                deleteSelected.submit();
+            };
+        });
+    </script>
 </div>
 
 

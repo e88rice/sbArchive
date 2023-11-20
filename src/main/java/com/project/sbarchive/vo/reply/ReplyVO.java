@@ -58,4 +58,6 @@ public class ReplyVO {
     // 원 댓글 삭제 여부
     private boolean isParentReplyDeleted;
 
+    // 대댓글 개수
+    private int reReplyCount;
 }

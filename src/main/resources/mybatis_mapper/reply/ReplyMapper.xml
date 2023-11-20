@@ -58,6 +58,14 @@
         VALUES (#{boardId}, #{userId}, #{nickname}, #{content}, NOW(), NOW(), 1, #{parentReplyId})
     </insert>
 
+    <!-- 대댓글 개수 가져옴 -->
+    <select id="countReReplies" resultType="int">
+        SELECT COUNT(*) FROM reply WHERE parentReplyId = #{parentReplyId} AND replyDepth=1;
+    </select>
+
+
+
+
 
 
 

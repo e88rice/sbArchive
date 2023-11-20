@@ -64,28 +64,6 @@ public class UserController {
         return "/user/login";
     }
 
-//    @PostMapping("/login")
-//    public String loginPost(String userId, String passwd, HttpSession session) {
-//        log.info("===== loginPost Controller =====");
-//        int isJoined = userService.loginCheck(userId, passwd);
-//
-//        UserDTO loginInfo = new UserDTO();
-//
-//        if(isJoined == 0) {
-//            session.setAttribute("msg", "로그인 실패");
-//            return "redirect:/user/login";
-//        } else {
-//            loginInfo = userService.getUserInfo(userId);
-//            session.setAttribute("loginInfo", loginInfo);
-//            session.removeAttribute("msg");
-//
-//            log.info(loginInfo);
-//
-//            }
-//
-//        return "redirect:/index";
-//    }
-
     @GetMapping("/findId")
     public String findId(){
         log.info("=============== findId GET Controller ===============");

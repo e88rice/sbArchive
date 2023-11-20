@@ -38,6 +38,9 @@ public interface ReplyMapper {
     // 대댓글 추가
     void addReReply(ReplyVO replyVO);
 
+    // 대댓글의 개수
+    int countReReplies(int parentReplyId);
+
 
 
 

@@ -1,7 +1,12 @@
 package com.project.sbarchive.mapper.user;
 
+import com.project.sbarchive.vo.board.BoardVO;
+import com.project.sbarchive.vo.signboard.SignBoardVO;
 import com.project.sbarchive.vo.user.UserVO;
+import com.project.sbarchive.vo.reply.ReplyVO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -37,4 +42,28 @@ public interface UserMapper {
 
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
+
+    // 내가 쓴 글 목록 출력
+    List<BoardVO> getMyBoardList(String userId, int skip, int size, String[] types, String keyword);
+    int getMyBoardCount(String userId, String[] types, String keyword);
+
+    // 내가 쓴 아카이브 목록 출력
+    List<SignBoardVO> getMySignboardList(String userId, int skip, int size, String[] types, String keyword);
+    int getMySignboardCount(String userId, String[] types, String keyword);
+
+    // 내가 쓴 댓글 목록 출력
+    List<ReplyVO> getMyReplyList(String userId, int skip, int size, String[] types, String keyword);
+    int getMyReplyCount(String userId, String[] types, String keyword);
+
+    // 회원 탈퇴
+    void withdrawal (String userId, String passwd);
+
+
+
+    // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10
+    void lvPointUp(String userId);
+
+    // lvPoint 업데이트 할 때 마다 lvPoint를 검사해서 조건을 만족할 시 레벨업을 시켜줌
+    void checkLevelUp(String userId, int level, int lvPoint);
+
 }

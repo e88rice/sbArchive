@@ -1,17 +1,26 @@
 package com.project.sbarchive.service.user;
 
+import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.dto.reply.ReplyDTO;
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.user.UserMapper;
 import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -119,6 +128,7 @@ public class UserServiceImpl implements UserService{
         String pw = passwordEncoder.encode(passwd);
         userMapper.updatePassword(userId, pw);
         updateLog(userId, pw);
+
     }
 
     @Override
@@ -130,6 +140,96 @@ public class UserServiceImpl implements UserService{
     public void modifyNickname(String userId, String email, String nickname) {
         log.info("============= modifyNickname Service =============");
         userMapper.modifyNickname(userId, email, nickname);
+    }
+
+    @Override
+    public PageResponseDTO<BoardDTO> getMyBoardList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyBoardList Service =============");
+
+        List<BoardDTO> dtoList = userMapper.getMyBoardList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(boardVO -> modelMapper.map(boardVO, BoardDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMyBoardCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<BoardDTO> pageResponseDTO = PageResponseDTO.<BoardDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
+
+    @Override
+    public PageResponseDTO<SignBoardDTO> getMySignBoardList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyBoardList Service =============");
+
+        List<SignBoardDTO> dtoList = userMapper.getMySignboardList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(signboardVO -> modelMapper.map(signboardVO, SignBoardDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMySignboardCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<SignBoardDTO> pageResponseDTO = PageResponseDTO.<SignBoardDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
+
+    @Override
+    public PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyReplyList Service =============");
+
+        List<ReplyDTO> dtoList = userMapper.getMyReplyList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(replyVO -> modelMapper.map(replyVO, ReplyDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMyReplyCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<ReplyDTO> pageResponseDTO = PageResponseDTO.<ReplyDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
+
+    @Override
+    public void lvPointUp(String userId) {
+        userMapper.lvPointUp(userId);
+    }
+
+    @Override
+    public void checkLevelUp(String userId, int level, int lvPoint) {
+        userMapper.checkLevelUp(userId, level, lvPoint);
+    }
+
+    @Override
+    public boolean withdrawal(String userId, String passwd) {
+        log.info("============= withdrawal Service =============");
+
+        String dbPassword = userMapper.userPasswdCheck(userId);
+
+        if(passwordEncoder.matches(passwd, dbPassword)) {
+            userMapper.withdrawal(userId, passwd);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
