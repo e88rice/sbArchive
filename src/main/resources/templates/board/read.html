@@ -13,7 +13,6 @@
         margin: 0 auto;
         padding-top: 100px;
         width: 700px;
-        height: 1200px;
 
     }
     textarea {
@@ -224,11 +223,11 @@
                                     [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
                                 </div>
                                 <div class="topline">
-                                    <button th:if="${dto.likeId}" class="fa-solid fa-heart" type="button" style="border: none;background: none;color: red";>
+                                    <button th:if="${dto.likeId}" id="solheart" class="fa-solid fa-heart " type="button" style="border: none;background: none;color: red";>
                                         좋아요
                                     </button>
                                     <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                    <button th:unless="${dto.likeId}" class="fa-regular fa-heart" type="button" style="border: none;background: none;color: red";>
+                                    <button th:unless="${dto.likeId}" id="reheart" class="fa-regular fa-heart " type="button" style="border: none;background: none;color: red";>
                                         좋아요
                                     </button>
                                     [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count">
@@ -1083,7 +1082,7 @@
 
     document.querySelector(".reportPage").addEventListener("click",function (e) {
         e.preventDefault();
-        var userConfirmed = confirm("이게시물을 신고하시겟습니까?");
+        var userConfirmed = confirm("이 게시물을 신고하시겠습니까?");
         if(userConfirmed) {
             location.href = `/boardReport/add?boardId=${boardId}`;
         }else return;
@@ -1091,21 +1090,23 @@
 
 
 
-    const hart = document.querySelector(".hart");
+
     const likeCount = [[${dto.likeId}]]
     const islike = document.querySelector(".fa-solid");
-    const notlike = document.querySelector(".fa-regular");
+    const nolike = document.querySelector(".fa-regular");
 
 
 
     islike.addEventListener('click',function (e) {
+        console.log("hhhhhhhhh")
         e.preventDefault();
         likeDown(boardId,username);
         location.reload();
     });
 
 
-    notlike.addEventListener('click',function (e) {
+    nolike.addEventListener('click',function (e) {
+        console.log("hhhhhhhhh")
         e.preventDefault();
         likeUp(boardId, username);
         location.reload();

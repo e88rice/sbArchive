@@ -23,7 +23,7 @@ public interface BoardService {
     //페이징
     PageResponseDTO<BoardDTO> getList(PageRequestDTO pageRequestDTO);
 
-    void likeUp(int boardId, String userId);
+    void likeUp(int boardId, String userId, String title);
 
     void likeDown(int boardId, String userId);
 

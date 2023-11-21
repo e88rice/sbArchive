@@ -3,23 +3,24 @@ package com.project.sbarchive.mapper.board;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.vo.board.BoardReportVO;
 import com.project.sbarchive.vo.board.BoardVO;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-
+@Mapper
 public interface BoardReportMapper {
     void add(BoardReportVO boardReportVO);
 
-    List<BoardVO> getBoardList();
+    List<BoardReportVO> getBoardList();
 
-    BoardReportVO getBoard(int boardId);
+    BoardReportVO getBoard(String userId);
 
-    void modify(BoardReportVO boardReportVO);
+    int isAnswered(int rBoardId);
 
-    void hitCount(int boardId);
 
-    void remove(int boardId);
+    void remove(int rBoardId);
 
     List<BoardReportVO> selectList(PageRequestDTO pageRequestDTO);
 
     int getCount(PageRequestDTO pageRequestDTO);
+
 }

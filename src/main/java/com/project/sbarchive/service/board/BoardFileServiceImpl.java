@@ -30,7 +30,7 @@ public class BoardFileServiceImpl implements BoardFileService {
     private final BoardFileMapper boardFileMapper;
 
     @Override
-    public void addBoardImages(int boardId, List<MultipartFile> files) {
+    public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
         String uploadPath1 = uploadPath + "board\\";
 
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
@@ -59,7 +59,7 @@ public class BoardFileServiceImpl implements BoardFileService {
                     // thumbFile = 새로 생기는 파일의 경로 및 파일 이름. c:\\upload\\s_6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // width, height = 이미지 파일의 최대 크기
                     log.info("---------/////////-----------------------2");
-                    boardFileMapper.addBoardImages(boardId, uuid+"_"+originalName);
+                    boardFileMapper.addBoardImages(boardId, uuid+"_"+originalName ,type);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -68,14 +68,14 @@ public class BoardFileServiceImpl implements BoardFileService {
     }
 
     @Override
-    public ArrayList<String> getBoardImages(int boardId) {
-        ArrayList<String> files = boardFileMapper.getBoardImages(boardId);
+    public ArrayList<String> getBoardImages(int boardId, String type) {
+        ArrayList<String> files = boardFileMapper.getBoardImages(boardId, type);
         return files;
     }
 
     @Override
-    public void removeBoardImages(int boardId) {
-        ArrayList<String> files = boardFileMapper.getBoardImages(boardId);
+    public void removeBoardImages(int boardId, String type) {
+        ArrayList<String> files = boardFileMapper.getBoardImages(boardId, type);
         String deletePath = uploadPath + "board\\";
         for(String file : files) {
             File filePath = new File(deletePath + file);
@@ -85,6 +85,6 @@ public class BoardFileServiceImpl implements BoardFileService {
             filePath.delete();
             thumbnail.delete();
         }
-        boardFileMapper.removeBoardImages(boardId);
+        boardFileMapper.removeBoardImages(boardId, type);
     }
 }

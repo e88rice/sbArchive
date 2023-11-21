@@ -1,5 +1,6 @@
 package com.project.sbarchive.controller.board;
 
+import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
@@ -22,7 +23,9 @@ public class BoardLikeController {
 
     @PostMapping("/remove/{boardId}/{userId}")
     public void removeLike(@PathVariable("boardId") int boardId, @PathVariable("userId") String userId) {
-        boardService.likeUp(boardId,userId);
+        BoardDTO boardDTO = boardService.getBoard(boardId);
+        String title =  boardDTO.getTitle();
+        boardService.likeUp(boardId,userId, title);
         boardService.boardlikeUp(boardId);
     }
     @PostMapping("/add/{boardId}/{userId}")

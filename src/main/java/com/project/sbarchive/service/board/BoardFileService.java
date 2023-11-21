@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface BoardFileService {
-    void addBoardImages(int boardId, List<MultipartFile> files);
+    void addBoardImages(int boardId, List<MultipartFile> files, String type);
 
     // signboardId를 참조하는 게시글의 이미지들 가져옴
-    ArrayList<String> getBoardImages(int boardId);
+    ArrayList<String> getBoardImages(int boardId, String type);
 
     // 해당 signboardId를 참조하는 이미지 데이터들을 삭제
-    void removeBoardImages(int boardId);
+    void removeBoardImages(int boardId , String type);
 }

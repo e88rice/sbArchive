@@ -5,17 +5,18 @@
 <mapper namespace="com.project.sbarchive.mapper.board.BoardFileMapper">
 
     <insert id="addBoardImages">
-        INSERT INTO board_file (boardId, fileName)
-        VALUES (#{boardId}, #{fileName});
+        INSERT INTO board_file (boardId, fileName, type )
+        VALUES (#{boardId}, #{fileName}, #{type});
     </insert>
 
+
     <select id="getBoardImages" resultType="String">
-        select fileName from board_file  where boardId = #{boardId};
+        select fileName from board_file  where boardId = #{boardId} and type = #{type}
     </select>
 
 
     <delete id="removeBoardImages">
-        delete from board_file where boardId = #{boardId}
+        delete from board_file where boardId = #{boardId} and type = #{type}
     </delete>
 
 </mapper>

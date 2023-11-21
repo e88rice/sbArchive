@@ -16,8 +16,6 @@ public class BoardReportVO {
     String userId;
     String title;
     String content;
-    int hit;
-    int replyCount;
     boolean isAnswered;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     LocalDate addDate;

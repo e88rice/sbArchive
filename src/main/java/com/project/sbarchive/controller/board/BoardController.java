@@ -69,7 +69,7 @@ public class BoardController {
             for (MultipartFile file : files) {
                 log.info("File: " + file.getOriginalFilename());
             }
-            boardFileService.addBoardImages(boardId, files);
+            boardFileService.addBoardImages(boardId, files,"board");
         }
         return "redirect:/board/list";
     }
@@ -93,7 +93,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         int getlikeCount = boardService.getLike(boardId, principal.getName());
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
-        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
+        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId , "board"));
         log.info(getlikeCount);
         boardAllDTO.setLikeId(getlikeCount);
         model.addAttribute("dto", boardAllDTO);
@@ -109,7 +109,7 @@ public class BoardController {
                        List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
-        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
+        boardAllDTO.setFiles(boardFileService.getBoardImages(boardId, "report"));
         model.addAttribute("dto", boardAllDTO);
 
     }
@@ -124,13 +124,13 @@ public class BoardController {
         log.info(boardDTO+"CONTROLLER MODIFY!!");
         boardService.modify(boardDTO);
         int boardId = boardDTO.getBoardId();
-        boardFileService.removeBoardImages(boardId);
+        boardFileService.removeBoardImages(boardId,"board");
 
         log.info("removeIMG!!!!!!!!!!!!");
         if(files.size() == 0) {
             return "redirect:/board/read?boardId="+boardId;
         }
-        boardFileService.addBoardImages(boardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
+        boardFileService.addBoardImages(boardId, files,"board"); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         return "redirect:/board/read?boardId="+boardId;
 
     }
@@ -145,10 +145,6 @@ public class BoardController {
         return "redirect:/board/list?"+pageRequestDTO.getLink();
     }
 
-    @ApiOperation(value = "remove 파일",notes = "DELETE 방식으로 삭제")
-    @DeleteMapping("/board/remove/{boardId}")
-    public void removeFile(@PathVariable int boardId) {
-        boardFileService.removeBoardImages(boardId);
-    }
+
 
 }

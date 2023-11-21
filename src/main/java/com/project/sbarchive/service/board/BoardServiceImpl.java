@@ -83,8 +83,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void likeUp(int boardId, String userId) {
-        boardMapper.likeUp(boardId,userId);
+    public void likeUp(int boardId, String userId, String title) {
+        boardMapper.likeUp(boardId,userId, title);
 
         log.info(boardId + "like!!");
     }

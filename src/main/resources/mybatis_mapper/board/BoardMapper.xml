@@ -54,13 +54,13 @@
         <include refid="search" />
         order by boardId desc limit #{skip}, #{size}
     </select>
-    <select id="getCount" resultType="int" >
+    <select id="getCount" resultType="int">
         select count(*) from board
         <include refid="search" />
     </select>
 
     <insert id="likeUp" >
-        insert into board_like (boardId, userId, addDate) values (#{boardId} , #{userId}, now())
+        insert into board_like (boardId, userId, addDate,title) values (#{boardId} , #{userId}, now(), #{title})
     </insert>
 
     <delete id="likeDown" >

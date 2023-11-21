@@ -13,6 +13,7 @@ public class BoardFileVO {
 
     private int index;
     private int boardId;
+    private String type;
     private String fileName;
 
 }

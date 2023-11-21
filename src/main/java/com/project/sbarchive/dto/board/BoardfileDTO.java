@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class BoardfileDTO {
     private int index;
     private int boardId;
+    private String type;
     private String fileName;
 
 }
