@@ -1,6 +1,7 @@
 package com.project.sbarchive.service.user;
 
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
@@ -59,6 +60,9 @@ public interface UserService {
 
     // 내가 쓴 댓글 목록 출력
     PageResponseDTO<ReplyDTO> getMyReplyList(String userId, PageRequestDTO pageRequestDTO);
+
+    // 내가 스크랩한 목록 출력
+    PageResponseDTO<BoardLikeDTO> getMyLikedList(String userId, PageRequestDTO pageRequestDTO);
 
     // 회원 탈퇴
     boolean withdrawal(String userId, String passwd);

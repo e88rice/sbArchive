@@ -39,4 +39,11 @@ public class UserMapperTest {
 
         userMapper.modifyEmail(userId, email);
     }
+
+    @Test
+    public void myLikedList() {
+        String userId = "plez1992";
+
+        log.info(userMapper.getMyLikedList(userId, 0, 10, null, null));
+    }
 }

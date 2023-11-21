@@ -1,6 +1,7 @@
 package com.project.sbarchive.controller.my;
 
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
@@ -210,6 +211,20 @@ public class MyController {
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 
+    @GetMapping("/myLikedList")
+    public void myLikedListGET(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
+                               BindingResult bindingResult) {
+        log.info("==================== withdrawal GET Controller ====================");
+        log.info(pageRequestDTO);
+
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        PageResponseDTO<BoardLikeDTO> boardDTOPageResponseDTO = userService.getMyLikedList(principal.getName(), pageRequestDTO);
+        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+    }
+
+    // 게시글 다중선택 삭제
     @PostMapping("/deleteSelectedBoard")
     public String deleteSelectedBoard(int[] boardId) {
         log.info("==================== deleteSelectedBoard POST Controller ====================");
@@ -220,6 +235,17 @@ public class MyController {
         return "redirect:/my/myBoardList";
     }
 
+    // 게시글 타겟 삭제
+    @PostMapping("/deleteTargetBoard")
+    public String deleteTargetBoard(int boardId) {
+        log.info("==================== deleteTargetBoard POST Controller ====================");
+        log.info(boardId);
+        boardService.remove(boardId);
+
+        return "redirect:/my/myBoardList";
+    }
+
+    // 간판 다중선택 삭제
     @PostMapping("/deleteSelectedSignBoard")
     public String deleteSelectedSignBoard(int[] signboardId) {
         log.info("==================== deleteSelectedSignBoard POST Controller ====================");
@@ -230,6 +256,16 @@ public class MyController {
         return "redirect:/my/mySignBoardList";
     }
 
+    // 간판 타겟 삭제
+    @PostMapping("/deleteTargetSignBoard")
+    public String deleteTargetSignBoard(int signboardId) {
+        log.info("==================== deleteTargetSignBoard POST Controller ====================");
+            log.info(signboardId);
+            signBoardService.removeSignboard(signboardId);
+        return "redirect:/my/mySignBoardList";
+    }
+
+    // 댓글 다중선택 삭제
     @PostMapping("/deleteSelectedReply")
     public String deleteSelectedReply(int[] replyId) {
         log.info("==================== deleteSelectedReply POST Controller ====================");
@@ -246,6 +282,46 @@ public class MyController {
             }
         }
         return "redirect:/my/myReplyList";
+    }
+
+    // 댓글 타겟 삭제
+    @PostMapping("/deleteTargetReply")
+    public String deleteTargetReply(int replyId) {
+        log.info("==================== deleteTargetReply POST Controller ====================");
+            log.info(replyId);
+            ReplyDTO replyDTO = replyService.getReply(replyId);
+            replyService.removeReply(replyDTO);
+            if(replyDTO.isReplyDepth()){
+                // 대댓글 삭제
+                replyService.removeReReply(replyId);
+            } else {
+                // 댓글 삭제
+                replyService.removeReply(replyDTO);
+            }
+        return "redirect:/my/myReplyList";
+    }
+
+    // 스크랩 다중선택 삭제
+    @PostMapping("/deleteSelectedLiked")
+    public String deleteSelectedLiked(int[] boardId, Principal principal) {
+        log.info("==================== deleteSelectedSignBoard POST Controller ====================");
+        for(int id : boardId) {
+            log.info(id);
+            boardService.boardlikeDown(id);
+            boardService.likeDown(id, principal.getName());
+        }
+        return "redirect:/my/myLikedList";
+    }
+
+    // 스크랩 타겟 삭제
+    @PostMapping("/deleteTargetLiked")
+    public String deleteTargetLiked(int boardId, Principal principal) {
+        log.info("==================== deleteTargetLiked POST Controller ====================");
+            log.info(boardId);
+            boardService.boardlikeDown(boardId);
+            boardService.likeDown(boardId, principal.getName());
+
+        return "redirect:/my/myLikedList";
     }
 
     @GetMapping("/withdrawal")

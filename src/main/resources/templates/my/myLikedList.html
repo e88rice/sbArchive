@@ -79,22 +79,12 @@
 
     th:nth-child(2),
     td:nth-child(2) {
-        width: 40%;
+        width: 55%;
     }
 
     th:nth-child(3),
     td:nth-child(3) {
-        width: 15%;
-    }
-
-    th:nth-child(4),
-    td:nth-child(4) {
-        width: 15%;
-    }
-
-    th:nth-child(5),
-    td:nth-child(5) {
-        width: 15%;
+        width: 30%;
     }
 </style>
 
@@ -109,13 +99,13 @@
                     <li>
                         <a href="/my/mySignBoardList">작성 아카이브 보기</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="/my/myBoardList">작성 글 보기</a>
                     </li>
                     <li>
                         <a href="/my/myReplyList">작성 댓글 보기</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/my/myLikedList">스크랩 글 보기</a>
                     </li>
                     <li>
@@ -125,7 +115,7 @@
             </div>
         </div>
         <div class="row my_content">
-            <h1>작성 글 보기</h1>
+            <h1>스크랩 글 보기</h1>
             <div class="col">
                 <div class="card">
                     <div class="card-header" style="display: flex; justify-content: space-between">
@@ -133,24 +123,19 @@
                         <button type="button" class="btn btn-primary btnRemoveSelected">선택삭제</button>
                     </div>
                     <div class="card-body">
-                        <form action="/my/deleteSelectedBoard" method="post" name="deleteSelected">
+                        <form action="/my/deleteSelectedLiked" method="post" name="deleteSelected">
                             <table class="table">
                                 <thead>
                                 <tr class="division">
                                     <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
                                     <th scope="col">제목</th>
-                                    <th scope="col">작성일</th>
-                                    <th scope="col">조회</th>
-                                    <th scope="col">삭제</th>
+                                    <th scope="col">스크랩삭제</th>
                                 </tr>
                                 </thead>
                                 <tbody th:with="link = ${pageRequestDTO.getLink()}">
                                 <tr th:each="dto:${responseDTO.dtoList}">
                                     <td><input type="checkbox" name="boardId" th:value="${dto.boardId}"></td>
-                                    <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=board|" class="text-decoration-none">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
-                                    <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-                                    <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
-                                    <td>[[${dto.hit}]]</td>
+                                    <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=like|" class="text-decoration-none">[[${dto.title}]]</a></td>
                                     <td><button type="button" th:value="${dto.boardId}" onclick="targetDelete(this.value)"><i class="fa-solid fa-trash removeLike"></i></button></td>
                                 </tr>
                                 </tbody>
@@ -161,7 +146,7 @@
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end+1)}">
+                                <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                                     <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
                                         <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                     </li>
@@ -239,7 +224,7 @@
 
                 newForm.name = 'targetDelete';
                 newForm.method = 'post';
-                newForm.action = '/my/deleteTargetBoard';
+                newForm.action = '/my/deleteTargetLiked';
 
                 let input1 = document.createElement('input');
 

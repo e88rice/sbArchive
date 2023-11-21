@@ -1,5 +1,6 @@
 package com.project.sbarchive.mapper.user;
 
+import com.project.sbarchive.vo.board.BoardLikeVO;
 import com.project.sbarchive.vo.board.BoardVO;
 import com.project.sbarchive.vo.signboard.SignBoardVO;
 import com.project.sbarchive.vo.user.UserVO;
@@ -57,6 +58,10 @@ public interface UserMapper {
     // 내가 쓴 댓글 목록 출력
     List<ReplyVO> getMyReplyList(String userId, int skip, int size, String[] types, String keyword);
     int getMyReplyCount(String userId, String[] types, String keyword);
+
+    // 내가 스크랩한 목록 출력
+    List<BoardLikeVO> getMyLikedList(String userId, int skip, int size, String[] types, String keyword);
+    int getMyLikedCount(String userId, String[] types, String keyword);
 
     // 회원 탈퇴
     void withdrawal (String userId, String passwd);

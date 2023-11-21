@@ -13,7 +13,8 @@ public class BoardLikeVO {
 
     int likeId;
     int boardId;
-    String userId;
+    String userId; // 좋아요 누른 계정
+    String title;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addDate;

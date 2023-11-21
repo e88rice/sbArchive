@@ -359,6 +359,9 @@
         else if (my === 'reply') {
             self.location.href = `/my/myReplyList?${link}`;
         }
+        else if (my === 'like'){
+            self.location.href = `/my/myLikedList?${link}`;
+        }
         else {
             self.location.href = `/board/list?${link}`;
         }
