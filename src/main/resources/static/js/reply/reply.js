@@ -35,6 +35,12 @@ async function removeReReply(replyId) {
     return response.data;
 }
 
+// 원댓글 논리 삭제
+async function removeReply(replyObj) {
+    const response=await axios.put(`/reply/re/${replyObj.replyId}`, replyObj);
+    return response.data;
+}
+
 // 원댓글 조회(modify용)
 async function getReply(replyId) {
     const response=await axios.get(`/reply/${replyId}`);
