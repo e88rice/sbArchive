@@ -296,6 +296,7 @@
 
     <!-- 댓글 등록 영역 끝 -->
 
+
     <!-- 댓글 리스트 출력 -->
     <div class="reply_list_wrap">
         <div>
@@ -365,9 +366,6 @@
     });
 
 
-
-
-
     // 여기서부터 댓글 관련 자바스크립트
     // 새로고침 이벤트
     const refreshBtn=document.querySelector('.refreshBtn');
@@ -383,6 +381,11 @@
 
     // 댓글 등록 버튼 클릭 이벤트
     addBtn.addEventListener("click", function(e) {
+        if(acontent.value.length < 5) {
+            alert("최소 5자 이상 입력해 주세요.");
+            return;
+        }
+
         const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
 
         addReply(replyObj).then(result => { // reply.js(axios)
@@ -628,7 +631,7 @@
                         }
 
                         let contentA=dto.content.split('/');
-                        console.log("contentA: "+contentA[0]);
+                        // console.log("contentA: "+contentA[0]);
 
                         // maskId의 결과를 담을 변수
                         let maskedId = maskId(id);
@@ -681,7 +684,7 @@
                             <div class="annotation_text">
                                 <div>
                                     <p>${contentA[0]}</p>
-                                    <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control reReReForm">${contentA[1]}</textarea>
+                                    <textarea placeholder="댓글을 입력해 주세요." class="mrcontent form-control reReReForm">${contentA[1]}</textarea>
                                 </div>
                                 <button type="button" class="btn btn-primary modReReplyBtn">수정</button>
                                 <button type="button" class="btn btn-done cancelBtn">취소</button>
@@ -749,6 +752,17 @@
                             const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re'); // 출력된 해당 댓글
                             const reReplyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyModifyForm'); // 해당 댓글 수정 폼
 
+                            let replycontent=reReplyModifyForm.querySelector('textarea').value;
+                            const annotation=reReplyModifyForm.querySelector('p').textContent;
+                            console.log("annotation: "+annotation);
+                            console.log("replycontent: "+replycontent);
+
+                            let mrcontent=annotation+"/ "+replycontent;
+                            console.log("mcontent: "+mrcontent);
+
+                            // const mcontent = reReplyModifyForm.querySelector('.mcontent');
+                            const modReReplyBtn = reReplyModifyForm.querySelector('.modReReplyBtn');
+                            const cancelBtn=reReplyModifyForm.querySelector(".cancelBtn");
 
                             // 대댓글 정보 가져옴
                             getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
@@ -758,28 +772,28 @@
                             // getReply 끝
 
 
-                            // let replycontent = document.querySelector('.reReplyModifyForm textarea').value;
-                            let replycontent=reReplyModifyForm.children[1].children[0].children[1];
-                            const annotation=reReplyModifyForm.children[1].children[0].children[0].textContent;
-                            console.log("annotation: "+annotation);
-                            console.log("replycontent: "+replycontent);
-
-                            const mcontent=annotation+" "+replycontent.value;
-                            console.log("mcontent: "+mcontent);
-
-                            // const mcontent = reReplyModifyForm.querySelector('.mcontent');
-                            const modReReplyBtn = reReplyModifyForm.querySelector('.modReReplyBtn');
-                            const cancelBtn=reReplyModifyForm.querySelector(".btn-done");
-
-
                             // 수정 완료 버튼 클릭 이벤트
                             modReReplyBtn.addEventListener("click", function(e) {
+
+                                let replycontent=reReplyModifyForm.querySelector('textarea').value;
+                                const annotation=reReplyModifyForm.querySelector('p').textContent;
+                                console.log("modannotation: "+annotation);
+                                console.log("modreplycontent: "+replycontent);
+
+                                let modifyContent=annotation+"/ "+replycontent;
+
+                                if(replycontent.length < 5) {
+                                    alert("최소 5자 이상 입력해 주세요.");
+                                    return;
+                                }
+
+                                console.log("modifyContent: "+modifyContent);
                                 // alert("대댓글 수정 버튼 클릭");
                                 if (!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
-                                const replyObj = {content: mcontent, replyId: replyId};
+                                const replyObj = {content: modifyContent, replyId: replyId};
                                 modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
                                     alert('수정되었습니다.');
-                                    mcontent.value = ''; // textarea 초기화
+                                    modifyContent.value = ''; // textarea 초기화
                                     reReplyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
                                     location.reload(); // 새로고침
                                 }).catch(e => {
@@ -827,11 +841,17 @@
                     // 대댓글에 대댓글 등록 버튼 클릭 이벤트
                     document.querySelectorAll(".addReReBtn").forEach(function(addReReBtn) {
                         addReReBtn.addEventListener('click', function(e) {
-                            alert('대댓글에 대댓글 등록 버튼');
+                            // alert('대댓글에 대댓글 등록 버튼');
                             const reReReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReReplyAddForm');
                             const replycontent=reReReplyAddForm.children[1].children[0].children[1];
                             const annotation=replycontent.previousElementSibling.textContent;
                             const rcontent=annotation+replycontent.value;
+
+                            if(replycontent.value.length < 5) {
+                                alert("최소 5자 이상 입력해 주세요.");
+                                return;
+                            }
+
                             // console.log("rcontent: "+rcontent); // 삭제 예정
                             // console.log("annotation: "+annotation); // 삭제 예정
                             // console.log("nickname: "+nickname); // 삭제 예정
@@ -913,7 +933,6 @@
             });
         });
         // 원 댓글에 대댓글 등록 버튼 클릭 이벤트 끝
-
 
 
         // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제)
