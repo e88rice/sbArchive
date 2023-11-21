@@ -381,8 +381,8 @@
 
     // 댓글 등록 버튼 클릭 이벤트
     addBtn.addEventListener("click", function(e) {
-        if(acontent.value.length < 5) {
-            alert("최소 5자 이상 입력해 주세요.");
+        if(acontent.value.length < 3) {
+            alert("최소 3자 이상 입력해 주세요.");
             return;
         }
 
@@ -782,8 +782,8 @@
 
                                 let modifyContent=annotation+"/ "+replycontent;
 
-                                if(replycontent.length < 5) {
-                                    alert("최소 5자 이상 입력해 주세요.");
+                                if(replycontent.length < 3) {
+                                    alert("최소 3자 이상 입력해 주세요.");
                                     return;
                                 }
 
@@ -847,8 +847,8 @@
                             const annotation=replycontent.previousElementSibling.textContent;
                             const rcontent=annotation+replycontent.value;
 
-                            if(replycontent.value.length < 5) {
-                                alert("최소 5자 이상 입력해 주세요.");
+                            if(replycontent.value.length < 3) {
+                                alert("최소 3자 이상 입력해 주세요.");
                                 return;
                             }
 
@@ -903,13 +903,19 @@
         // 원 댓글에 대댓글 등록 버튼 클릭 이벤트
         document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
             addReBtn.addEventListener('click', function(e) {
-                alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
+                // alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
                 const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
 
                 let replyContent=e.target.previousElementSibling.children[1];
                 console.log("replycontent: "+replyContent);
                 const annotation=replyContent.previousElementSibling.textContent;
                 const rcontent=annotation+" "+replyContent.value;
+
+                if(replyContent.value.length < 3) {
+                    alert('최소 3자 이상 입력해 주세요.');
+                    return;
+                }
+
                 console.log("rcontent: "+rcontent); // 삭제 예정
                 console.log("annotation: "+annotation); // 삭제 예정
                 console.log("nickname: "+nickname); // 삭제 예정
@@ -918,6 +924,7 @@
                 const parentReplyId=e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                 console.log("parentReplyId: "+parentReplyId); // 삭제 예정
                 const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+
 
                 // 대댓글 등록 함수
                 addReReply(replyObj).then(result => { // reply.js(axios)
@@ -982,6 +989,10 @@
 
                 // 수정 완료 버튼 클릭 이벤트
                 modBtn.addEventListener("click", function(e) {
+                    if(mcontent.value.length < 3) {
+                        alert("최소 3자 이상 입력해 주세요.");
+                        return;
+                    }
                     if(!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
                     const replyObj={content:mcontent.value, replyId:replyId};
                     modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
