@@ -15,6 +15,7 @@ public class BoardLikeDTO {
     int likeId;
     int boardId;
     String userId;
+    String title;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime addDate;

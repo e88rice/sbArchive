@@ -130,6 +130,15 @@
     </select>
 
 
+<!--    스크랩 한 목록-->
+    <select id="getMyLikedList" resultType="com.project.sbarchive.vo.board.BoardLikeVO">
+        select * from board_like WHERE userId = #{userId} order by boardId desc limit #{skip}, #{size}
+    </select>
+    <select id="getMyLikedCount" resultType="int" >
+        select count(*) from board_like WHERE userId = #{userId} <include refid="search" />
+    </select>
+
+
 <!-- 회원 탈퇴-->
     <update id="withdrawal">
         update `user` set del = 1  where userId = #{userId}

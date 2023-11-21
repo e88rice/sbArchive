@@ -1,6 +1,7 @@
 package com.project.sbarchive.service.user;
 
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
@@ -204,6 +205,28 @@ public class UserServiceImpl implements UserService{
         log.info("total : " + total);
 
         PageResponseDTO<ReplyDTO> pageResponseDTO = PageResponseDTO.<ReplyDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
+
+    @Override
+    public PageResponseDTO<BoardLikeDTO> getMyLikedList(String userId, PageRequestDTO pageRequestDTO) {
+        log.info("============= getMyLikedList Service =============");
+
+        List<BoardLikeDTO> dtoList = userMapper.getMyLikedList(userId, pageRequestDTO.getSkip(), pageRequestDTO.getSize(),
+                        pageRequestDTO.getTypes(), pageRequestDTO.getKeyword())
+                .stream().map(boardLikeVO -> modelMapper.map(boardLikeVO, BoardLikeDTO.class)).collect(Collectors.toList());
+
+        log.info(dtoList);
+
+        int total = userMapper.getMyLikedCount(userId, pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        log.info("total : " + total);
+
+        PageResponseDTO<BoardLikeDTO> pageResponseDTO = PageResponseDTO.<BoardLikeDTO>withAll()
                 .dtoList(dtoList)
                 .total(total)
                 .pageRequestDTO(pageRequestDTO)

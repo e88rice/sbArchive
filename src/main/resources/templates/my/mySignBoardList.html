@@ -44,6 +44,54 @@
         padding-top: 30px;
     }
 
+    table {
+        border-collapse: collapse;
+        width: 500px;
+        margin: 1rem auto;
+        border: 1px solid #ddd;
+        background-color: white;
+    }
+
+    /* 테이블 행 */
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #ededed;
+    }
+
+    /* 테이블 올렸을 때 */
+    tbody tr:hover {
+        background-color: #d3d3d3;
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+    /* 테이블 비율 */
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 15%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 55%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 15%;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 15%;
+    }
+
 </style>
 
 <div layout:fragment="content">
@@ -64,7 +112,7 @@
                         <a href="/my/myReplyList">작성 댓글 보기</a>
                     </li>
                     <li>
-                        <a href="#">스크랩 글 보기</a>
+                        <a href="/my/myLikedList">스크랩 글 보기</a>
                     </li>
                     <li>
                         <a href="/boardReport/list">신고/문의</a>
@@ -88,6 +136,7 @@
                                 <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
                                 <th scope="col">제목</th>
                                 <th scope="col">작성일</th>
+                                <th scope="col">삭제</th>
                             </tr>
                             </thead>
                             <tbody th:with="link = ${pageRequestDTO.getLink()}">
@@ -96,6 +145,7 @@
                                 <td><a th:href="|@{/signboard/read/0/}${dto.signboardId}|" class="text-decoration-none">[[${dto.title}]]</a></td>
                                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                                 <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                                <td><button type="button" th:value="${dto.signboardId}" onclick="targetDelete(this.value)"><i class="fa-solid fa-trash removeLike"></i></button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -165,6 +215,7 @@
             formObj.submit();
         },false)
 
+        // 다중 선택 삭제
         const btnRemoveSelected = document.querySelector('.btnRemoveSelected');
         const deleteSelected = document.querySelector("form[name=deleteSelected]");
         btnRemoveSelected.addEventListener('click', function () {
@@ -172,6 +223,34 @@
                 deleteSelected.submit();
             };
         });
+
+
+        // 타겟 삭제
+        function targetDelete(signboardId){
+            if(confirm("정말 삭제하시겠습니까?")){
+                let newForm = document.createElement('form');
+
+                newForm.name = 'targetDelete';
+                newForm.method = 'post';
+                newForm.action = '/my/deleteTargetSignBoard';
+
+                let input1 = document.createElement('input');
+
+                // set attribute (input)
+                input1.setAttribute("type", "hidden");
+                input1.setAttribute("name", "signboardId");
+                input1.setAttribute("value", signboardId);
+
+                // append input (to form)
+                newForm.appendChild(input1);
+
+                // append form (to body)
+                document.body.appendChild(newForm);
+
+                // submit form
+                newForm.submit();
+            }
+        }
     </script>
 </div>
 
