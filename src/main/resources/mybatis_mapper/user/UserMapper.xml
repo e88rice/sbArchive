@@ -126,9 +126,11 @@
         select * from reply where userId = #{userId} order by replyId desc limit #{skip}, #{size}
     </select>
     <select id="getMyReplyCount" resultType="int" >
-        select count(*) from reply where userId = #{userId} <include refid="search" />
+        select count(*) from reply where userId = #{userId} and isParentReplyDeleted = 0 <include refid="search" />
     </select>
 
+
+<!-- 회원 탈퇴-->
     <update id="withdrawal">
         update `user` set del = 1  where userId = #{userId}
     </update>

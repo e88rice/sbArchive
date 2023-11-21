@@ -29,7 +29,7 @@
     .tab > li {
         float: left;
         text-align: center;
-        width: 200px;
+        width: 150px;
         height: 60px;
     }
 
@@ -44,17 +44,6 @@
         padding-top: 30px;
     }
 
-    td {
-        text-align: center;
-    }
-
-    .division > th {
-        text-align: center;
-    }
-
-    .division :first-child {
-        text-align: left;
-    }
 </style>
 
 <div layout:fragment="content">
@@ -74,6 +63,12 @@
                     <li class="active">
                         <a href="/my/myReplyList">작성 댓글 보기</a>
                     </li>
+                    <li>
+                        <a href="#">스크랩 글 보기</a>
+                    </li>
+                    <li>
+                        <a href="/boardReport/list">신고/문의</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -90,30 +85,26 @@
                             <table class="table">
                                 <thead>
                                 <tr class="division">
-                                    <th scope="col">번호</th>
+                                    <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
                                     <th scope="col">댓글내용</th>
-                                    <th scope="col">글 제목</th>
                                     <th scope="col">작성일</th>
-                                    <th scope="col">선택</th>
                                 </tr>
                                 </thead>
                                 <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                                <tr th:each="dto:${responseDTO.dtoList}">
-                                    <th scope="col" th:text="${responseDTO.sno - dtoStat.index}"></th>
-                                    <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=reply|" class="text-decoration-none">[[${dto.content}]]</a></td>
-                                    <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-                                    <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-                                    <td><input type="checkbox" name="replyId" th:value="${dto.replyId}"></td>
-                                </tr>
+                                    <tr th:each="dto:${responseDTO.dtoList}" th:if="${!dto.isParentReplyDeleted}">
+                                        <td><input type="checkbox" name="replyId" th:value="${dto.replyId}"></td>
+                                        <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=reply|" class="text-decoration-none">[[${dto.content}]]</a></td>
+                                        <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </form>
-                        <div class="float-end">
+                        <div class="float-end" style="text-align: center">
                             <ul class="pagination flex-wrap">
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end+1)}">
                                     <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
                                         <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                     </li>
@@ -123,27 +114,21 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="d-flexd-flex flex-row-reverse">
-                            <form action="/my/myReplyList" method="get" name="search">
-                                <div class="d-flex flex-row-reverse">
-                                    <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-                                    <div class="input-group searchline">
-                                        <div class="input-group-prepend" style="display: none">
-                                            <select class="form-select" name="types" style="margin-right: 20px;margin-bottom: 10px">
-                                                <option value="c" th:selected="${pageRequestDTO.types == 'c'}">댓글내용</option>
-                                            </select>
-                                        </div>
-                                        <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
-                                        </div>
-                                        <div>
-                                            <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
-                                        </div>
+                        <form action="/my/myReplyList" method="get" name="search">
+                            <div style="display: flex; justify-content: center">
+                                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                                <div class="form-group" style="display: flex">
+                                    <select class="form-select" name="types" style="display: none">
+                                        <option value="c" th:selected="${pageRequestDTO.types == 'c'}">댓글내용</option>
+                                    </select>
+                                    <div class="input-group" style="display: flex;">
+                                        <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}" style="width: 340px">
+                                        <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                                        <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                     <!--                    card body end-->
                 </div>
@@ -151,6 +136,16 @@
         </div>
     </div>
     <script layout:fragment="script" th:inline="javascript">
+        const checkAll = document.getElementById('checkAll');
+
+        // 전체 선택
+        checkAll.addEventListener('change', function (e) {
+            let boardId = document.querySelectorAll('input[name=replyId]');
+            for(let i = 0; i < boardId.length; i++){
+                boardId[i].checked = e.target.checked;
+            }
+        });
+
         document.querySelector(".pagination").addEventListener("click",function (e) {
 
 
