@@ -89,10 +89,10 @@
                     <div>
                         <ul>
                             <li>
-                                <a href="/my/auth" >회원정보 변경</a>
+                                <a href="/my/modifyMyInfoAuth" >회원정보 변경</a>
                             </li>
                             <li>
-                                <a href="#" >이메일 주소 변경</a>
+                                <a href="/my/modifyEmailAuth" >이메일 주소 변경</a>
                             </li>
                             <li>
                                 <a href="/my/modifyPasswd" >비밀번호 재설정</a>
@@ -195,6 +195,14 @@
 
     <!-- 쪽지함 끝 -->
 
+    <script th:inline="javascript">
+        const msg = [[${msg}]];
+        console.log(msg);
+
+        if(msg != null){
+            alert(msg);
+        }
+    </script>
 </div>
 
 

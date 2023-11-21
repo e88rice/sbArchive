@@ -1,5 +1,6 @@
 package com.project.sbarchive.service;
 
+import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserVO;
@@ -48,5 +49,13 @@ public class UserServiceTests {
         role_set.add(1);
         userService.registerUser(userDTO);
         userService.addUserRole(userId, role_set);
+    }
+
+    @Test
+    public void modifyEmailTest() {
+        String userId = "aaa222";
+        String email = "aaa@bbb.com";
+
+        userService.modifyEmail(userId, email);
     }
 }

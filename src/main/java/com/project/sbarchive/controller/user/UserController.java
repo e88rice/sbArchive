@@ -19,6 +19,18 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/joinAuth")
+    public String joinAuthGET() {
+        log.info("=============== joinAuth Get Controller ===============");
+        return "/user/joinAuth";
+    }
+
+    @PostMapping("/joinAuth")
+    public String joinAuth() {
+        log.info("=============== joinAuth Post Controller ===============");
+        return "redirect:/user/join";
+    }
+
     @GetMapping("/join")
     public String registerGET() {
         log.info("=============== registerUser Get Controller ===============");
@@ -26,11 +38,17 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String registerUser(UserDTO userDTO, RedirectAttributes redirectAttributes) {
+    public String registerUser(UserDTO userDTO) {
         log.info("=============== registerUser Post Controller ===============");
         userService.registerUser(userDTO);
 
-        return "redirect:/user/login";
+        return "redirect:/user/joinSuccess";
+    }
+
+    @GetMapping("/joinSuccess")
+    public String joinSuccess() {
+        log.info("=============== joinSuccess Get Controller ===============");
+        return "/user/joinSuccess";
     }
 
     @PostMapping("/emailCheck")

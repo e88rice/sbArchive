@@ -31,4 +31,12 @@ public class UserMapperTest {
 
         log.info(userVO);
     }
+
+    @Test
+    public void modifyEmailTest() {
+        String userId = "aaa222";
+        String email = "aaa@222.com";
+
+        userMapper.modifyEmail(userId, email);
+    }
 }

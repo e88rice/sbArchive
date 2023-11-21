@@ -43,6 +43,9 @@ public interface UserMapper {
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
 
+    // 이메일 재설정
+    void modifyEmail(String userId, String email);
+
     // 내가 쓴 글 목록 출력
     List<BoardVO> getMyBoardList(String userId, int skip, int size, String[] types, String keyword);
     int getMyBoardCount(String userId, String[] types, String keyword);

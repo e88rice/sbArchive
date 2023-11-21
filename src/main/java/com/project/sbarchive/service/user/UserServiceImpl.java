@@ -4,7 +4,6 @@ import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
-import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.user.UserMapper;
@@ -12,9 +11,7 @@ import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -140,6 +137,12 @@ public class UserServiceImpl implements UserService{
     public void modifyNickname(String userId, String email, String nickname) {
         log.info("============= modifyNickname Service =============");
         userMapper.modifyNickname(userId, email, nickname);
+    }
+
+    @Override
+    public void modifyEmail(String userId, String email) {
+        log.info("============= modifyEmail Service =============");
+        userMapper.modifyEmail(userId, email);
     }
 
     @Override

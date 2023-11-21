@@ -4,7 +4,6 @@ import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
-import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.board.BoardService;
@@ -18,11 +17,7 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -61,8 +56,8 @@ public class MyController {
         model.addAttribute("userInfo", userDTO);
     }
 
-    @GetMapping("/auth")
-    public void authGET(Principal principal, Model model) {
+    @GetMapping("/modifyMyInfoAuth")
+    public void modifyMyInfoAuthGET(Principal principal, Model model) {
         log.info("==================== authForm Get Controller ====================");
         String username = null;
         if(principal != null) { // 로그인 상태라면
@@ -71,8 +66,8 @@ public class MyController {
         model.addAttribute("username", username);
     }
 
-    @PostMapping("/auth")
-    public String authPOST(String userId, String passwd, Model model) {
+    @PostMapping("/modifyMyInfoAuth")
+    public String modifyMyInfoAuthPOST(String userId, String passwd, Model model) {
         log.info("==================== authForm POST Controller ====================");
         boolean isConfirmPassword = userService.isConfirmPassword(userId, passwd);
 
@@ -83,7 +78,7 @@ public class MyController {
         } else {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
             model.addAttribute("username", userId);
-            return "/my/auth";
+            return "/my/modifyMyInfoAuth";
         }
     }
 
@@ -92,15 +87,62 @@ public class MyController {
         log.info("==================== modifyMyInfo Get Controller ====================");
     }
 
-    @PostMapping("/modifyNickname")
-    public String modifyNickname(String userId, String email, String nickname, Authentication authentication) {
-        log.info("==================== modifyNickname POST Controller ====================");
+    @PostMapping("/modifyMyInfo")
+    public String modifyNickname(String userId, String email, String nickname,
+                                 Authentication authentication, Model model) {
+        log.info("==================== modifyMyInfo POST Controller ====================");
         userService.modifyNickname(userId, email, nickname);
         // MemberSecurityDTO는 참조 변수라 현재 로그인한 UserDetails 객체랑 동기화 되어있음
         // 그래서 Setter를 이용해 값을 변경하면 세션에 있는 UserDetails 값도 변경이 됨.
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
         memberSecurityDTO.setNickname(nickname);
 
+        model.addAttribute("msg", "회원 정보가 성공적으로 수정되었습니다.");
+        return "redirect:/my/mypage";
+    }
+
+    @GetMapping("/modifyEmailAuth")
+    public void modifyEmailAuthGET(Principal principal, Model model) {
+        log.info("==================== modifyEmailAuth Get Controller ====================");
+        String username = null;
+        if(principal != null) { // 로그인 상태라면
+            username = principal.getName();
+        };
+        model.addAttribute("username", username);
+    }
+
+    @PostMapping("/modifyEmailAuth")
+    public String modifyEmailAuthPOST(String userId, String passwd, Model model) {
+        log.info("==================== modifyEmailAuth POST Controller ====================");
+        boolean isConfirmPassword = userService.isConfirmPassword(userId, passwd);
+
+        log.info("isConfirmPassword : " + isConfirmPassword);
+
+        if(isConfirmPassword) {
+            return "redirect:/my/modifyEmail";
+        } else {
+            model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
+            model.addAttribute("username", userId);
+            return "/my/modifyEmailAuth";
+        }
+    }
+
+    @GetMapping("/modifyEmail")
+    public void modifyEmailGET() {
+        log.info("==================== modifyEmail Get Controller ====================");
+    }
+
+    @PostMapping("/modifyEmail")
+    public String modifyEmail(Principal principal, String email,
+                              Authentication authentication, Model model) {
+        log.info("==================== modifyEmail POST Controller ====================");
+        userService.modifyEmail(principal.getName(), email);
+        // MemberSecurityDTO는 참조 변수라 현재 로그인한 UserDetails 객체랑 동기화 되어있음
+        // 그래서 Setter를 이용해 값을 변경하면 세션에 있는 UserDetails 값도 변경이 됨.
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
+        memberSecurityDTO.setEmail(email);
+
+        model.addAttribute("msg", "회원 정보가 성공적으로 수정되었습니다.");
         return "redirect:/my/mypage";
     }
 

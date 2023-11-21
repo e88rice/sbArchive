@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{/layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+    .auth_div {
+        margin: 0 auto;
+        width: 1000px;
+        padding-top: 100px;
+    }
+</style>
+
+<div layout:fragment="content">
+    <div class="auth_div">
+        <h1>비밀번호 재확인</h1>
+        <p>회원의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인 합니다.</p>
+        <form action="/my/modifyEmailAuth" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" name="userId" class="form-control" th:value="${username}" readonly>
+                    <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control">
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary passwdCheck">확인</button>
+            </div>
+        </form>
+    </div>
+    <script th:inline="javascript">
+        const msg = [[${msg}]];
+        console.log(msg);
+
+        if(msg != null){
+            alert(msg);
+        }
+    </script>
+</div>
+</html>
+<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" 시큐리티 화면 인증처리 -->

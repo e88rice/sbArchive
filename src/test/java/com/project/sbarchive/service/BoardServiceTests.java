@@ -16,10 +16,10 @@ public class BoardServiceTests {
     public void addBoard100() {
         for(int i = 0 ; i < 100 ; i ++) {
             BoardDTO boardDTO = BoardDTO.builder()
-                    .userId("admin")
+                    .userId("plez1992")
                     .content("testContent..." + i)
                     .title("제목" + i)
-                    .nickname("nick")
+                    .nickname("test11")
                     .build();
             boardService.add(boardDTO);
         }
