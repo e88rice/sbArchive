@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -33,9 +34,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/boardReport")
 public class BoardReportController {
-    private final BoardReprotService boardReprotService;
-    private final BoardService boardService;
-    ;
+    private final BoardReprotService boardReportService;
+
+    private final BoardService boardService;    ;
 
     private final BoardFileService boardFileService;
 
@@ -57,7 +58,7 @@ public class BoardReportController {
                            RedirectAttributes redirectAttributes) {
         log.info("addBoard -------" +  boardDTO);
         boardDTO.setUserId(principal.getName());
-        int boardId = boardReprotService.add(boardDTO);
+        int boardId = boardReportService.add(boardDTO);
         for(MultipartFile file : files) {
             log.info(file);
         }
@@ -77,8 +78,23 @@ public class BoardReportController {
         if(bindingResult.hasErrors()) {
             pageRequestDTO = PageRequestDTO.builder().build();
         }
-        PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReprotService.getList(pageRequestDTO);
+        PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReportService.getList(pageRequestDTO);
+        List<BoardReportDTO> dtoList = boardDTOPageResponseDTO.getDtoList();
+        for(BoardReportDTO dto : dtoList) {
+            log.info(dto+"DTOLIST!!!!!!!!!!!!!");
+        }
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
-
+    }
+    @GetMapping("/read")
+    public void view(Model model, int rBoardId,  Principal principal,
+                     List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
+        BoardReportDTO boardReportDTO = boardReportService.getBoard(rBoardId);
+        log.info(boardReportDTO.getAddDate() + "------------------");
+        BoardAllDTO boardAllDTO = modelMapper.map(boardReportDTO, BoardAllDTO.class);
+        log.info(boardAllDTO.getAddDate());
+        boardAllDTO.setAddDate(boardReportDTO.getAddDate().atStartOfDay());
+        boardAllDTO.setFiles(boardFileService.getBoardImages(boardReportDTO.getRBoardId() , "report"));
+        model.addAttribute("dto", boardAllDTO);
+        log.info("CONTROLLER VIEW!!" + boardAllDTO);
     }
 }

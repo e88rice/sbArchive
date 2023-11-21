@@ -83,37 +83,48 @@
                             <table class="table">
                                 <thead>
                                 <tr class="division">
+                                    <th scope="col">번호</th>
                                     <th scope="col">제목</th>
+                                    <th scope="col">글쓴이</th>
                                     <th scope="col">작성일</th>
-                                    <th scope="col">조회</th>
+                                    <th scope="col">답변</th>
+
                                 </tr>
                                 </thead>
                                 <tbody th:with="link = ${pageRequestDTO.getLink()}">
                                 <tr th:each="dto:${responseDTO.dtoList}">
-                                    <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}&my=board|" class="text-decoration-none">[[${dto.title}]]</a></td>
-                                    <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-                                    <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                                    <td>[[${dto.rBoardId}]]</td>
+                                    <td><a th:href="|@{/boardReport/read(rBoardId =${dto.rBoardId})}&${link}&my=board|" class="text-decoration-none">[[${dto.title}]]</a></td>
+                                    <td>[[${dto.userId}]]</td>
+                                    <td th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                    <td>
+                                        <span th:if="${dto.isAnswered}" th:text="답변완료" style="color: red; border-radius: 15px;padding: 4px;
+                                         margin-left: 5px;border: 2px solid red"/>
+                                        <span th:unless="${dto.isAnswered}" th:text="미답변" style="color: #dfdfdf; border-radius: 15px;padding: 4px;
+                                         border: 2px solid #9d9d9d; color: #0b0b0b; margin-left: 5px;" />
+                                    </td>
+
                                 </tr>
                                 </tbody>
                             </table>
                         </form>
-                        <div class="float-end" style="text-align: center">
+                        <div class="center-block">
                             <ul class="pagination flex-wrap">
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end+1)}">
-                                    <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                                <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                    <li th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:if="${responseDTO.next}">
-                                    <a class="page-link" th:data-num="${responseDTO.end + 1}">다음으로</a>
+                                    <a class="page-link" th:data-num="${responseDTO.end +1}">다음으로</a>
                                 </li>
                             </ul>
                         </div>
                         <form action="/my/myBoardList" method="get" name="search">
-                            <div style="display: flex; justify-content: center">
+                            <div style="display: flex; justify-content: center" >
                                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                                 <div class="form-group" style="display: flex">
                                     <select class="form-select" name="types" style="width: 90px; margin-right: 20px;margin-bottom: 10px">
@@ -135,12 +146,21 @@
         </div>
     </div>
     <script layout:fragment="script" th:inline="javascript">
-        document.querySelector('.addBtn').addEventListener('click', function (e){
-           e.preventDefault();
-           e.stopPropagation();
+        document.querySelector(".pagination").addEventListener("click", function (e) {
+            const target = e.target;
+            if (target.tagName === 'A') {
+                e.preventDefault();
+                changePage(target.getAttribute("data-num"));
+            }
+        }, false);
+        // document.querySelector('.addBtn').addEventListener('click', function (e){
+        //    e.preventDefault();
+        //    e.stopPropagation();
+        //
+        //    self.location.href = "/boardReport/add";
+        // });
 
-           self.location.href = "/boardReport/add";
-        });
+
     </script>
 </div>
 </html>

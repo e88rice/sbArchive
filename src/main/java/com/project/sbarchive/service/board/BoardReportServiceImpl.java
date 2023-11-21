@@ -1,10 +1,12 @@
 package com.project.sbarchive.service.board;
 
+import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.board.BoardReportDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.mapper.board.BoardReportMapper;
 import com.project.sbarchive.vo.board.BoardReportVO;
+import com.project.sbarchive.vo.board.BoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -39,8 +41,8 @@ public class BoardReportServiceImpl implements BoardReprotService{
     }
 
     @Override
-    public BoardReportDTO getBoard(String userId) {
-        BoardReportVO boardVO = boardReportMapper.getBoard(userId);
+    public BoardReportDTO getBoard(int rBoardId) {
+        BoardReportVO boardVO = boardReportMapper.getBoard(rBoardId);
         BoardReportDTO boardDTO = modelMapper.map(boardVO,BoardReportDTO.class);
 
         return boardDTO;

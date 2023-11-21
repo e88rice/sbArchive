@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class BoardAllDTO {
 
     private Integer boardId;
+
+    private int rBoardId;
     @NotEmpty
     private String userId;
 
@@ -34,6 +36,10 @@ public class BoardAllDTO {
     private LocalDateTime addDate;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
+
+    int isAnswered;
+
+
 
     //image --
     private int index;

@@ -13,7 +13,7 @@ public interface BoardReprotService {
 
     List<BoardReportDTO> getBoardList();
 
-    BoardReportDTO getBoard(String userId);
+    BoardReportDTO getBoard(int rBoardId);
 
     int isAnswered(int rBoardId);
 

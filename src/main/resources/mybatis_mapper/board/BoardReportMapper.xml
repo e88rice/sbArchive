@@ -8,18 +8,24 @@
         INSERT INTO report_board ( userId, title, content,   isAnswered, addDate)
         VALUES (#{userId},#{title},#{content}, 0, now() )
     </insert>
-    <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board order by userId desc
-    </select>
+
     <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board where userId =  #{userId}
+        select * from report_board where rBoardId =  #{rBoardId}
     </select>
 
     <update id="isAnswered">
-        UPDATE report_board  SET isAnswered = isAnswered + 1  WHERE boardId = #{boardId}
+        UPDATE report_board  SET isAnswered = isAnswered + 1  WHERE rBoardId = #{rBoardId}
     </update>
 
     <select id="getCount" resultType="int">
         select count(*) from report_board
     </select>
+    <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardReportVO" >
+        select * from report_board
+        order by rBoardId desc limit #{skip}, #{size}
+    </select>
+    <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
+        select * from report_board order by userId desc
+    </select>
+
 </mapper>

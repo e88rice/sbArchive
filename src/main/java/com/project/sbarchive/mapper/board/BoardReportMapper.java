@@ -10,14 +10,13 @@ import java.util.List;
 public interface BoardReportMapper {
     void add(BoardReportVO boardReportVO);
 
-    List<BoardReportVO> getBoardList();
-
-    BoardReportVO getBoard(String userId);
+    BoardReportVO getBoard(int rBoardId);
 
     int isAnswered(int rBoardId);
 
 
     void remove(int rBoardId);
+    List<BoardReportVO> getBoardList();
 
     List<BoardReportVO> selectList(PageRequestDTO pageRequestDTO);
 

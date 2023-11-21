@@ -74,7 +74,7 @@
             </li>
             <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                 <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
-                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                    <a class="page-link" th:data-num="${i}" href="#">[[${i}]]</a>
                 </li>
             </th:block>
             <li class="page-item" th:if="${responseDTO.next}">
@@ -95,7 +95,7 @@
             if (target.tagName !== 'A') {
                 return;
             }
-            const num = target.getAttribute("data-num");
+            const num = parseInt(target.getAttribute("data-num"));
 
             const formObj = document.querySelector("form");
 

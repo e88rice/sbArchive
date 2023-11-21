@@ -13,7 +13,6 @@
         margin: 0 auto;
         padding-top: 150px;
         width: 700px;
-        height: 1500px;
     }
     textarea {
         width: 100%;
@@ -28,6 +27,11 @@
     .btnend {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+    }
+    .flex-content {
+        display: flex;
+        justify-content: flex-start;
         align-items: center;
     }
 
@@ -159,35 +163,30 @@
 
 <div layout:fragment="content">
     <div class="form1">
-    <form  action="/board/modify" method="get" class="readBoard_form"  enctype="multipart/form-data">
+    <form    class="readBoard_form"  enctype="multipart/form-data">
         <div class="row mt-3">
             <div class="col">
                 <div class="card">
                     <div class="card-body" >
                         <div class="input-group mb-3">
-                            <input style="font-size: 35px; background: none; border: none"; width="80px" type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
+                            <input style="font-size: 30px; background: none; border: none"; width="80px" type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
                         </div>
-                        <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
                         <div class="flex-content" style="padding: 20px">
                             <div>
                                 [[${dto.nickname}]] (
-                                [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
+                                [[${dto.userId}]] )
                             </div>
                             <div>
-                                <button th:if="${dto.likeId}" class="fa-solid fa-heart" type="button">
-                                    좋아요
-                                </button>
-                                <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                <button th:unless="${dto.likeId}" class="fa-regular fa-heart" type="button">
-                                    좋아요
-                                </button>
-                                 [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count">
-                                <li class="fa-solid fa-comment fa-flip-horizontal"></li> 댓글 총 [[${dto.replyCount}]]개</span>
-
-
-                                <span style="margin-left: 200px">
-                                <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString()}"></td>
-                                <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString()}"></td>
+                                <span th:if="${dto.isAnswered}" th:text="답변완료" style="color: red; border-radius: 15px;padding: 4px;
+                                 margin-left: 5px;border: 2px solid red"/>
+                            </div>
+                            <div>
+                                <span th:unless="${dto.isAnswered}" th:text="미답변" style="color: #dfdfdf; border-radius: 15px;padding: 4px;
+                                 border: 2px solid #9d9d9d; color: #0b0b0b; margin-left: 5px;" />
+                            </div>
+                            <div>
+                                <span style="margin-left: 400px">
+                                <td  th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                                 </span>
                             </div>
                         </div>
@@ -208,11 +207,7 @@
                     <div class="content-between">
                         <div class="float-end btnend">
                             <div>
-                            <button type="submit" class="btn btn-primary">수정</button>
                             <button type="button" class="btn btn-secondary">목록</button>
-                            </div>
-                            <div>
-                            <button type="button" id="reportPage" class="btn btn-danger">이글 신고하기</button>
                             </div>
                         </div>
 
@@ -301,7 +296,7 @@
 
 
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        location.href = `/board/list?${link}`;
+        location.href = `/reportBoard/list?${link}`;
     });
 
 
@@ -714,27 +709,6 @@
 
     // 여기까지 쪽지 모달 끝
     //like기능 -------------
-
-
-    const hart = document.querySelector(".hart");
-    const likeCount = [[${dto.likeId}]]
-    const islike = document.querySelector(".fa-solid");
-    let notlike = document.querySelector(".fa-regular");
-
-
-
-        islike.addEventListener('click',function (e) {
-            e.preventDefault();
-            likeDown(boardId,username);
-            location.reload();
-        });
-
-
-        notlike.addEventListener('click',function (e) {
-            e.preventDefault();
-            likeUp(boardId, username);
-            location.reload();
-        });
 
         document.querySelector("#reportPage").addEventListener("click",function (e) {
             e.preventDefault();
