@@ -49,10 +49,6 @@ public class MyController {
         UserVO userVO = userService.getUserInfo(principal.getName());
         UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
         String userId = principal.getName();
-        userService.lvPointUp(userId);
-        userVO = userService.getUserInfo(userId);
-        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
-        log.info(userVO);
 
         model.addAttribute("userInfo", userDTO);
     }

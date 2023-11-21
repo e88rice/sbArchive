@@ -1,10 +1,8 @@
 package com.project.sbarchive.service.board;
 
 import com.project.sbarchive.dto.board.BoardDTO;
-import com.project.sbarchive.dto.board.BoardLikeDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
-import com.project.sbarchive.vo.board.BoardLikeVO;
 
 import java.util.List;
 

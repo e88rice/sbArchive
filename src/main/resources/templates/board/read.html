@@ -317,7 +317,7 @@
 
 
     <!-- 쪽지 모달 영역 시작 -->
-    <link rel="stylesheet" href="/css/message.css">
+    <link rel="stylesheet" href="/css/message/message.css">
     <div class="modal message_write_modal modal_container" tabindex="-1">
         <div class="modal-dialog message_write_modal_dialog">
             <div class="modal-content message_write_modal_content">
@@ -534,7 +534,7 @@
 
                         <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                             <div class="writer_btn_area">
-                                <div>
+                                <div data-rid="${dto.userId}">
                                     ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
                                     ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>'}
                                 </div>
@@ -1006,9 +1006,9 @@
 
         msgWriteBtn.forEach(messageBtn => {
             messageBtn.addEventListener("click", function () {
-                const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
+                const replyUserId = messageBtn.parentNode
                 writeModalShow();
-                SendMsg(replyUserId);
+                SendMsg(replyUserId.dataset.rid);
             });
         });
 
