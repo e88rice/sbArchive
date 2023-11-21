@@ -11,10 +11,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.modelmapper.ModelMapper;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @Log4j2
@@ -36,5 +41,22 @@ public class BoardReportController {
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO,BoardAllDTO.class);
         model.addAttribute("dto", boardAllDTO);
         model.addAttribute("user",principal);
+    }
+
+    @PostMapping("/add")
+    public String addBoard(BoardDTO boardDTO, List<MultipartFile> files,
+                           RedirectAttributes redirectAttributes) {
+        log.info("addBoard -------" +  boardDTO);
+        int boardId = boardService.add(boardDTO);
+        for(MultipartFile file : files) {
+            log.info(file);
+        }
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                log.info("File: " + file.getOriginalFilename());
+            }
+            boardFileService.addBoardImages(boardId, files);
+        }
+        return "redirect:/board/list";
     }
 }

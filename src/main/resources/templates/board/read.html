@@ -185,69 +185,69 @@
 
 <div layout:fragment="content">
     <div class="form1">
-    <form  action="/board/modify" method="get" class="readBoard_form"  enctype="multipart/form-data">
-        <div class="row mt-3">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body1" >
-                        <div class="input-group mb-3">
-                            <input style="font-size: 30px; background: none; border: none;width: 100%; margin: 10px;"   type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
-                        </div>
-                        <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
-                        <div class="flex-content" style="padding: 20px">
-                            <div>
-                                [[${dto.nickname}]] (
-                                [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
+        <form  action="/board/modify" method="get" class="readBoard_form"  enctype="multipart/form-data">
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body1" >
+                            <div class="input-group mb-3">
+                                <input style="font-size: 30px; background: none; border: none;width: 100%; margin: 10px;"   type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
                             </div>
-                            <div class="topline">
-                                <button th:if="${dto.likeId}" class="fa-solid fa-heart" type="button" style="border: none;background: none;color: red";>
-                                    좋아요
-                                </button>
-                                <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                <button th:unless="${dto.likeId}" class="fa-regular fa-heart" type="button" style="border: none;background: none;color: red";>
-                                    좋아요
-                                </button>
-                                 [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count">
+                            <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
+                            <div class="flex-content" style="padding: 20px">
+                                <div>
+                                    [[${dto.nickname}]] (
+                                    [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
+                                </div>
+                                <div class="topline">
+                                    <button th:if="${dto.likeId}" class="fa-solid fa-heart" type="button" style="border: none;background: none;color: red";>
+                                        좋아요
+                                    </button>
+                                    <!-- 버튼이 좋아요 상태가 아닌 경우 -->
+                                    <button th:unless="${dto.likeId}" class="fa-regular fa-heart" type="button" style="border: none;background: none;color: red";>
+                                        좋아요
+                                    </button>
+                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count">
                                 <li class="fa-solid fa-comment fa-flip-horizontal"></li> 댓글 총 [[${dto.replyCount}]]개</span>
 
 
-                                <span style="margin-left: 200px">
+                                    <span style="margin-left: 200px">
                                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString()}"></td>
                                 <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString()}"></td>
                                 </span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
+                            <div class="form-group">
                             <textarea name="content" id="content" class="form-control" rows="25"  readonly
-                            style="padding: 20px; background: none">[[${dto.content}]]  </textarea>
-                        </div>
-
-                        <div class="left_wrap">
-                            <div class="left_wrap_subImg">
-                                <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
+                                      style="padding: 20px; background: none">[[${dto.content}]]  </textarea>
                             </div>
-                        </div>
 
-                    </div>
-                </div><!-- end card body -->
-                <div class="my-4">
-                    <div class="content-between">
-                        <div class="float-end btnend">
-                            <div>
-                            <button type="submit" class="btn btn-primary">수정</button>
-                            <button type="button" class="btn btn-secondary">목록</button>
+                            <div class="left_wrap">
+                                <div class="left_wrap_subImg">
+                                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
+                                </div>
                             </div>
-                            <div>
-                            <button type="button" class="btn btn-danger reportPage">이글 신고하기</button>
-                            </div>
+
                         </div>
+                    </div><!-- end card body -->
+                    <div class="my-4">
+                        <div class="content-between">
+                            <div class="float-end btnend">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">수정</button>
+                                    <button type="button" class="btn btn-secondary">목록</button>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-danger reportPage">이글 신고하기</button>
+                                </div>
+                            </div>
 
 
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
-    </form>
+        </form>
     </div>
 
 
@@ -869,18 +869,18 @@
 
 
 
-        islike.addEventListener('click',function (e) {
-            e.preventDefault();
-            likeDown(boardId,username);
-            location.reload();
-        });
+    islike.addEventListener('click',function (e) {
+        e.preventDefault();
+        likeDown(boardId,username);
+        location.reload();
+    });
 
 
-        notlike.addEventListener('click',function (e) {
-            e.preventDefault();
-            likeUp(boardId, username);
-            location.reload();
-        });
+    notlike.addEventListener('click',function (e) {
+        e.preventDefault();
+        likeUp(boardId, username);
+        location.reload();
+    });
 
 
 

@@ -106,7 +106,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/modify")
     public void modify(Model model, int boardId, HttpServletRequest request,
-                         List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
+                       List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardId));
@@ -148,7 +148,7 @@ public class BoardController {
     @ApiOperation(value = "remove 파일",notes = "DELETE 방식으로 삭제")
     @DeleteMapping("/board/remove/{boardId}")
     public void removeFile(@PathVariable int boardId) {
-    boardFileService.removeBoardImages(boardId);
+        boardFileService.removeBoardImages(boardId);
     }
 
 }

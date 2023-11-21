@@ -22,7 +22,7 @@ public class BoardLikeController {
 
     @PostMapping("/remove/{boardId}/{userId}")
     public void removeLike(@PathVariable("boardId") int boardId, @PathVariable("userId") String userId) {
-       boardService.likeUp(boardId,userId);
+        boardService.likeUp(boardId,userId);
         boardService.boardlikeUp(boardId);
     }
     @PostMapping("/add/{boardId}/{userId}")
