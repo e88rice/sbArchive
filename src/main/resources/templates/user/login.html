@@ -7,8 +7,8 @@
 <style layout:fragment="style">
     .login_form {
         margin: 0 auto;
-        padding-top: 150px;
-        width: 500px;
+        padding-top: 100px;
+        width: 600px;
     }
 
 </style>
@@ -16,29 +16,33 @@
 <div layout:fragment="content">
 <!--    로그인 폼 div 시작-->
     <div class="login_form">
-        <div th:if="${param.error != null}" class="alert alert-info" role="alert">
-            아이디 또는 비밀번호가 일치하지 않습니다.
+        <div>
+            <h1>로그인</h1>
+            <p th:if="${param.error != null}" style="color: #2e6da4; font-weight: bold">아이디 또는 비밀번호가 일치하지 않습니다.</p>
         </div>
-        <form action="/user/login" method="post">
-            <div class="login_box">
-                <label for="userId" class="form-label">userId</label>
-                <input type="text" placeholder="userId" name="username" id="userId" class="form-control">
-            </div>
-            <div class="login_box">
-                <label for="passwd" class="form-label">passwd</label>
-                <input type="password" placeholder="passwd" name="password" id="passwd" class="form-control">
-            </div>
-            <div class="login_auto_box">
-                <input type="checkbox" id="remember-me" name="remember-me" class="form-check-input">
-                <label for="remember-me" class="login_auto_label form-check-label">자동로그인</label>
-            </div>
-            <div class="login_auto_box">
-                <a href="/user/findId">아이디 찾기</a>
-                <a href="/user/findPassword">비밀번호 찾기</a>
-            </div>
-            <button type="submit">로그인</button>
-            <a href="/user/joinAuth" >회원가입</a>
-        </form>
+
+        <section style="width: 300px; margin-top: 30px">
+            <form action="/user/login" method="post">
+                <div class="login_box">
+                    <label for="userId" class="form-label">userId</label>
+                    <input type="text" placeholder="userId" name="username" id="userId" class="form-control">
+                </div>
+                <div class="login_box">
+                    <label for="passwd" class="form-label">passwd</label>
+                    <input type="password" placeholder="passwd" name="password" id="passwd" class="form-control">
+                </div>
+                <div class="login_auto_box">
+                    <input type="checkbox" id="remember-me" name="remember-me" class="form-check-input">
+                    <label for="remember-me" class="login_auto_label form-check-label">자동로그인</label>
+                </div>
+                <div class="login_auto_box">
+                    <a href="/user/findId">아이디 찾기</a>
+                    <a href="/user/findPassword">비밀번호 찾기</a>
+                </div>
+                <button type="submit">로그인</button>
+                <a href="/user/joinAuth" >회원가입</a>
+            </form>
+        </section>
     </div>
 <!--    로그인 폼 div 끝-->
 </div>

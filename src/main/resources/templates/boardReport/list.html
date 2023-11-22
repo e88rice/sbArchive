@@ -43,6 +43,59 @@
     .my_content {
         padding-top: 30px;
     }
+
+    table {
+        border-collapse: collapse;
+        width: 500px;
+        margin: 1rem auto;
+        border: 1px solid #ddd;
+        background-color: white;
+    }
+
+    /* 테이블 행 */
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #ededed;
+    }
+
+    /* 테이블 올렸을 때 */
+    tbody tr:hover {
+        background-color: #d3d3d3;
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+    /* 테이블 비율 */
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 15%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 40%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 15%;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 15%;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 15%;
+    }
 </style>
 
 <div layout:fragment="content">
@@ -63,7 +116,7 @@
                         <a href="/my/myReplyList">작성 댓글 보기</a>
                     </li>
                     <li>
-                        <a href="#">스크랩 글 보기</a>
+                        <a href="/my/myLikedList">스크랩 글 보기</a>
                     </li>
                     <li>
                         <a href="/boardReport/list">신고/문의</a>

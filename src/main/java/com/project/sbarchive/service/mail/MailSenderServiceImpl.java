@@ -68,7 +68,7 @@ public class MailSenderServiceImpl implements MailSenderService{
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO, mailTo); // 보내는 대상
-        message.setSubject(mailFromName + "이메일 인증"); // 제목
+        message.setSubject(mailFromName + " - 이메일 인증코드"); // 제목
         message.setText(messageText, "utf-8", "html");
         message.setFrom(new InternetAddress(mailFrom, mailFromName));  // 보내는 사람
 
@@ -131,7 +131,7 @@ public class MailSenderServiceImpl implements MailSenderService{
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO, email); // 보내는 대상
-        message.setSubject(mailFromName + "임시비밀번호 안내"); // 제목
+        message.setSubject(mailFromName + " - 임시비밀번호 안내"); // 제목
         message.setText(messageText, "utf-8", "html");
         message.setFrom(new InternetAddress(mailFrom, mailFromName));  // 보내는 사람
 
