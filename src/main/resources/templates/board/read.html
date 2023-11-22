@@ -12,7 +12,7 @@
     .readBoard_form {
         margin: 0 auto;
         padding-top: 100px;
-        width: 700px;
+        width: 800px;
 
     }
     textarea {
@@ -42,6 +42,9 @@
     .card-body1 {
         border: 2px solid #d3d3d3;
         border-radius: 10px;
+    }
+    .imgWidth {
+        max-width: 400px;
     }
 
     /* 여기까지 /board/read 관련 css */
@@ -251,7 +254,7 @@
 
                             <div class="left_wrap">
                                 <div class="left_wrap_subImg">
-                                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
+                                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|" class="imgWidth">
                                 </div>
                             </div>
 
@@ -261,7 +264,7 @@
                         <div class="content-between">
                             <div class="float-end btnend">
                                 <div>
-                                    <button type="submit" class="btn btn-primary">수정</button>
+                                    <button th:if="${dto.userId} == ${#authentication.principal.username}" type="submit" class="btn btn-primary">수정</button>
                                     <button type="button" class="btn btn-secondary">목록</button>
                                 </div>
                                 <div>
@@ -939,7 +942,6 @@
                     console.log("대댓글 삭제에 문제 생김");
                 });
                 // removeReply 끝
-
             });
         });
         // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제) 끝

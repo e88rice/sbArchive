@@ -27,6 +27,8 @@ public class PageResponseDTO<E> { // <제네릭> 쓴 이유: todo뿐만 아니�
 
     @Builder(builderMethodName = "withAll") // 메소드로써 builder를 쓰겠다 = 즉, pageRequestDTO, dtoList, total만 build 하면 알아서 집어넣겠따
     public PageResponseDTO(PageRequestDTO pageRequestDTO, List<E> dtoList, int total) {
+        if(total <= 0) return;
+
         this.page = pageRequestDTO.getPage();
         this.size = pageRequestDTO.getSize();
         this.total = total;
