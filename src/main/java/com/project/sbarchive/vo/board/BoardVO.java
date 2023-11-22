@@ -1,6 +1,7 @@
 package com.project.sbarchive.vo.board;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -19,5 +20,8 @@ public class BoardVO {
     private Integer likeUp;
     private Integer replyCount;
     private LocalDateTime addDate;
+
     private LocalDateTime modDate;
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime delDate;
 }
