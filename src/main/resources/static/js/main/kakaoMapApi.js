@@ -17,10 +17,11 @@ getSBList().then(r => {
             item = {
                 "title": r[i].title,
                 "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 200px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px;' src='/img/" +r[i].files[0] +"'>  " + " <br> <b> "+ r[i].title +" </b>  <br>" + r[i].address + "</div>"
+                "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 200px; padding: 10px;'> <img class='test-img' style='height: 100px; width: 100px; margin-top: 20px' src='/img/" +r[i].files[0] +"'>  " + " <br> <b> "+ r[i].title +" </b>  <br>" + r[i].address + "</div>"
             }
         }
         positions.push(item); // 객체 배열에 추가
+        console.log("HI");
     }
     var lastY = r[positions.length-1].yoffSet;
     var lastX = r[positions.length-1].xoffSet;

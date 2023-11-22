@@ -321,7 +321,7 @@
 
 
     <!-- 쪽지 모달 영역 시작 -->
-    <link rel="stylesheet" href="/css/message.css">
+    <link rel="stylesheet" href="/css/message/message.css">
     <div class="modal message_write_modal modal_container" tabindex="-1">
         <div class="modal-dialog message_write_modal_dialog">
             <div class="modal-content message_write_modal_content">
@@ -354,14 +354,18 @@
 
 
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        const urlParams = new URL(window.location.href).searchParams;
-        let my = urlParams.get('my');
+        const urlParams1 = new URL(window.location.href).searchParams;
+        let my = urlParams1.get('my');
+        const urlParams2 = new URL(window.location.href).searchParams;
+        let admin = urlParams2.get('admin');
 
         if(my === 'board') {
             self.location.href = `/my/myBoardList?${link}`;
         }
         else if (my === 'reply') {
             self.location.href = `/my/myReplyList?${link}`;
+        } else if (admin === "admin") {
+            self.location.href = `/admin/management`;
         }
         else {
             self.location.href = `/board/list?${link}`;

@@ -279,9 +279,13 @@
         document.querySelector(".backBtn").addEventListener("click", function (e){
             e.preventDefault();
             e.stopPropagation();
+            const urlParams2 = new URL(window.location.href).searchParams;
+            let admin = urlParams2.get('admin');
 
             if([[${page}]] === 0) {
                 self.location.href = "/my/mySignBoardList";
+            } else if(admin === 'admin') {
+              self.location.href = "/admin/management";
             } else {
                 self.location.href = "/signboard/list/"+[[${page}]];
             }

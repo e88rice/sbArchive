@@ -85,7 +85,7 @@
                     "                        <th>추방</th>\n" +
                     "                    </tr>\n";
                 for(let user of users.dtoList) {
-                        str += "                    <tr class=\"table_row\">\n" +
+                    str += "                    <tr class=\"table_row\">\n" +
                         "                        <td>"+ user.userId +"</td>\n" +
                         "                        <td>"+ user.email +"</td>\n" +
                         "                        <td>"+ user.regDate[0]+"-"+user.regDate[1]+"-"+user.regDate[2]+"</td>\n" +
@@ -141,7 +141,7 @@
                 for(let signboard of signboards.dtoList) {
                     str += "                    <tr class=\"table_row\">\n" +
                         "                        <td>"+ signboard.signboardId +"</td>\n" +
-                        "                        <td>"+ signboard.title +"</td>\n" +
+                        "                        <td><a href='/signboard/read/1/"+signboard.signboardId+"?admin=admin'>"+ signboard.title +"</td>\n" +
                         "                        <td>"+ signboard.addDate.split(" ")[0] +"</td>\n" +
                         "                        <td><i class=\"fa-solid fa-trash signboard-trash\" data-pk='"+signboard.signboardId+"'></i></td>\n" +
                         "                    </tr>";
@@ -195,7 +195,7 @@
                 for(let board of boards.dtoList) {
                     str += "                    <tr class=\"table_row\">\n" +
                         "                        <td>"+ board.boardId +"</td>\n" +
-                        "                        <td>"+ board.title +"</td>\n" +
+                        "                        <td><a href='/board/read?boardId="+board.boardId+"&page=1&size=10&admin=admin'>"+ board.title +"</a></td>\n" +
                         "                        <td>"+ board.addDate[0]+"-"+board.addDate[1]+"-"+board.addDate[2]+"</td>\n" +
                         "                        <td><i class=\"fa-solid fa-trash board-trash\" data-pk='"+board.boardId+"'></i></td>\n" +
                         "                    </tr>";
@@ -235,6 +235,7 @@
             }).catch(e => {
                 console.log(e)
             })
+
         }
 
         function addRepliesForm() {
@@ -248,8 +249,8 @@
                     "                    </tr>\n";
                 for(let reply of replies.dtoList) {
                     str += "                    <tr class=\"table_row\">\n" +
-                        "                        <td>"+ reply.replyId +"</td>\n" +
-                        "                        <td>"+ reply.userId +"</td>\n" +
+                        "                        <td>"+ reply.replyId +"</a></td>\n" +
+                        "                        <td><a href='/board/read?boardId="+reply.boardId+"&page=1&size=10&admin=admin'>"+ reply.userId +"</a></td>\n" +
                         "                        <td>"+ reply.addDate.split(" ")[0] +"</td>\n" +
                         "                        <td><i class=\"fa-solid fa-trash replies-trash\" data-pk='"+reply.replyId+"'></i></td>\n" +
                         "                    </tr>";
@@ -291,6 +292,7 @@
             })
         }
 
+
         // 타입을 받아서 현재 클릭한 페이지의 인덱스를 알맞은 변수에 넣어줌
         function getPageNum() {
             const pageLinks = document.querySelectorAll(".page_link");
@@ -313,6 +315,7 @@
                     }
                 })
             })
+
         }
 
         function removeBtn(type) {
@@ -322,7 +325,11 @@
                     const removeType = type.split("-")[0].split(".")[1];
                     const typeId = removeBtn.dataset.pk;
                     if(confirm("삭제하시겠습니까?")) {
-                        removeFromManger(removeType, typeId);
+                        removeFromManger(removeType, typeId).then(function (){
+                            self.location.reload();
+                        }).catch( e => {
+                            console.log(e);
+                        });
 
                     } else {
                         alert("삭제를 취소했습니다");
@@ -331,15 +338,20 @@
             })
             const Type = type.split("-")[0].split(".")[1];
             // 오늘은 여기까지 삭제 후 페이지에 바로 반영되게 수정해야 함
-            // if(Type === "user") {
-            //     addUsersForm();
-            // } else if (Type === "signboard") {
-            //     addSignboardsForm();
-            // } else if (Type === "board") {
-            //     addBoardsForm();
-            // } else {
-            //     addRepliesForm();
-            // }
+            if(Type === "user") {
+                console.log(Type)
+                // addUsersForm();
+            } else if (Type === "signboard") {
+                console.log(Type)
+                // addSignboardsForm();
+            } else if (Type === "board") {
+                console.log(Type)
+                // addBoardsForm();
+            } else {
+                console.log(Type)
+                // addRepliesForm();
+            }
+
         }
 
     </script>

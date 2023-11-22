@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Data
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserDTO {
 
+    @NotEmpty
     private String userId;
     private String passwd;
     private String nickname;

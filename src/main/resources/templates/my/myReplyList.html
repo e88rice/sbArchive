@@ -155,7 +155,7 @@
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end+1)}">
+                                <th:block th:each="i: ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                                     <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
                                         <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                     </li>
