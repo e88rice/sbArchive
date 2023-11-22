@@ -223,21 +223,25 @@
                                     [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]] )
                                 </div>
                                 <div class="topline">
-                                    <button th:if="${dto.likeId}" id="solheart" class="fa-solid fa-heart " type="button" style="border: none;background: none;color: red";>
+                                    <button th:if="${dto.likeId}"  class="fa-solid fa-heart fasol" type="button" style="border: none;background: none;color: red";>
                                         좋아요
                                     </button>
                                     <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                    <button th:unless="${dto.likeId}" id="reheart" class="fa-regular fa-heart " type="button" style="border: none;background: none;color: red";>
+                                    <button th:unless="${dto.likeId}"  class="fa-regular fa-heart" type="button" style="border: none;background: none;color: red";>
                                         좋아요
                                     </button>
-                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count">
-                                <li class="fa-solid fa-comment fa-flip-horizontal"></li> 댓글 총 [[${dto.replyCount}]]개</span>
+                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count" style="margin-right: 250px" >
+                                <li class="fa-solid fa-comment fa-flip-horizontal;" ></li> 댓글 총 [[${dto.replyCount}]]개</span>
 
 
-                                    <span style="margin-left: 200px">
-                                <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString()}"></td>
-                                <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString()}"></td>
-                                </span>
+                                    <tr>
+                                        <td th:if="${dto.addDate == dto.modDate}" style="text-align: right;">
+                                            <span th:text="${#strings.replace(dto.addDate.toString(), 'T', ' ')}"></span>
+                                        </td>
+                                        <td th:if="${dto.addDate != dto.modDate}" style="text-align: right;">
+                                            <span th:text="${#strings.replace(dto.modDate.toString(), 'T', ' ')}"></span>
+                                        </td>
+                                    </tr>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -1068,23 +1072,28 @@
 
     const hart = document.querySelector(".hart");
     const likeCount = [[${dto.likeId}]]
-    const islike = document.querySelector(".fa-solid");
-    const notlike = document.querySelector(".fa-regular");
 
 
 
-    islike.addEventListener('click',function (e) {
+    if(likeCount === 1) {
+    const uplike = document.querySelector(".fasol");
+    uplike.addEventListener('click',function (e) {
         e.preventDefault();
         likeDown(boardId,username);
         location.reload();
+        return;
     });
+    }else {
+        const notlike = document.querySelector(".fa-regular");
+        notlike.addEventListener('click', function (e) {
+            e.preventDefault();
+            likeUp(boardId, username);
+            location.reload();
+        });
+    }
 
 
-    notlike.addEventListener('click',function (e) {
-        e.preventDefault();
-        likeUp(boardId, username);
-        location.reload();
-    });
+
 
 
 
