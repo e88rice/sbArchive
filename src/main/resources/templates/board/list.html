@@ -16,6 +16,19 @@
         justify-content: center;
         align-items: center;
     }
+    .notice {
+        color: red;
+        font-size: 12px;
+        font-family: 함초롬바탕;
+        border: 2px solid red;
+         border-radius: 10px;
+        padding: 4px;
+        margin: 0 4px;
+
+    }
+    .admin-row {
+        background: #449d44;
+    }
 
 
 </style>
@@ -38,10 +51,17 @@
                             </div>
                             <input style="width: 300px" type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                                <button class="btn btn-outline-secondary searchBtn" type="submit" style="margin: 0 5px;">검색</button>
                             </div>
                             <div>
                                 <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-outline-secondary addboard" type="button" style="margin-left: 5px; background: #01B0D1">게시물작성</button>
+                            </div>
+                            <div>
+                                <button th:if="${#authentication.principal.username} == admin" class="btn btn-outline-secondary addnotice" type="button" style="margin-left: 5px; background: #01B0D1">공지사항작성</button>
                             </div>
                         </div>
                     </div>
@@ -49,14 +69,14 @@
             </div>
             <tr>
                 <th>번호</th>
-                <th style="width: 50%; text-align: center">제목</th>
+                <th style="width: 480px; text-align: center">제목</th>
                 <th>글쓴이</th>
                 <th>작성일</th>
                 <th>조회</th>
                 <th>좋아요</th>
             </tr>
-            <tr th:each="dto:${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}">
-                <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.boardId}]]</a></td>
+            <tr th:each="dto:${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}" th:class="${dto.userId == 'admin' ? 'admin-row' : ''}">
+                <td><i th:if="${dto.userId}==admin" class="notice">공지사항</i><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.boardId}]]</a></td>
                 <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
                 <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.nickname}]]
                     <span>( [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]])</span></a></td>
@@ -103,6 +123,14 @@
 
             formObj.submit();
         },false)
+
+        document.querySelector('.addboard').addEventListener('click',function (e) {
+            location.href = '/board/add'
+        });
+        document.querySelector('.addnotice').addEventListener('click',function (e) {
+            location.href = '/board/addNotice'
+        })
+
 
 
 

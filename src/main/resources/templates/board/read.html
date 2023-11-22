@@ -547,7 +547,7 @@
                                     ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>'}
                                 </div>
                                 <div>
-                                 ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                 ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn" data-reply-id="${dto.replyId}">신고</a>'}
                                 </div>
                             </div>
 
@@ -1097,6 +1097,14 @@
             location.reload();
         });
     }
+
+
+
+
+
+
+
+
 
 
 

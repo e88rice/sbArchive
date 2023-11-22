@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class BoardReportDTO {
     int rBoardId;
+    int boardId;
     String userId;
     String title;
     String content;

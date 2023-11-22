@@ -13,6 +13,8 @@ public interface BoardMapper {
 
     void add(BoardVO boardVO);
 
+    void addNotice(BoardVO boardVO);
+
     List<BoardVO> getBoardList();
 
     BoardVO getBoard(int boardId);

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @ToString
 public class BoardReportVO {
     int rBoardId;
-
+    int boardId;
     String userId;
     String title;
     String content;

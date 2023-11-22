@@ -30,6 +30,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public int addNotice(BoardDTO boardDTO) {
+        BoardVO boardVO = modelMapper.map(boardDTO, BoardVO.class);
+        boardMapper.addNotice(boardVO);
+        return boardVO.getBoardId();
+    }
+
+    @Override
     public List<BoardDTO> getBoardList() {
         List<BoardVO> boardVOList = boardMapper.getBoardList();
         List<BoardDTO> boardDTOList = new ArrayList<>();

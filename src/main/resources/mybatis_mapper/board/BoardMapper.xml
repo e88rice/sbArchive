@@ -49,10 +49,11 @@
             </if>
         </where>
     </sql>
-    <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO" >
-        select * from board
+    <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO">
+        SELECT * FROM board
         <include refid="search" />
-        order by boardId desc limit #{skip}, #{size}
+        ORDER BY CASE WHEN userId = 'admin' THEN 0 ELSE 1 END, boardId DESC
+        LIMIT #{skip}, #{size}
     </select>
     <select id="getCount" resultType="int">
         select count(*) from board
@@ -69,6 +70,10 @@
     <select id="getLike" resultType="int">
         select count(*) from board_like where boardId = #{boardId} and userId = #{userId}
     </select>
+    <insert id="addNotice" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO board (userId, title, content, hit, likeUp,  addDate, nickname, delDate)
+        VALUES (#{userId} , #{title}, #{content}, 0, 0, #{addDate},#{nickname} , ${delDate})
+    </insert>
 
 
 

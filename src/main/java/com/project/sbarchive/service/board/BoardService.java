@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface BoardService {
     int add(BoardDTO boardDTO);
+    int addNotice(BoardDTO boardDTO);
     List<BoardDTO> getBoardList();
 
     BoardDTO getBoard(int boardId);
@@ -32,4 +33,6 @@ public interface BoardService {
     void boardlikeUp(int boardId);
 
     void boardlikeDown(int boardId);
+
+
 }

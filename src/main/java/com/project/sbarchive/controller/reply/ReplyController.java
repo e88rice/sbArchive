@@ -76,7 +76,6 @@ public class ReplyController {
         List<ReplyDTO> replyDTO=replyService.getReReplies(boardId, parentReplyId, replyDepth);
         log.info("여기는 대댓글 리스트 조회하는 곳: "+replyDTO);
         return replyDTO;
-
     }
 
     @ApiOperation(value = "Read Reply", notes="GET 방식으로 특정 댓글 조회")

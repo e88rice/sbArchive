@@ -5,8 +5,8 @@
 <mapper namespace="com.project.sbarchive.mapper.board.BoardReportMapper">
 
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
-        INSERT INTO report_board ( userId, title, content,   isAnswered, addDate)
-        VALUES (#{userId},#{title},#{content}, 0, now() )
+        INSERT INTO report_board ( userId, title, content,   isAnswered, addDate, boardId)
+        VALUES (#{userId},#{title},#{content}, 0, now(), #{boardId} )
     </insert>
 
     <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardReportVO">
@@ -16,7 +16,6 @@
     <update id="isAnswered">
         UPDATE report_board  SET isAnswered = isAnswered + 1  WHERE rBoardId = #{rBoardId}
     </update>
-
     <select id="getCount" resultType="int">
         select count(*) from report_board
     </select>
@@ -27,5 +26,4 @@
     <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
         select * from report_board order by userId desc
     </select>
-
 </mapper>

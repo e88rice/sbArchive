@@ -169,7 +169,7 @@
                                 </li>
                                 <th:block th:each="i:${#numbers.sequence(responseDTO.start-1, responseDTO.end)}">
                                     <li th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
-                                        <a class="page-link" th:if="${responseDTO.page != 0}" th:data-num="${i}" href="#">[[${i}]]</a>
+                                        <a class=" pagenot0 page-link"  th:data-num="${i}" href="#">[[${i}]]</a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:if="${responseDTO.next}">
@@ -207,6 +207,9 @@
                 changePage(target.getAttribute("data-num"));
             }
         }, false);
+
+
+
 
     </script>
 </div>

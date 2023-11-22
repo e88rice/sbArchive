@@ -5,9 +5,11 @@ import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.board.BoardReportDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardReprotService;
 import com.project.sbarchive.service.board.BoardService;
+import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.board.BoardReportVO;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,8 @@ public class BoardReportController {
 
     private final BoardFileService boardFileService;
 
+    private final ReplyService replyService;
+
     private final UserService userService;
 
     private final ModelMapper modelMapper;
@@ -50,6 +54,13 @@ public class BoardReportController {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO,BoardAllDTO.class);
         model.addAttribute("dto", boardAllDTO);
+        model.addAttribute("user",principal);
+    }
+
+    @GetMapping("/addReply")
+    public void addBoardReply(int replyId, Principal principal, Model model) {
+        ReplyDTO replyDTO = replyService.getReply(replyId);
+        model.addAttribute("dto", replyDTO);
         model.addAttribute("user",principal);
     }
 

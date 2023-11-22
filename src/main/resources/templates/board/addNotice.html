@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="~{/layout/layout.html}">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer>
+
+</script>
+<style layout:fragment="style">
+    .board_form {
+        margin: 0 auto;
+        padding-top: 150px;
+        width: 700px;
+        height: 1000px;
+    }
+    textarea {
+        width: 100%;
+        height: 6.25em;
+        border: none;
+        resize: none;
+    }
+    .topline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+</style>
+
+
+<body>
+<div layout:fragment="content">
+    <div class="container board_form" >
+        <h2 class="mb-4">게시판 글 등록</h2>
+        <form action="/board/addNotice" method="post" name="frmAdd" enctype="multipart/form-data">
+            <div class="topline">
+                <div class="form-group">
+                    <span for="userId">아이디</span>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="userId" name="userId" class="form-control" style="background: none; border: none" th:value="${#authentication.principal.username}" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="nickname">닉네임</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="nickname" name="nickname" style="background: none; border: none" class="form-control" th:value="${#authentication.principal.nickname}" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="title" name="title" style="height: 35px; background: white" class="form-control" placeholder="제목을 입력해 주세요" required>
+            </div>
+            <div>
+                공지날짜 : <input name="addDate" type="datetime-local"  >
+                 공지기한 : <input name="delDate" type="datetime-local"   >
+            </div>
+
+            <div class="form-group">
+                <textarea name="content" id="content" class="form-control" rows="25" placeholder="내용을 입력해 주세요"
+                          style="padding: 20px; background: none"></textarea>
+            </div>
+
+
+            <div class="topline">
+                <div class="form-group">
+                    <input type="file" id="files" name="files" class="form-control-file" placeholder="파일추가" multiple>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">글 등록</button>
+                </div>
+                <div class="form-group">
+                    <button type="reset" class="btn btn-secondary">리셋</button>
+                </div>
+
+            </div>
+        </form>
+
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

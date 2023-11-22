@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
 
 
+
 <style layout:fragment="style">
     /* 여기서부터 /board/read 관련 css */
     .readBoard_form {
@@ -34,6 +35,10 @@
         justify-content: flex-start;
         align-items: center;
     }
+    .fa-solid {
+        font-size: 20px;
+        margin: 0 150px;
+    }
 
     /* 여기까지 /board/read 관련 css */
 
@@ -41,125 +46,10 @@
 
 
 
-    /* 여기서부터 댓글 관련 css */
-    li {
-        list-style: none;
-    }
-    .user_image {
-        padding: 20px 0;
-        width: 50px;
-        height: 90px;
-    }
-    .reply_page_container {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        width: 65vw;
-        margin-top: 10px;
-    }
-    .reply_list_paging_wrap {
-        display: flex;
-    }
-    .reply_page_wrap, .reply_page_prev, .reply_page_next {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        line-height: 40px;
-        margin: 0 10px;
-        width: 40px;
-        height: 40px;
-    }
-    .active {
-        font-weight: bold !important;
-    }
-    .reply_add_wrap {
-        margin: 50px;
-    }
-    .reply_add_inner_wrap {
-        width: 65vw;
-        padding: 10px;
-        margin: 0 auto;
-        border: 2px solid #d3d3d3;
-        border-radius: 10px;
-    }
-    .reply_add_form {
-        display:flex;
-        flex-direction: row;
-    }
-    .acontent {
-        padding: 10px;
-        margin: 5px;
-    }
-    .addBtn {
-        width: 70px;
-        height: 40px;
-        margin-top: 15px;
-    }
-    .reply_list_wrap {
-        width: 65vw;
-        margin: 0 auto;
-    }
-    .reply_count {
-        margin-left: 10px;
-    }
-    .replyList, .messageBtn {
-        margin: 10px;
-    }
-    .if_reply_writer {
-        border: 1px solid red;
-        border-radius: 1em;
-        padding: 4px;
-        font-size: 12px;
-        margin-left: 5px;
-        font-weight: bold;
-        color: red;
-    }
-    .list_of_reply {
-        display: flex;
-        justify-content: space-between;
-        width: 65vw;
-        border-bottom: 1px solid #d3d3d3;
-        padding-bottom: 10px;
-    }
-    .img_wrap {
-        width: 12%;
-    }
-    .writer_btn_content_date_wrap {
-        display: flex;
-        flex-direction: column;
-        width: 85%;
-    }
-    .writer_btn_area {
-        display: flex;
-        justify-content: space-between;
-        height: 60px;
-        padding: 20px 0;
-    }
-    .date_of_reply {
-        color: gray;
-        font-size: 12px;
-    }
-    .replyModifyForm {
-        display: none;
-        border-bottom: 1px solid #d3d3d3;
-        padding:20px;
-        width: 65vw;
-    }
-    .textarea_btn_area {
-        display:flex;
-        flex-direction: row;
-    }
-    .mcontent {
-        padding: 10px;
-    }
-    .moreReplyBtn {
-        font-size: 11px;
-        color: #606060;
-        margin-top: 5px;
-    }
-    /* 여기까지 댓글 관련 css */
+
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <div layout:fragment="content">
     <div class="form1">
@@ -172,9 +62,10 @@
                             <input style="font-size: 30px; background: none; border: none"; width="80px" type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
                         </div>
                         <div class="flex-content" style="padding: 20px">
-                            <div>
-                                [[${dto.nickname}]] (
+
+                                신고자 [[${dto.nickname}]] (
                                 [[${dto.userId}]] )
+                            <i class="fa-solid fa-arrow-right"> </i> <a class="reportboard">신고게시물 [[${dto.boardId}]]</a>
                             </div>
                             <div>
                                 <span th:if="${dto.isAnswered}" th:text="답변완료" style="color: red; border-radius: 15px;padding: 4px;
@@ -208,84 +99,37 @@
                         <div class="float-end btnend">
                             <div>
                             <button type="button" class="btn btn-secondary">목록</button>
+                            <button type="button" class="btn messageBtn">답변</button>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
             </div>
     </form>
-    </div>
-
-
-
-    <!-- 댓글 등록 영역 -->
-    <script src="/js/reply/reply.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <div class="reply_add_wrap">
-        <div class="reply_add_inner_wrap">
-            <div>
-                <div class="reply_add_form">
-                    <input type="hidden" name="nickname" class="anickname" th:value="${#authentication.principal.nickname}">
-                    <input type="hidden" name="userId" class="auserId" th:value="${#authentication.principal.username}">
-                    <div>[[${#authentication.principal.nickname}]]<span>([[${#authentication.principal.username}]])</span></div>
-                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control"></textarea>
-                    <button type="button" class="btn btn-primary addBtn">등록</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 댓글 등록 영역 끝 -->
-
-    <!-- 댓글 리스트 출력 -->
-    <div class="reply_list_wrap">
-        <div>
-            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count">댓글 총 [[${dto.replyCount}]]개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
-            <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
-            <ul class="list-group replyList">
-                <!-- 댓글 출력 -->
-            </ul>
-        </div>
-        <div>
-            <div class="reply_page_container">
-                <ul class="reply_list_paging_wrap replyPaging">
-                    <!-- 댓글 페이징 출력 -->
-                </ul>
-            </div>
-        </div>
-
-    </div> <!-- 댓글 목록 끝 -->
-
-
-    <!-- 쪽지 모달 영역 시작 -->
-    <link rel="stylesheet" href="/css/message/message.css">
-    <div class="modal message_write_modal modal_container" tabindex="-1">
-        <div class="modal-dialog message_write_modal_dialog">
-            <div class="modal-content message_write_modal_content">
-                <div class="modal-header modal_write_header">
-                    <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="modal-body message_write_modal_body">
-                    <div class="message_write_content_wrap">
-                        <div class="message_writer"><span>받는 사람 </span> <input type="text" class="msgReceiverName" placeholder="받는 사람의 아이디를 입력해주세요."> </div>
-                        <hr>
-                        <textarea cols="68" rows="7" class="msgContent"></textarea>
+        <!-- 쪽지 모달 영역 시작 -->
+        <link rel="stylesheet" href="/css/message/message.css">
+        <div class="modal message_write_modal modal_container" tabindex="-1">
+            <div class="modal-dialog message_write_modal_dialog">
+                <div class="modal-content message_write_modal_content">
+                    <div class="modal-header modal_write_header">
+                        <button type="button" class="message_btn_close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                </div> <!-- Modal body End -->
-                <div class="modal-footer message_modal_footer">
-                    <div><button class="sendMsg">보내기</button></div>
-                </div> <!-- Modal footer End -->
-            </div> <!-- Modal Content End -->
-        </div> <!-- Modal Dialog End -->
-    </div><!-- Modal Container End -->
-    <script src="/js/message/messageAsync.js"></script>
-    <!-- 쪽지 모달 영역 끝 -->
-    <script src="/js/board/board.js"></script>
-
+                    <div class="modal-body message_write_modal_body">
+                        <div class="message_write_content_wrap">
+                            <div class="message_writer"><span>받는 사람 </span> <input type="text" class="msgReceiverName" placeholder="받는 사람의 아이디를 입력해주세요."> </div>
+                            <hr>
+                            <textarea cols="68" rows="7" class="msgContent"></textarea>
+                        </div>
+                    </div> <!-- Modal body End -->
+                    <div class="modal-footer message_modal_footer">
+                        <div><button class="sendMsg">보내기</button></div>
+                    </div> <!-- Modal footer End -->
+                </div> <!-- Modal Content End -->
+            </div> <!-- Modal Dialog End -->
+        </div><!-- Modal Container End -->
+        <script src="/js/message/messageAsync.js"></script>
+    </div>
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
@@ -299,421 +143,71 @@
         location.href = `/reportBoard/list?${link}`;
     });
 
-
-
-
-
-    // 여기서부터 댓글 관련 자바스크립트
-    // 새로고침 이벤트
-    const refreshBtn=document.querySelector('.refreshBtn');
-    refreshBtn.addEventListener("click", function(e) {
-        location.reload(); // 가장 마지막 페이지로 이동
-    });
-
-    // 댓글 등록 관련 자바스크립트
-    const acontent=document.querySelector(".acontent");
-    const auserId=document.querySelector(".auserId");
-    const anickname=document.querySelector(".anickname");
-    const addBtn=document.querySelector(".addBtn");
-
-    // 댓글 등록 버튼 클릭 이벤트
-    addBtn.addEventListener("click", function(e) {
-        const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
-
-        addReply(replyObj).then(result => { // reply.js(axios)
-            const newReplyId = result.data.replyId; // replyId를 추출해서
-
-            // parentReplyId와 replyId 값 일치시킴
-            const updateReplyObj={newReplyId:newReplyId, parentReplyId: newReplyId};
-            modifyReplyId(updateReplyObj);
-
-            acontent.value = ''; // 초기화
-            location.reload(); // 새로고침
-            printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
-        }).catch(e => {
-            alert("댓글 등록에 문제 생김");
-        });
-    });
-    // 여기까지 댓글 등록 관련 자바스크립트
-
-
-    // 여기서부터 댓글 리스트 출력 관련 자바스크립트
-    const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
-    const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
-    const replyDepth=0; // 원댓글임(대댓글이 아님)
-
-    function printReplies(page, size, goLast) { // 댓글 리스트, 댓글 페이징 출력
-        // 대댓글이 아닌, 원댓글만 출력
-        getReplyList({boardId, replyDepth, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
-            data => {
-                console.log("data: "+data);
-                printReplyList(data.dtoList); // pageResponseDTO의 dtoList
-                printPages(data);
-            }
-        ).catch(e => {
-            console.error();
-        });
-    }
-    printReplies(1, 10, true); // 댓글 맨 뒷페이지로 시작
-
-    // 댓글 페이징 부분의 a 태그를 눌렀을 때 페이지 이동
-    let page = 1;
-    let size = 10;
-
-    // 페이지 목록 클릭 이벤트
-    replyPaging.addEventListener("click", function (e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        const target = e.target;
-
-        if(!target || target.tagName != 'A') return; // 타겟이 아니거나 a 태그가 아니면 종료
-
-        const pageNum = target.getAttribute("data-page");
-        page = pageNum;
-        printReplies(page, size);
-    });
-
-    function printPages(data) { // 댓글 페이징 목록 출력
-        let pageStr = ''; // 페이지를 이동하기 위한 a 태그들을 담을 변수
-        if(data.prev) { // 받아온 data의 prev 값이 true라면 이전 버튼 활성화
-            pageStr += `<li class="reply_page_prev"><a data-page="${data.start - 1}">이전</a></li>`;
-        }
-        for(let i = data.start; i <= data.end; i++) {
-            // 현재 페이지면 active 클래스 추가
-            pageStr += `<li class="reply_page_wrap ${i === data.page ? "active" : ""}">
-                    <a data-page="${i}">${i}</a></li>`;
-        }
-        if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
-            pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
-        }
-        console.log(pageStr); // 나중에 삭제
-        replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
-    }
-
-    const username = [[${#authentication.principal.username}]]; // 현재 로그인된 아이디
+    const username = [[${dto.userId}]]; // 현재 로그인된 아이디
     const nickname = [[${#authentication.principal.nickname}]]; // 현재 로그인된 아이디의 닉네임
 
-    let isReplyWriter = false;
-    let isBoardWriter = false;
 
-    function printReplyList(dtoList) { // 원댓글 리스트 출력
-        let str = '';
-        if (dtoList && dtoList.length > 0) {
-            for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
-                let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
-                // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
+    //--------------모달
+    // 여기서부터 쪽지 모달 시작
+    const msgWriteBtn = document.querySelectorAll(".messageBtn");
+    const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
 
-                let id=dto.userId; // 댓글 단 아이디
-                let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
-                // console.log("id: "+id);
-
-                function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-                    return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
-                }
-                // maskId의 결과를 담을 변수
-                let maskedId = maskId(id);
-
-                isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
-                isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
-
-                // 대댓글 여부 구분
-                let replyDepth=dto.replyDepth;
-                // replyDepth 결과를 담을 변수
-                let isOriginReply='';
-
-                // 대댓글이 아니면
-                if (replyDepth===false) {
-                    isOriginReply = `
-                        <div class="list_of_reply">
-
-                            <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
-                                <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
-                            </div>
-
-                            <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
-                                <div class="writer_btn_area">
-                                    <div>
-                                        ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                        ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
-                                    </div>
-                                    <div>
-                                     ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
-                                    </div>
-                                </div>
-
-                                <div>${dto.content}</div>
-                                <div class="date_of_reply">${date}</div>
-                                <a class="moreReplyBtn">▽ 답글 보기</a> <!-- 나중에 대댓글이 달린 원댓글에만 답글 보기 버튼 나오도록 수정 예정 -->
-
-                            </div>
-
-                        </div>
-                    `;
-                    } else {
-                    isOriginReply = '';
-                    }
-
-                str +=`
-                <li class="replyItem" data-replyId="${dto.replyId}">
-                    ${isOriginReply}
-
-                    <ul class="list_of_reReply">
-                        <!-- 대댓글 출력 -->
-                    </ul>
+    msgWriteBtn.forEach(messageBtn => {
+        messageBtn.addEventListener("click", function () {
+            const reportUserId = username;
+            writeModalShow();
+            SendMsg(reportUserId);
+        });
+    });
 
 
-                    <!-- 댓글 수정 폼 -->
-                     <div class="replyModifyForm">
-                        <div>
-                            <div>${dto.nickname}(${id})</div>
-                        </div>
-                        <div class="textarea_btn_area">
-                            <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control">${dto.content}</textarea>
-                            <button type="button" class="btn btn-primary modReplyBtn">수정</button>
-                            <button type="button" class="btn btn-done">취소</button>
-                        </div>
-                     </div>
 
-                     <!-- 대댓글 등록 폼 -->
-                     <div style="display:none; border-bottom: 1px solid #d3d3d3; height: 100px; padding: 20px" class="reReplyAddForm">
-                        <div>${nickname}<span>(${username})</span></div>
-                        <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control"></textarea>
-                        <button type="button" class="btn btn-primary addReBtn">등록</button>
-                    </div>
+    function writeModalShow() {
+        msgWriteModal.show();
+    }
 
-                </li>
-               `
-            }
+    function SendMsg(receiverName) {
+        const rcvName = "관리자";
+        const msgContent = document.querySelector(".msgContent");
+        rcvName.readOnly = false;
+        if(receiverName !== null) { // 답장하기 버튼으로 접근 시
+            rcvName.value = receiverName;
+            rcvName.readOnly = true; // 작성자 변경 불가능
         }
-        replyList.innerHTML = str; // replyList 부분에 추가
-
-
-        // 답글 더보기 버튼 클릭 이벤트
-        document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
-            moreReplyBtn.addEventListener('click', function (e) {
-                alert("답글 더보기 버튼 클릭");
-
-                const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                console.log("replyID: " + parentReplyId);
-                const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
-
-                // 대댓글 여부
-                const replyDepth = true;
-
-                // 대댓글 목록만 가져옴
-                getReReplies(boardId, parentReplyId, replyDepth).then(function (replies) { // reply.js(axios)
-
-                    let reReplyHTML = '';
-                    replies.forEach(function (dto) {
-
-                        let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
-                        // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
-
-                        let id=dto.userId; // 댓글 단 아이디
-                        let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
-                        // console.log("id: "+id);
-
-                        function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-                            return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
-                        }
-                        // maskId의 결과를 담을 변수
-                        let maskedId = maskId(id);
-                        isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
-                        isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
-
-                        reReplyHTML += `
-                    <li class="replyItem" data-replyId="${dto.replyId}">
-                        <div class="list_of_reply2" style="display: flex; border-bottom: 1px solid #d3d3d3; padding: 10px 0 10px 0;">
-                        <!-- 여기서부터 디자인 확정되면 클래스로 묶을 예정 -->
-
-                            ↳ <div class="img_wrap" style="margin-left: 10px"> <!-- 이미지 나오는 부분 -->
-                                <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
-                            </div>
-
-                            <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
-                                <div class="writer_btn_area">
-                                    <div>
-                                        ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                        ${isReplyWriter ? '' : '<a class="message"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
-                                    </div>
-                                    <div>
-                                     ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
-                                    </div>
-                                </div>
-
-                                <div>${dto.content}</div>
-                                <div class="date_of_reply">${date}</div>
-                            </div>
-
-                        </div>
-                    </li>
-                `;
-                    });
-
-                    listOfReReply.innerHTML = reReplyHTML;
-
-                });
-            });
-        });
-
-
-        // 답글 쓰기 버튼 클릭 이벤트
-        document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
-            reReplyAddBtn.addEventListener('click', function(e) {
-                alert("답글쓰기 버튼 클릭"); // 삭제 예정
-                const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-                reReplyAddForm.style.display='flex';
-            });
-        });
-
-
-        // 대댓글(답글) 등록
-        document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
-            addReBtn.addEventListener('click', function(e) {
-                alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
-                const reReplyAddForm = e.target.parentNode.parentNode.querySelector('.reReplyAddForm');
-                const rcontent=reReplyAddForm.children[1];
-                console.log("nickname: "+nickname); // 삭제 예정
-                console.log("userId: "+username); // 삭제 예정
-                console.log("rcontent.value: "+rcontent.value); // 삭제 예정
-                const parentReplyId=e.target.parentNode.parentNode.getAttribute("data-replyId");
-                console.log("parentReplyId: "+parentReplyId); // 삭제 예정
-                const replyObj={boardId:boardId, content:rcontent.value, userId:username, parentReplyId:parentReplyId, nickname:nickname};
-
-                addReReply(replyObj).then(result => { // reply.js(axios)
-                    // alert(result.data.replyId); // 확인용
-                    rcontent.value='';
-                    reReplyAddForm.style.display='none';
-                    location.reload();
-                }).catch(e => {
-                    alert("대댓글 등록에 문제 생김");
-                });
-            });
-        });
-
-
-        // 댓글 삭제 버튼 클릭 이벤트
-        // 원댓글 논리 삭제랑 대댓글 찐 삭제로 나눠야 함... 아직 안 함~
-        document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
-            replyRemoveBtn.addEventListener('click', function(e) {
-                // a 태그(replyRemoveBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                console.log("replyId: "+replyId);
-                alert("replyRemoveBtn 눌림"); // 삭제 예정
-
-                removeReReply(replyId).then(result => { // reply.js(axios)
-                    if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
-                    alert("삭제되었습니다.");
-                    location.reload(); // 페이지 새로고침
-                }).catch(e => {
-                    console.log("대댓글 삭제에 문제 생김");
-                });
-            });
-        });
-
-        // 대댓글 수정 버튼 클릭 이벤트 만들어야 됨
-
-
-        // 원댓글 수정 버튼 클릭 이벤트
-        document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
-            replyModBtn.addEventListener('click', function(e) {
-                // a 태그(replyModBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-
-                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply'); // 출력된 해당 댓글
-                const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
-                const mcontent = replyModifyForm.querySelector('.mcontent');
-                const modBtn = replyModifyForm.querySelector('.modReplyBtn');
-                const cancelBtn=replyModifyForm.querySelector(".btn-done");
-
-                getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
-                    replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
-                    list.style.display='none'; // list가 안 보이게
-                }).catch(e => alert('댓글 가져오기(getReply) 실패'));
-
-                modBtn.addEventListener("click", function(e) { // 수정 완료 버튼 클릭 이벤트
-                    if(!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
-                    const replyObj={content:mcontent.value, replyId:replyId};
-                    modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
-                        alert('수정되었습니다.');
-                        mcontent.value = ''; // textarea 초기화
-                        replyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
-                        location.reload(); // 새로고침
-                    }).catch(e => {
-                        alert('댓글 수정 실패');
-                    });
-                });
-
-                cancelBtn.addEventListener("click", function(e) { // 수정 폼에서 취소 버튼 클릭 이벤트
-                    replyModifyForm.style.display='none';
-                    list.style.display='flex';
-                });
-
-
-            });
-        });
-
-
-
-        // 여기서부터 쪽지 모달 시작
-        const msgWriteBtn = document.querySelectorAll(".messageBtn");
-        const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
-
-        msgWriteBtn.forEach(messageBtn => {
-            messageBtn.addEventListener("click", function () {
-                const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
-                writeModalShow();
-                SendMsg(replyUserId);
+        document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
+        document.querySelector(".sendMsg").parentNode
+            .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
+                document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
+        document.querySelector(".sendMsg").addEventListener("click", function (){
+            if(msgContent.value.trim().length < 5) {
+                alert("내용은 최소 5자 이상 입력해야 합니다.")
+                return;
+            }
+            addMessage(rcvName.value, msgContent.value).then( r => {
+                console.log(r);
+                if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
+                else {
+                    alert("쪽지 전송 완료");
+                    msgWriteModal.hide();
+                    rcvName.value = "";
+                    msgContent.value = "";
+                }
+            }).catch(e => {
+                console.log(e);
             })
         })
 
-        function writeModalShow() {
-            msgWriteModal.show();
-        }
-
-        function SendMsg(receiverName) {
-            const rcvName = document.querySelector(".msgReceiverName");
-            const msgContent = document.querySelector(".msgContent");
-            rcvName.value = "";
-            rcvName.readOnly = false;
-            if(receiverName !== null) { // 답장하기 버튼으로 접근 시
-                rcvName.value = receiverName;
-                rcvName.readOnly = true; // 작성자 변경 불가능
-            }
-            document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
-            document.querySelector(".sendMsg").parentNode
-                .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
-                    document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
-            document.querySelector(".sendMsg").addEventListener("click", function (){
-                if(msgContent.value.length < 5) {
-                    alert("내용은 최소 5자 이상 입력해야 합니다.")
-                    return;
-                }
-                addMessage(rcvName.value, msgContent.value).then( r => {
-                    console.log(r);
-                    if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
-                    else {
-                        alert("쪽지 전송 완료");
-                        msgWriteModal.hide();
-                        rcvName.value = "";
-                        msgContent.value = "";
-                    }
-                }).catch(e => {
-                    console.log(e);
-                })
-            })
-        }
-
     }
 
-    // 여기까지 쪽지 모달 끝
-    //like기능 -------------
+        document.querySelector(".reportboard").addEventListener('click',function () {
+        location.href = `/board/read?boardId=`+boardId;
+    })
 
-        document.querySelector("#reportPage").addEventListener("click",function (e) {
-            e.preventDefault();
-            location.href = `/boardReport/add?boardId=${boardId}`;
-        });
+
+
+
+
+
 
 
 

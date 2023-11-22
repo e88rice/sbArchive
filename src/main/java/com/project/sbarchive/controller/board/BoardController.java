@@ -62,6 +62,27 @@ public class BoardController {
             }
             boardFileService.addBoardImages(boardId, files,"board");
         }
+        return "redirect:/board/read?boardId="+boardId;
+    }
+    @GetMapping("/addNotice")
+    public void addBoardNotice() {
+
+    }
+
+    @PostMapping("/addNotice")
+    public String addBoardNotice(BoardDTO boardDTO, List<MultipartFile> files,
+                           RedirectAttributes redirectAttributes) {
+        log.info("addBoard -------" +  boardDTO);
+        int boardId = boardService.addNotice(boardDTO);
+        for(MultipartFile file : files) {
+            log.info(file);
+        }
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                log.info("File: " + file.getOriginalFilename());
+            }
+            boardFileService.addBoardImages(boardId, files,"board");
+        }
         return "redirect:/board/list";
     }
 
