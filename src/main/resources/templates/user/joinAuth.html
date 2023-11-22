@@ -118,7 +118,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <input type="checkbox" name="agree" id="agree1" class="form-check-input">
+                                <input type="checkbox" name="agree" id="agree1" class="form-check-input" onclick="checkSelectAll()">
                                 <label for="agree1" class="form-check-label">이용약관 동의 <span>(필수)</span></label>
                             </div>
                                 <textarea readonly>
@@ -338,7 +338,7 @@
                         </div>
                         <div class="form-group">
                             <div class="form-check">
-                                <input type="checkbox" name="agree" id="agree2" class="form-check-input">
+                                <input type="checkbox" name="agree" id="agree2" class="form-check-input" onclick="checkSelectAll()">
                                 <label for="agree2" class="form-check-label">개인정보 수집 및 이용 동의 <span>(필수)</span></label>
                             </div>
                                 <textarea readonly>
@@ -492,17 +492,29 @@
         </div>
     </div>
     <script th:inline="javascript">
+        // 전체 체크박스
+        const checkboxes = document.querySelectorAll('input[name="agree"]');
+        // 전체 동의 체크 박스
         const checkAll = document.getElementById('checkAll');
-        const agree1 = document.getElementById('agree1');
-        const agree2 = document.getElementById('agree2');
 
-        // 전체 동의
+
+        function checkSelectAll()  {
+            // 선택된 체크박스가 전체 체크박스 갯수와 동일하면
+            const checked = document.querySelectorAll('input[name="agree"]:checked');
+            if(checkboxes.length === checked.length)  {
+                checkAll.checked = true;
+            }else {
+                checkAll.checked = false;
+            }
+        }
+
         checkAll.addEventListener('change', function (e) {
             let agreeChk = document.querySelectorAll('input[name=agree]');
             for(let i = 0; i < agreeChk.length; i++){
                 agreeChk[i].checked = e.target.checked;
             }
         });
+
 
         const joinAuthBtn = document.querySelector('.joinAuthBtn');
         const authForm = document.querySelector('form');
