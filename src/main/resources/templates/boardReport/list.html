@@ -8,7 +8,7 @@
 <style layout:fragment="style">
     .mypage_div {
         margin: 0 auto;
-        width: 1000px;
+        width: 1170px;
     }
 
     .border_line_bottom {
@@ -41,7 +41,8 @@
     }
 
     .my_content {
-        padding-top: 30px;
+        width: 1170px;
+        padding: 30px 15px 0 15px;
     }
 
     table {
@@ -109,7 +110,7 @@
                     <li>
                         <a href="/my/mySignBoardList">작성 아카이브 보기</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="/my/myBoardList">작성 글 보기</a>
                     </li>
                     <li>
@@ -118,13 +119,13 @@
                     <li>
                         <a href="/my/myLikedList">스크랩 글 보기</a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="/boardReport/list">신고/문의</a>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="row my_content">
+        <div class="my_content">
             <h1>신고/문의</h1>
             <div class="col">
                 <div class="card">
@@ -161,12 +162,12 @@
                                 </tbody>
                             </table>
                         </form>
-                        <div class="center-block">
+                        <div class="center-block" style="text-align: center">
                             <ul class="pagination flex-wrap">
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end+1)}">
                                     <li th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
                                         <a class="page-link" th:data-num="${i}">[[${i}]]</a>
                                     </li>
@@ -206,13 +207,6 @@
                 changePage(target.getAttribute("data-num"));
             }
         }, false);
-        // document.querySelector('.addBtn').addEventListener('click', function (e){
-        //    e.preventDefault();
-        //    e.stopPropagation();
-        //
-        //    self.location.href = "/boardReport/add";
-        // });
-
 
     </script>
 </div>

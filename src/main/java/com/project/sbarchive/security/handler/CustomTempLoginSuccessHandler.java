@@ -30,12 +30,12 @@ public class CustomTempLoginSuccessHandler implements AuthenticationSuccessHandl
         String encodePw = memberSecurityDTO.getPasswd();
         String userId = memberSecurityDTO.getUserId();
 
-        // 소셜 로그인이고 회원의 패스워드가 1111 이라면
+        // 임시 비밀번호라면
         if(userService.isTempPassword(userId) == 1) {
             log.info("==================== Should Change Password ====================");
             log.info("Redirect to Member Modify");
 
-            response.sendRedirect("/my/modifyPasswd");
+            response.sendRedirect("/my/modifyPasswd?temp");
 
             return;
         } else {
