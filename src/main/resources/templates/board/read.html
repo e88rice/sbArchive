@@ -366,11 +366,13 @@
 
 
     // 여기서부터 댓글 관련 자바스크립트
-    // 새로고침 이벤트
+    // 새로고침 버튼 클릭 이벤트
     const refreshBtn=document.querySelector('.refreshBtn');
     refreshBtn.addEventListener("click", function(e) {
         location.reload(); // 가장 마지막 페이지로 이동
     });
+    // 새로고침 버튼 클릭 이벤트 끝
+
 
     // 댓글 등록 관련 자바스크립트
     const acontent=document.querySelector(".acontent");
@@ -380,7 +382,7 @@
 
     // 댓글 등록 버튼 클릭 이벤트
     addBtn.addEventListener("click", function(e) {
-        if(acontent.value.length < 3) {
+        if(acontent.value.trim().length < 3) {
             alert("최소 3자 이상 입력해 주세요.");
             return;
         }
@@ -460,7 +462,6 @@
         if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
             pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
         }
-        console.log(pageStr); // 나중에 삭제
         replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
     }
     // printPages 끝
@@ -471,6 +472,7 @@
 
     let isReplyWriter = false;
     let isBoardWriter = false;
+
 
     // 원댓글 리스트 출력
     function printReplyList(dtoList) {
@@ -485,7 +487,6 @@
 
                 let id=dto.userId; // 댓글 단 아이디
                 let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
-                // console.log("id: "+id); // 삭제 예정
 
                 function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
                     return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
@@ -532,7 +533,7 @@
                             <div class="writer_btn_area">
                                 <div>
                                     ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                    ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
+                                    ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>'}
                                 </div>
                                 <div>
                                  ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
@@ -597,6 +598,8 @@
             cancelBtn.addEventListener('click', function(e) {
                 // alert('취소 버튼 누름');
                 const reReplyAddForm=e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                const rcontent=reReplyAddForm.children[1].children[0].children[1];
+                rcontent.value='';
                 reReplyAddForm.style.display='none';
             });
         });
@@ -605,10 +608,8 @@
         // 답글 더보기 버튼 클릭 이벤트
         document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
             moreReplyBtn.addEventListener('click', function (e) {
-                // alert("답글 더보기 버튼 클릭");
 
                 const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                // console.log("parentReplyId: " + parentReplyId); // 삭제 예정
                 const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
                 const noMoreReplyBtn = moreReplyBtn.nextElementSibling;
 
@@ -623,14 +624,12 @@
 
                         let id=dto.userId; // 댓글 단 아이디
                         let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
-                        // console.log("id: "+id); // 삭제 예정
 
                         function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
                             return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
                         }
 
                         let contentA=dto.content.split('/');
-                        // console.log("contentA: "+contentA[0]);
 
                         // maskId의 결과를 담을 변수
                         let maskedId = maskId(id);
@@ -649,7 +648,6 @@
                                 <div class="writer_btn_area">
                                     <div>
                                         ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                        ${isReplyWriter ? '' : '<a class="message"><i class="fa-regular fa-envelope fa-xs"></i></a>\n<a class="chat"><i class="fa-regular fa-comment-dots fa-xs"></i></a>'}
                                     </div>
                                     <div>
                                      ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
@@ -679,7 +677,6 @@
                         <!-- 대댓글 수정 폼 -->
                         <div class="reReplyModifyForm">
                             <div>${dto.nickname}(${id})</div>
-
                             <div class="annotation_text">
                                 <div>
                                     <p>${contentA[0]}</p>
@@ -704,7 +701,6 @@
 
                     // 답글 닫기 버튼 클릭 이벤트
                     noMoreReplyBtn.addEventListener("click", function(e) {
-                        // alert('답글 닫기 버튼 눌렀습니다');
 
                         // 출력된 대댓글 초기화
                         listOfReReply.innerHTML='';
@@ -716,13 +712,23 @@
                     // 답글 닫기 버튼 클릭 이벤트 끝
 
 
+                    // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트
+                    document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
+                        cancelBtn.addEventListener('click', function(e) {
+                            const reReReplyAddForm=e.target.parentNode.parentNode;
+                            const mrcontent=reReReplyAddForm.children[1].children[0].children[1];
+                            mrcontent.value='';
+                            reReReplyAddForm.style.display='none';
+                        });
+                    });
+                    // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트 끝
+
+
                     // 대댓글 삭제 버튼 클릭 이벤트
                     document.querySelectorAll('.reReplyRemoveBtn').forEach(function(reReplyRemoveBtn) {
                         reReplyRemoveBtn.addEventListener('click', function(e) {
-                            // alert("replyRemoveBtn 눌림"); // 삭제 예정
-                            // a 태그(replyRemoveBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
+                            // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
                             const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                            // console.log("replyId: "+replyId);
 
 
                             // 대댓글 삭제 함수
@@ -744,22 +750,13 @@
                     // 대댓글 수정 버튼 클릭 이벤트
                     document.querySelectorAll('.reReplyModBtn').forEach(function(reReplyModBtn) {
                         reReplyModBtn.addEventListener('click', function(e) {
-                            // alert("대댓글의 수정 버튼 클릭");
                             const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                             console.log("replyId: "+replyId);
 
-                            const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re'); // 출력된 해당 댓글
-                            const reReplyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyModifyForm'); // 해당 댓글 수정 폼
-
-                            let replycontent=reReplyModifyForm.querySelector('textarea').value;
-                            const annotation=reReplyModifyForm.querySelector('p').textContent;
-                            console.log("annotation: "+annotation);
-                            console.log("replycontent: "+replycontent);
-
-                            let mrcontent=annotation+"/ "+replycontent;
-                            console.log("mcontent: "+mrcontent);
-
-                            // const mcontent = reReplyModifyForm.querySelector('.mcontent');
+                            // 출력된 해당 댓글
+                            const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re');
+                            // 해당 댓글 수정 폼
+                            const reReplyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyModifyForm');
                             const modReReplyBtn = reReplyModifyForm.querySelector('.modReReplyBtn');
                             const cancelBtn=reReplyModifyForm.querySelector(".cancelBtn");
 
@@ -776,18 +773,13 @@
 
                                 let replycontent=reReplyModifyForm.querySelector('textarea').value;
                                 const annotation=reReplyModifyForm.querySelector('p').textContent;
-                                console.log("modannotation: "+annotation);
-                                console.log("modreplycontent: "+replycontent);
-
                                 let modifyContent=annotation+"/ "+replycontent;
 
-                                if(replycontent.length < 3) {
+                                if(replycontent.trim().length < 3) {
                                     alert("최소 3자 이상 입력해 주세요.");
                                     return;
                                 }
 
-                                console.log("modifyContent: "+modifyContent);
-                                // alert("대댓글 수정 버튼 클릭");
                                 if (!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
                                 const replyObj = {content: modifyContent, replyId: replyId};
                                 modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
@@ -818,7 +810,6 @@
                     // 대댓글에 대댓글 등록 이벤트
                     document.querySelectorAll(".reReReplyAddBtn").forEach(function(reReReplyAddBtn) {
                         reReReplyAddBtn.addEventListener('click', function(e) {
-                            // alert("대댓글의 대댓글 등록 버튼"); // 삭제 예정
                             const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
                             reReReplyAddForm.style.display='block';
 
@@ -830,7 +821,6 @@
                     // 대댓글에 대댓글 등록 폼 취소 버튼 클릭 이벤트
                     document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
                         cancelBtn.addEventListener('click', function(e) {
-                            // alert('취소 버튼 클릭'); // 삭제 예정
                             const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
                             reReReplyAddForm.style.display='none';
                         });
@@ -840,27 +830,18 @@
                     // 대댓글에 대댓글 등록 버튼 클릭 이벤트
                     document.querySelectorAll(".addReReBtn").forEach(function(addReReBtn) {
                         addReReBtn.addEventListener('click', function(e) {
-                            // alert('대댓글에 대댓글 등록 버튼');
                             const reReReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReReplyAddForm');
                             const replycontent=reReReplyAddForm.children[1].children[0].children[1];
                             const annotation=replycontent.previousElementSibling.textContent;
                             const rcontent=annotation+replycontent.value;
 
-                            if(replycontent.value.length < 3) {
+                            if(replycontent.value.trim().length < 3) {
                                 alert("최소 3자 이상 입력해 주세요.");
                                 return;
                             }
 
-                            // console.log("rcontent: "+rcontent); // 삭제 예정
-                            // console.log("annotation: "+annotation); // 삭제 예정
-                            // console.log("nickname: "+nickname); // 삭제 예정
-                            // console.log("userId: "+username); // 삭제 예정
-                            // console.log("rcontent.value: "+rcontent); // 삭제 예정
-
                             // 원 댓글을 parentReplyId로 지정
                             const parentReplyId=reReReplyAddForm.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-
-                            // console.log("parentReplyId: "+parentReplyId); // 삭제 예정
                             const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
 
 
@@ -891,7 +872,6 @@
         // 답글 쓰기 버튼 클릭 이벤트
         document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
             reReplyAddBtn.addEventListener('click', function(e) {
-                // alert("답글쓰기 버튼 클릭"); // 삭제 예정
                 const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
                 reReplyAddForm.style.display='block';
             });
@@ -906,28 +886,20 @@
                 const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
 
                 let replyContent=e.target.previousElementSibling.children[1];
-                console.log("replycontent: "+replyContent);
                 const annotation=replyContent.previousElementSibling.textContent;
                 const rcontent=annotation+" "+replyContent.value;
 
-                if(replyContent.value.length < 3) {
+                if(replyContent.value.trim().length < 3) {
                     alert('최소 3자 이상 입력해 주세요.');
                     return;
                 }
 
-                console.log("rcontent: "+rcontent); // 삭제 예정
-                console.log("annotation: "+annotation); // 삭제 예정
-                console.log("nickname: "+nickname); // 삭제 예정
-                console.log("userId: "+username); // 삭제 예정
-                console.log("rcontent.value: "+rcontent); // 삭제 예정
                 const parentReplyId=e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                console.log("parentReplyId: "+parentReplyId); // 삭제 예정
                 const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
 
 
                 // 대댓글 등록 함수
                 addReReply(replyObj).then(result => { // reply.js(axios)
-                    // alert(result.data.replyId); // 확인용
                     replyContent.value='';
                     reReplyAddForm.style.display='none';
                     location.reload();
@@ -944,9 +916,8 @@
         // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제)
         document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
             replyRemoveBtn.addEventListener('click', function(e) {
-                // a 태그(replyRemoveBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
+                // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
                 const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                // console.log("replyId: "+replyId);
 
                 const replyObj={isParentDeleted:1, replyId:replyId};
 
@@ -969,11 +940,13 @@
         // 원댓글 수정 버튼 클릭 이벤트
         document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
             replyModBtn.addEventListener('click', function(e) {
-                // a 태그(replyModBtn)의 parentNode.parentNode.parentNode.parentNode.parentNode인 li에 data-replyId 속성 부여
+                // a 태그(replyModBtn)의 부모인 li에 data-replyId 속성 부여
                 const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
 
-                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply'); // 출력된 해당 댓글
-                const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm'); // 해당 댓글 수정 폼
+                // 출력된 해당 댓글
+                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply');
+                // 해당 댓글 수정 폼
+                const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm');
                 const mcontent = replyModifyForm.querySelector('.mcontent');
                 const modBtn = replyModifyForm.querySelector('.modReplyBtn');
                 const cancelBtn=replyModifyForm.querySelector(".btn-done");
@@ -988,7 +961,7 @@
 
                 // 수정 완료 버튼 클릭 이벤트
                 modBtn.addEventListener("click", function(e) {
-                    if(mcontent.value.length < 3) {
+                    if(mcontent.value.trim().length < 3) {
                         alert("최소 3자 이상 입력해 주세요.");
                         return;
                     }
@@ -1026,6 +999,8 @@
 
 
 
+
+
         // 여기서부터 쪽지 모달 시작
         const msgWriteBtn = document.querySelectorAll(".messageBtn");
         const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
@@ -1035,8 +1010,10 @@
                 const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
                 writeModalShow();
                 SendMsg(replyUserId);
-            })
-        })
+            });
+        });
+
+
 
         function writeModalShow() {
             msgWriteModal.show();
@@ -1056,7 +1033,7 @@
                 .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
                     document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
             document.querySelector(".sendMsg").addEventListener("click", function (){
-                if(msgContent.value.length < 5) {
+                if(msgContent.value.trim().length < 5) {
                     alert("내용은 최소 5자 이상 입력해야 합니다.")
                     return;
                 }
@@ -1082,18 +1059,17 @@
 
     document.querySelector(".reportPage").addEventListener("click",function (e) {
         e.preventDefault();
-        var userConfirmed = confirm("이 게시물을 신고하시겠습니까?");
+        var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
         if(userConfirmed) {
             location.href = `/boardReport/add?boardId=${boardId}`;
         }else return;
     });
 
 
-
-
+    const hart = document.querySelector(".hart");
     const likeCount = [[${dto.likeId}]]
     const islike = document.querySelector(".fa-solid");
-    const nolike = document.querySelector(".fa-regular");
+    const notlike = document.querySelector(".fa-regular");
 
 
 
@@ -1104,7 +1080,7 @@
     });
 
 
-    nolike.addEventListener('click',function (e) {
+    notlike.addEventListener('click',function (e) {
         e.preventDefault();
         likeUp(boardId, username);
         location.reload();

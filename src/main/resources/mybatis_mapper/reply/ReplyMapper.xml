@@ -20,7 +20,7 @@
         select * from reply where replyId=#{replyId}
     </select>
 
-    <!-- 그냥 댓글 수정 -->
+    <!-- 댓글 수정 -->
     <update id="modifyReply">
         update reply set content=#{content}, modDate=NOW() where replyId=#{replyId}
     </update>
