@@ -104,31 +104,55 @@
         width: 50px;
         height: 50px;
     }
-    .main_title_container {
-        width: 50%;
-        border: 2px solid black;
-        border-radius: 20px;
-        text-align: center;
-        margin-bottom: 20px;
-        height: 50px;
-        /*color: white;*/
-        background-color: #97e37d;
-        box-shadow: 5px 5px 15px #000000;
-    }
+    /*.main_title_container {*/
+    /*    width: 50%;*/
+    /*    border: 2px solid black;*/
+    /*    border-radius: 20px;*/
+    /*    text-align: center;*/
+    /*    margin-bottom: 20px;*/
+    /*    height: 50px;*/
+    /*    !*color: white;*!*/
+    /*    background-color: #97e37d;*/
+    /*    box-shadow: 5px 5px 15px #000000;*/
+    /*}*/
     .main_title_container > h2{
         line-height: 45px;
     }
-    .add_sb_link_btn {
-        margin-top: 20px;
+    /*.add_sb_link_btn {*/
+    /*    margin-top: 20px;*/
+    /*    width: 50%;*/
+    /*}*/
+    /*.add_sb_link_btn button {*/
+    /*    width: 100%;*/
+    /*    border-radius: 20px;*/
+    /*    height: 50px;*/
+    /*    !*color: white;*!*/
+    /*    background-color: #97e37d;*/
+    /*    box-shadow: 5px 5px 15px #000000;*/
+    /*}*/
+    @font-face {
+        font-family: 'HSBombaram21-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/HSBombaram21-Regular.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .main_title_container {
         width: 50%;
+        text-align: center;
+        height: 50px;
+        font-family: 'HSBombaram21-Regular' !important;
+        color: black;
     }
     .add_sb_link_btn button {
         width: 100%;
-        border-radius: 20px;
+        border-radius: 5px;
         height: 50px;
-        /*color: white;*/
-        background-color: #97e37d;
-        box-shadow: 5px 5px 15px #000000;
+        background-color: white;
+        box-shadow: 3px 3px 2px #000000;
+    }
+    .add_sb_link_btn {
+        margin-top: 20px;
+        width: 15%;
     }
 </style>
 
@@ -136,7 +160,8 @@
 
 
     <div class="kakao_map_container" style="margin-top: 10px">
-        <div class="main_title_container"><h2>외국어 간판 현황</h2></div>
+<!--        <div class="main_title_container"><h2>외국어 간판 현황</h2></div>-->
+        <div class="main_title_container"><h2>< 외국어 간판 지도 ></h2></div>
 
         <div id="map"></div>
 
