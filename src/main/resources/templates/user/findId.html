@@ -8,7 +8,7 @@
 
     .find_div {
         margin: 0 auto;
-        padding-top: 150px;
+        padding-top: 90px;
         width: 500px;
     }
 
@@ -16,36 +16,47 @@
         display: none;
     }
 
+    .input_flex {
+        display: flex;
+    }
+
 </style>
 
-<div layout:fragment="content" class="find_div">
-    <h1>아이디 찾기</h1>
-    <p>가입한 이메일을 입력해주세요</p>
-    <form action="/user/foundId" method="post">
-        <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <div class="input-group">
-                <input type="email" placeholder="email@email.com" name="email" id="email" class="form-control">
-                <div class="failure-message hide">이메일 정보를 찾을 수 없습니다</div>
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-secondary" id="btnSendEmail">인증번호 전송</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="emailCheck" class="form-label">인증번호 입력</label>
-                <div class="input-group">
-                    <input type="text" placeholder="인증번호" name="emailCheck" id="emailCheck" class="form-control">
-                </div>
-                <div class="input-group-btn">
-                    <button type="button" id="auth_check" class="btn btn-secondary">아이디 찾기</button>
-                </div>
-            </div>
+<div layout:fragment="content">
+    <div class="find_div">
+        <div style="width:400px; margin: 0 auto; padding-bottom: 25px;">
+            <h1>아이디 찾기</h1>
+            <p>가입한 이메일을 입력해주세요</p>
         </div>
-    </form>
-    <hr>
-    <a href="/user/login">로그인</a>
-    <a href="/index">메인</a>
+        <section style="width: 400px; margin: 0 auto;">
+            <div class="w-100 h-100">
+                <form action="/user/foundId" method="post" class="w-100 p-4">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group input_flex">
+                            <input type="email" placeholder="email@email.com" name="email" id="email" class="form-control">
+                            <button type="button" class="btn btn-secondary" id="btnSendEmail">인증번호 전송</button>
+                        </div>
+                        <div class="failure-message hide">이메일 정보를 찾을 수 없습니다</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailCheck" class="form-label">인증번호 입력</label>
+                        <div class="input-group input_flex">
+                            <input type="text" placeholder="인증번호" name="emailCheck" id="emailCheck" class="form-control">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 20px">
+                        <button type="button" id="auth_check" class="btn btn-primary" style="width: 100%">아이디 찾기</button>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-between">
+                        <a href="/user/login">로그인</a>
+                        <a href="/index">메인으로</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
     <script th:inline="javascript">
         let msg = [[${msg}]];
 
