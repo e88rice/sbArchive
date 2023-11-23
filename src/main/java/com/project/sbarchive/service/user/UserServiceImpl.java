@@ -15,9 +15,14 @@ import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -28,6 +33,7 @@ public class UserServiceImpl implements UserService{
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+    /* 회원 가입 */
     @Override
     public void registerUser(UserDTO userDTO) {
         log.info("============= registerUser Service =============");

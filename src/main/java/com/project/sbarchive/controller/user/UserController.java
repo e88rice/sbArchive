@@ -4,13 +4,15 @@ import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Map;
 
 @Log4j2
 @Controller
@@ -38,10 +40,10 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String registerUser(UserDTO userDTO) {
+    public String registerUser(@Valid UserDTO userDTO, Errors errors, Model model) {
         log.info("=============== registerUser Post Controller ===============");
-        userService.registerUser(userDTO);
 
+        userService.registerUser(userDTO);
         return "redirect:/user/joinSuccess";
     }
 
