@@ -18,7 +18,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addResourceLocations(
                 "file:///C:/upload/sbArchive/signboard/",
                 "file:///C:/upload/sbArchive/board/",
-                "file:///C:/upload/sbArchive/user/"
+                "file:///C:/upload/sbArchive/user/",
+                "file:///C:/upload/sbArchive/img/"
                 );
 
     }

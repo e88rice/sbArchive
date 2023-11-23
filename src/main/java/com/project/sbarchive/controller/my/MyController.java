@@ -155,10 +155,14 @@ public class MyController {
     }
 
     @PostMapping("/modifyPasswd")
-    public String modifyPasswdPOST(Principal principal, String passwd, String existPasswd, Model model) {
+    public String modifyPasswdPOST(Principal principal, String passwd, String existPasswd,
+                                   Model model, Authentication authentication) {
         log.info("==================== modifyPasswd POST Controller ====================");
-        if(userService.isConfirmPassword(principal.getName(), existPasswd)){
-            userService.updatePassword(principal.getName(), passwd);
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
+        userService.getUserId(memberSecurityDTO.getUserId());
+        String userId = principal.getName() == null ? userService.getUserId(memberSecurityDTO.getUserId()) : principal.getName();
+        if(userService.isConfirmPassword(userId, existPasswd)){
+            userService.updatePassword(userId, passwd);
             return "redirect:/index";
         } else {
             model.addAttribute("msg", "기존 비밀번호가 일치하지 않습니다");

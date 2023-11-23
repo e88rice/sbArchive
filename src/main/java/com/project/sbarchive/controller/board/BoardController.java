@@ -109,9 +109,6 @@ public class BoardController {
         }else {
             model.addAttribute("name", "guest");
         }
-
-
-
     }
 
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
@@ -169,4 +166,7 @@ public class BoardController {
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/board/list?"+pageRequestDTO.getLink();
     }
+
+
+
 }
