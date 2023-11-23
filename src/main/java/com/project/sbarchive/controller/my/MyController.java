@@ -160,11 +160,22 @@ public class MyController {
         log.info("==================== modifyPasswd POST Controller ====================");
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
         userService.getUserId(memberSecurityDTO.getUserId());
-        String userId = principal.getName() == null ? userService.getUserId(memberSecurityDTO.getUserId()) : principal.getName();
-        if(userService.isConfirmPassword(userId, existPasswd)){
-            userService.updatePassword(userId, passwd);
+
+        String userId1 = principal.getName();
+        String userId2 = userService.getUserId(memberSecurityDTO.getUserId());
+
+        log.info("@@@@@@@@@@@@ principal.getName() : " + userId1);
+        log.info("@@@@@@@@@@@@ userService.getUserId() : " + userId2);
+
+
+        if(userService.isConfirmPassword(userId1, existPasswd) && (!userService.isConfirmPassword(userId2, existPasswd))){
+            userService.updatePassword(userId1, passwd);
             return "redirect:/index";
-        } else {
+        } else if((!userService.isConfirmPassword(userId1, existPasswd)) && userService.isConfirmPassword(userId2, existPasswd)){
+            userService.updatePassword(userId2, passwd);
+            return "redirect:/index";
+        }
+        else {
             model.addAttribute("msg", "기존 비밀번호가 일치하지 않습니다");
             return "/my/modifyPasswd";
         }
