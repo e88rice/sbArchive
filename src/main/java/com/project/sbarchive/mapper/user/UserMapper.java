@@ -67,7 +67,6 @@ public interface UserMapper {
     void withdrawal (String userId, String passwd);
 
     // 소셜 회원가입
-    void socialRegister(UserVO userVO);
     void updateLogSocial(String userId, String passwd);
     int isSocialPassword(String userId);
 

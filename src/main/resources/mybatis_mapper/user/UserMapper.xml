@@ -145,10 +145,7 @@
     </update>
 
 
-    <insert id="socialRegister">
-        INSERT INTO user (userId, passwd, nickname, email, regDate, del, social)
-        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now(), 0, #{social})
-    </insert>
+<!--    소셜 로그인 관련-->
     <update id="updateLogSocial">
         UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isSocialPassword = 1 WHERE userId = #{userId}
     </update>

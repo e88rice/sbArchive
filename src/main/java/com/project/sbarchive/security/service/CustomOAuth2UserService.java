@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -77,6 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private MemberSecurityDTO generateDTO(String email, String userId, String nickname, Map<String, Object> paramMap) {
         log.info("=============== generateDTO ===============");
+
         // email 데이터베이스에 있는지 없는지 판단
         int result = userService.emailCheck(email);
 
