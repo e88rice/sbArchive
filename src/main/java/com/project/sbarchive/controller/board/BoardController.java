@@ -7,6 +7,7 @@ import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.user.UserService;
+import com.project.sbarchive.vo.user.UserVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -52,7 +53,7 @@ public class BoardController {
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @PostMapping("/add")
     public String addBoard(BoardDTO boardDTO, List<MultipartFile> files,
-                           RedirectAttributes redirectAttributes) {
+                           RedirectAttributes redirectAttributes, Principal principal) {
         log.info("addBoard -------" +  boardDTO);
         int boardId = boardService.add(boardDTO);
         for(MultipartFile file : files) {
@@ -64,8 +65,15 @@ public class BoardController {
             }
             boardFileService.addBoardImages(boardId, files,"board");
         }
+
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        UserVO userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
+
         return "redirect:/board/read?boardId="+boardId;
     }
+
     @GetMapping("/addNotice")
     public void addBoardNotice() {
 

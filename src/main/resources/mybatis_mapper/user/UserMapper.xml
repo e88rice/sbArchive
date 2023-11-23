@@ -166,10 +166,10 @@
         UPDATE USER
         <trim prefix="SET" suffixOverrides=",">
             <if test="level == 1 and lvPoint == 200">
-                level = level + 1,
+                level = level + 1, iconName = 'level_2.jpg',
             </if>
             <if test="level == 2 and lvPoint == 500">
-                level = level + 1,
+                level = level + 1, iconName = 'level_3.jpg',
             </if>
             userId = userId
         </trim>

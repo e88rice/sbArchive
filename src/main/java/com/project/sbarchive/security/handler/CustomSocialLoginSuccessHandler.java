@@ -22,6 +22,7 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
+
         log.info("============================================================");
         log.info("==================== CustomSocialLoginSuccessHandler AuthenticationSuccessHandler ====================");
         log.info(authentication.getPrincipal());
@@ -35,6 +36,7 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
         } else {
             userId = userService.getUserId(memberSecurityDTO.getUserId());
         }
+
         String encodePw = memberSecurityDTO.getPasswd();
         log.info("@@@@@@@@@@@@@@@ " + userId);
         log.info("@@@@@@@@@@@@@@@ " + encodePw);

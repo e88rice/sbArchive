@@ -29,13 +29,16 @@
     .admin-row {
         background: #449d44;
     }
+    th {
+        text-align: center !important;
+    }
 
 
 </style>
 
 <div layout:fragment="content" style="text-align: center" class="center-block">
 
-    <div style="padding-top: 50px; padding: 80px; width: 70%; margin-left: 200px">
+    <div style="padding: 80px; width: 70%; margin: 0 auto">
         <table class="table table-hover">
             <div class="row mt-3 boardList_form" >
                 <form action="/board/list" method="get">
@@ -61,7 +64,7 @@
                                 <button class="btn btn-outline-secondary addboard" type="button" style="margin-left: 5px; background: #01B0D1">게시물작성</button>
                             </div>
                             <div>
-                                <button th:if="${name != null and name == 'admin'}"
+                                <button th:if="${name != null and name == 'test1'}"
                                         class="btn btn-outline-secondary addnotice" type="button" style="margin-left: 5px; background: #01B0D1">공지사항작성</button>
                             </div>
                         </div>
@@ -80,7 +83,7 @@
                 <td><i th:if="${dto.userId}==admin" class="notice">공지사항</i><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.boardId}]]</a></td>
                 <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
                 <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.nickname}]]
-                    <span>( [[${dto.userId.substring(0, 3)  + '*' * (dto.userId.length() - 4)}]])</span></a></td>
+                    <span>( [[${dto.userId.substring(0, 4)  + '*' * (dto.userId.length() - 4)}]])</span></a></td>
                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                 <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
                 <td th:text="${dto.hit}"></td> <!-- 이 부분 수정 -->

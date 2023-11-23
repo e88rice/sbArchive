@@ -39,17 +39,11 @@ public class SignboardController {
 
     private final UserService userService;
 
-    static int count = 0;
 
     // 게시글 등록 페이지
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/add") // 간판 등록 페이지로 이동
     public String addGET(Principal principal, Model model) {
-
-
-
-        log.info(count);
-
 
         UserVO userVO = userService.getUserInfo(principal.getName());
         model.addAttribute("user", userVO);
@@ -59,7 +53,7 @@ public class SignboardController {
     // 게시글 등록
     @PreAuthorize("principal.username == #signBoardDTO.userId")
     @PostMapping(value = "/add") // 간판 등록, 간판 등록 시 업로드한 이미지도 등록
-    public String addPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files) {
+    public String addPOST(SignBoardDTO signBoardDTO, List<MultipartFile> files, Principal principal) {
 
         System.out.println("signboard : addPost ...");
 
@@ -75,6 +69,10 @@ public class SignboardController {
         if(files.size() > 0) {
             signBoardFileService.addSignboardImages(signBoardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         }
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        UserVO userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
 
         return "redirect:/index";
     }

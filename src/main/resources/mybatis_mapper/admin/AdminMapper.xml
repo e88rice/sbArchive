@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.sbarchive.mapper.admin.AdminMapper">
+
+    <select id="getUsers" resultType="com.project.sbarchive.vo.user.UserVO">
+        SELECT * FROM user order by regDate desc LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="getUsersCount" resultType="int">
+        SELECT count(*) FROM user;
+    </select>
+
+    <select id="getSignboards" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">
+        SELECT * FROM signboard order by addDate desc LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="getSignboardsCount" resultType="int">
+        SELECT count(*) FROM signboard;
+    </select>
+
+    <select id="getBoards" resultType="com.project.sbarchive.vo.board.BoardVO">
+        SELECT * FROM board order by addDate desc LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="getBoardsCount" resultType="int">
+        SELECT count(*) FROM board;
+    </select>
+
+    <select id="getReplies" resultType="com.project.sbarchive.vo.reply.ReplyVO">
+        SELECT * FROM reply order by addDate desc LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="getRepliesCount" resultType="int">
+        SELECT count(*) FROM reply;
+    </select>
+
+    <delete id="removeUserFromManger">
+        DELETE FROM user WHERE userId = #{userId}
+    </delete>
+
+    <delete id="removeFromManager">
+        DELETE FROM
+        <choose>
+            <when test="type == 'signboard'">
+                signboard WHERE signboardId = #{typeId}
+            </when>
+            <when test="type == 'board'">
+                board WHERE boardId = #{typeId}
+            </when>
+            <otherwise>
+                reply WHERE replyId = #{typeId}
+            </otherwise>
+        </choose>
+    </delete>
+
+
+</mapper>
