@@ -528,7 +528,7 @@
                     isParentDeleted=`
                     <div class="list_of_reply">
                         <div class="writer_btn_content_date_wrap">
-                            <div class="writer_btn_area">삭제된 댓글입니다</div>
+                            <div class="writer_btn_area">삭제된 댓글입니다.</div>
                             ${isThereReReply}
                         </div>
                     </div>`;
@@ -661,7 +661,7 @@
                         isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
                         reReplyHTML += `
-                    <li class="replyItem_re">
+                    <li class="replyItem_re" data-replyId="${dto.replyId}">
                         <div class="list_of_reply_re">
 
                             ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
