@@ -144,7 +144,7 @@
                                 <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control" readonly=""
                                        onkeyup="noSpaceFormReset(this);" onchange="noSpaceFormReset(this);">
                             </div>
-                            <div class="strongPassword-message hide errorMsg">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&amp;)를 사용하세요</div>
+                            <div class="strongPassword-message hide errorMsg">8~16글자, 영문, 숫자, 특수문자(@$!%*#?&amp;)를 사용하세요</div>
                         </div>
 
 
@@ -164,6 +164,8 @@
                                        onkeyup="noNickNameSpaceForm(this);" onchange="noNickNameSpaceForm(this);">
                             </div>
                             <div class="failure-message5 hide errorMsg">닉네임은 2~8글자이어야 합니다</div>
+                            <div class="failure-message6 hide errorMsg">영어, 한글 또는 숫자만 가능합니다</div>
+
                         </div>
 
 
@@ -190,6 +192,7 @@
             nickName.readOnly = true;
         }
 
+
         let confirmKey = "";
 
         // ***** email 인증키 보내기 *****
@@ -204,48 +207,67 @@
             }
         }
 
+        // 이메일 유효성 검사
+        const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/;
+
+        function emailValidChk(email) {
+            if(emailPattern.test(email) === false) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
         btnSendEmail.addEventListener('click', function (e){
             e.preventDefault();
 
-            const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
-            xhr.open('POST', '/user/emailCheck?email=' + email.value );
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // 서버 응답이 성공인 경우
-                    console.log(xhr.response);
-                    if(xhr.response == 1){ // 서버에 이메일이 있는 경우
-                        failureMessage.classList.remove('hide'); // 사용할 수 없는 이메일입니다.
+            if(emailValidChk(email.value) == false){
+                alert("잘못 된 이메일 형식입니다")
+                failureMessage.classList.remove('hide');
+                email.focus();
+                return;
+            } else {
+                const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
+                xhr.open('POST', '/user/emailCheck?email=' + email.value );
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // 서버 응답이 성공인 경우
+                        console.log(xhr.response);
+                        if(xhr.response == 1){ // 서버에 이메일이 있는 경우
+                            failureMessage.classList.remove('hide'); // 사용할 수 없는 이메일입니다.
 
-                    } else if (xhr.response == 0) { // 서버에 이메일이 없는 경우 인증키 보냄
-                        failureMessage.classList.add('hide');
+                        } else if (xhr.response == 0) { // 서버에 이메일이 없는 경우 인증키 보냄
+                            failureMessage.classList.add('hide');
 
-                        const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
-                        let mailTo = email.value;
-                        console.log(mailTo);
-                        xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                // 서버 응답이 성공인 경우
-                                alert("이메일로 인증키를 확인해주세요");
-                                console.log(xhr.response); //(추후에 삭제하기)
-                                confirmKey = xhr.response; //(controller 에서 반환된 confirmKey 불러오기)
+                            const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
+                            let mailTo = email.value;
+                            console.log(mailTo);
+                            xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    // 서버 응답이 성공인 경우
+                                    alert("이메일로 인증키를 확인해주세요");
+                                    console.log(xhr.response); //(추후에 삭제하기)
+                                    confirmKey = xhr.response; //(controller 에서 반환된 confirmKey 불러오기)
 
-                            } else {
-                                // 서버 응답이 실패인 경우
-                                alert("이메일 인증키 전송에 실패했습니다");
-                            }
-                        };
-                        xhr.send();
+                                } else {
+                                    // 서버 응답이 실패인 경우
+                                    alert("이메일 인증키 전송에 실패했습니다");
+                                }
+                            };
+                            xhr.send();
+                        }
+                    } else {
+                        // 서버 응답이 실패인 경우
+                        alert("서버 응답 실패");
                     }
-                } else {
-                    // 서버 응답이 실패인 경우
-                    alert("서버 응답 실패");
-                }
-            };
-            xhr.send();
+                };
+                xhr.send();
+            }
+
         });
 
-        // ***** 인증 완료하면 회원가입 폼 입력 열어주기 *****
+        // ***** 이메일인증 완료하면 회원가입 폼 입력 열어주기 *****
         const auth_check = document.getElementById("auth_check");
         const emailCheck = document.getElementById("emailCheck");
         let userId = document.getElementById("userId");
@@ -361,6 +383,7 @@
                             failureMessage2.classList.add('hide');
                             failureMessage3.classList.add('hide');
                             failureMessage4.classList.remove('hide'); // 이미 가입한 아이디입니다.
+                            isIdChecked=false;
                         } else if (xhr.response == 0) { // 서버에 아이디가 없는 경우
                             successMessage.classList.remove('hide'); // 사용할 수 있는 아이디입니다
                             failureMessage2.classList.add('hide');
@@ -396,7 +419,7 @@
         let isPasswordChecked = false; // 비밀번호 강화
         let isPasswordMatchChecked = false; // 비밀번호가 일치하면
         function strongPassword (str) {
-            return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
+            return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/.test(str);
         }
         function isMatch (password1, password2) {
             return password1 === password2;
@@ -412,12 +435,14 @@
                 }
                 else {
                     strongPasswordMessage.classList.remove('hide'); // 8글자 이상....
+                    isPasswordChecked = false;
                 }
             }
-                // 값을 입력하지 않은 경우 (지웠을 때)
+            // 값을 입력하지 않은 경우 초기화
             // 모든 메시지를 가린다.
             else {
                 strongPasswordMessage.classList.add('hide');
+                isPasswordChecked = false;
             }
         };
         passwdCheck.onkeyup = function () {
@@ -430,10 +455,12 @@
                 }
                 else {
                     mismatchMessage.classList.remove('hide'); // 비밀번호가 일치하지 않습니다.
+                    isPasswordMatchChecked = false;
                 }
             }
-            else {
+            else { // 값을 지웠을때 초기화
                 mismatchMessage.classList.add('hide'); // 실패 메시지 Xx
+                isPasswordMatchChecked = false;
             }
         };
 
@@ -454,24 +481,37 @@
             return value.length >= 2 && value.length <= 8
         }
 
+        function onlyNumberAndEnglishAndKorean(str) {
+            return /^[A-Za-z0-9가-힣][A-Za-z0-9가-힣]*$/.test(str);
+        }
+
         let nicknameChecked = false;
 
         const nickname = document.getElementById('nickname');
         const failureMessage5 = document.querySelector('.failure-message5');
+        const failureMessage6 = document.querySelector('.failure-message6');
 
         nickname.onkeyup = function () {
-            if (nickname.value.length !== 0) {
+            if (nickname.value.length !== 0) { // 닉네임을 작성하기 시작했을 때
                 failureMessage5.classList.remove('hide');
-                if (nicknameLength(nickname.value) === false){
+                if (nicknameLength(nickname.value) === false){ // 닉네임 길이는 2~8글자
                     failureMessage5.classList.remove('hide');
+                    failureMessage6.classList.add('hide');
                     nicknameChecked = false;
                 }
-                else if(nicknameLength(nickname.value)){
+                else if(onlyNumberAndEnglishAndKorean(nickname.value) == false){ // 영어 한글 숫자만
                     failureMessage5.classList.add('hide');
+                    failureMessage6.classList.remove('hide');
+                    nicknameChecked = false;
+                }
+                else if(nicknameLength(nickname.value) && onlyNumberAndEnglishAndKorean(nickname.value)){
+                    failureMessage5.classList.add('hide');
+                    failureMessage6.classList.add('hide');
                     nicknameChecked = true;
                 }
-            } else {
+            } else { // 닉네임을 값을 다 지우면 초기화
                 failureMessage5.classList.add('hide');
+                failureMessage6.classList.add('hide');
                 nicknameChecked = false;
             }
 
