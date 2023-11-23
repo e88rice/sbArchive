@@ -61,7 +61,8 @@
                                 <button class="btn btn-outline-secondary addboard" type="button" style="margin-left: 5px; background: #01B0D1">게시물작성</button>
                             </div>
                             <div>
-                                <button th:if="${#authentication.principal.username} == admin" class="btn btn-outline-secondary addnotice" type="button" style="margin-left: 5px; background: #01B0D1">공지사항작성</button>
+                                <button th:if="${name != null and name == 'admin'}"
+                                        class="btn btn-outline-secondary addnotice" type="button" style="margin-left: 5px; background: #01B0D1">공지사항작성</button>
                             </div>
                         </div>
                     </div>

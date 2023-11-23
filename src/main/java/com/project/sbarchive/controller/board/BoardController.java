@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ui.Model;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -72,7 +74,7 @@ public class BoardController {
     @PostMapping("/addNotice")
     public String addBoardNotice(BoardDTO boardDTO, List<MultipartFile> files,
                            RedirectAttributes redirectAttributes) {
-        log.info("addBoard -------" +  boardDTO);
+        log.info("addBoard -------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +  boardDTO);
         int boardId = boardService.addNotice(boardDTO);
         for(MultipartFile file : files) {
             log.info(file);
@@ -87,14 +89,24 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public void list(Model model, @Valid PageRequestDTO pageRequestDTO,
+    public void list(Model model, @Valid PageRequestDTO pageRequestDTO,Principal principal,
                      BindingResult bindingResult) {
         log.info(pageRequestDTO);
         if(bindingResult.hasErrors()) {
             pageRequestDTO = PageRequestDTO.builder().build();
         }
-        PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
-        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+
+            PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
+            model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+
+        if(principal != null) {
+            String name = principal.getName();
+            model.addAttribute("name" , name);
+        }else {
+            model.addAttribute("name", "guest");
+        }
+
+
 
     }
 

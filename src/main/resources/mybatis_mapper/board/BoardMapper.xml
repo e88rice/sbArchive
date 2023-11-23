@@ -75,6 +75,4 @@
         VALUES (#{userId} , #{title}, #{content}, 0, 0, #{addDate},#{nickname} , ${delDate})
     </insert>
 
-
-
 </mapper>

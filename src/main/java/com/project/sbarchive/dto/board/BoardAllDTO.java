@@ -36,6 +36,8 @@ public class BoardAllDTO {
     private LocalDateTime addDate;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime delDate;
 
     int isAnswered;
 

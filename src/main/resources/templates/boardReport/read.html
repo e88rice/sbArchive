@@ -49,7 +49,7 @@
 
 
 </style>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 
 <div layout:fragment="content">
     <div class="form1">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            </div>
+
     </form>
         <!-- 쪽지 모달 영역 시작 -->
         <link rel="stylesheet" href="/css/message/message.css">
@@ -130,6 +130,7 @@
         </div><!-- Modal Container End -->
         <script src="/js/message/messageAsync.js"></script>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
@@ -167,8 +168,9 @@
     }
 
     function SendMsg(receiverName) {
-        const rcvName = "관리자";
+        const rcvName =  document.querySelector('.msgReceiverName');
         const msgContent = document.querySelector(".msgContent");
+        console.log("1111111111111111111111111")
         rcvName.readOnly = false;
         if(receiverName !== null) { // 답장하기 버튼으로 접근 시
             rcvName.value = receiverName;
