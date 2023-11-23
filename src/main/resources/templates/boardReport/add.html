@@ -89,6 +89,15 @@
                 </div>
             </div>
         </form>
+        <script layout:fragment="script" th:inline="javascript">
+            const boardId = [[${dto.boardId}]]
+
+
+            document.querySelector(".reportlink").addEventListener('click', function () {
+                location.href = `/board/read?boardId=${boardId}`;
+            });
+
+        </script>
 
     </div>
 
