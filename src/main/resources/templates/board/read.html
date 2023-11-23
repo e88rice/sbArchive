@@ -604,6 +604,19 @@
         // printReplyList 끝
 
 
+        // 원 댓글 신고 버튼 클릭 이벤트
+        document.querySelectorAll('.replyReportBtn').forEach(function(replyReportBtn) {
+            replyReportBtn.addEventListener('click', function(e) {
+               const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+               // alert("replyId: "+replyId);
+                if(confirm("이 댓글을 신고하시겠습니까?")) {
+                    location.href=`/boardReport/addReply?replyId=`+replyId;
+                } else return;
+            });
+        });
+        // 원 댓글 신고 버튼 클릭 이벤트 끝
+
+
         // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
         document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
             cancelBtn.addEventListener('click', function(e) {
@@ -661,7 +674,7 @@
                                         ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
                                     </div>
                                     <div>
-                                     ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
+                                     ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="reReplyReportBtn">신고</a>'}
                                     </div>
                                 </div>
 
@@ -721,6 +734,19 @@
                         noMoreReplyBtn.style.display='none';
                     });
                     // 답글 닫기 버튼 클릭 이벤트 끝
+
+
+                    // 대댓글 신고 클릭 이벤트
+                    document.querySelectorAll('.reReplyReportBtn').forEach(function(reReplyReportBtn) {
+                        reReplyReportBtn.addEventListener('click', function(e) {
+                            const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                            // alert("replyId: "+replyId);
+                            if(confirm("이 댓글을 신고하시겠습니까?")) {
+                                location.href=`/boardReport/addReply?replyId=`+replyId;
+                            } else return;
+                        });
+                    });
+                    // 대댓글 신고 클릭 이벤트 끝
 
 
                     // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트
