@@ -138,6 +138,7 @@
     // const frm = document.querySelector('form');
     const boardId = [[${dto.boardId}]]; // board Idx
     const link = [[${pageRequestDTO.getLink()}]];
+    const rboardId = [[${dto.rBoardId}]]
 
 
     document.querySelector(".btn-secondary").addEventListener("click",function (e) {
@@ -180,12 +181,13 @@
         document.querySelector(".sendMsg").parentNode
             .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
                 document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
+
         document.querySelector(".sendMsg").addEventListener("click", function (){
             if(msgContent.value.trim().length < 5) {
                 alert("내용은 최소 5자 이상 입력해야 합니다.")
                 return;
             }
-            addMessage(rcvName.value, msgContent.value).then( r => {
+            addMessageReport(rcvName.value, msgContent.value, rboardId ).then( r => {
                 console.log(r);
                 if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
                 else {

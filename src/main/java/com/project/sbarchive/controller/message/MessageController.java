@@ -6,6 +6,8 @@ import com.project.sbarchive.dto.message.MessageDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.service.board.BoardReprotService;
+import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.message.MessageService;
 import com.project.sbarchive.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserService userService;
+    private final BoardReprotService boardReprotService;
 
     // 받은 쪽지함 페이지
     @PreAuthorize("principal.username == #receiverId")
@@ -95,6 +98,19 @@ public class MessageController {
         String userName = principal.getName();
         if( (!userName.equals(receiverId)) && userService.userIdCheck(receiverId) > 0) { // 나에게 보내는게 아니고 쪽지를 받는 사용자가 존재하는 사용자라면
             messageService.add(userName, receiverId, content);
+            return true;
+        } else { // 나에게 보냈거나 보내는 사용자의 아이디가 존재하지 않는다면
+            return false;
+        }
+    }
+    //  report게시판 답변기능및 기타...
+    @PutMapping("/addReport/{receiverId}/{content}/{rBoardId}")
+    public boolean addMessageReport(@PathVariable("receiverId") String receiverId, @PathVariable("content") String content,@PathVariable("rBoardId") int rBoardId, Principal principal) {
+        String userName = principal.getName();
+        log.info("addReport!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if( (!userName.equals(receiverId)) && userService.userIdCheck(receiverId) > 0) { // 나에게 보내는게 아니고 쪽지를 받는 사용자가 존재하는 사용자라면
+            messageService.add(userName, receiverId, content);
+            boardReprotService.isAnswered(rBoardId);
             return true;
         } else { // 나에게 보냈거나 보내는 사용자의 아이디가 존재하지 않는다면
             return false;

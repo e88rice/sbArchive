@@ -42,7 +42,7 @@
     <div class="container board_form" >
         <h2 class="mb-4"></h2>
         <form action="/boardReport/add" method="post" name="frmAdd" enctype="multipart/form-data">
-            <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
+            <input hidden="hidden" name="boardId" th:value="${boardId}">
             <div class="topline">
                 <div class="form-group">
                     신고자
@@ -51,12 +51,10 @@
                 </div>
                 <i class="fa-solid fa-arrow-right"> </i>
                 <div class="form-group">
-
                         신고글 제목: [[${dto.title}]]
                         신고자 정보: [[${dto.nickname}]] (
                         [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]]
                         )
-
                 </div>
 
             </div>
@@ -89,7 +87,6 @@
                 <div class="form-group">
                     <button type="reset" class="btn btn-secondary">리셋</button>
                 </div>
-
             </div>
         </form>
 

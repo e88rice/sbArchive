@@ -348,192 +348,190 @@
     <!-- 쪽지 모달 영역 끝 -->
     <script src="/js/board/board.js"></script>
 
-</div>
+    <script layout:fragment="script" th:inline="javascript">
 
-<script layout:fragment="script" th:inline="javascript">
-
-    const boardId = [[${dto.boardId}]]; // board Idx
-    const link = [[${pageRequestDTO.getLink()}]];
+        const boardId = [[${dto.boardId}]]; // board Idx
+        const link = [[${pageRequestDTO.getLink()}]];
 
 
-    document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        const urlParams1 = new URL(window.location.href).searchParams;
-        let my = urlParams1.get('my');
-        const urlParams2 = new URL(window.location.href).searchParams;
-        let admin = urlParams2.get('admin');
+        document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+            const urlParams1 = new URL(window.location.href).searchParams;
+            let my = urlParams1.get('my');
+            const urlParams2 = new URL(window.location.href).searchParams;
+            let admin = urlParams2.get('admin');
 
-        if(my === 'board') {
-            self.location.href = `/my/myBoardList?${link}`;
-        }
-        else if (my === 'reply') {
-            self.location.href = `/my/myReplyList?${link}`;
-        } else if (admin === "admin") {
-            self.location.href = `/admin/management`;
-        }
-        else {
-            self.location.href = `/board/list?${link}`;
-        }
-    });
-
-
-    // 여기서부터 댓글 관련 자바스크립트
-    // 새로고침 버튼 클릭 이벤트
-    const refreshBtn=document.querySelector('.refreshBtn');
-    refreshBtn.addEventListener("click", function(e) {
-        location.reload(); // 가장 마지막 페이지로 이동
-    });
-    // 새로고침 버튼 클릭 이벤트 끝
-
-
-    // 댓글 등록 관련 자바스크립트
-    const acontent=document.querySelector(".acontent");
-    const auserId=document.querySelector(".auserId");
-    const anickname=document.querySelector(".anickname");
-    const addBtn=document.querySelector(".addBtn");
-
-    // 댓글 등록 버튼 클릭 이벤트
-    addBtn.addEventListener("click", function(e) {
-        if(acontent.value.trim().length < 3) {
-            alert("최소 3자 이상 입력해 주세요.");
-            return;
-        }
-
-        const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
-
-        addReply(replyObj).then(result => { // reply.js(axios)
-            const newReplyId = result.data.replyId; // replyId를 추출해서
-
-            // parentReplyId와 replyId 값 일치시킴
-            const updateReplyObj={newReplyId:newReplyId, parentReplyId: newReplyId};
-            modifyReplyId(updateReplyObj);
-
-            acontent.value = ''; // 초기화
-            location.reload(); // 새로고침
-            printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
-        }).catch(e => {
-            alert("댓글 등록에 문제 생김");
-        });
-    });
-    // 댓글 등록 버튼 클릭 이벤트 끝
-
-
-    // 댓글 리스트 출력 관련 자바스크립트
-    const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
-    const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
-    const replyDepth=0; // 원댓글임(대댓글이 아님)
-
-    // 댓글 리스트, 댓글 페이징 출력
-    function printReplies(page, size, goLast) {
-        // 대댓글이 아닌, 원댓글만 출력
-        getReplyList({boardId, replyDepth, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
-            data => {
-                console.log("data: "+data.dtoList);
-                printReplyList(data.dtoList); // pageResponseDTO의 dtoList
-                printPages(data);
+            if(my === 'board') {
+                self.location.href = `/my/myBoardList?${link}`;
             }
-        ).catch(e => {
-            console.error();
+            else if (my === 'reply') {
+                self.location.href = `/my/myReplyList?${link}`;
+            } else if (admin === "admin") {
+                self.location.href = `/admin/management`;
+            }
+            else {
+                self.location.href = `/board/list?${link}`;
+            }
         });
-    }
-    // printReplies 끝
-    printReplies(1, 10, true); // 댓글 맨 뒷페이지로 시작
 
 
-    // 댓글 페이징 부분의 a 태그를 눌렀을 때 페이지 이동
-    let page = 1;
-    let size = 10;
-
-    // 페이지 목록 클릭 이벤트
-    replyPaging.addEventListener("click", function (e){
-        e.preventDefault();
-        e.stopPropagation();
-
-        const target = e.target;
-
-        if(!target || target.tagName != 'A') return; // 타겟이 아니거나 a 태그가 아니면 종료
-
-        const pageNum = target.getAttribute("data-page");
-        page = pageNum;
-        printReplies(page, size);
-    });
-    // 페이지 목록 클릭 이벤트 끝
+        // 여기서부터 댓글 관련 자바스크립트
+        // 새로고침 버튼 클릭 이벤트
+        const refreshBtn=document.querySelector('.refreshBtn');
+        refreshBtn.addEventListener("click", function(e) {
+            location.reload(); // 가장 마지막 페이지로 이동
+        });
+        // 새로고침 버튼 클릭 이벤트 끝
 
 
-    // 댓글 페이징 목록 출력
-    function printPages(data) {
-        let pageStr = ''; // 페이지를 이동하기 위한 a 태그들을 담을 변수
-        if(data.prev) { // 받아온 data의 prev 값이 true라면 이전 버튼 활성화
-            pageStr += `<li class="reply_page_prev"><a data-page="${data.start - 1}">이전</a></li>`;
+        // 댓글 등록 관련 자바스크립트
+        const acontent=document.querySelector(".acontent");
+        const auserId=document.querySelector(".auserId");
+        const anickname=document.querySelector(".anickname");
+        const addBtn=document.querySelector(".addBtn");
+
+        // 댓글 등록 버튼 클릭 이벤트
+        addBtn.addEventListener("click", function(e) {
+            if(acontent.value.trim().length < 3) {
+                alert("최소 3자 이상 입력해 주세요.");
+                return;
+            }
+
+            const replyObj={boardId:boardId, content:acontent.value, userId:auserId.value, nickname:anickname.value};
+
+            addReply(replyObj).then(result => { // reply.js(axios)
+                const newReplyId = result.data.replyId; // replyId를 추출해서
+
+                // parentReplyId와 replyId 값 일치시킴
+                const updateReplyObj={newReplyId:newReplyId, parentReplyId: newReplyId};
+                modifyReplyId(updateReplyObj);
+
+                acontent.value = ''; // 초기화
+                location.reload(); // 새로고침
+                printReplies(1, 10, true); // 가장 최근 댓글 있는 페이지로 이동
+            }).catch(e => {
+                alert("댓글 등록에 문제 생김");
+            });
+        });
+        // 댓글 등록 버튼 클릭 이벤트 끝
+
+
+        // 댓글 리스트 출력 관련 자바스크립트
+        const replyList = document.querySelector('.replyList'); // 댓글 목록 DOM
+        const replyPaging = document.querySelector('.replyPaging'); // 페이지 목록 DOM
+        const replyDepth=0; // 원댓글임(대댓글이 아님)
+
+        // 댓글 리스트, 댓글 페이징 출력
+        function printReplies(page, size, goLast) {
+            // 대댓글이 아닌, 원댓글만 출력
+            getReplyList({boardId, replyDepth, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
+                data => {
+                    console.log("data: "+data.dtoList);
+                    printReplyList(data.dtoList); // pageResponseDTO의 dtoList
+                    printPages(data);
+                }
+            ).catch(e => {
+                console.error();
+            });
         }
-        for(let i = data.start; i <= data.end; i++) {
-            // 현재 페이지면 active 클래스 추가
-            pageStr += `<li class="reply_page_wrap ${i === data.page ? "active" : ""}">
+        // printReplies 끝
+        printReplies(1, 10, true); // 댓글 맨 뒷페이지로 시작
+
+
+        // 댓글 페이징 부분의 a 태그를 눌렀을 때 페이지 이동
+        let page = 1;
+        let size = 10;
+
+        // 페이지 목록 클릭 이벤트
+        replyPaging.addEventListener("click", function (e){
+            e.preventDefault();
+            e.stopPropagation();
+
+            const target = e.target;
+
+            if(!target || target.tagName != 'A') return; // 타겟이 아니거나 a 태그가 아니면 종료
+
+            const pageNum = target.getAttribute("data-page");
+            page = pageNum;
+            printReplies(page, size);
+        });
+        // 페이지 목록 클릭 이벤트 끝
+
+
+        // 댓글 페이징 목록 출력
+        function printPages(data) {
+            let pageStr = ''; // 페이지를 이동하기 위한 a 태그들을 담을 변수
+            if(data.prev) { // 받아온 data의 prev 값이 true라면 이전 버튼 활성화
+                pageStr += `<li class="reply_page_prev"><a data-page="${data.start - 1}">이전</a></li>`;
+            }
+            for(let i = data.start; i <= data.end; i++) {
+                // 현재 페이지면 active 클래스 추가
+                pageStr += `<li class="reply_page_wrap ${i === data.page ? "active" : ""}">
                     <a data-page="${i}">${i}</a></li>`;
+            }
+            if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
+                pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
+            }
+            replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
         }
-        if(data.next) { // 받아온 data의 next 값이 true 라면 다음 버튼 활성화
-            pageStr += `<li class="reply_page_next"><a data-page="${data.end + 1}">다음</a></li>`
-        }
-        replyPaging.innerHTML = pageStr; // 데이터를 전달받아 완성된 페이지 이동 a 태그들을 HTML 요소로 추가
-    }
-    // printPages 끝
+        // printPages 끝
 
 
-    const username = [[${#authentication.principal.username}]]; // 현재 로그인된 아이디
-    const nickname = [[${#authentication.principal.nickname}]]; // 현재 로그인된 아이디의 닉네임
+        const username = [[${#authentication.principal.username}]]; // 현재 로그인된 아이디
+        const nickname = [[${#authentication.principal.nickname}]]; // 현재 로그인된 아이디의 닉네임
 
-    let isReplyWriter = false;
-    let isBoardWriter = false;
-
-
-    // 원댓글 리스트 출력
-    function printReplyList(dtoList) {
-        let str = '';
-        if (dtoList && dtoList.length > 0) {
-
-            for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
+        let isReplyWriter = false;
+        let isBoardWriter = false;
 
 
-                let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
-                // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
+        // 원댓글 리스트 출력
+        function printReplyList(dtoList) {
+            let str = '';
+            if (dtoList && dtoList.length > 0) {
 
-                let id=dto.userId; // 댓글 단 아이디
-                let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
+                for (const dto of dtoList) { // dtoList를 순회하면서 댓글마다 아래에 폼에 담아 HTML 요소로 추가
 
-                function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-                    return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
-                }
-                // maskId의 결과를 담을 변수
-                let maskedId = maskId(id);
 
-                isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
-                isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
+                    let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
+                    // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
 
-                // replyDepth 결과를 담을 변수
-                let isThereReReply='';
+                    let id=dto.userId; // 댓글 단 아이디
+                    let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
 
-                // parentReply에 대한 대댓글 개수
-                const reReplyCount = dto.reReplyCount;
+                    function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
+                        return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
+                    }
+                    // maskId의 결과를 담을 변수
+                    let maskedId = maskId(id);
 
-                // 대댓글이 있을 때만 답글 보기 버튼 나옴
-                if (reReplyCount > 0) {
-                    isThereReReply= `<a class="moreReplyBtn">▽ 답글 보기</a><a class="noMoreReplyBtn" style="display: none">△ 답글 닫기</a>`;
-                } else {
-                    isThereReReply='';
-                }
+                    isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
+                    isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
-                const isParentReplyDeleted=dto.parentReplyDeleted;
-                let isParentDeleted='';
+                    // replyDepth 결과를 담을 변수
+                    let isThereReReply='';
 
-                if(isParentReplyDeleted===true) {
-                    isParentDeleted=`
+                    // parentReply에 대한 대댓글 개수
+                    const reReplyCount = dto.reReplyCount;
+
+                    // 대댓글이 있을 때만 답글 보기 버튼 나옴
+                    if (reReplyCount > 0) {
+                        isThereReReply= `<a class="moreReplyBtn">▽ 답글 보기</a><a class="noMoreReplyBtn" style="display: none">△ 답글 닫기</a>`;
+                    } else {
+                        isThereReReply='';
+                    }
+
+                    const isParentReplyDeleted=dto.parentReplyDeleted;
+                    let isParentDeleted='';
+
+                    if(isParentReplyDeleted===true) {
+                        isParentDeleted=`
                     <div class="list_of_reply">
                         <div class="writer_btn_content_date_wrap">
                             <div class="writer_btn_area">삭제된 댓글입니다.</div>
                             ${isThereReReply}
                         </div>
                     </div>`;
-                } else {
-                    isParentDeleted=`
+                    } else {
+                        isParentDeleted=`
                     <div class="list_of_reply">
 
                         <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
@@ -557,9 +555,9 @@
                         </div>
 
                     </div>`;
-                }
+                    }
 
-                str +=`
+                    str +=`
                 <li class="replyItem" data-replyId="${dto.replyId}">
                     ${isParentDeleted}
 
@@ -598,69 +596,69 @@
                 </li>
                `
 
+                }
             }
-        }
-        replyList.innerHTML = str; // replyList 부분에 추가
-        // printReplyList 끝
+            replyList.innerHTML = str; // replyList 부분에 추가
+            // printReplyList 끝
 
 
-        // 원 댓글 신고 버튼 클릭 이벤트
-        document.querySelectorAll('.replyReportBtn').forEach(function(replyReportBtn) {
-            replyReportBtn.addEventListener('click', function(e) {
-               const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-               // alert("replyId: "+replyId);
-                if(confirm("이 댓글을 신고하시겠습니까?")) {
-                    location.href=`/boardReport/addReply?replyId=`+replyId;
-                } else return;
+            // 원 댓글 신고 버튼 클릭 이벤트
+            document.querySelectorAll('.replyReportBtn').forEach(function(replyReportBtn) {
+                replyReportBtn.addEventListener('click', function(e) {
+                    const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                    // alert("replyId: "+replyId);
+                    if(confirm("이 댓글을 신고하시겠습니까?")) {
+                        location.href=`/boardReport/addReply?replyId=`+replyId +`&boardId=` + boardId;
+                    } else return;
+                });
             });
-        });
-        // 원 댓글 신고 버튼 클릭 이벤트 끝
+            // 원 댓글 신고 버튼 클릭 이벤트 끝
 
 
-        // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
-        document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
-            cancelBtn.addEventListener('click', function(e) {
-                // alert('취소 버튼 누름');
-                const reReplyAddForm=e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-                const rcontent=reReplyAddForm.children[1].children[0].children[1];
-                rcontent.value='';
-                reReplyAddForm.style.display='none';
+            // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
+            document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
+                cancelBtn.addEventListener('click', function(e) {
+                    // alert('취소 버튼 누름');
+                    const reReplyAddForm=e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                    const rcontent=reReplyAddForm.children[1].children[0].children[1];
+                    rcontent.value='';
+                    reReplyAddForm.style.display='none';
+                });
             });
-        });
 
 
-        // 답글 더보기 버튼 클릭 이벤트
-        document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
-            moreReplyBtn.addEventListener('click', function (e) {
+            // 답글 더보기 버튼 클릭 이벤트
+            document.querySelectorAll(".moreReplyBtn").forEach(function(moreReplyBtn) {
+                moreReplyBtn.addEventListener('click', function (e) {
 
-                const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
-                const noMoreReplyBtn = moreReplyBtn.nextElementSibling;
+                    const parentReplyId = e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                    const listOfReReply = e.target.parentNode.parentNode.parentNode.querySelector('.list_of_reReply');
+                    const noMoreReplyBtn = moreReplyBtn.nextElementSibling;
 
-                // 대댓글 목록만 가져옴
-                getReReplies(boardId, parentReplyId, true).then(function (replies) { // reply.js(axios)
+                    // 대댓글 목록만 가져옴
+                    getReReplies(boardId, parentReplyId, true).then(function (replies) { // reply.js(axios)
 
-                    let reReplyHTML = '';
-                    replies.forEach(function (dto) {
+                        let reReplyHTML = '';
+                        replies.forEach(function (dto) {
 
-                        let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
-                        // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
+                            let date=(dto.addDate===dto.modDate) ? dto.addDate : (dto.modDate+" (수정됨)");
+                            // 댓글 단 날짜(addDate)와 수정한 날짜(modDate)가 같다면 addDate 출력, 같지 않다면 modDate(수정됨) 출력
 
-                        let id=dto.userId; // 댓글 단 아이디
-                        let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
+                            let id=dto.userId; // 댓글 단 아이디
+                            let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
 
-                        function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-                            return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
-                        }
+                            function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
+                                return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
+                            }
 
-                        let contentA=dto.content.split('/');
+                            let contentA=dto.content.split('/');
 
-                        // maskId의 결과를 담을 변수
-                        let maskedId = maskId(id);
-                        isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
-                        isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
+                            // maskId의 결과를 담을 변수
+                            let maskedId = maskId(id);
+                            isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
+                            isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
-                        reReplyHTML += `
+                            reReplyHTML += `
                     <li class="replyItem_re" data-replyId="${dto.replyId}">
                         <div class="list_of_reply_re">
 
@@ -713,416 +711,416 @@
 
                     </li>
                 `;
-                    });
-                    // replies.forEach 끝
-
-                    // <ul class="list_of_reReply">에 출력됨
-                    listOfReReply.innerHTML = reReplyHTML;
-
-                    // 답글 보기 버튼 클릭 시, 답글 보기 버튼은 사라지고 답글 닫기 버튼만 보이게 함
-                    moreReplyBtn.style.display='none';
-                    noMoreReplyBtn.style.display='inline';
-
-                    // 답글 닫기 버튼 클릭 이벤트
-                    noMoreReplyBtn.addEventListener("click", function(e) {
-
-                        // 출력된 대댓글 초기화
-                        listOfReReply.innerHTML='';
-
-                        // 답글 보기 버튼이 보이고 답글 닫기 버튼 사라짐
-                        moreReplyBtn.style.display='inline';
-                        noMoreReplyBtn.style.display='none';
-                    });
-                    // 답글 닫기 버튼 클릭 이벤트 끝
-
-
-                    // 대댓글 신고 클릭 이벤트
-                    document.querySelectorAll('.reReplyReportBtn').forEach(function(reReplyReportBtn) {
-                        reReplyReportBtn.addEventListener('click', function(e) {
-                            const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                            // alert("replyId: "+replyId);
-                            if(confirm("이 댓글을 신고하시겠습니까?")) {
-                                location.href=`/boardReport/addReply?replyId=`+replyId;
-                            } else return;
                         });
-                    });
-                    // 대댓글 신고 클릭 이벤트 끝
+                        // replies.forEach 끝
 
+                        // <ul class="list_of_reReply">에 출력됨
+                        listOfReReply.innerHTML = reReplyHTML;
 
-                    // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트
-                    document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
-                        cancelBtn.addEventListener('click', function(e) {
-                            const reReReplyAddForm=e.target.parentNode.parentNode;
-                            const mrcontent=reReReplyAddForm.children[1].children[0].children[1];
-                            mrcontent.value='';
-                            reReReplyAddForm.style.display='none';
+                        // 답글 보기 버튼 클릭 시, 답글 보기 버튼은 사라지고 답글 닫기 버튼만 보이게 함
+                        moreReplyBtn.style.display='none';
+                        noMoreReplyBtn.style.display='inline';
+
+                        // 답글 닫기 버튼 클릭 이벤트
+                        noMoreReplyBtn.addEventListener("click", function(e) {
+
+                            // 출력된 대댓글 초기화
+                            listOfReReply.innerHTML='';
+
+                            // 답글 보기 버튼이 보이고 답글 닫기 버튼 사라짐
+                            moreReplyBtn.style.display='inline';
+                            noMoreReplyBtn.style.display='none';
                         });
-                    });
-                    // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트 끝
+                        // 답글 닫기 버튼 클릭 이벤트 끝
 
 
-                    // 대댓글 삭제 버튼 클릭 이벤트
-                    document.querySelectorAll('.reReplyRemoveBtn').forEach(function(reReplyRemoveBtn) {
-                        reReplyRemoveBtn.addEventListener('click', function(e) {
-                            // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
-                            const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-
-
-                            // 대댓글 삭제 함수
-                            removeReReply(replyId).then(result => { // reply.js(axios)
-                                if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
-                                alert("삭제되었습니다.");
-                                location.reload(); // 페이지 새로고침
-                            }).catch(e => {
-                                console.log("대댓글 삭제에 문제 생김");
+                        // 대댓글 신고 클릭 이벤트
+                        document.querySelectorAll('.reReplyReportBtn').forEach(function(reReplyReportBtn) {
+                            reReplyReportBtn.addEventListener('click', function(e) {
+                                const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                                // alert("replyId: "+replyId);
+                                if(confirm("이 댓글을 신고하시겠습니까?")) {
+                                    location.href=`/boardReport/addReply?replyId=`+replyId;
+                                } else return;
                             });
-                            // removeReReply 끝
-
-
                         });
-                    });
-                    // 대댓글 삭제 버튼 클릭 이벤트 끝
+                        // 대댓글 신고 클릭 이벤트 끝
 
 
-                    // 대댓글 수정 버튼 클릭 이벤트
-                    document.querySelectorAll('.reReplyModBtn').forEach(function(reReplyModBtn) {
-                        reReplyModBtn.addEventListener('click', function(e) {
-                            const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                            console.log("replyId: "+replyId);
-
-                            // 출력된 해당 댓글
-                            const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re');
-                            // 해당 댓글 수정 폼
-                            const reReplyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyModifyForm');
-                            const modReReplyBtn = reReplyModifyForm.querySelector('.modReReplyBtn');
-                            const cancelBtn=reReplyModifyForm.querySelector(".cancelBtn");
-
-                            // 대댓글 정보 가져옴
-                            getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
-                                reReplyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
-                                list.style.display='none'; // list가 안 보이게
-                            }).catch(e => alert('댓글 가져오기(getReply) 실패'));
-                            // getReply 끝
+                        // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트
+                        document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
+                            cancelBtn.addEventListener('click', function(e) {
+                                const reReReplyAddForm=e.target.parentNode.parentNode;
+                                const mrcontent=reReReplyAddForm.children[1].children[0].children[1];
+                                mrcontent.value='';
+                                reReReplyAddForm.style.display='none';
+                            });
+                        });
+                        // 대댓글에 대한 대댓글 등록 폼 취소 버튼 클릭 이벤트 끝
 
 
-                            // 수정 완료 버튼 클릭 이벤트
-                            modReReplyBtn.addEventListener("click", function(e) {
+                        // 대댓글 삭제 버튼 클릭 이벤트
+                        document.querySelectorAll('.reReplyRemoveBtn').forEach(function(reReplyRemoveBtn) {
+                            reReplyRemoveBtn.addEventListener('click', function(e) {
+                                // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
+                                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
 
-                                let replycontent=reReplyModifyForm.querySelector('textarea').value;
-                                const annotation=reReplyModifyForm.querySelector('p').textContent;
-                                let modifyContent=annotation+"/ "+replycontent;
 
-                                if(replycontent.trim().length < 3) {
+                                // 대댓글 삭제 함수
+                                removeReReply(replyId).then(result => { // reply.js(axios)
+                                    if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
+                                    alert("삭제되었습니다.");
+                                    location.reload(); // 페이지 새로고침
+                                }).catch(e => {
+                                    console.log("대댓글 삭제에 문제 생김");
+                                });
+                                // removeReReply 끝
+
+
+                            });
+                        });
+                        // 대댓글 삭제 버튼 클릭 이벤트 끝
+
+
+                        // 대댓글 수정 버튼 클릭 이벤트
+                        document.querySelectorAll('.reReplyModBtn').forEach(function(reReplyModBtn) {
+                            reReplyModBtn.addEventListener('click', function(e) {
+                                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                                console.log("replyId: "+replyId);
+
+                                // 출력된 해당 댓글
+                                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re');
+                                // 해당 댓글 수정 폼
+                                const reReplyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyModifyForm');
+                                const modReReplyBtn = reReplyModifyForm.querySelector('.modReReplyBtn');
+                                const cancelBtn=reReplyModifyForm.querySelector(".cancelBtn");
+
+                                // 대댓글 정보 가져옴
+                                getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
+                                    reReplyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
+                                    list.style.display='none'; // list가 안 보이게
+                                }).catch(e => alert('댓글 가져오기(getReply) 실패'));
+                                // getReply 끝
+
+
+                                // 수정 완료 버튼 클릭 이벤트
+                                modReReplyBtn.addEventListener("click", function(e) {
+
+                                    let replycontent=reReplyModifyForm.querySelector('textarea').value;
+                                    const annotation=reReplyModifyForm.querySelector('p').textContent;
+                                    let modifyContent=annotation+"/ "+replycontent;
+
+                                    if(replycontent.trim().length < 3) {
+                                        alert("최소 3자 이상 입력해 주세요.");
+                                        return;
+                                    }
+
+                                    if (!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
+                                    const replyObj = {content: modifyContent, replyId: replyId};
+                                    modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
+                                        alert('수정되었습니다.');
+                                        modifyContent.value = ''; // textarea 초기화
+                                        reReplyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
+                                        location.reload(); // 새로고침
+                                    }).catch(e => {
+                                        alert('댓글 수정 실패');
+                                    });
+                                });
+                                // 수정 완료 버튼 클릭 이벤트 끝
+
+
+                                // 취소 버튼 클릭 이벤트
+                                cancelBtn.addEventListener("click", function(e) {
+                                    reReplyModifyForm.style.display='none';
+                                    list.style.display='flex';
+                                });
+                                // 취소 버튼 클릭 이벤트 끝
+
+
+                            });
+                        });
+                        // 대댓글 수정 버튼 클릭 이벤트 끝
+
+
+                        // 대댓글에 대댓글 등록 이벤트
+                        document.querySelectorAll(".reReReplyAddBtn").forEach(function(reReReplyAddBtn) {
+                            reReReplyAddBtn.addEventListener('click', function(e) {
+                                const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
+                                reReReplyAddForm.style.display='block';
+
+                            });
+                        });
+                        // 대댓글에 대댓글 등록 이벤트 끝
+
+
+                        // 대댓글에 대댓글 등록 폼 취소 버튼 클릭 이벤트
+                        document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
+                            cancelBtn.addEventListener('click', function(e) {
+                                const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
+                                reReReplyAddForm.style.display='none';
+                            });
+                        });
+
+
+                        // 대댓글에 대댓글 등록 버튼 클릭 이벤트
+                        document.querySelectorAll(".addReReBtn").forEach(function(addReReBtn) {
+                            addReReBtn.addEventListener('click', function(e) {
+                                const reReReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReReplyAddForm');
+                                const replycontent=reReReplyAddForm.children[1].children[0].children[1];
+                                const annotation=replycontent.previousElementSibling.textContent;
+                                const rcontent=annotation+replycontent.value;
+
+                                if(replycontent.value.trim().length < 3) {
                                     alert("최소 3자 이상 입력해 주세요.");
                                     return;
                                 }
 
-                                if (!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
-                                const replyObj = {content: modifyContent, replyId: replyId};
-                                modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
-                                    alert('수정되었습니다.');
-                                    modifyContent.value = ''; // textarea 초기화
-                                    reReplyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
-                                    location.reload(); // 새로고침
+                                // 원 댓글을 parentReplyId로 지정
+                                const parentReplyId=reReReplyAddForm.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                                const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+
+
+                                // 대댓글 등록 함수
+                                addReReply(replyObj).then(result => { // reply.js(axios)
+                                    // alert(result.data.replyId); // 확인용
+                                    replycontent.value='';
+                                    reReReplyAddForm.style.display='none';
+                                    location.reload();
                                 }).catch(e => {
-                                    alert('댓글 수정 실패');
+                                    alert("대댓글에 대한 대댓글 등록에 문제 생김");
                                 });
+                                // addReReply 끝
+
                             });
-                            // 수정 완료 버튼 클릭 이벤트 끝
-
-
-                            // 취소 버튼 클릭 이벤트
-                            cancelBtn.addEventListener("click", function(e) {
-                                reReplyModifyForm.style.display='none';
-                                list.style.display='flex';
-                            });
-                            // 취소 버튼 클릭 이벤트 끝
-
-
                         });
+                        // 대댓글에 대댓글 등록 버튼 클릭 이벤트 끝
+
+
                     });
-                    // 대댓글 수정 버튼 클릭 이벤트 끝
-
-
-                    // 대댓글에 대댓글 등록 이벤트
-                    document.querySelectorAll(".reReReplyAddBtn").forEach(function(reReReplyAddBtn) {
-                        reReReplyAddBtn.addEventListener('click', function(e) {
-                            const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
-                            reReReplyAddForm.style.display='block';
-
-                        });
-                    });
-                    // 대댓글에 대댓글 등록 이벤트 끝
-
-
-                    // 대댓글에 대댓글 등록 폼 취소 버튼 클릭 이벤트
-                    document.querySelectorAll('.cancelBtn').forEach(function (cancelBtn) {
-                        cancelBtn.addEventListener('click', function(e) {
-                            const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
-                            reReReplyAddForm.style.display='none';
-                        });
-                    });
-
-
-                    // 대댓글에 대댓글 등록 버튼 클릭 이벤트
-                    document.querySelectorAll(".addReReBtn").forEach(function(addReReBtn) {
-                        addReReBtn.addEventListener('click', function(e) {
-                            const reReReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReReplyAddForm');
-                            const replycontent=reReReplyAddForm.children[1].children[0].children[1];
-                            const annotation=replycontent.previousElementSibling.textContent;
-                            const rcontent=annotation+replycontent.value;
-
-                            if(replycontent.value.trim().length < 3) {
-                                alert("최소 3자 이상 입력해 주세요.");
-                                return;
-                            }
-
-                            // 원 댓글을 parentReplyId로 지정
-                            const parentReplyId=reReReplyAddForm.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                            const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
-
-
-                            // 대댓글 등록 함수
-                            addReReply(replyObj).then(result => { // reply.js(axios)
-                                // alert(result.data.replyId); // 확인용
-                                replycontent.value='';
-                                reReReplyAddForm.style.display='none';
-                                location.reload();
-                            }).catch(e => {
-                                alert("대댓글에 대한 대댓글 등록에 문제 생김");
-                            });
-                            // addReReply 끝
-
-                        });
-                    });
-                    // 대댓글에 대댓글 등록 버튼 클릭 이벤트 끝
-
+                    // getReReplies 끝
 
                 });
-                // getReReplies 끝
-
             });
-        });
-        // 답글 더보기 버튼 클릭 이벤트 끝
+            // 답글 더보기 버튼 클릭 이벤트 끝
 
 
-        // 답글 쓰기 버튼 클릭 이벤트
-        document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
-            reReplyAddBtn.addEventListener('click', function(e) {
-                const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-                reReplyAddForm.style.display='block';
-            });
-        });
-        // 답글 쓰기 버튼 클릭 이벤트 끝
-
-
-        // 원 댓글에 대댓글 등록 버튼 클릭 이벤트
-        document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
-            addReBtn.addEventListener('click', function(e) {
-                // alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
-                const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-
-                let replyContent=e.target.previousElementSibling.children[1];
-                const annotation=replyContent.previousElementSibling.textContent;
-                const rcontent=annotation+" "+replyContent.value;
-
-                if(replyContent.value.trim().length < 3) {
-                    alert('최소 3자 이상 입력해 주세요.');
-                    return;
-                }
-
-                const parentReplyId=e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
-
-
-                // 대댓글 등록 함수
-                addReReply(replyObj).then(result => { // reply.js(axios)
-                    replyContent.value='';
-                    reReplyAddForm.style.display='none';
-                    location.reload();
-                }).catch(e => {
-                    alert("대댓글 등록에 문제 생김");
+            // 답글 쓰기 버튼 클릭 이벤트
+            document.querySelectorAll(".reReplyAddBtn").forEach(function(reReplyAddBtn) {
+                reReplyAddBtn.addEventListener('click', function(e) {
+                    const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                    reReplyAddForm.style.display='block';
                 });
-                // addReReply 끝
-
             });
-        });
-        // 원 댓글에 대댓글 등록 버튼 클릭 이벤트 끝
+            // 답글 쓰기 버튼 클릭 이벤트 끝
 
 
-        // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제)
-        document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
-            replyRemoveBtn.addEventListener('click', function(e) {
-                // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+            // 원 댓글에 대댓글 등록 버튼 클릭 이벤트
+            document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
+                addReBtn.addEventListener('click', function(e) {
+                    // alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
+                    const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
 
-                const replyObj={isParentDeleted:1, replyId:replyId};
+                    let replyContent=e.target.previousElementSibling.children[1];
+                    const annotation=replyContent.previousElementSibling.textContent;
+                    const rcontent=annotation+" "+replyContent.value;
 
-
-                // 원댓글 논리 삭제 함수
-                removeReply(replyObj).then(result => { // reply.js(axios)
-                    if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
-                    alert("삭제되었습니다.");
-                    location.reload(); // 페이지 새로고침
-                }).catch(e => {
-                    console.log("대댓글 삭제에 문제 생김");
-                });
-                // removeReply 끝
-            });
-        });
-        // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제) 끝
-
-
-        // 원댓글 수정 버튼 클릭 이벤트
-        document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
-            replyModBtn.addEventListener('click', function(e) {
-                // a 태그(replyModBtn)의 부모인 li에 data-replyId 속성 부여
-                const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-
-                // 출력된 해당 댓글
-                const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply');
-                // 해당 댓글 수정 폼
-                const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm');
-                const mcontent = replyModifyForm.querySelector('.mcontent');
-                const modBtn = replyModifyForm.querySelector('.modReplyBtn');
-                const cancelBtn=replyModifyForm.querySelector(".btn-done");
-
-                // 댓글 하나 가져옴
-                getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
-                    replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
-                    list.style.display='none'; // list가 안 보이게
-                }).catch(e => alert('댓글 가져오기(getReply) 실패'));
-                // getReply 끝
-
-
-                // 수정 완료 버튼 클릭 이벤트
-                modBtn.addEventListener("click", function(e) {
-                    if(mcontent.value.trim().length < 3) {
-                        alert("최소 3자 이상 입력해 주세요.");
+                    if(replyContent.value.trim().length < 3) {
+                        alert('최소 3자 이상 입력해 주세요.');
                         return;
                     }
-                    if(!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
-                    const replyObj={content:mcontent.value, replyId:replyId};
-                    modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
-                        alert('수정되었습니다.');
-                        mcontent.value = ''; // textarea 초기화
-                        replyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
-                        location.reload(); // 새로고침
+
+                    const parentReplyId=e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                    const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
+
+
+                    // 대댓글 등록 함수
+                    addReReply(replyObj).then(result => { // reply.js(axios)
+                        replyContent.value='';
+                        reReplyAddForm.style.display='none';
+                        location.reload();
                     }).catch(e => {
-                        alert('댓글 수정 실패');
+                        alert("대댓글 등록에 문제 생김");
                     });
+                    // addReReply 끝
+
                 });
-                // 수정 완료 버튼 클릭 이벤트 끝
+            });
+            // 원 댓글에 대댓글 등록 버튼 클릭 이벤트 끝
 
 
-                // 수정 폼에서 취소 버튼 클릭 이벤트
-                cancelBtn.addEventListener("click", function(e) {
-                    replyModifyForm.style.display='none';
-                    list.style.display='flex';
+            // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제)
+            document.querySelectorAll('.replyRemoveBtn').forEach(function(replyRemoveBtn) {
+                replyRemoveBtn.addEventListener('click', function(e) {
+                    // a 태그(replyRemoveBtn)의 부모인 li에 data-replyId 속성 부여
+                    const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+
+                    const replyObj={isParentDeleted:1, replyId:replyId};
+
+
+                    // 원댓글 논리 삭제 함수
+                    removeReply(replyObj).then(result => { // reply.js(axios)
+                        if(!confirm("정말 삭제하시겠습니까?")) return; // 취소 누를 시 종료
+                        alert("삭제되었습니다.");
+                        location.reload(); // 페이지 새로고침
+                    }).catch(e => {
+                        console.log("대댓글 삭제에 문제 생김");
+                    });
+                    // removeReply 끝
                 });
-                // 수정 폼에서 취소 버튼 클릭 이벤트 끝
-
-
             });
-        });
-        // 원댓글 수정 버튼 클릭 이벤트 끝
+            // 원댓글 삭제 버튼 클릭 이벤트(논리 삭제) 끝
 
 
-        // 여기까지 댓글 관련 자바스크립트
+            // 원댓글 수정 버튼 클릭 이벤트
+            document.querySelectorAll('.replyModBtn').forEach(function(replyModBtn) {
+                replyModBtn.addEventListener('click', function(e) {
+                    // a 태그(replyModBtn)의 부모인 li에 data-replyId 속성 부여
+                    const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+
+                    // 출력된 해당 댓글
+                    const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply');
+                    // 해당 댓글 수정 폼
+                    const replyModifyForm = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.replyModifyForm');
+                    const mcontent = replyModifyForm.querySelector('.mcontent');
+                    const modBtn = replyModifyForm.querySelector('.modReplyBtn');
+                    const cancelBtn=replyModifyForm.querySelector(".btn-done");
+
+                    // 댓글 하나 가져옴
+                    getReply(replyId).then(reply => { // reply.js(axios)로 해당 댓글 정보 가져오기
+                        replyModifyForm.style.display = 'block'; // replyModifyForm이 보이게
+                        list.style.display='none'; // list가 안 보이게
+                    }).catch(e => alert('댓글 가져오기(getReply) 실패'));
+                    // getReply 끝
 
 
+                    // 수정 완료 버튼 클릭 이벤트
+                    modBtn.addEventListener("click", function(e) {
+                        if(mcontent.value.trim().length < 3) {
+                            alert("최소 3자 이상 입력해 주세요.");
+                            return;
+                        }
+                        if(!confirm('이대로 수정하시겠습니까?')) return; // 취소 누를 시 종료
+                        const replyObj={content:mcontent.value, replyId:replyId};
+                        modifyReply(replyObj).then(result => { // reply.js(axios)로 해당 댓글 수정 post
+                            alert('수정되었습니다.');
+                            mcontent.value = ''; // textarea 초기화
+                            replyModifyForm.style.display = 'none'; // 수정폼 다시 사라지게 함
+                            location.reload(); // 새로고침
+                        }).catch(e => {
+                            alert('댓글 수정 실패');
+                        });
+                    });
+                    // 수정 완료 버튼 클릭 이벤트 끝
 
 
+                    // 수정 폼에서 취소 버튼 클릭 이벤트
+                    cancelBtn.addEventListener("click", function(e) {
+                        replyModifyForm.style.display='none';
+                        list.style.display='flex';
+                    });
+                    // 수정 폼에서 취소 버튼 클릭 이벤트 끝
 
 
-
-
-        // 여기서부터 쪽지 모달 시작
-        const msgWriteBtn = document.querySelectorAll(".messageBtn");
-        const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
-
-        msgWriteBtn.forEach(messageBtn => {
-            messageBtn.addEventListener("click", function () {
-                const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
-                writeModalShow();
-                SendMsg(replyUserId);
+                });
             });
-        });
+            // 원댓글 수정 버튼 클릭 이벤트 끝
+
+
+            // 여기까지 댓글 관련 자바스크립트
 
 
 
-        function writeModalShow() {
-            msgWriteModal.show();
-        }
 
-        function SendMsg(receiverName) {
-            const rcvName = document.querySelector(".msgReceiverName");
-            const msgContent = document.querySelector(".msgContent");
-            rcvName.value = "";
-            rcvName.readOnly = false;
-            if(receiverName !== null) { // 답장하기 버튼으로 접근 시
-                rcvName.value = receiverName;
-                rcvName.readOnly = true; // 작성자 변경 불가능
+
+
+
+
+            // 여기서부터 쪽지 모달 시작
+            const msgWriteBtn = document.querySelectorAll(".messageBtn");
+            const msgWriteModal = new bootstrap.Modal(document.querySelector(".message_write_modal")); // 쪽지 작성 모달 컨테이너
+
+            msgWriteBtn.forEach(messageBtn => {
+                messageBtn.addEventListener("click", function () {
+                    const replyUserId = messageBtn.parentNode.textContent.split("(")[1].split(")")[0];
+                    writeModalShow();
+                    SendMsg(replyUserId);
+                });
+            });
+
+
+
+            function writeModalShow() {
+                msgWriteModal.show();
             }
-            document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
-            document.querySelector(".sendMsg").parentNode
-                .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
-                    document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
-            document.querySelector(".sendMsg").addEventListener("click", function (){
-                if(msgContent.value.trim().length < 5) {
-                    alert("내용은 최소 5자 이상 입력해야 합니다.")
-                    return;
+
+            function SendMsg(receiverName) {
+                const rcvName = document.querySelector(".msgReceiverName");
+                const msgContent = document.querySelector(".msgContent");
+                rcvName.value = "";
+                rcvName.readOnly = false;
+                if(receiverName !== null) { // 답장하기 버튼으로 접근 시
+                    rcvName.value = receiverName;
+                    rcvName.readOnly = true; // 작성자 변경 불가능
                 }
-                addMessage(rcvName.value, msgContent.value).then( r => {
-                    console.log(r);
-                    if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
-                    else {
-                        alert("쪽지 전송 완료");
-                        msgWriteModal.hide();
-                        rcvName.value = "";
-                        msgContent.value = "";
+                document.querySelector(".sendMsg").cloneNode(true); // 클론 생성
+                document.querySelector(".sendMsg").parentNode
+                    .replaceChild(document.querySelector(".sendMsg").cloneNode(true),
+                        document.querySelector(".sendMsg")); // 버튼을 새로운 클론으로 교체
+                document.querySelector(".sendMsg").addEventListener("click", function (){
+                    if(msgContent.value.trim().length < 5) {
+                        alert("내용은 최소 5자 이상 입력해야 합니다.")
+                        return;
                     }
-                }).catch(e => {
-                    console.log(e);
+                    addMessage(rcvName.value, msgContent.value).then( r => {
+                        console.log(r);
+                        if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
+                        else {
+                            alert("쪽지 전송 완료");
+                            msgWriteModal.hide();
+                            rcvName.value = "";
+                            msgContent.value = "";
+                        }
+                    }).catch(e => {
+                        console.log(e);
+                    })
                 })
-            })
+            }
+
         }
 
-    }
+        // 여기까지 쪽지 모달 끝
+        //like기능 -------------
 
-    // 여기까지 쪽지 모달 끝
-    //like기능 -------------
-
-    document.querySelector(".reportPage").addEventListener("click",function (e) {
-        e.preventDefault();
-        var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
-        if(userConfirmed) {
-            location.href = `/boardReport/add?boardId=${boardId}`;
-        }else return;
-    });
-
-
-    const hart = document.querySelector(".hart");
-    const likeCount = [[${dto.likeId}]]
-
-
-
-    if(likeCount === 1) {
-    const uplike = document.querySelector(".fasol");
-    uplike.addEventListener('click',function (e) {
-        e.preventDefault();
-        likeDown(boardId,username);
-        location.reload();
-        return;
-    });
-    }else {
-        const notlike = document.querySelector(".fa-regular");
-        notlike.addEventListener('click', function (e) {
+        document.querySelector(".reportPage").addEventListener("click",function (e) {
             e.preventDefault();
-            likeUp(boardId, username);
-            location.reload();
+            var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
+            if(userConfirmed) {
+                location.href = `/boardReport/add?boardId=${boardId}`;
+            }else return;
         });
-    }
+
+
+        const hart = document.querySelector(".hart");
+        const likeCount = [[${dto.likeId}]]
+
+
+
+        if(likeCount === 1) {
+            const uplike = document.querySelector(".fasol");
+            uplike.addEventListener('click',function (e) {
+                e.preventDefault();
+                likeDown(boardId,username);
+                location.reload();
+                return;
+            });
+        }else {
+            const notlike = document.querySelector(".fa-regular");
+            notlike.addEventListener('click', function (e) {
+                e.preventDefault();
+                likeUp(boardId, username);
+                location.reload();
+            });
+        }
 
 
 
@@ -1140,7 +1138,10 @@
 
 
 
-</script>
+    </script>
+
+</div>
+
 
 
 </html>
