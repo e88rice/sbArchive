@@ -11,12 +11,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDTO {
-    @NotNull
+
     private Integer boardId;
     @NotEmpty
     private String userId;
@@ -28,10 +29,13 @@ public class BoardDTO {
     private Integer hit;
     private Integer likeUp;
     private Integer replyCount;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime addDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime modDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime delDate;
+
+
+
 }

@@ -19,6 +19,6 @@ public class BoardReportDTO {
     String content;
 
     int isAnswered;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     LocalDate addDate;
 }

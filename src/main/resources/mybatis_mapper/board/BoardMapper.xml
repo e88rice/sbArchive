@@ -70,9 +70,9 @@
     <select id="getLike" resultType="int">
         select count(*) from board_like where boardId = #{boardId} and userId = #{userId}
     </select>
-    <insert id="addNotice" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO board (userId, title, content, hit, likeUp,  addDate, nickname, delDate)
-        VALUES (#{userId} , #{title}, #{content}, 0, 0, #{addDate},#{nickname} , ${delDate})
+    <insert id="addNotice" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId" >
+        INSERT INTO board (userId, title, content, hit, likeUp,  addDate, nickname, modDate, delDate)
+        VALUES (#{userId} , #{title}, #{content}, 0, 0, now(), #{nickname} , #{modDate}, #{delDate})
     </insert>
 
 </mapper>

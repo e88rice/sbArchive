@@ -75,6 +75,10 @@ public class BoardController {
     public String addBoardNotice(BoardDTO boardDTO, List<MultipartFile> files,
                            RedirectAttributes redirectAttributes) {
         log.info("addBoard -------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" +  boardDTO);
+
+
+        boardDTO.setModDate(LocalDateTime.now());
+
         int boardId = boardService.addNotice(boardDTO);
         for(MultipartFile file : files) {
             log.info(file);
@@ -165,7 +169,4 @@ public class BoardController {
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/board/list?"+pageRequestDTO.getLink();
     }
-
-
-
 }

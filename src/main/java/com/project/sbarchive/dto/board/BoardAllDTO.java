@@ -32,11 +32,11 @@ public class BoardAllDTO {
     private Integer hit;
     private Integer likeUp;
     private Integer replyCount;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime addDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime modDate;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime delDate;
 
     int isAnswered;
