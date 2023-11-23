@@ -64,6 +64,10 @@ public interface UserService {
     // 내가 스크랩한 목록 출력
     PageResponseDTO<BoardLikeDTO> getMyLikedList(String userId, PageRequestDTO pageRequestDTO);
 
+    // 소셜 회원가입
+    void socialRegister(UserDTO userDTO);
+    int isSocialPassword(String userId);
+
     // 회원 탈퇴
     boolean withdrawal(String userId, String passwd);
 

@@ -1,6 +1,7 @@
 package com.project.sbarchive.config;
 
 import com.project.sbarchive.security.handler.Custom403Handler;
+import com.project.sbarchive.security.handler.CustomSocialLoginSuccessHandler;
 import com.project.sbarchive.security.handler.CustomTempLoginSuccessHandler;
 import com.project.sbarchive.security.service.CustomUserDetailService;
 import com.project.sbarchive.service.user.UserService;
@@ -34,6 +35,7 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 어노테이션으로 권한을 설정할 수 있게 하는 어노테이션
 public class CustomSecurityConfig {
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
     private final DataSource dataSource;
     private final CustomUserDetailService customUserDetailService;
 
@@ -61,6 +63,9 @@ public class CustomSecurityConfig {
 
         // 액세스가 거부 됐을 때 설정해둔 Custom403Handler 객체의 설정으로 처리
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandler()); // 403
+
+        // 소셜 로그인 + successHandler(자동 가입 후 정보수정으로 이동)
+        httpSecurity.oauth2Login().loginPage("/user/login").successHandler(authenticationSuccessHandler2());
 
 
         return httpSecurity.build();
@@ -95,6 +100,9 @@ public class CustomSecurityConfig {
         return new CustomTempLoginSuccessHandler(userService);
     }
 
-
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler2() {
+        return new CustomSocialLoginSuccessHandler(userService);
+    }
 
 }

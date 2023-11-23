@@ -11,6 +11,10 @@
         width: 600px;
     }
 
+    .btnKakao {
+        background-image: url("/static/img/kakao_login_medium_wide.png");
+        width: 100%;
+    }
 </style>
 
 <div layout:fragment="content">
@@ -42,6 +46,10 @@
                 </form>
                 <div class="form-group mb-0">
                     <a href="/user/joinAuth" class="btn btn-primary" style="width: 100%">회원가입</a>
+                </div>
+                <div class="form-group mb-0 btnKakao">
+                    <img src="/img/kakao_login_medium_wide.png">
+                    <a href="/oauth2/authorization/kakao">카카오</a>
                 </div>
                 <div style="display: flex; justify-content: space-between">
                     <a href="/user/findId">아이디 찾기</a>

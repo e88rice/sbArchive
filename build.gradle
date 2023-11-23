@@ -33,6 +33,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // @Valid
 	implementation 'com.google.code.gson:gson:2.8.7' // Gson.  Gson = json을 자바오브젝트로 변환하거나 자바오브젝트를 json으로 변환
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // 소셜 로그인 oauth2-client
 
 
 
@@ -67,7 +68,6 @@ dependencies {
 	// 스프링 시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5' // 스프링 시큐리티 화면에서 인증 처리
-
 
 
 }

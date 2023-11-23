@@ -227,6 +227,7 @@
                 email.focus();
                 return;
             } else {
+                email.readOnly = true;
                 const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
                 xhr.open('POST', '/user/emailCheck?email=' + email.value );
                 xhr.onload = function() {
@@ -301,6 +302,7 @@
         let strongPasswordMessage = document.querySelector(".strongPassword-message"); // 8글자 이상....
         let mismatchMessage = document.querySelector(".mismatch-message") // 비밀번호가 일치하지 않습니다
 
+
         // ***** 회원가입 유효성 검사 - 아이디 *****
         // 아이디 공백 제거
         function noSpaceForm(obj) {
@@ -323,7 +325,14 @@
         // 아이디를 유효하게 작성했는가
         let isIdValid=false;
 
-        userId.onkeyup = function () {
+        userId.onkeydown = function () {
+            isIdChecked = false;
+        }
+
+        userId.onchange = function () {
+            console.log("isIdChecked = " + isIdChecked)
+            console.log("isIdValid = " + isIdValid)
+            isIdChecked = false;
             // 값을 입력한 경우
             if (userId.value.length !== 0) {
                 // 영어 또는 숫자 외의 값을 입력했을 경우
@@ -367,6 +376,7 @@
 
         // ***** 회원가입 유효성 검사 - 아이디 중복체크 *****
         let isIdChecked=false; //중복체크했을 땐 true로 변경
+
 
         const idCheck = document.getElementById("id_check");
         idCheck.addEventListener('click', function (e){

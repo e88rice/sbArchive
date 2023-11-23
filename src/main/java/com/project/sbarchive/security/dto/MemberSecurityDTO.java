@@ -7,15 +7,17 @@ import lombok.ToString;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Map;
 
 @Log4j2
 @Getter
 @Setter
 @ToString
-public class MemberSecurityDTO extends User {
+public class MemberSecurityDTO extends User implements OAuth2User {
 
     private String userId;
     private String passwd;
@@ -28,7 +30,12 @@ public class MemberSecurityDTO extends User {
     private boolean del;
     private boolean social;
 
+    private Map<String, Object> props; // 소셜 로그인 정보
 
+    @Override
+    public Map<String, Object> getAttributes() {
+        return this.getProps();
+    }
 
     public MemberSecurityDTO(String username, String password, String nickname, String email, int level, int lvPoint,
                              String iconName, LocalDate regDate, boolean del, boolean social,
@@ -46,5 +53,10 @@ public class MemberSecurityDTO extends User {
         this.regDate = regDate;
         this.del = del;
         this.social = social;
+    }
+
+    @Override
+    public String getName() {
+        return this.userId;
     }
 }

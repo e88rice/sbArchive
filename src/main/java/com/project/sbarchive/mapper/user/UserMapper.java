@@ -66,6 +66,10 @@ public interface UserMapper {
     // 회원 탈퇴
     void withdrawal (String userId, String passwd);
 
+    // 소셜 회원가입
+    void socialRegister(UserVO userVO);
+    void updateLogSocial(String userId, String passwd);
+    int isSocialPassword(String userId);
 
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10

@@ -46,6 +46,7 @@ public class MyController {
     public void myPageGET(Principal principal, Model model) {
         log.info("===== myPage Get Controller =====");
         log.info("==================== myPage Get Controller ====================");
+        log.info(principal.getName());
         UserVO userVO = userService.getUserInfo(principal.getName());
         UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
         String userId = principal.getName();
@@ -146,6 +147,11 @@ public class MyController {
     @GetMapping("/modifyPasswd")
     public void modifyPasswdGET() {
         log.info("==================== modifyPasswd Get Controller ====================");
+    }
+
+    @GetMapping("/modifySocialPasswd")
+    public void modifySocialPasswd() {
+        log.info("==================== modifySocialPasswd Get Controller ====================");
     }
 
     @PostMapping("/modifyPasswd")

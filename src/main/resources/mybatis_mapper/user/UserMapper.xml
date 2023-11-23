@@ -22,7 +22,7 @@
 
     <insert id="registerUser">
         INSERT INTO user (userId, passwd, nickname, email, regDate, del, social)
-        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now(), 0, 0)
+        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now(), 0, #{social})
     </insert>
 
     <insert id="addUserRole">
@@ -72,7 +72,7 @@
     </update>
 
     <update id="updateLog">
-        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0 WHERE userId = #{userId}
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0, isSocialPassword = 0 WHERE userId = #{userId}
     </update>
 
     <select id="isTempPassword" resultType="int">
@@ -143,6 +143,19 @@
     <update id="withdrawal">
         update `user` set del = 1  where userId = #{userId}
     </update>
+
+
+    <insert id="socialRegister">
+        INSERT INTO user (userId, passwd, nickname, email, regDate, del, social)
+        VALUES (#{userId}, #{passwd}, #{nickname}, #{email}, now(), 0, #{social})
+    </insert>
+    <update id="updateLogSocial">
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isSocialPassword = 1 WHERE userId = #{userId}
+    </update>
+    <select id="isSocialPassword" resultType="int">
+        SELECT isSocialPassword FROM user_pw_log WHERE userId = #{userId}
+    </select>
+
 
     <!--  레벨 관련 쿼리 추가  -->
     <update id="lvPointUp">

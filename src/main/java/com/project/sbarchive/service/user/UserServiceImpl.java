@@ -241,6 +241,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void socialRegister(UserDTO userDTO) {
+        registerUser(userDTO);
+        userMapper.updateLogSocial(userDTO.getUserId(), userDTO.getPasswd());
+    }
+
+    @Override
+    public int isSocialPassword(String userId) {
+        return userMapper.isSocialPassword(userId);
+    }
+
+    @Override
     public void lvPointUp(String userId) {
         userMapper.lvPointUp(userId);
     }
