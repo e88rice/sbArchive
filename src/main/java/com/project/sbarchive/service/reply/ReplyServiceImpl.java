@@ -53,8 +53,46 @@ public class ReplyServiceImpl implements ReplyService {
         replyMapper.modifyReplyId(replyVO);
     }
 
+    @Override
+    public PageResponseDTO<ReplyDTO> getReplyList(int boardId, boolean replyDepth, PageRequestDTO pageRequestDTO) {
+        log.info("ReplyServiceImpl - getReplyList boardId: " + boardId);
 
-    // 대댓글 추가하면서 바뀐 부분 시작
+        // 댓글 목록을 가져올 때 대댓글 개수를 함께 가져오도록 수정
+        List<ReplyVO> voList = replyMapper.getReplyList(boardId, replyDepth, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
+
+        List<ReplyDTO> dtoList = new ArrayList<>();
+        for (ReplyVO replyVO : voList) {
+            // 대댓글 수 조회
+            int reReplyCount = replyMapper.countReReplies(replyVO.getReplyId());
+
+            // ReplyDTO에 대댓글 수를 추가하고 세팅
+            ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
+            replyDTO.setReReplyCount(reReplyCount);
+
+            // DTO로 변환하여 리스트에 추가
+            dtoList.add(replyDTO);
+        }
+
+        int total = replyMapper.getReplyCount(boardId);
+
+        log.info("dtoList: " + dtoList);
+        log.info("pageRequestDTO: " + pageRequestDTO);
+
+        return PageResponseDTO.<ReplyDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    @Override
+    public int getReplyCount(int boardId) {
+        log.info("ReplyServiceImpl - getReplyCount boardId: "+boardId);
+        return replyMapper.getReplyCount(boardId);
+    }
+
+
+    // 여기서부터 대댓글 관련
     @Override
     public void removeReply(ReplyDTO replyDTO) { // 원 댓글 논리 삭제
         log.info("ReplyServiceImpl - removeReply(원 댓글 논리 삭제) replyDTO: "+replyDTO);
@@ -76,43 +114,6 @@ public class ReplyServiceImpl implements ReplyService {
         return replyVO.getReplyId();
     }
 
-    // 대댓글 추가하면서 바뀐 부분 끝
-
-    @Override
-    public PageResponseDTO<ReplyDTO> getReplyList(int boardId, boolean replyDepth, PageRequestDTO pageRequestDTO) {
-        log.info("ReplyServiceImpl - getReplyList boardId: " + boardId);
-
-        // 댓글 목록을 가져올 때 대댓글 개수를 함께 가져오도록 수정
-        List<ReplyVO> voList = replyMapper.getReplyList(boardId, replyDepth, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
-
-        List<ReplyDTO> dtoList = new ArrayList<>();
-        for (ReplyVO replyVO : voList) {
-            // 대댓글 수 조회
-            int reReplyCount = replyMapper.countReReplies(replyVO.getReplyId());
-
-            // ReplyDTO에 대댓글 수를 추가하고 세팅
-            ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
-            replyDTO.setReReplyCount(reReplyCount);
-
-            // DTO로 변환하여 리스트에 추가
-            dtoList.add(replyDTO);
-
-//            ReplyDTO replyDTO = modelMapper.map(replyVO, ReplyDTO.class);
-//            dtoList.add(replyDTO);
-        }
-
-        int total = replyMapper.getReplyCount(boardId);
-
-        log.info("dtoList: " + dtoList);
-        log.info("pageRequestDTO: " + pageRequestDTO);
-
-        return PageResponseDTO.<ReplyDTO>withAll()
-                .dtoList(dtoList)
-                .total(total)
-                .pageRequestDTO(pageRequestDTO)
-                .build();
-    }
-
     @Override
     public List<ReplyDTO> getReReplies(int boardId, int parentReplyId, boolean replyDepth) {
 
@@ -128,15 +129,21 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public int getReplyCount(int boardId) {
-        log.info("ReplyServiceImpl - getReplyCount boardId: "+boardId);
-        return replyMapper.getReplyCount(boardId);
-    }
-
-    @Override
     public int countReReplies(int parentReplyId) {
         return replyMapper.countReReplies(parentReplyId);
     }
+
+    // 여기까지 대댓글 관련
+
+
+    // 신고 처리되었을 때, '관리자에 의해 규제된 댓글입니다' 문구 출력되게
+    @Override
+    public void reportedReply(ReplyDTO replyDTO) {
+        log.info("ReplyServiceImpl - reportedReply replyDTO: "+replyDTO);
+        ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
+        replyMapper.reportedReply(replyVO);
+    }
+
 
 
 

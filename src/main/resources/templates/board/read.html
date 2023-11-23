@@ -547,7 +547,7 @@
                                     ${isReplyWriter ? '' : '<a class="messageBtn"><i class="fa-regular fa-envelope fa-xs"></i></a>'}
                                 </div>
                                 <div>
-                                 ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn" data-reply-id="${dto.replyId}">신고</a>'}
+                                 ${isReplyWriter ? '<a class="replyModBtn">수정</a>\n<a class="replyRemoveBtn">삭제</a>' : '<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>'}
                                 </div>
                             </div>
 
@@ -661,7 +661,7 @@
                         isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
 
                         reReplyHTML += `
-                    <li class="replyItem_re" data-replyId="${dto.replyId}">
+                    <li class="replyItem_re">
                         <div class="list_of_reply_re">
 
                             ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
