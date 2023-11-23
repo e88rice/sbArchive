@@ -12,6 +12,7 @@ import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.board.BoardReportVO;
+import com.project.sbarchive.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -79,6 +80,12 @@ public class BoardReportController {
             }
             boardFileService.addBoardImages(boardId, files,"report");
         }
+
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        UserVO userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
+
         return "redirect:/board/list";
     }
 

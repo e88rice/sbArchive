@@ -4,6 +4,8 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.service.reply.ReplyService;
+import com.project.sbarchive.service.user.UserService;
+import com.project.sbarchive.vo.user.UserVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,6 +29,7 @@ import java.util.Map;
 public class ReplyController {
 
     private final ReplyService replyService;
+    private final UserService userService;
 
     @GetMapping(value="/add")
     public String addReplyGET() {
@@ -51,6 +54,11 @@ public class ReplyController {
         replyDTO.setReplyId(replyId);
         replyService.upReplyCount(replyDTO.getBoardId()); // 게시판 리플카운트 +1 DB = board
         resultMap.put("replyId", replyId);
+
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        UserVO userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
 
         return resultMap;
     }
@@ -138,6 +146,11 @@ public class ReplyController {
         replyService.upReplyCount(replyDTO.getBoardId()); // 게시판 리플카운트 +1 DB = board
 
         resultMap.put("replyId", replyId);
+
+        String userId = principal.getName();
+        userService.lvPointUp(userId);
+        UserVO userVO = userService.getUserInfo(userId);
+        userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
 
         return resultMap;
     }

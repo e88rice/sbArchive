@@ -33,3 +33,7 @@ async function addMessage(receiverId, content) {
     const result = await axios.put(`/message/add/${receiverId}/${content}`);
     return result.data;
 }
+async function addMessageReport(receiverId, content , rBoardId) {
+    const result = await axios.put(`/message/addReport/${receiverId}/${content}/${rBoardId}`);
+    return result.data;
+}
