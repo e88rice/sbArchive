@@ -42,11 +42,10 @@
     <div class="container board_form" >
         <h2 class="mb-4"></h2>
         <form action="/boardReport/add" method="post" name="frmAdd" enctype="multipart/form-data">
-            <input hidden="hidden" name="boardId" th:value="${boardId}">
+            <input  name="boardId" th:value="${dto.boardId}">
             <div class="topline">
                 <div class="form-group">
                     신고자
-
                     ( [[${user.getName}]] )
                 </div>
                 <i class="fa-solid fa-arrow-right"> </i>
@@ -89,15 +88,7 @@
                 </div>
             </div>
         </form>
-        <script layout:fragment="script" th:inline="javascript">
-            const boardId = [[${dto.boardId}]]
 
-
-            document.querySelector(".reportlink").addEventListener('click', function () {
-                location.href = `/board/read?boardId=${boardId}`;
-            });
-
-        </script>
 
     </div>
 
