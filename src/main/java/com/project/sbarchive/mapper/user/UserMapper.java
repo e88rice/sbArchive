@@ -77,5 +77,7 @@ public interface UserMapper {
     // lvPoint 업데이트 할 때 마다 lvPoint를 검사해서 조건을 만족할 시 레벨업을 시켜줌
     void checkLevelUp(String userId, int level, int lvPoint);
 
-
+    // 삭제요망_현준
+    int checkDupl(String email);
+    UserVO getUserInfoByEmail(String email);
 }

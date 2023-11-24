@@ -10,10 +10,11 @@
 
 <div layout:fragment="content">
 
-    <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            self.location.href = "/user/login?dupleError";
-        });
+    <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->
+    <script>
+        alert("이미 존재하는 이메일입니다\n" +
+            "기존 아이디로 로그인해주십시오")
+        self.location.href="/logout";
     </script>
 </div>
 

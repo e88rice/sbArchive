@@ -133,6 +133,7 @@ public class BoardController {
         log.info("CONTROLLER VIEW!!" + boardDTO);
         boardService.hitCount(boardId);
     }
+
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/modify")
     public void modify(Model model, int boardId, HttpServletRequest request,

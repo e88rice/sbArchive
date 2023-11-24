@@ -79,4 +79,7 @@ public interface UserService {
     void checkLevelUp(String userId, int level, int lvPoint);
 
 
+    // 삭제요망_현준
+    int checkDupl(String email);
+    UserDTO getUserInfoByEmail(String email);
 }

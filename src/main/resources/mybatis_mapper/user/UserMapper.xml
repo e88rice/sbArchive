@@ -174,4 +174,11 @@
     </update>
 <!--    <if test='(level == 1 and lvPoint gt 200) or (level == 2 and lvPoint gt 500)'> level = level + 1 </if>-->
 
+    <select id="checkDupl" resultType="int">
+        select social from user where email = #{email}
+    </select>
+    <select id="getUserInfoByEmail" resultType="com.project.sbarchive.vo.user.UserVO">
+        select * from user where email = #{email}
+    </select>
+
 </mapper>

@@ -262,6 +262,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public int checkDupl(String email) {
+        return userMapper.checkDupl(email);
+    }
+
+    @Override
+    public UserDTO getUserInfoByEmail(String email) {
+        UserDTO userDTO = modelMapper.map(userMapper.getUserInfoByEmail(email), UserDTO.class);
+        return userDTO;
+    }
+
+    @Override
     public boolean withdrawal(String userId, String passwd) {
         log.info("============= withdrawal Service =============");
 
