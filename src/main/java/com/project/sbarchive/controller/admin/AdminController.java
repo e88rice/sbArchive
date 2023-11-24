@@ -12,10 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -39,7 +36,7 @@ public class AdminController {
     public String exBoards(Model model, PageRequestDTO pageRequestDTO, Principal principal,
                       @PathVariable("page") int page) {
 
-        pageRequestDTO = PageRequestDTO.builder().page(page).size(10).build();
+        pageRequestDTO = PageRequestDTO.builder().page(page).size(20).build();
 
         PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getExBoards(pageRequestDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
@@ -58,6 +55,15 @@ public class AdminController {
         log.info(boardDTOPageResponseDTO.getDtoList().size());
 
         return "/admin/exBoardList";
+    }
+    @PostMapping("/targetDeleteAdmin")
+    public String deleteSelectedBoard(int[] boardId) {
+        log.info("====================admin POST DEL ====================");
+        for(int id : boardId) {
+            log.info(id);
+            boardService.remove(id);
+        }
+        return "redirect:/admin/exBoards/1";
     }
 
 }

@@ -51,6 +51,8 @@ public interface ReplyService {
 
 
 
+
+
     // 여기서부터 Board에서 replyCount 나타낼 때 사용하는 메서드
     void upReplyCount(int boardId);
 

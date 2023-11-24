@@ -161,4 +161,5 @@ public class ReplyServiceImpl implements ReplyService {
         replyMapper.downReplyCount(boardId);
     }
 
+
 }

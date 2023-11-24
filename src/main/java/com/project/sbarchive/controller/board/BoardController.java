@@ -6,6 +6,8 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardService;
+import com.project.sbarchive.service.message.MessageService;
+import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserVO;
 import io.swagger.annotations.ApiOperation;
@@ -38,9 +40,13 @@ public class BoardController {
 
     private final BoardFileService boardFileService;
 
+    private final ReplyService replyService;
+
     private final UserService userService;
 
     private final ModelMapper modelMapper;
+
+    private final MessageService messageService;
 
 //    private final BoardFileService boardFileService;
 
@@ -132,6 +138,13 @@ public class BoardController {
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
         boardService.hitCount(boardId);
+
+        if(principal != null) {
+            String name = principal.getName();
+            model.addAttribute("name" , name);
+        }else {
+            model.addAttribute("name", "guest");
+        }
     }
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/modify")
@@ -170,9 +183,44 @@ public class BoardController {
     public String remove(BoardDTO boardDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
         log.info(boardDTO.getBoardId() + "번 삭제!!!!!!!!!!!!!!");
         boardService.remove(boardDTO.getBoardId());
-        redirectAttributes.addAttribute("page",1);
+        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
         return "redirect:/board/list?"+pageRequestDTO.getLink();
+    }
+
+
+    @PostMapping("/remove/admin")
+    public String removeAdmin(int boardId,String userId,String title,
+                              Principal principal,
+                              PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
+        log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");
+        boardService.remove(boardId);
+        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+        messageService.add("asd2478",userId, title +" "+ "게시물이 제재처리 되었습니다");
+
+        return "redirect:/board/list?"+pageRequestDTO.getLink();
+    }
+
+    @PostMapping("/removeReply/admin")
+    public String removeReplyAdmin(int replyId,String userId,String content,
+                              Principal principal,
+                              PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
+        log.info(replyId+ "번 삭제!!!!!!!!!!!!!!");
+
+        redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
+        redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
+        messageService.add("asd2478",userId, content +" "+ "댓글이 제재처리 되었습니다");
+
+        return "redirect:/board/list?"+pageRequestDTO.getLink();
+    }
+
+//    (`/board/remove/${boardId}`)
+ // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
+
+    @GetMapping("/get/{boardId}/{userId}")
+    public void getLike(@PathVariable("boardId") int boardId, @PathVariable("userId") String userId) {
+        boardService.getLike(boardId,userId);
     }
 
 

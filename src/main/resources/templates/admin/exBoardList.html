@@ -28,41 +28,128 @@
 
 <div layout:fragment="content">
   <div class="ex_boards_container">
-    <table class="table table-hover">
-      <tr>
-        <th>번호</th>
-        <th style="width: 480px; text-align: center">제목</th>
-        <th>글쓴이</th>
-        <th>작성일</th>
-        <th>조회</th>
-        <th>좋아요</th>
-      </tr>
-      <tr th:each="dto:${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}" th:class="${dto.userId == 'admin' ? 'admin-row' : ''}">
-        <td><i th:if="${dto.userId}==admin" class="notice">공지사항</i><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.boardId}]]</a></td>
-        <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
-        <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.nickname}]]
-          <span>( [[${dto.userId.substring(0, 4)  + '*' * (dto.userId.length() - 4)}]])</span></a></td>
-        <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-        <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
-        <td th:text="${dto.hit}"></td> <!-- 이 부분 수정 -->
-        <td th:text="${dto.likeUp}"></td>
-      </tr>
-    </table>
+    <div class="my_content">
+      <h1>작성 글 보기</h1>
+      <div class="col">
+        <div class="card">
+          <div class="card-header" style="display: flex; justify-content: space-between">
+            <h6 class="card-title">total : [[${responseDTO.total}]]</h6>
+            <button type="button" class="btn btn-primary btnRemoveSelected">선택삭제</button>
+            <button type="button" class="btn btn-primary btnRemoveAll">전체삭제</button>
+          </div>
+          <div class="card-body">
+            <form action="/admin/targetDeleteAdmin" method="post" name="deleteSelected">
+              <table class="table">
+                <thead>
+                <tr class="division">
+                  <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
+                  <th scope="col">제목</th>
+                  <th scope="col">작성일</th>
+                  <th scope="col">조회</th>
+                  <th scope="col">삭제</th>
+                </tr>
+                </thead>
+                <tbody th:with="link = ${pageRequestDTO.getLink()}">
+                <tr th:each="dto:${responseDTO.dtoList}">
+                  <td><input type="checkbox" name="boardId" th:value="${dto.boardId}"></td>
+                  <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
+                  <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                  <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                  <td>[[${dto.hit}]]</td>
+                  <td><button type="button" th:value="${dto.boardId}" onclick="targetDeleteAdmin(this.value)"><i class="fa-solid fa-trash removeLike"></i></button></td>
+                </tr>
+                </tbody>
+              </table>
+            </form>
+            <div class="center-block">
+              <ul class="pagination flex-wrap">
+                <li class="page-item" th:if="${responseDTO.prev}">
+                  <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
+                </li>
+                <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                  <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                    <a class="page-link" th:if="${responseDTO.page != 0}" th:data-num="${i}" th:href="|@{/admin/exBoards/}${i}|">[[${i}]]</a>
+                  </li>
+                </th:block>
+                <li class="page-item" th:if="${responseDTO.next}">
+                  <a class="page-link" th:data-num="${responseDTO.end +1}">다음으로</a>
+                </li>
+              </ul>
+            </div>
+            <form action="/admin/exBoards" method="get" name="search">
+              <div style="display: flex; justify-content: center">
+                <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                <div class="form-group" style="display: flex">
+                  <select class="form-select" name="types" style="width: 90px; margin-right: 20px;margin-bottom: 10px">
+                    <option value="s" th:selected="${pageRequestDTO.types == 's'}">제목</option>
+                    <option value="c" th:selected="${pageRequestDTO.types == 'c'}">내용</option>
+                  </select>
+                  <div class="input-group" style="display: flex;">
+                    <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}" style="width: 340px">
+                    <button class="btn btn-outline-secondary searchBtn" type="submit">검색</button>
+                    <button class="btn btn-outline-secondary clearBtn" type="reset">초기화</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <script layout:fragment="script" th:inline="javascript">
+              const checkAll = document.getElementById('checkAll');
 
-    <div class="center-block">
-      <ul class="pagination flex-wrap">
-        <li class="page-item" th:if="${responseDTO.prev}">
-          <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
-        </li>
-        <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-          <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
-            <a class="page-link" th:if="${responseDTO.page != 0}" th:data-num="${i}" th:href="|@{/admin/exBoards/}${i}|">[[${i}]]</a>
-          </li>
-        </th:block>
-        <li class="page-item" th:if="${responseDTO.next}">
-          <a class="page-link" th:data-num="${responseDTO.end +1}">다음으로</a>
-        </li>
-      </ul>
+              // 전체 선택
+              checkAll.addEventListener('change', function (e) {
+                let boardId = document.querySelectorAll('input[name=boardId]');
+                for(let i = 0; i < boardId.length; i++){
+                  boardId[i].checked = e.target.checked;
+                }
+              });
+
+
+
+              // 다중 선택 삭제
+              const btnRemoveSelected = document.querySelector('.btnRemoveSelected');
+              const deleteSelected = document.querySelector("form[name=deleteSelected]");
+              btnRemoveSelected.addEventListener('click', function () {
+                if(confirm("정말 삭제하시겠습니까?")){
+                  deleteSelected.submit();
+                };
+              });
+
+
+              // 타겟 삭제
+              function targetDeleteAdmin(boardId){
+                if(confirm("정말 삭제하시겠습니까?")){
+                  let newForm = document.createElement('form');
+
+                  newForm.name = 'targetDelete';
+                  newForm.method = 'post';
+                  newForm.action = '/admin/targetDeleteAdmin';
+
+                  let input1 = document.createElement('input');
+
+                  // set attribute (input)
+                  input1.setAttribute("type", "hidden");
+                  input1.setAttribute("name", "boardId");
+                  input1.setAttribute("value", boardId);
+
+                  // append input (to form)
+                  newForm.appendChild(input1);
+
+                  // append form (to body)
+                  document.body.appendChild(newForm);
+
+                  // submit form
+                  newForm.submit();
+                }
+
+                document.querySelector('.btnRemoveAll').addEventListener('click',function () {
+
+                })
+              }
+            </script>
+          </div>
+          <!--                    card body end&ndash-->
+        </div>
+      </div>
     </div>
     
   </div>
