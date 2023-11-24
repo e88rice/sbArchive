@@ -38,6 +38,9 @@ public interface BoardMapper {
 
     void boardlikeDown(int boardId);
 
+    // delDate 기준 만료된 보드들을 페이징해서 가져옴
+    List<BoardVO> getExBoards(PageRequestDTO pageRequestDTO);
+    int getExBoardsCount(PageRequestDTO pageRequestDTO);
 
 
 

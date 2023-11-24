@@ -3,6 +3,7 @@ package com.project.sbarchive.service.board;
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.vo.board.BoardVO;
 
 import java.util.List;
 
@@ -34,5 +35,9 @@ public interface BoardService {
 
     void boardlikeDown(int boardId);
 
+
+    // delDate 기준 만료된 보드들을 페이징해서 가져옴
+    PageResponseDTO<BoardDTO> getExBoards(PageRequestDTO pageRequestDTO);
+    int getExBoardsCount(PageRequestDTO pageRequestDTO);
 
 }

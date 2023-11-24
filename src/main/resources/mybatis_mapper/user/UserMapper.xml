@@ -173,4 +173,5 @@
         WHERE `userId` = #{userId}
     </update>
 <!--    <if test='(level == 1 and lvPoint gt 200) or (level == 2 and lvPoint gt 500)'> level = level + 1 </if>-->
+
 </mapper>

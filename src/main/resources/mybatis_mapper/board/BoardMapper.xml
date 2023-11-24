@@ -78,4 +78,11 @@
         VALUES (#{userId} , #{title}, #{content}, 0, 0, now(), #{nickname} , #{modDate}, #{delDate})
     </insert>
 
+    <select id="getExBoards" resultType="com.project.sbarchive.vo.board.BoardVO">
+        select * from board where delDate <![CDATA[<]]> now() LIMIT #{skip}, #{size};
+    </select>
+    <select id="getExBoardsCount" resultType="int">
+        select count(*) from board where delDate <![CDATA[<]]> now();
+    </select>
+
 </mapper>

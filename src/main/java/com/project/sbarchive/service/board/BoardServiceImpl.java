@@ -114,4 +114,30 @@ public class BoardServiceImpl implements BoardService {
     public void boardlikeDown(int boardId) {
         boardMapper.boardlikeDown(boardId);
     }
+
+
+    // delDate 기준 만료된 보드들을 페이징해서 가져옴
+    @Override
+    public PageResponseDTO<BoardDTO> getExBoards(PageRequestDTO pageRequestDTO) {
+
+        List<BoardVO> voList = boardMapper.getExBoards(pageRequestDTO);
+
+        List<BoardDTO> dtoList = new ArrayList<>();
+        for (BoardVO boardVO : voList) {
+            dtoList.add(modelMapper.map(boardVO, BoardDTO.class));
+        }
+
+        int total = boardMapper.getExBoardsCount(pageRequestDTO);
+
+        return PageResponseDTO.<BoardDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+    }
+
+    @Override
+    public int getExBoardsCount(PageRequestDTO pageRequestDTO) {
+        return boardMapper.getExBoardsCount(pageRequestDTO);
+    }
 }

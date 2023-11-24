@@ -24,6 +24,7 @@ public class UserMapperTest {
         userMapper.registerUser(userVO);
     }
 
+
     @Test
     public void getUserInfoTest() {
         String userId = "member1";

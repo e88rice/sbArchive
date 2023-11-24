@@ -73,3 +73,19 @@
 .fa-trash {
     cursor: pointer;
 }
+
+.manage_board > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.manage_board > div > h3 {
+    position: relative;
+    left: 10%;
+}
+.manage_board > div a {
+    display: inline-block;
+    position: relative;
+    left: 30%;
+}

@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.security.dto.MemberSecurityDTO;
+import com.project.sbarchive.security.handler.Custom403Handler;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;
