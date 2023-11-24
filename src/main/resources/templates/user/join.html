@@ -121,6 +121,9 @@
                                 <input type="text" class="form-control" placeholder="인증번호" id="emailCheck" aria-describedby="auth_check">
                                 <button type="button" class="btn btn-secondary btnSendEmail" id="auth_check">인증확인</button>
                             </div>
+                            <div class="input-group hide timer_div">
+                                <span>유효 시간  </span><span id="timer"></span>
+                            </div>
                         </div>
 
 
@@ -190,15 +193,19 @@
             passwd.readOnly = true;
             passwdCheck.readOnly = true;
             nickName.readOnly = true;
+
+            auth_check.disabled = false;
+            btnSendEmail.disabled = false;
         }
 
 
-        let confirmKey = "";
+        // let confirmKey = ""; // 인증키
 
         // ***** email 인증키 보내기 *****
         const btnSendEmail = document.querySelector('.btnSendEmail');
         const email = document.getElementById("email");
         let failureMessage = document.querySelector(".failure-message"); // 사용할 수 없는 이메일입니다.
+        const timerDiv = document.querySelector('.timer_div');
 
         email.onkeyup = function () {
             // 값을 다 지우면 경고 메세지 없애기
@@ -218,6 +225,78 @@
             }
         }
 
+        // 인증키 유효시간 타이머
+        const Timer=document.getElementById('timer'); //스코어 기록창-분
+        let time = 180000;
+        let min = 3;
+        let sec = 60;
+        let interval;
+
+
+        Timer.innerText=min+":"+'00';
+
+        function timer(){
+            interval = setInterval(() => {
+                time = time - 1000; //1초씩 줄어듦
+                min = time / (60 * 1000); //초를 분으로 나눠준다.
+
+                if (sec > 0) { //sec=60 에서 1씩 빼서 출력해준다.
+                    sec = sec - 1;
+                    Timer.innerText = Math.floor(min) + ':' + sec;
+                    //실수로 계산되기 때문에 소숫점 아래를 버리고 출력해준다.
+
+                }
+                if (sec === 0) {
+                    // 0에서 -1을 하면 -59가 출력된다.
+                    // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
+                    sec = 60;
+                    Timer.innerText = Math.floor(min) + ':' + '00'
+                }
+
+            }, 1000); //1초마다
+        }
+
+        function reset(){
+            clearInterval(interval);
+            time = 180000;
+            min = 3;
+            sec = 60;
+        }
+
+
+        // 만료 시간과 함께 데이터를 저장
+        function setItemWithExpireTime(keyName, keyValue, tts) {
+            // localStorage에 저장할 객체
+            const obj = {
+                value : keyValue,
+                expire : Date.now() + tts
+            }
+            // 객체를 JSON 문자열로 변환
+            const objString = JSON.stringify(obj);
+            //setItem
+            window.localStorage.setItem(keyName, objString);
+        }
+
+        // 만료 시간을 체크하며 데이터 읽기
+        function getItemWithExpireTime(keyName) {
+            // localStorage 값 읽기 (문자열)
+            const objString = window.localStorage.getItem(keyName);
+            // null 체크
+            if(!objString) {    return null;  }
+            // 문자열을 객체로 변환
+            const obj = JSON.parse(objString);
+            // 현재 시간과 localStorage의 expire 시간 비교
+            if(Date.now() > obj.expire) {
+                // 만료시간이 지난 item 삭제
+                window.localStorage.removeItem(keyName);
+                // null 리턴
+                return null;
+            }
+            // 만료기간이 남아있는 경우, value 값 리턴
+            return obj.value;}
+
+        let mailTo = "";
+
         btnSendEmail.addEventListener('click', function (e){
             e.preventDefault();
 
@@ -227,7 +306,6 @@
                 email.focus();
                 return;
             } else {
-                email.readOnly = true;
                 const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
                 xhr.open('POST', '/user/emailCheck?email=' + email.value );
                 xhr.onload = function() {
@@ -241,15 +319,22 @@
                             failureMessage.classList.add('hide');
 
                             const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
-                            let mailTo = email.value;
+                            mailTo = email.value;
                             console.log(mailTo);
                             xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
                             xhr.onload = function() {
                                 if (xhr.status === 200) {
                                     // 서버 응답이 성공인 경우
+                                    reset();
                                     alert("이메일로 인증키를 확인해주세요");
                                     console.log(xhr.response); //(추후에 삭제하기)
-                                    confirmKey = xhr.response; //(controller 에서 반환된 confirmKey 불러오기)
+                                    setItemWithExpireTime("confirmKey", xhr.response, 180000)
+                                    timerDiv.classList.remove("hide");
+                                    timer();
+                                    setTimeout(function(){
+                                        reset();
+                                        timerDiv.classList.add("hide");
+                                    },180000);//3분이 되면 타이머를 삭제한다.
 
                                 } else {
                                     // 서버 응답이 실패인 경우
@@ -279,8 +364,7 @@
         auth_check.addEventListener("click", function (e){
             e.preventDefault();
 
-            console.log(confirmKey)
-            if(confirmKey == emailCheck.value) {
+            if(getItemWithExpireTime("confirmKey") == emailCheck.value) {
                 alert("이메일 인증이 완료되었습니다")
                 userId.readOnly = false;
                 passwd.readOnly = false;
@@ -288,11 +372,23 @@
                 nickName.readOnly = false;
 
                 email.readOnly = true;
+                email.value = mailTo;
                 emailCheck.readOnly = true;
+
+                auth_check.disabled = true;
+                btnSendEmail.disabled = true;
+
+                reset();
+                timerDiv.classList.add("hide");
+
             } else {
                 alert("인증 코드를 다시 확인해주세요")
             }
         });
+
+
+
+
 
         // ***** 회원가입 유효성 검사 *****
         let failureMessage2 = document.querySelector(".failure-message2"); // 아이디는 4~12글자이어야 합니다

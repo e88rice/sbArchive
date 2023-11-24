@@ -38,7 +38,6 @@ import static java.time.LocalDate.now;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final UserService userService;
     private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -54,22 +53,36 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         Map<String, Object> paramMap = oAuth2User.getAttributes();
 
-        // 카카오 API로부터 반환된 "kakao_account" 속성을 맵으로 추출합니다.
-        Map<String, Object> kakaoAccount = (Map<String, Object>) paramMap.get("kakao_account");
-        String email = (String) kakaoAccount.get("email");  // "kakao_account"에서 "email" 속성을 가져옵니다.
+        String email = null;
+        String userId = null;
+        String nickname = null;
+        switch (clientName) {
+            case "kakao" :
+                // 카카오 API로부터 반환된 "kakao_account" 속성을 맵으로 추출합니다.
+                Map<String, Object> kakaoAccount = (Map<String, Object>) paramMap.get("kakao_account");
+                email = (String) kakaoAccount.get("email");  // "kakao_account"에서 "email" 속성을 가져옵니다.
+                userId = "k_"+paramMap.get("id");
+                // "kakao_account"의 "profile" 속성을 맵으로 추출합니다.
+                Map<String, Object> profile1 = (Map<String, Object>) kakaoAccount.get("profile");
+                nickname = (String) profile1.get("nickname");
+                break;
 
-        String userId = "k_"+paramMap.get("id");
+            case "Google" :
+                email = "" + paramMap.get("email");
+                userId = "k_"+paramMap.get("sub");
+                nickname = (String) paramMap.get("name");
+                break;
+        }
 
-        // "kakao_account"의 "profile" 속성을 맵으로 추출합니다.
-        Map<String, Object> profile1 = (Map<String, Object>) kakaoAccount.get("profile");
-        String nickname = (String) profile1.get("nickname");
 
-        log.info(paramMap);
-        log.info(oAuth2User);
+        log.info("@@@ paramMap : " + paramMap);
+        log.info("@@@ oAuth2User : " + oAuth2User);
+
 
 
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         log.info(email);
+        log.info(userId);
         log.info(nickname);
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
