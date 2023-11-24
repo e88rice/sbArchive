@@ -27,11 +27,10 @@ public class CustomTempLoginSuccessHandler implements AuthenticationSuccessHandl
 
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
 
-        String encodePw = memberSecurityDTO.getPasswd();
-        String userId = memberSecurityDTO.getUserId();
+        String email = memberSecurityDTO.getEmail();
 
         // 임시 비밀번호라면
-        if(userService.isTempPassword(userId) == 1) {
+        if(userService.isTempPassword(email)) {
             log.info("==================== Should Change Password ====================");
             log.info("Redirect to Member Modify");
 

@@ -121,8 +121,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int isTempPassword(String userId) {
-        return userMapper.isTempPassword(userId);
+    public boolean isTempPassword(String email) {
+        return userMapper.isTempPassword(email);
     }
 
     @Override
@@ -247,7 +247,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int isSocialPassword(String email) {
+    public boolean isSocialPassword(String email) {
         return userMapper.isSocialPassword(email);
     }
 
@@ -259,6 +259,17 @@ public class UserServiceImpl implements UserService{
     @Override
     public void checkLevelUp(String userId, int level, int lvPoint) {
         userMapper.checkLevelUp(userId, level, lvPoint);
+    }
+
+    @Override
+    public int checkDupl(String email) {
+        return userMapper.checkDupl(email);
+    }
+
+    @Override
+    public UserDTO getUserInfoByEmail(String email) {
+        UserDTO userDTO = modelMapper.map(userMapper.getUserInfoByEmail(email), UserDTO.class);
+        return userDTO;
     }
 
     @Override

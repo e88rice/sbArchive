@@ -146,6 +146,7 @@ public class BoardController {
             model.addAttribute("name", "guest");
         }
     }
+
     @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/modify")
     public void modify(Model model, int boardId, HttpServletRequest request,

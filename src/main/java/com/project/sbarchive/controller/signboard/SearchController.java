@@ -24,7 +24,7 @@ public class SearchController {
     private final SignBoardService signBoardService;
 
 
-    @ApiOperation(value = "Search keyword", notes = "POST 방식으로 검색")
+    @ApiOperation(value = "Search keyword", notes = "GET 방식으로 검색")
     @GetMapping(value = "/list/{query}") // JSON으로 처리하는 어노테이션
     public ArrayList<SearchResultDTO> search(@PathVariable("query") String query) {
 

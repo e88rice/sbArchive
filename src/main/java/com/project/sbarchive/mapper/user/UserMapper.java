@@ -39,7 +39,7 @@ public interface UserMapper {
     void updateLogTemp(String userId, String passwd);
     void updateLog(String userId, String passwd);
 
-    int isTempPassword(String userId);
+    boolean isTempPassword(String email);
 
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
@@ -68,7 +68,7 @@ public interface UserMapper {
 
     // 소셜 회원가입
     void updateLogSocial(String userId, String passwd);
-    int isSocialPassword(String email);
+    boolean isSocialPassword(String email);
 
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10
@@ -77,5 +77,7 @@ public interface UserMapper {
     // lvPoint 업데이트 할 때 마다 lvPoint를 검사해서 조건을 만족할 시 레벨업을 시켜줌
     void checkLevelUp(String userId, int level, int lvPoint);
 
-
+    // 삭제요망_현준
+    int checkDupl(String email);
+    UserVO getUserInfoByEmail(String email);
 }

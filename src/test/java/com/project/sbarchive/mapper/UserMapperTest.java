@@ -24,6 +24,12 @@ public class UserMapperTest {
         userMapper.registerUser(userVO);
     }
 
+    // 삭제요망_현준
+    @Test
+    public void test() {
+        log.info(userMapper.checkDupl("guswns8780@naver.com"));
+        log.info(userMapper.getUserInfoByEmail("guswns8780@naver.com"));
+    }
 
     @Test
     public void getUserInfoTest() {
