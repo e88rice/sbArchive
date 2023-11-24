@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService{
             role_set.add(i);
         }
         addUserRole(userVO.getUserId(), role_set);
-        addLog(userVO.getUserId(), userVO.getPasswd());
+        addLog(userVO.getUserId(), userVO.getPasswd(), userVO.getEmail());
     }
 
     @Override
@@ -59,9 +59,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addLog(String userId, String passwd) {
+    public void addLog(String userId, String passwd, String email) {
         log.info("============= addUserRole Service =============");
-        userMapper.addLog(userId, passwd);
+        userMapper.addLog(userId, passwd, email);
     }
 
     @Override
@@ -247,8 +247,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int isSocialPassword(String userId) {
-        return userMapper.isSocialPassword(userId);
+    public int isSocialPassword(String email) {
+        return userMapper.isSocialPassword(email);
     }
 
     @Override

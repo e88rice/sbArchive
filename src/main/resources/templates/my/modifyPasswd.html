@@ -53,7 +53,7 @@
                     </div>
                     <hr>
                     <div style="display: flex; justify-content: space-between">
-                        <a href="#" class="back"></a>
+                        <a href="/my/mypage" class="back">뒤로가기</a>
                         <a href="/index">메인으로</a>
                     </div>
                 </form>
@@ -65,20 +65,6 @@
         const strongPasswordMessage = document.querySelector('.strongPassword-message');
         const mismatchMessage = document.querySelector('.mismatch-message');
 
-        document.addEventListener('DOMContentLoaded', function (){
-            const urlParams = new URL(window.location.href).searchParams;
-            const back = document.querySelector('.back');
-            let temp = urlParams.has('temp');
-
-            if(!temp) { // 임시 비밀번호 접근이 아닌, 비밀번호 재설정으로 들어왔다면
-                back.innerText = "뒤로가기"
-                back.addEventListener('click', function (e){
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    self.location.href = '/my/mypage';
-                });
-            }
 
             const msg = [[${msg}]];
             console.log(msg);
@@ -168,7 +154,6 @@
                 location.href = "/index";
             });
 
-        });
 
     </script>
 </div>

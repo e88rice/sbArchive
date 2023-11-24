@@ -14,7 +14,7 @@ public interface UserMapper {
     // 회원 가입
     void registerUser(UserVO userVO);
     void addUserRole(String userId, Integer role_set);
-    void addLog(String userId, String passwd);
+    void addLog(String userId, String passwd, String email);
 
     // 이메일 유효성 검사
     int emailCheck(String email);
@@ -68,7 +68,7 @@ public interface UserMapper {
 
     // 소셜 회원가입
     void updateLogSocial(String userId, String passwd);
-    int isSocialPassword(String userId);
+    int isSocialPassword(String email);
 
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10

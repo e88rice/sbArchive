@@ -15,7 +15,7 @@ public interface UserService {
     // 회원 가입
     void registerUser(UserDTO userDTO);
     void addUserRole(String userId, List<Integer> role_set);
-    void addLog(String userId, String passwd);
+    void addLog(String userId, String passwd, String email);
 
     // 이메일 유효성 검사
     int emailCheck(String email);
@@ -66,7 +66,7 @@ public interface UserService {
 
     // 소셜 회원가입
     void socialRegister(UserDTO userDTO);
-    int isSocialPassword(String userId);
+    int isSocialPassword(String email);
 
     // 회원 탈퇴
     boolean withdrawal(String userId, String passwd);

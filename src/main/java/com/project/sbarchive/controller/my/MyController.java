@@ -43,15 +43,23 @@ public class MyController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
-    public void myPageGET(Principal principal, Model model) {
+    public String myPageGET(Authentication authentication, Model model) {
         log.info("===== myPage Get Controller =====");
         log.info("==================== myPage Get Controller ====================");
-        log.info(principal.getName());
-        UserVO userVO = userService.getUserInfo(principal.getName());
-        UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
-        String userId = principal.getName();
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
+        log.info(memberSecurityDTO.getUserId());
+        log.info(memberSecurityDTO.getEmail());
+        String email = memberSecurityDTO.getEmail();
 
-        model.addAttribute("userInfo", userDTO);
+        if(userService.isSocialPassword(email) == 1){
+            return "my/modifySocialPasswd";
+        } else {
+            UserVO userVO = userService.getUserInfo(memberSecurityDTO.getUserId());
+            UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
+
+            model.addAttribute("userInfo", userDTO);
+            return "my/mypage";
+        }
     }
 
     @GetMapping("/modifyMyInfoAuth")

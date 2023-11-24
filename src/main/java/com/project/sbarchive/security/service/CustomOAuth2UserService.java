@@ -69,7 +69,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             case "Google" :
                 email = "" + paramMap.get("email");
-                userId = "k_"+paramMap.get("sub");
+                userId = "g_"+paramMap.get("sub");
                 nickname = (String) paramMap.get("name");
                 break;
         }

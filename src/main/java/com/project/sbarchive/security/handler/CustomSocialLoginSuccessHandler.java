@@ -31,19 +31,22 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) authentication.getPrincipal();
 
         String userId = null;
+        String email = null;
 
+        // 최초 회원가입 후 유지된 로그인 상태에서 userId가 이메일로 설정되어 있어서 구분필요
         if(userService.getUserId(memberSecurityDTO.getUserId()) == null){
             userId = memberSecurityDTO.getUserId();
+            email = memberSecurityDTO.getEmail();
         } else {
             userId = userService.getUserId(memberSecurityDTO.getUserId());
+            email = memberSecurityDTO.getUserId();
         }
 
         String encodePw = memberSecurityDTO.getPasswd();
         log.info("@@@@@@@@@@@@@@@ " + userId);
-        log.info("@@@@@@@@@@@@@@@ " + encodePw);
 
         // 소셜 로그인이고 회원의 패스워드가 1111 이라면
-        if(userService.isSocialPassword(userId) == 1) {
+        if(userService.isSocialPassword(email) == 1) {
             log.info("==================== Should Change Password ====================");
             log.info("Redirect to Member Modify");
 

@@ -31,8 +31,8 @@
     </insert>
 
     <insert id="addLog">
-        insert into user_pw_log (userId, passwd, modDate)
-        VALUES (#{userId}, #{passwd}, now())
+        insert into user_pw_log (userId, passwd, modDate, email)
+        VALUES (#{userId}, #{passwd}, now(), #{email})
     </insert>
 
     <select id="emailCheck" parameterType="String" resultType="int">
@@ -150,7 +150,7 @@
         UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isSocialPassword = 1 WHERE userId = #{userId}
     </update>
     <select id="isSocialPassword" resultType="int">
-        SELECT isSocialPassword FROM user_pw_log WHERE userId = #{userId}
+        SELECT isSocialPassword FROM user_pw_log WHERE email = #{email}
     </select>
 
 
