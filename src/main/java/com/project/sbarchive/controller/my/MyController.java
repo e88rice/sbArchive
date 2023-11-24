@@ -51,11 +51,13 @@ public class MyController {
         log.info(memberSecurityDTO.getEmail());
         String email = memberSecurityDTO.getEmail();
 
-        if(userService.isSocialPassword(email) == 1){
-            return "my/modifySocialPasswd";
-        } else {
-            UserVO userVO = userService.getUserInfo(memberSecurityDTO.getUserId());
-            UserDTO userDTO = modelMapper.map(userVO, UserDTO.class);
+
+        if(userService.isSocialPassword(email)){
+            return "/my/modifySocialPasswd";
+        } else if (userService.isTempPassword(email)) {
+            return "/my/modifyPasswd";
+        }else {
+            UserDTO userDTO = userService.getUserInfoByEmail(email);
 
             model.addAttribute("userInfo", userDTO);
             return "my/mypage";

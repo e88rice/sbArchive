@@ -39,7 +39,7 @@ public interface UserMapper {
     void updateLogTemp(String userId, String passwd);
     void updateLog(String userId, String passwd);
 
-    int isTempPassword(String userId);
+    boolean isTempPassword(String email);
 
     // 닉네임 재설정
     void modifyNickname(String userId, String email, String nickname);
@@ -68,7 +68,7 @@ public interface UserMapper {
 
     // 소셜 회원가입
     void updateLogSocial(String userId, String passwd);
-    int isSocialPassword(String email);
+    boolean isSocialPassword(String email);
 
 
     // 게시글 작성, 댓글 작성, 신고 활동 시 lvPoint + 10

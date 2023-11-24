@@ -121,8 +121,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int isTempPassword(String userId) {
-        return userMapper.isTempPassword(userId);
+    public boolean isTempPassword(String email) {
+        return userMapper.isTempPassword(email);
     }
 
     @Override
@@ -247,7 +247,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public int isSocialPassword(String email) {
+    public boolean isSocialPassword(String email) {
         return userMapper.isSocialPassword(email);
     }
 

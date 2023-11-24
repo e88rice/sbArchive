@@ -42,7 +42,6 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
             email = memberSecurityDTO.getUserId();
         }
 
-        String encodePw = memberSecurityDTO.getPasswd();
         log.info("@@@@@@@@@@@@@@@ " + userId);
 
         //  소셜 로그인이고 회원의 패스워드가 1111 이라면
@@ -50,7 +49,7 @@ public class CustomSocialLoginSuccessHandler implements AuthenticationSuccessHan
             log.info("ㅎㅇㅎㅇ 석세스 핸들러임");
             response.sendRedirect("/error/dupl");
         }
-        else if(userService.isSocialPassword(userId) == 1) {
+        else if(userService.isSocialPassword(email)) {
             log.info("==================== Should Change Password ====================");
             log.info("Redirect to Member Modify");
 

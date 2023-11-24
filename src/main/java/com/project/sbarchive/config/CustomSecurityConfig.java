@@ -10,16 +10,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -35,7 +29,6 @@ import javax.sql.DataSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 어노테이션으로 권한을 설정할 수 있게 하는 어노테이션
 public class CustomSecurityConfig {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final DataSource dataSource;
     private final CustomUserDetailService customUserDetailService;
 
@@ -65,7 +58,9 @@ public class CustomSecurityConfig {
         httpSecurity.exceptionHandling().accessDeniedHandler(accessDeniedHandler()); // 403
 
         // 소셜 로그인 + successHandler(자동 가입 후 정보수정으로 이동)
-        httpSecurity.oauth2Login().loginPage("/user/login").successHandler(authenticationSuccessHandler2());
+        httpSecurity.oauth2Login()
+                .loginPage("/user/login")
+                .successHandler(authenticationSuccessHandler2());
 
 
         return httpSecurity.build();

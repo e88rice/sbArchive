@@ -41,7 +41,7 @@ public interface UserService {
     void updateLogTemp (String userId, String passwd);
 
     // 임시 비밀번호인지 확인
-    int isTempPassword(String userId);
+    boolean isTempPassword(String email);
     // 비밀번호 재설정
     void updatePassword (String userId, String passwd);
     void updateLog (String userId, String passwd);
@@ -66,7 +66,7 @@ public interface UserService {
 
     // 소셜 회원가입
     void socialRegister(UserDTO userDTO);
-    int isSocialPassword(String email);
+    boolean isSocialPassword(String email);
 
     // 회원 탈퇴
     boolean withdrawal(String userId, String passwd);

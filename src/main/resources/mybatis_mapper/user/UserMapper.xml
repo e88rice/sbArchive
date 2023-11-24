@@ -75,8 +75,8 @@
         UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 0, isSocialPassword = 0 WHERE userId = #{userId}
     </update>
 
-    <select id="isTempPassword" resultType="int">
-        SELECT isTempPassword FROM user_pw_log WHERE userId = #{userId}
+    <select id="isTempPassword" resultType="boolean">
+        SELECT count(isTempPassword) FROM user_pw_log WHERE email = #{email} and isTempPassword = 1
     </select>
 
     <update id="modifyNickname">
@@ -147,10 +147,10 @@
 
 <!--    소셜 로그인 관련-->
     <update id="updateLogSocial">
-        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isSocialPassword = 1 WHERE userId = #{userId}
+        UPDATE user_pw_log set passwd = #{passwd}, modDate = now(), isTempPassword = 1, isSocialPassword = 1 WHERE userId = #{userId}
     </update>
-    <select id="isSocialPassword" resultType="int">
-        SELECT isSocialPassword FROM user_pw_log WHERE email = #{email}
+    <select id="isSocialPassword" resultType="boolean">
+        SELECT count(isTempPassword) FROM user_pw_log WHERE email = #{email} and isSocialPassword = true;
     </select>
 
 
