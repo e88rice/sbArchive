@@ -121,23 +121,43 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             return memberSecurityDTO;
         }
         else {
-            log.info("@@@@@@@@@@@@ social login @@@@@@@@@@@@");
-            UserVO userVO = userService.getUserInfo(userId);
-            MemberSecurityDTO memberSecurityDTO =
-                    new MemberSecurityDTO(
-                            userVO.getUserId(),
-                            userVO.getPasswd(),
-                            userVO.getNickname(),
-                            userVO.getEmail(),
-                            userVO.getLevel(),
-                            userVO.getLvPoint(),
-                            userVO.getIconName(),
-                            userVO.getRegDate(),
-                            userVO.isDel(),
-                            userVO.isSocial(),
-                            Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))
-                    );
-            return memberSecurityDTO;
+            if(userService.checkDupl(email) == 0) {
+                UserDTO userDTO = userService.getUserInfoByEmail(email);
+                // 기존사용자가 있는데 가입하려고 하는거
+                MemberSecurityDTO memberSecurityDTO =
+                        new MemberSecurityDTO(
+                                "dupl_error",
+                                userDTO.getPasswd(),
+                                userDTO.getNickname(),
+                                userDTO.getEmail(),
+                                userDTO.getLevel(),
+                                userDTO.getLvPoint(),
+                                userDTO.getIconName(),
+                                userDTO.getRegDate(),
+                                userDTO.isDel(),
+                                userDTO.isSocial(),
+                                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))
+                        );
+                return memberSecurityDTO;
+            } else { // 정상적인 소셜 로그인
+                log.info("@@@@@@@@@@@@ social login @@@@@@@@@@@@");
+                UserVO userVO = userService.getUserInfo(userId);
+                MemberSecurityDTO memberSecurityDTO =
+                        new MemberSecurityDTO(
+                                userVO.getUserId(),
+                                userVO.getPasswd(),
+                                userVO.getNickname(),
+                                userVO.getEmail(),
+                                userVO.getLevel(),
+                                userVO.getLvPoint(),
+                                userVO.getIconName(),
+                                userVO.getRegDate(),
+                                userVO.isDel(),
+                                userVO.isSocial(),
+                                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))
+                        );
+                return memberSecurityDTO;
+            }
         }
     }
 }
