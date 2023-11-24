@@ -67,6 +67,7 @@ public class BoardReportController {
 
     @PostMapping("/add")
     public String addBoard(BoardReportDTO boardDTO, List<MultipartFile> files,Principal principal,
+
                            RedirectAttributes redirectAttributes) {
         log.info("addBoard -------" +  boardDTO);
         boardDTO.setUserId(principal.getName());
