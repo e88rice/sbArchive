@@ -70,7 +70,14 @@ public class ReplyController {
                                                   PageRequestDTO pageRequestDTO) {
 
         PageResponseDTO<ReplyDTO> responseDTO=replyService.getReplyList(boardId, replyDepth, pageRequestDTO);
+
         log.info("여기는 댓글 리스트 조회하는 곳: "+responseDTO);
+        List<ReplyDTO> replyDTOS = responseDTO.getDtoList();
+        for(ReplyDTO replyDTO : replyDTOS) {
+            if(replyDTO.isReported()) {
+                replyDTO.setContent("관리자에의해 제재된 댓글입니다.");
+            }
+        }
         return responseDTO;
 
     }

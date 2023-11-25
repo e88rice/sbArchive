@@ -24,6 +24,7 @@ public class ReplyVO {
     @NotNull
     private int boardId;
 
+
     // 유저 아이디
     @NotNull
     private String userId;
@@ -51,6 +52,7 @@ public class ReplyVO {
     // 대댓글 관련
     // 댓글 깊이. 0(댓글), 1(대댓글). default 0
     private boolean replyDepth;
+
 
     // (대댓글이 달린다면) 대댓글의 부모 replyId
     private int parentReplyId;
