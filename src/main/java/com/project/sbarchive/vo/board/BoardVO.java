@@ -1,6 +1,7 @@
 package com.project.sbarchive.vo.board;
 
 import lombok.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;

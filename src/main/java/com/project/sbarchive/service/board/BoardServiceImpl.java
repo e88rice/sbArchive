@@ -46,7 +46,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDTO getBoard(int boardId) {
+        log.info(boardId + "id!!!!!!!!!!!!!!!!!!!!!!!!");
         BoardVO boardVO = boardMapper.getBoard(boardId);
+        log.info("boardVO!!!!!!!!!!!!!" + boardVO);
         BoardDTO boardDTO = modelMapper.map(boardVO,BoardDTO.class);
 
         return boardDTO;

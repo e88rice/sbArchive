@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class BoardReportVO {
     int rBoardId;
     int boardId;
+    int replyId;
     String userId;
     String title;
     String content;

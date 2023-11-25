@@ -9,6 +9,7 @@ import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.service.board.BoardFileService;
 import com.project.sbarchive.service.board.BoardReprotService;
 import com.project.sbarchive.service.board.BoardService;
+import com.project.sbarchive.service.message.MessageService;
 import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.board.BoardReportVO;
@@ -39,7 +40,8 @@ import java.util.List;
 public class BoardReportController {
     private final BoardReprotService boardReportService;
 
-    private final BoardService boardService;    ;
+    private final BoardService boardService;
+    private final MessageService messageService;
 
     private final BoardFileService boardFileService;
 
@@ -115,5 +117,16 @@ public class BoardReportController {
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardReportDTO.getRBoardId() , "report"));
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardAllDTO);
+    }
+
+    @PostMapping("/reportReply")
+    public String reportReply (int replyId, Principal principal) {
+        log.info("reportReply By Id" + replyId);
+        ReplyDTO replyDTO = replyService.getReply(replyId);
+        replyService.reportedReply(replyId);
+        messageService.add("asd2478",replyDTO.getUserId(), replyDTO.getContent() +" "+ "댓글이 제재처리 되었습니다");
+
+
+        return "redirect:/boardReport/list";
     }
 }

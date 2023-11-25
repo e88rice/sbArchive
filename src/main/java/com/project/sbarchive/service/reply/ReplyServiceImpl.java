@@ -138,10 +138,9 @@ public class ReplyServiceImpl implements ReplyService {
 
     // 신고 처리되었을 때, '관리자에 의해 규제된 댓글입니다' 문구 출력되게
     @Override
-    public void reportedReply(ReplyDTO replyDTO) {
-        log.info("ReplyServiceImpl - reportedReply replyDTO: "+replyDTO);
-        ReplyVO replyVO=modelMapper.map(replyDTO, ReplyVO.class);
-        replyMapper.reportedReply(replyVO);
+    public void reportedReply(int replyId) {
+        log.info("ReplyServiceImpl - reportedReply replyDTO: "+replyId);
+        replyMapper.reportedReply(replyId);
     }
 
 

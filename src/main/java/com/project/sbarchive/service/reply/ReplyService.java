@@ -43,7 +43,7 @@ public interface ReplyService {
     int countReReplies(int parentReplyId);
 
     // 댓글이 신고 처리됐을 때, '관리자에 의해 규제된 댓글입니다' 문구 출력
-    void reportedReply(ReplyDTO replyDTO);
+    void reportedReply(int replyId);
 
 
 

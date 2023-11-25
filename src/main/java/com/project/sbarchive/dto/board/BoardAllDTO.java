@@ -20,6 +20,8 @@ public class BoardAllDTO {
     private Integer boardId;
 
     private int rBoardId;
+
+    private int replyId;
     @NotEmpty
     private String userId;
 

@@ -190,15 +190,21 @@ public class BoardController {
     }
 
 
+
     @PostMapping("/remove/admin")
     public String removeAdmin(int boardId,String userId,String title,
                               Principal principal,
                               PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
-        log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");
-        boardService.remove(boardId);
         redirectAttributes.addAttribute("page",pageRequestDTO.getPage());
         redirectAttributes.addAttribute("size",pageRequestDTO.getSize());
-        messageService.add("asd2478",userId, title +" "+ "게시물이 제재처리 되었습니다");
+        BoardDTO boardDTO = boardService.getBoard(boardId);
+        if( principal.getName() != null) {
+            if(boardDTO.getUserId() != principal.getName()) {
+                messageService.add("asd2478", userId, title + " " + "게시물이 제재처리 되었습니다");
+            }
+        }
+        log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");
+        boardService.remove(boardId);
 
         return "redirect:/board/list?"+pageRequestDTO.getLink();
     }

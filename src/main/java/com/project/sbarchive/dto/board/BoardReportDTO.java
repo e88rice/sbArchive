@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class BoardReportDTO {
     int rBoardId;
     int boardId;
+    int replyId;
     String userId;
     String title;
     String content;
