@@ -142,4 +142,8 @@ public class BoardServiceImpl implements BoardService {
     public int getExBoardsCount(PageRequestDTO pageRequestDTO) {
         return boardMapper.getExBoardsCount(pageRequestDTO);
     }
+
+    @Override
+    public void deleteAllDelDate() {
+    }
 }

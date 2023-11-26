@@ -42,6 +42,8 @@ public interface BoardMapper {
     List<BoardVO> getExBoards(PageRequestDTO pageRequestDTO);
     int getExBoardsCount(PageRequestDTO pageRequestDTO);
 
+    void deleteAllDelDate ();
+
 
 
 

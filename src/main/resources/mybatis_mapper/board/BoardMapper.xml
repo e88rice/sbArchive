@@ -85,4 +85,8 @@
         select count(*) from board where delDate <![CDATA[<]]> now();
     </select>
 
+    <delete id="deleteAllDelDate">
+        DELETE FROM board where delDate < now()
+    </delete>
+
 </mapper>

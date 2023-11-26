@@ -40,4 +40,6 @@ public interface BoardService {
     PageResponseDTO<BoardDTO> getExBoards(PageRequestDTO pageRequestDTO);
     int getExBoardsCount(PageRequestDTO pageRequestDTO);
 
+    void  deleteAllDelDate();
+
 }
