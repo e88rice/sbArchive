@@ -52,9 +52,9 @@
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO">
         SELECT * FROM board
         <include refid="search" />
-        <where>
+        <if test="types != null and types.length > 0">
             AND delDate > NOW()
-        </where>
+        </if>
         ORDER BY CASE WHEN userId = 'admin' THEN 0 ELSE 1 END, boardId DESC
         LIMIT #{skip}, #{size}
     </select>

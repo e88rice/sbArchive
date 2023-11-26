@@ -211,14 +211,7 @@
 
 <div layout:fragment="content">
     <div class="form1">
-        <form action="/board/remove/admin" method="post" >
-            <input th:value="${dto.boardId}" name="boardId" hidden="hidden">
-            <input th:value="${dto.userId}" name="userId" hidden="hidden">
-            <input th:value="${dto.title}" name="title" hidden="hidden">
-            <button th:if="${name != null and name == 'admin'}"
-                    class="btn btn-outline-secondary reportBtn" type="submit" style="margin-left: 5px; background: #d43f3a">현재게시글 REPOT
-            </button>
-        </form>
+
         <form  action="/board/modify" method="get" class="readBoard_form"  enctype="multipart/form-data">
             <div class="row mt-3">
                 <div class="col">
@@ -277,7 +270,7 @@
                                 </div>
 
                                 <div>
-                                    <button type="button" class="btn btn-danger reportPage">이글 신고하기</button>
+                                    <button th:if="${dto.userId} != ${#authentication.principal.username}" type="button" class="btn btn-danger reportPage">이글 신고하기</button>
                                 </div>
                             </div>
 
@@ -287,6 +280,14 @@
                 </div>
             </div>
             <script src="/js/board/board.js"></script>
+        </form>
+        <form action="/board/remove/admin" method="post">
+            <input th:value="${dto.boardId}" name="boardId" hidden="hidden">
+            <input th:value="${dto.userId}" name="userId" hidden="hidden">
+            <input th:value="${dto.title}" name="title" hidden="hidden">
+            <button th:if="${name != null and name == 'admin'}"
+                    class="btn btn-outline-secondary reportBtn" type="submit" style="margin-left: 850px; background: #d43f3a">현재게시글 REPOT
+            </button>
         </form>
     </div>
 

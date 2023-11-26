@@ -34,8 +34,8 @@
         <div class="card">
           <div class="card-header" style="display: flex; justify-content: space-between">
             <h6 class="card-title">total : [[${responseDTO.total}]]</h6>
-            <button type="button" class="btn btn-primary btnRemoveSelected">선택삭제</button>
-            <button type="button" class="btn btn-primary btnRemoveAll">전체삭제</button>
+            <button type="button" class="btn btn-primary btnRemoveSelected" style="margin-left: 800px">선택삭제</button>
+            <button type="button" class="btn btn-primary btnRemoveAll" onclick="deleteAll()">전체삭제</button>
           </div>
           <div class="card-body">
             <form action="/admin/targetDeleteAdmin" method="post" name="deleteSelected">
@@ -105,6 +105,8 @@
 
 
 
+
+
               // 다중 선택 삭제
               const btnRemoveSelected = document.querySelector('.btnRemoveSelected');
               const deleteSelected = document.querySelector("form[name=deleteSelected]");
@@ -142,7 +144,7 @@
                 }
 
                 document.querySelector('.btnRemoveAll').addEventListener('click',function () {
-
+``
                 })
               }
             </script>
@@ -151,7 +153,6 @@
         </div>
       </div>
     </div>
-    
   </div>
   <!-- 컨텐츠에 필요한 자바스크립트가 작동 안할 시 여기다가 집어넣으면 될 수도 있음 -->
 </div>
