@@ -74,17 +74,17 @@
     cursor: pointer;
 }
 
-.manage_board > div {
+.manage_board > div:nth-child(1) {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
 }
-.manage_board > div > h3 {
+.manage_board > div:nth-child(1) > h3 {
     position: relative;
     left: 10%;
 }
-.manage_board > div a {
+.manage_board > div:nth-child(1) a {
     display: inline-block;
     position: relative;
     left: 30%;

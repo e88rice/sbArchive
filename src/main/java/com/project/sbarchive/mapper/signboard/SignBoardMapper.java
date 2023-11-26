@@ -29,4 +29,7 @@ public interface SignBoardMapper {
 
     // 간판 게시글 삭제
     int removeSignboard(int signboardId);
+
+    // 메인페이지에서 검색 기능 이용 시 키워드에 해당하는 객체를 반환받음
+    ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword);
 }

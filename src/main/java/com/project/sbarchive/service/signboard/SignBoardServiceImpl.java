@@ -88,4 +88,9 @@ public class SignBoardServiceImpl implements SignBoardService {
         return signBoardMapper.removeSignboard(signboardId);
     }
 
+    @Override
+    public ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword) {
+        return signBoardMapper.getSearchSignboardList(keyword);
+    }
+
 }
