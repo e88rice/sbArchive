@@ -73,5 +73,13 @@ public class SignboardRestController {
         return signBoardAllDTO;
     }
 
+    @GetMapping("/get/search/{keyword}")
+    public ArrayList<SignBoardAllDTO> getSearchSignboards(@PathVariable("keyword") String keyword) {
+        if (keyword.equals("#############")){
+            log.info("ㅎㅇ");
+        }
+        return signBoardService.getSearchSignboardList(keyword);
+    }
+
 
 }

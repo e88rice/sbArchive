@@ -92,6 +92,15 @@
         width: 60%;
         height: 600px;
     }
+    #map2 {
+        display: none;
+        width: 60%;
+        height: 600px;
+    }
+    #map_search {
+        margin-top: 20px;
+        width: 20%;
+    }
     .modal-body #map {
         height: 100px;
         width: 100%;
@@ -104,32 +113,11 @@
         width: 50px;
         height: 50px;
     }
-    /*.main_title_container {*/
-    /*    width: 50%;*/
-    /*    border: 2px solid black;*/
-    /*    border-radius: 20px;*/
-    /*    text-align: center;*/
-    /*    margin-bottom: 20px;*/
-    /*    height: 50px;*/
-    /*    !*color: white;*!*/
-    /*    background-color: #97e37d;*/
-    /*    box-shadow: 5px 5px 15px #000000;*/
-    /*}*/
+
     .main_title_container > h2{
         line-height: 45px;
     }
-    /*.add_sb_link_btn {*/
-    /*    margin-top: 20px;*/
-    /*    width: 50%;*/
-    /*}*/
-    /*.add_sb_link_btn button {*/
-    /*    width: 100%;*/
-    /*    border-radius: 20px;*/
-    /*    height: 50px;*/
-    /*    !*color: white;*!*/
-    /*    background-color: #97e37d;*/
-    /*    box-shadow: 5px 5px 15px #000000;*/
-    /*}*/
+
     @font-face {
         font-family: 'HSBombaram21-Regular';
         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/HSBombaram21-Regular.woff2') format('woff2');
@@ -164,7 +152,8 @@
         <div class="main_title_container"><h2>< 외국어 간판 지도 ></h2></div>
 
         <div id="map"></div>
-
+        <div id="map2"></div>
+        <input type="text" id="map_search" placeholder="가게를 검색해보세요">
         <div class="add_sb_link_btn"> <a href="/signboard/add"><button>외국어 간판 신고하기</button></a> </div>
     </div>
 

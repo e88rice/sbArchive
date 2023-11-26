@@ -23,4 +23,7 @@ public interface SignBoardService {
     Integer modifySignboard(int signboardId, String content); // 간판 게시물 콘텐츠 수정
 
     int removeSignboard(int signboardId); // 해당 signboardId를 참조하는 이미지 데이터들을 삭제
+
+    // 메인페이지에서 검색 기능 이용 시 키워드에 해당하는 객체를 반환받음
+    ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword);
 }
