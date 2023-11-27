@@ -25,4 +25,6 @@ public interface BoardReportMapper {
 
     List<BoardReportVO> getMyReportList (PageRequestDTO pageRequestDTO, String userId);
 
+    int getMyReportCount(String[] types, String keyword ,String userId);
+
 }

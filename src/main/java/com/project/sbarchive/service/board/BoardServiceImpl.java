@@ -150,4 +150,8 @@ public class BoardServiceImpl implements BoardService {
     public void deleteAllDelDate() {
         boardMapper.deleteAllDelDate();
     }
+
+
+
+
 }

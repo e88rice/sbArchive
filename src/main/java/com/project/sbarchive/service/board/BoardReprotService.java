@@ -23,4 +23,5 @@ public interface BoardReprotService {
     PageResponseDTO<BoardReportDTO> getList(PageRequestDTO pageRequestDTO);
 
     PageResponseDTO<BoardReportDTO> getMyReportList(PageRequestDTO pageRequestDTO, String userId);
+
 }

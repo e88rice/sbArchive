@@ -85,8 +85,7 @@ public class BoardReportServiceImpl implements BoardReprotService{
         for (BoardReportVO boardVO : voList) {
             dtoList.add(modelMapper.map(boardVO, BoardReportDTO.class));
         }
-
-        int total = boardReportMapper.getCount(pageRequestDTO);
+        int total = boardReportMapper.getMyReportCount(pageRequestDTO.getTypes(),pageRequestDTO.getKeyword() ,userId);
 
         PageResponseDTO<BoardReportDTO> pageResponseDTO = PageResponseDTO.<BoardReportDTO>withAll()
                 .dtoList(dtoList)
@@ -95,4 +94,7 @@ public class BoardReportServiceImpl implements BoardReprotService{
                 .build();
         return pageResponseDTO;
     }
+
+
+
 }

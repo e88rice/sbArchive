@@ -42,4 +42,6 @@ public interface BoardService {
 
     void  deleteAllDelDate();
 
+
+
 }

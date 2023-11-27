@@ -45,6 +45,8 @@ public interface BoardMapper {
 
     void deleteAllDelDate ();
 
+    int getReportUserCount( String userId);
+
 
 
 

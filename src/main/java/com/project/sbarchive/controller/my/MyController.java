@@ -240,6 +240,7 @@ public class MyController {
             pageRequestDTO = PageRequestDTO.builder().build();
         }
         PageResponseDTO<ReplyDTO> boardDTOPageResponseDTO = userService.getMyReplyList(principal.getName(), pageRequestDTO);
+        log.info(boardDTOPageResponseDTO + " 1111111111111111");
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 
@@ -384,9 +385,7 @@ public class MyController {
         }
         PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReprotService.getMyReportList(pageRequestDTO,userId);
         List<BoardReportDTO> dtoList = boardDTOPageResponseDTO.getDtoList();
-        for(BoardReportDTO dto : dtoList) {
-            log.info(dto+"DTOLIST!!!!!!!!!!!!!");
-        }
+
         log.info(boardDTOPageResponseDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }

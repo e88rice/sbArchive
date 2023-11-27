@@ -3,6 +3,7 @@ package com.project.sbarchive.mapper;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.mapper.board.BoardMapper;
+import com.project.sbarchive.mapper.board.BoardReportMapper;
 import com.project.sbarchive.vo.board.BoardVO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,9 @@ public class BoardMapperTests {
     @Autowired(required = false)
     private BoardMapper boardMapper;
 
+    @Autowired
+    private BoardReportMapper boardReportMapper;
+
     @Test
     public void getExBoardsTest() {
         List<BoardVO> exBoards = boardMapper.getExBoards(PageRequestDTO.builder().page(1).size(10).build());
@@ -29,4 +33,5 @@ public class BoardMapperTests {
     public void delAll() {
         boardMapper.deleteAllDelDate();
     }
+
 }

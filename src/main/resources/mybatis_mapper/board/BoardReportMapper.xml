@@ -4,6 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.sbarchive.mapper.board.BoardReportMapper">
 
+    <sql id="search">
+        <where>
+            <if test="types != null and types.length > 0">
+
+                <foreach collection="types" item="type" open="(" close=")" separator=" OR">
+                    <if test="type == 's'.toString()">
+                        `title` like concat('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 'c'.toString()">
+                        `content` like concat('%',#{keyword},'%')
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
         INSERT INTO report_board ( userId, title, content,   isAnswered, addDate, boardId, replyId)
         VALUES (#{userId},#{title},#{content}, 0, now(), #{boardId}, #{replyId} )
@@ -19,6 +35,24 @@
     <select id="getCount" resultType="int">
         select count(*) from report_board
     </select>
+
+    <select id="getMyReportCount" resultType="int">
+        select count(*) from report_board
+        <where>
+            userId = #{userId}
+            <if test="types != null and types.length > 0">
+                <foreach collection="types" item="type" open=" AND (" close=")" separator=" OR ">
+                    <if test="type == 's'.toString()">
+                        `title` like concat('%',#{keyword},'%')
+                    </if>
+                    <if test="type == 'c'.toString()">
+                        `content` like concat('%',#{keyword},'%')
+                    </if>
+                </foreach>
+            </if>
+        </where>
+    </select>
+
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardReportVO" >
         select * from report_board
         order by rBoardId desc limit #{skip}, #{size}

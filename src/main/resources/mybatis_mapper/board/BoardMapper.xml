@@ -63,6 +63,13 @@
         <include refid="search" />
     </select>
 
+
+
+    <select id="getUserCount" resultType="int">
+        select count(*) from board
+        <include refid="search" />
+    </select>
+
     <insert id="likeUp" >
         insert into board_like (boardId, userId, addDate,title) values (#{boardId} , #{userId}, now(), #{title})
     </insert>
