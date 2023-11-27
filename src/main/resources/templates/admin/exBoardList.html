@@ -39,26 +39,27 @@
           </div>
           <div class="card-body">
             <form action="/admin/targetDeleteAdmin" method="post" name="deleteSelected">
-              <table class="table">
-                <thead>
+              <table class="table" style="margin-top: 10px">
+              <thead>
                 <tr class="division">
-                  <th scope="col"><input type="checkbox" name="checkAll" id="checkAll"></th>
-                  <th scope="col">제목</th>
-                  <th scope="col">작성일</th>
+                  <th scope="col" ><input type="checkbox" name="checkAll" id="checkAll"></th>
+                  <th scope="col" >제목</th>
+                  <th scope="col" >작성일</th>
                   <th scope="col">조회</th>
                   <th scope="col">삭제</th>
                 </tr>
+              </thead>
+
+                <thead  th:with="link = ${pageRequestDTO.getLink()}" style="margin-left: 100px">
+                  <tr th:each="dto:${responseDTO.dtoList}">
+                    <td style=" text-align: center"><input type="checkbox" name="boardId" th:value="${dto.boardId}"></td>
+                    <td style="text-align: center"><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
+                    <td style="text-align: center" th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                    <td style="text-align: center" th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
+                    <td style="text-align: center">[[${dto.hit}]]</td>
+                    <td style="text-align: center"><button type="button" th:value="${dto.boardId}" onclick="targetDeleteAdmin(this.value)"><i class="fa-solid fa-trash removeLike"></i></button></td>
+                  </tr>
                 </thead>
-                <tbody th:with="link = ${pageRequestDTO.getLink()}">
-                <tr th:each="dto:${responseDTO.dtoList}">
-                  <td><input type="checkbox" name="boardId" th:value="${dto.boardId}"></td>
-                  <td><a th:href="|@{/board/read(boardId =${dto.boardId})}&${link}|" class="text-decoration-none">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
-                  <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
-                  <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
-                  <td>[[${dto.hit}]]</td>
-                  <td><button type="button" th:value="${dto.boardId}" onclick="targetDeleteAdmin(this.value)"><i class="fa-solid fa-trash removeLike"></i></button></td>
-                </tr>
-                </tbody>
               </table>
             </form>
             <div class="center-block">
@@ -148,8 +149,11 @@
 
               }
               function deleteAlldelTime() {
-                allDel();
-                location.reload();
+                if(confirm("기한이지난 게시물을 전부 삭제하시겟습니까?")){
+                  allDel();
+                  location.reload();
+                }
+
               }
             </script>
           </div>

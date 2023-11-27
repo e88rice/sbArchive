@@ -386,6 +386,7 @@ public class MyController {
         for(BoardReportDTO dto : dtoList) {
             log.info(dto+"DTOLIST!!!!!!!!!!!!!");
         }
+        log.info(boardDTOPageResponseDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 }

@@ -205,7 +205,7 @@
             if (target.tagName !== 'A') {
                 return;
             }
-            const num = target.getAttribute("data-num");
+            const num = parseInt(target.getAttribute("data-num"));
 
             const formObj = document.querySelector("form");
 

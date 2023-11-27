@@ -177,11 +177,12 @@
                                 </li>
                             </ul>
                         </div>
-                        <form action="/my/myBoardList" method="get" name="search">
+                        <form action="/my/myReportList" method="get" name="search">
                             <div style="display: flex; justify-content: center" >
                                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                                 <div class="form-group" style="display: flex">
                                     <select class="form-select" name="types" style="width: 90px; margin-right: 20px;margin-bottom: 10px">
+                                        <option value="s" th:selected="${pageRequestDTO.types == ''}">검색</option>
                                         <option value="s" th:selected="${pageRequestDTO.types == 's'}">제목</option>
                                         <option value="c" th:selected="${pageRequestDTO.types == 'c'}">내용</option>
                                     </select>
@@ -200,13 +201,24 @@
         </div>
     </div>
     <script layout:fragment="script" th:inline="javascript">
-        document.querySelector(".pagination").addEventListener("click", function (e) {
+
+
+        document.querySelector(".pagination").addEventListener("click",function (e) {
+
+
             const target = e.target;
-            if (target.tagName === 'A') {
-                e.preventDefault();
-                changePage(target.getAttribute("data-num"));
+
+            if (target.tagName !== 'A') {
+                return;
             }
-        }, false);
+            const num = target.getAttribute("data-num");
+
+            const formObj = document.querySelector("form[name=search]");
+
+            formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`;
+
+            formObj.submit();
+        },false)
 
 
 

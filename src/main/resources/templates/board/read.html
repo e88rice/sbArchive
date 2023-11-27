@@ -1007,13 +1007,7 @@
         // 여기까지 쪽지 모달 끝
         //like기능 -------------
 
-        document.querySelector(".reportPage").addEventListener("click",function (e) {
-            e.preventDefault();
-            var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
-            if(userConfirmed) {
-                location.href = `/boardReport/add?boardId=${boardId}`;
-            }else return;
-        });
+
 
 
         const hart = document.querySelector(".hart");
@@ -1037,23 +1031,13 @@
                 location.reload();
             });
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        document.querySelector(".reportPage").addEventListener("click",function (e) {
+            e.preventDefault();
+            var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
+            if(userConfirmed) {
+                location.href = `/boardReport/add?boardId=${boardId}`;
+            }else return;
+        });
 
 
     </script>
