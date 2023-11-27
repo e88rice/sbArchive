@@ -143,8 +143,11 @@ public class BoardController {
             log.info(getlikeCount);
             String name = principal.getName();
             model.addAttribute("name" , name);
+            String nickname=userService.getUserInfo(name).getNickname();
+            model.addAttribute("nickname" , nickname);
         }else {
             model.addAttribute("name", "guest");
+            model.addAttribute("nickname" , "guest");
         }
     }
 
