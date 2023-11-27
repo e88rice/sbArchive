@@ -5,19 +5,17 @@
 <mapper namespace="com.project.sbarchive.mapper.board.BoardReportMapper">
 
     <sql id="search">
-        <where>
-            <if test="types != null and types.length > 0">
-
-                <foreach collection="types" item="type" open="(" close=")" separator=" OR">
-                    <if test="type == 's'.toString()">
-                        `title` like concat('%',#{keyword},'%')
-                    </if>
-                    <if test="type == 'c'.toString()">
-                        `content` like concat('%',#{keyword},'%')
-                    </if>
-                </foreach>
-            </if>
-        </where>
+        <if test="types != null and types.length > 0">
+            and
+            <foreach collection="types" item="type" open="(" close=")" separator=" OR">
+                <if test="type == 's'.toString()">
+                    `title` like concat('%',#{keyword},'%')
+                </if>
+                <if test="type == 'c'.toString()">
+                    `content` like concat('%',#{keyword},'%')
+                </if>
+            </foreach>
+        </if>
     </sql>
 
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
@@ -36,21 +34,12 @@
         select count(*) from report_board
     </select>
 
-    <select id="getMyReportCount" resultType="int">
-        select count(*) from report_board
-        <where>
-            userId = #{userId}
-            <if test="types != null and types.length > 0">
-                <foreach collection="types" item="type" open=" AND (" close=")" separator=" OR ">
-                    <if test="type == 's'.toString()">
-                        `title` like concat('%',#{keyword},'%')
-                    </if>
-                    <if test="type == 'c'.toString()">
-                        `content` like concat('%',#{keyword},'%')
-                    </if>
-                </foreach>
-            </if>
-        </where>
+    <select id="getMyReportCount" resultType="int" >
+        select count(*) from report_board where userId = #{userId} <include refid="search" />
+    </select>
+
+    <select id="getMyReportList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
+        select * from report_board where userId = #{userId} order by rBoardId desc limit #{skip}, #{size}
     </select>
 
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardReportVO" >
@@ -61,7 +50,5 @@
         select * from report_board order by userId desc
     </select>
 
-    <select id="getMyReportList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board where userId = #{userId} order by rBoardId desc
-    </select>
+
 </mapper>

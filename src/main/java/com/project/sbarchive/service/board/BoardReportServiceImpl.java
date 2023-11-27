@@ -6,7 +6,6 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.mapper.board.BoardReportMapper;
 import com.project.sbarchive.vo.board.BoardReportVO;
-import com.project.sbarchive.vo.board.BoardVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -79,7 +79,7 @@ public class BoardReportServiceImpl implements BoardReprotService{
     }
     @Override
     public PageResponseDTO<BoardReportDTO> getMyReportList(PageRequestDTO pageRequestDTO, String userId) {
-        List<BoardReportVO> voList = boardReportMapper.getMyReportList(pageRequestDTO, userId);
+        List<BoardReportVO> voList = boardReportMapper.getMyReportList(userId,pageRequestDTO.getSkip(),   pageRequestDTO.getSize(), pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
 
         List<BoardReportDTO> dtoList = new ArrayList<>();
         for (BoardReportVO boardVO : voList) {
@@ -92,6 +92,7 @@ public class BoardReportServiceImpl implements BoardReprotService{
                 .total(total)
                 .pageRequestDTO(pageRequestDTO)
                 .build();
+        log.info(pageResponseDTO);
         return pageResponseDTO;
     }
 

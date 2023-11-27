@@ -256,6 +256,20 @@ public class MyController {
         PageResponseDTO<BoardLikeDTO> boardDTOPageResponseDTO = userService.getMyLikedList(principal.getName(), pageRequestDTO);
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
+    @GetMapping("/myReportList")
+    public void list(Model model, @Valid PageRequestDTO pageRequestDTO,Principal principal,
+                     BindingResult bindingResult) {
+        log.info(pageRequestDTO);
+        String userId = principal.getName();
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReprotService.getMyReportList(pageRequestDTO, userId);
+        List<BoardReportDTO> dtoList = boardDTOPageResponseDTO.getDtoList();
+
+        log.info(boardDTOPageResponseDTO);
+        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
+    }
 
     // 게시글 다중선택 삭제
     @PostMapping("/deleteSelectedBoard")
@@ -375,18 +389,5 @@ public class MyController {
             return "/my/withdrawal";
         }
     }
-    @GetMapping("/myReportList")
-    public void list(Model model, @Valid PageRequestDTO pageRequestDTO,Principal principal,
-                     BindingResult bindingResult) {
-        log.info(pageRequestDTO);
-        String userId = principal.getName();
-        if(bindingResult.hasErrors()) {
-            pageRequestDTO = PageRequestDTO.builder().build();
-        }
-        PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReprotService.getMyReportList(pageRequestDTO,userId);
-        List<BoardReportDTO> dtoList = boardDTOPageResponseDTO.getDtoList();
 
-        log.info(boardDTOPageResponseDTO);
-        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
-    }
 }
