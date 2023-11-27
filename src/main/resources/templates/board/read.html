@@ -106,12 +106,12 @@
                         <div class="content-between">
                             <div class="float-end btnend">
                                 <div>
-                                    <button th:if="${dto.userId} == ${#authentication.principal.username}" type="submit" class="btn btn-primary">수정</button>
+                                    <button th:if="${dto.userId} == ${name}" type="submit" class="btn btn-primary">수정</button>
                                     <button type="button" class="btn btn-secondary">목록</button>
                                 </div>
 
                                 <div>
-                                    <button th:if="${dto.userId} != ${#authentication.principal.username} and ${#authentication.principal.username} != 'admin'
+                                    <button th:if="${dto.userId} != ${name} and ${name} != 'admin'
                                     " type="button" class="btn btn-danger reportPage">이글 신고하기</button>
                                 </div>
                             </div>

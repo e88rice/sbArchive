@@ -48,7 +48,7 @@ public class BoardController {
 
     private final MessageService messageService;
 
-//    private final BoardFileService boardFileService;
+
 
 
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
@@ -125,21 +125,22 @@ public class BoardController {
         }
     }
 
-    @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
+//    @PreAuthorize("isAuthenticated()") // 로그인한 사용자만
     @GetMapping("/read")
     public void view(Model model, int boardId, HttpServletRequest request, Principal principal,
                      List<MultipartFile> files, PageRequestDTO pageRequestDTO) {
         BoardDTO boardDTO = boardService.getBoard(boardId);
-        int getlikeCount = boardService.getLike(boardId, principal.getName());
+
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardId , "board"));
-        log.info(getlikeCount);
-        boardAllDTO.setLikeId(getlikeCount);
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
         boardService.hitCount(boardId);
 
         if(principal != null) {
+            int getlikeCount = boardService.getLike(boardId, principal.getName());
+            boardAllDTO.setLikeId(getlikeCount);
+            log.info(getlikeCount);
             String name = principal.getName();
             model.addAttribute("name" , name);
         }else {
@@ -200,7 +201,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getBoard(boardId);
         if( principal.getName() != null) {
             if(boardDTO.getUserId() != principal.getName()) {
-                messageService.add("asd2478", userId, title + " " + "게시물이 제재처리 되었습니다");
+                messageService.add(principal.getName(), userId, title + " " + "게시물이 제재처리 되었습니다");
             }
         }
         log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");

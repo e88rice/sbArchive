@@ -125,7 +125,7 @@ public class BoardReportController {
         ReplyDTO replyDTO = replyService.getReply(replyId);
         replyService.reportedReply(replyId);
         //센더아이디 나중에 principal로 바꿔야함
-        messageService.add("asd2478",replyDTO.getUserId(), replyDTO.getContent() +" "+ "댓글이 제재처리 되었습니다");
+        messageService.add(principal.getName(),replyDTO.getUserId(), replyDTO.getContent() +" "+ "댓글이 제재처리 되었습니다");
         boardReportService.isAnswered(rBoardId);
 
 
