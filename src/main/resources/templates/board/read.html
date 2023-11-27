@@ -111,7 +111,8 @@
                                 </div>
 
                                 <div>
-                                    <button th:if="${dto.userId} != ${#authentication.principal.username}" type="button" class="btn btn-danger reportPage">이글 신고하기</button>
+                                    <button th:if="${dto.userId} != ${#authentication.principal.username} and ${#authentication.principal.username} != 'admin'
+                                    " type="button" class="btn btn-danger reportPage">이글 신고하기</button>
                                 </div>
                             </div>
 
