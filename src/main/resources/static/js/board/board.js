@@ -8,3 +8,7 @@ async function likeDown(boardId, userId) {
 async function getLike(boardId, userId) {
     await axios.get(`/boardLike/add/${boardId}/${userId}`);
 }
+
+async function allDel(){
+    await axios.delete(`/boardReport/alldel`);
+}

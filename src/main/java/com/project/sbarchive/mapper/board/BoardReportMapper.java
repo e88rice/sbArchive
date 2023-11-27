@@ -1,6 +1,7 @@
 package com.project.sbarchive.mapper.board;
 
 import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.vo.board.BoardReportVO;
 import com.project.sbarchive.vo.board.BoardVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,5 +22,7 @@ public interface BoardReportMapper {
     List<BoardReportVO> selectList(PageRequestDTO pageRequestDTO);
 
     int getCount(PageRequestDTO pageRequestDTO);
+
+    List<BoardReportVO> getMyReportList (PageRequestDTO pageRequestDTO, String userId);
 
 }

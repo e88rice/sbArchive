@@ -168,8 +168,8 @@
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
                                 <th:block th:each="i:${#numbers.sequence(responseDTO.start-1, responseDTO.end)}">
-                                    <li th:if="${responseDTO.page != 0}" th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
-                                        <a  class=" pagenot0 page-link"  th:data-num="${i}" href="#">[[${i}]]</a>
+                                    <li th:if="${i != 0}" th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
+                                        <a class=" pagenot0 page-link"  th:data-num="${i}" href="#">[[${i}]]</a>
                                     </li>
                                 </th:block>
                                 <li class="page-item" th:if="${responseDTO.next}">

@@ -21,4 +21,6 @@ public interface BoardReprotService {
     void remove(int rBoardId);
 
     PageResponseDTO<BoardReportDTO> getList(PageRequestDTO pageRequestDTO);
+
+    PageResponseDTO<BoardReportDTO> getMyReportList(PageRequestDTO pageRequestDTO, String userId);
 }

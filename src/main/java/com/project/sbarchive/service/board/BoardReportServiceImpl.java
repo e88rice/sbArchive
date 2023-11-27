@@ -77,4 +77,22 @@ public class BoardReportServiceImpl implements BoardReprotService{
 
          return pageResponseDTO;
     }
+    @Override
+    public PageResponseDTO<BoardReportDTO> getMyReportList(PageRequestDTO pageRequestDTO, String userId) {
+        List<BoardReportVO> voList = boardReportMapper.getMyReportList(pageRequestDTO, userId);
+
+        List<BoardReportDTO> dtoList = new ArrayList<>();
+        for (BoardReportVO boardVO : voList) {
+            dtoList.add(modelMapper.map(boardVO, BoardReportDTO.class));
+        }
+
+        int total = boardReportMapper.getCount(pageRequestDTO);
+
+        PageResponseDTO<BoardReportDTO> pageResponseDTO = PageResponseDTO.<BoardReportDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO)
+                .build();
+        return pageResponseDTO;
+    }
 }

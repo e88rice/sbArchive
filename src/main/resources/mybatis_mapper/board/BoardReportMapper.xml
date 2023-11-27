@@ -26,4 +26,8 @@
     <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
         select * from report_board order by userId desc
     </select>
+
+    <select id="getMyReportList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
+        select * from report_board where userId = #{userId} order by rBoardId desc
+    </select>
 </mapper>

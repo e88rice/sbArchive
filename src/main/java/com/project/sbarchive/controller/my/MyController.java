@@ -2,11 +2,13 @@ package com.project.sbarchive.controller.my;
 
 import com.project.sbarchive.dto.board.BoardDTO;
 import com.project.sbarchive.dto.board.BoardLikeDTO;
+import com.project.sbarchive.dto.board.BoardReportDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.reply.ReplyDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.dto.user.UserDTO;
+import com.project.sbarchive.service.board.BoardReprotService;
 import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.signboard.SignBoardService;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Log4j2
 @Controller
@@ -40,6 +43,7 @@ public class MyController {
     private final ReplyService replyService;
     private final SignBoardService signBoardService;
     private final ModelMapper modelMapper;
+    private final BoardReprotService boardReprotService;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
@@ -368,5 +372,20 @@ public class MyController {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
             return "/my/withdrawal";
         }
+    }
+    @GetMapping("/myReportList")
+    public void list(Model model, @Valid PageRequestDTO pageRequestDTO,Principal principal,
+                     BindingResult bindingResult) {
+        log.info(pageRequestDTO);
+        String userId = principal.getName();
+        if(bindingResult.hasErrors()) {
+            pageRequestDTO = PageRequestDTO.builder().build();
+        }
+        PageResponseDTO<BoardReportDTO> boardDTOPageResponseDTO = boardReprotService.getMyReportList(pageRequestDTO,userId);
+        List<BoardReportDTO> dtoList = boardDTOPageResponseDTO.getDtoList();
+        for(BoardReportDTO dto : dtoList) {
+            log.info(dto+"DTOLIST!!!!!!!!!!!!!");
+        }
+        model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 }

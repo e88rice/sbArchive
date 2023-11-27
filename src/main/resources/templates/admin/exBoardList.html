@@ -35,7 +35,7 @@
           <div class="card-header" style="display: flex; justify-content: space-between">
             <h6 class="card-title">total : [[${responseDTO.total}]]</h6>
             <button type="button" class="btn btn-primary btnRemoveSelected" style="margin-left: 800px">선택삭제</button>
-            <button type="button" class="btn btn-primary btnRemoveAll" onclick="deleteAll()">전체삭제</button>
+            <button type="button" class="btn btn-primary btnRemoveAll" onclick="deleteAlldelTime()">전체삭제</button>
           </div>
           <div class="card-body">
             <form action="/admin/targetDeleteAdmin" method="post" name="deleteSelected">
@@ -92,6 +92,8 @@
                 </div>
               </div>
             </form>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script src="/js/board/board.js"></script>
             <script layout:fragment="script" th:inline="javascript">
               const checkAll = document.getElementById('checkAll');
 
@@ -143,9 +145,11 @@
                   newForm.submit();
                 }
 
-                document.querySelector('.btnRemoveAll').addEventListener('click',function () {
-``
-                })
+
+              }
+              function deleteAlldelTime() {
+                allDel();
+                location.reload();
               }
             </script>
           </div>

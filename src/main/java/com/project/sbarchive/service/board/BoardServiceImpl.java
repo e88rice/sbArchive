@@ -1,6 +1,7 @@
 package com.project.sbarchive.service.board;
 
 import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.board.BoardReportDTO;
 import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.mapper.board.BoardMapper;
@@ -89,6 +90,8 @@ public class BoardServiceImpl implements BoardService {
         return pageResponseDTO;
     }
 
+
+
     @Override
     public void likeUp(int boardId, String userId, String title) {
         boardMapper.likeUp(boardId,userId, title);
@@ -145,5 +148,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void deleteAllDelDate() {
+        boardMapper.deleteAllDelDate();
     }
 }

@@ -48,11 +48,7 @@ public class AdminController {
             model.addAttribute("name", "guest");
         }
 
-        log.info(boardDTOPageResponseDTO.getPage());
-        log.info(boardDTOPageResponseDTO.getSize());
-        log.info(boardDTOPageResponseDTO.getStart());
-        log.info(boardDTOPageResponseDTO.getEnd());
-        log.info(boardDTOPageResponseDTO.getDtoList().size());
+
 
         return "/admin/exBoardList";
     }

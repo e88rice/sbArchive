@@ -29,5 +29,4 @@ public class BoardMapperTests {
     public void delAll() {
         boardMapper.deleteAllDelDate();
     }
-
 }
