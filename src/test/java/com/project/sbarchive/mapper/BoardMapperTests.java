@@ -25,4 +25,9 @@ public class BoardMapperTests {
         log.info(boardMapper.getExBoardsCount(PageRequestDTO.builder().build()));
     }
 
+    @Test
+    public void delAll() {
+        boardMapper.deleteAllDelDate();
+    }
+
 }

@@ -86,7 +86,7 @@
     </select>
 
     <delete id="deleteAllDelDate">
-        DELETE FROM board where delDate < now()
+        DELETE FROM board WHERE delDate <![CDATA[<]]> now()
     </delete>
 
 </mapper>
