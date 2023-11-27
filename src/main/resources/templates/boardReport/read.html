@@ -32,14 +32,21 @@
     }
     .flex-content {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: center;
     }
-    .fa-solid {
-        font-size: 20px;
-        margin: 0 150px;
+    .reportboard {
+        font-size: 14px;
     }
 
+    .report_board_info2 {
+        display: flex;
+        justify-content: end;
+    }
+    .report_board_info2 span {
+        display: inline-block;
+        margin: 0 10px;
+    }
     /* 여기까지 /board/read 관련 css */
 
 
@@ -63,23 +70,22 @@
                         <div class="input-group mb-3">
                             <input style="font-size: 30px; background: none; border: none"; width="80px" type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
                         </div>
-                        <div class="flex-content" style="padding: 20px">
+                        <div class="flex-content" style="padding: 10px">
 
-                                신고자 [[${dto.nickname}]] (
-                                [[${dto.userId}]] )
-                            <i class="fa-solid fa-arrow-right"> </i> <a class="reportboard">신고게시물 [[${dto.boardId}]]</a>
+                                신고자 [[${dto.nickname}]] ( [[${dto.userId}]] ) <a class="reportboard">해당 페이지로 이동</a>
                             </div>
-                            <div>
-                                <span th:if="${dto.isAnswered}" th:text="답변완료" style="color: red; border-radius: 15px;padding: 4px;
-                                 margin-left: 5px;border: 2px solid red"/>
-                            </div>
-                            <div>
-                                <span th:unless="${dto.isAnswered}" th:text="미답변" style="color: #dfdfdf; border-radius: 15px;padding: 4px;
-                                 border: 2px solid #9d9d9d; color: #0b0b0b; margin-left: 5px;" />
-                            </div>
-                            <div>
+                            <div class="report_board_info2"  th:if="${dto.isAnswered}">
+                                <span th:text="답변완료" style="color: red; border-radius: 15px;padding: 2px 4px;
+                                 margin: 0 0 10px 5px;border: 2px solid red"/>
                                 <span style="margin-left: 85%">
-                                <td  th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                    <td  th:text="${dto.addDate.toString().substring(0, 10)}"></td>
+                                </span>
+                            </div>
+                            <div class="report_board_info2" th:unless="${dto.isAnswered}">
+                                <span th:text="미답변" style="color: #dfdfdf; border-radius: 15px; padding: 1px 4px;
+                                 border: 2px solid #9d9d9d; color: #0b0b0b; margin: 0 0 10px 5px;" />
+                                <span>
+                                    <td  th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                                 </span>
                             </div>
                         </div>
@@ -100,8 +106,8 @@
                             <div>
                             <button type="button" class="btn btn-secondary">목록</button>
                             <button type="button" class="btn messageBtn">답변</button>
-                            <button th:if="${dto.replyId != 0}" type="submit" style="color: red">리플 제재</button>
                             </div>
+                            <button th:if="${dto.replyId != 0}" type="submit" class="btn btn-danger">리플 제재</button>
                         </div>
                     </div>
                 </div>

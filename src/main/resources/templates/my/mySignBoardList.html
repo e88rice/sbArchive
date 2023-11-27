@@ -121,7 +121,7 @@
                 </ul>
             </div>
         </div>
-        <div class="my_content">
+        <div class="my_content" th:if="${responseDTO.end > 0}">
             <h1>작성 아카이브 보기</h1>
             <div class="col">
                 <div class="card">
@@ -186,6 +186,11 @@
                     <!--                    card body end-->
                 </div>
             </div>
+        </div>
+        <div style="text-align: center; margin-top: 60px" th:if="${responseDTO.end <= 0}">
+            <h5>
+                등록된 간판 게시물이 없습니다.
+            </h5>
         </div>
     </div>
     <script layout:fragment="script" th:inline="javascript">

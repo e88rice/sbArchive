@@ -23,7 +23,7 @@
     }
     .topline {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         font-size: 20px;
 
@@ -33,7 +33,18 @@
         margin-left: 20px;
         margin-right: 20px;
     }
-
+    #content {
+        position: relative;
+        padding: 80px 0 0 20px;
+        background: none;
+    }
+    .report_target_info {
+        padding: 20px 0 0 20px;
+        position: absolute;
+    }
+    .reportlink {
+        font-size: 14px;
+    }
 </style>
 
 
@@ -46,16 +57,17 @@
             <input  hidden="hidden" name="replyId" th:value="${dto.replyId}">
             <div class="topline">
                 <div class="form-group">
-                    신고자
+                    신고자 /
                     ( [[${user.getName}]] )
                 </div>
-                <i class="fa-solid fa-arrow-right"> </i>
+<!--                <i class="fa-solid fa-arrow-right"> </i>-->
                 <div class="form-group">
                     <a href="#" class="reportlink">
-                        신고글 리플: [[${dto.content}]]
-                        신고자 정보: [[${dto.nickname}]] (
-                        [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]]
-                        )
+                        해당 페이지로 이동
+<!--                        신고글 리플: [[${dto.content}]]-->
+<!--                        신고자 정보: [[${dto.nickname}]] (-->
+<!--                        [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]]-->
+<!--                        )-->
                     </a>
                 </div>
 
@@ -75,9 +87,12 @@
             </div>
 
             <div class="form-group">
+                <div class="report_target_info">
+                    <div>신고 대상: [[${dto.nickname}]] ( [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]] )</div>
+                    <div>신고 리플 내용: [[${dto.content}]]</div>
+                </div>
                 <textarea name="content" id="content" class="form-control" rows="25"
-                          placeholder="허위신고시 제재대상이 될수 있습니다."
-                          style="padding: 20px; background: none"></textarea>
+                          placeholder="허위신고 시 제재 대상이 될 수 있습니다.">내용 : </textarea>
             </div>
             <div class="topline">
                 <div class="form-group">
@@ -86,10 +101,6 @@
                 <div class="form-group">
                     <button type="submit" class="btn btn-danger">신고하기</button>
                 </div>
-                <div class="form-group">
-                    <button type="reset" class="btn btn-secondary">리셋</button>
-                </div>
-
             </div>
         </form>
 

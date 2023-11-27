@@ -28,6 +28,7 @@ public interface BoardMapper {
     List<BoardVO> selectList(PageRequestDTO pageRequestDTO);
 
     int getCount(PageRequestDTO pageRequestDTO);
+
     void likeUp(int boardId, String userId , String title);
 
     void likeDown(int boardId, String userId);

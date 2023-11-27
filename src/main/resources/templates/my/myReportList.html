@@ -125,7 +125,7 @@
                 </ul>
             </div>
         </div>
-        <div class="my_content">
+        <div class="my_content" th:if="${responseDTO.end > 0}">
             <h1>신고/문의</h1>
             <div class="col">
                 <div class="card">
@@ -167,7 +167,7 @@
                                 <li class="page-item" th:if="${responseDTO.prev}">
                                     <a class="page-link" th:data-num="${responseDTO.start - 1}">이전으로</a>
                                 </li>
-                                <th:block th:each="i:${#numbers.sequence(responseDTO.start-1, responseDTO.end)}">
+                                <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
                                     <li th:if="${i != 0}" th:class="${responseDTO.page == i ? 'page-item active' : 'page-item'}">
                                         <a class=" pagenot0 page-link"  th:data-num="${i}" href="#">[[${i}]]</a>
                                     </li>
@@ -198,6 +198,11 @@
                     <!--                    card body end&ndash-->
                 </div>
             </div>
+        </div>
+        <div style="text-align: center; margin-top: 60px" th:if="${responseDTO.end <= 0}">
+            <h5>
+                등록된 신고 게시물이 없습니다.
+            </h5>
         </div>
     </div>
     <script layout:fragment="script" th:inline="javascript">

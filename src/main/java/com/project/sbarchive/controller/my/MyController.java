@@ -229,6 +229,7 @@ public class MyController {
         model.addAttribute("responseDTO",boardDTOPageResponseDTO );
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/myReplyList")
     public void myReplyList(Principal principal, Model model, @Valid PageRequestDTO pageRequestDTO,
                             BindingResult bindingResult) {

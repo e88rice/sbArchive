@@ -63,9 +63,3 @@ public class AdminController {
     }
 
 }
-
-// 게시글, 댓글, 신고 활동 시 마다 이거 써줄거임 
-//        userService.lvPointUp(userId);
-//                userVO = userService.getUserInfo(userId);
-//                userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
-//                log.info(userVO);

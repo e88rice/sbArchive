@@ -77,6 +77,10 @@ function printSearchList(searchList) {
 
     document.querySelector("#addBtn").addEventListener('click', function () {
         const regForm = document.forms[0];
+        if(files.files[0] === undefined) { // 등록된 파일이 없다면 알림 출력 후 리턴
+            alert("가게의 사진을 첨부해주세요")
+            return;
+        }
         regForm.submit();
     })
 }
