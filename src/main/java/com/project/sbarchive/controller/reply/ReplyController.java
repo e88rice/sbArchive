@@ -166,6 +166,9 @@ public class ReplyController {
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
         // @RequestBody가 있어야 입력할 수 있는 게 나옴
         replyDTO.setReplyId(replyId); // 번호 일치시킴
+        replyDTO = replyService.getReply(replyId);
+        log.info(replyDTO.getBoardId() + " replyBoardId!!!!!!!!!!!!!!!!!!!!!!");
+        replyService.downReplyCount(replyDTO.getBoardId());
         replyService.removeReply(replyDTO);
         Map<String, Integer> resultMap=new HashMap<>();
 
