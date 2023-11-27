@@ -35,10 +35,6 @@
         update reply set isParentReplyDeleted=1 where replyId=#{replyId}
     </update>
 
-    <update id="isReported">
-        update reply set isReported=1 where replyId=#{replyId}
-    </update>
-
     <!-- 원댓글만 가져옴 -->
     <select id="getReplyList" resultType="com.project.sbarchive.vo.reply.ReplyVO">
         SELECT * FROM reply WHERE boardId = #{boardId} AND replyDepth=0
