@@ -1,0 +1,152 @@
+li {
+    list-style: none;
+}
+.user_image {
+    padding: 20px 0;
+    width: 50px;
+    height: 90px;
+}
+.reply_page_container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 70vw;
+    margin-top: 10px;
+}
+.reply_list_paging_wrap {
+    display: flex;
+}
+.reply_page_wrap, .reply_page_prev, .reply_page_next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 40px;
+    margin: 0 10px;
+    width: 40px;
+    height: 40px;
+}
+.active {
+    font-weight: bold !important;
+}
+.reply_add_wrap {
+    margin: 50px;
+}
+.reply_add_inner_wrap {
+    width: 70vw;
+    padding: 10px;
+    margin: 0 auto;
+    border: 2px solid #d3d3d3;
+    border-radius: 10px;
+}
+.reply_add_form {
+    display:flex;
+    flex-direction: row;
+}
+.acontent {
+    padding: 10px;
+    margin: 5px;
+}
+.addBtn {
+    width: 70px;
+    height: 40px;
+    margin-top: 15px;
+}
+.addReBtn, .cancelBtn, .addReReBtn, .modReReplyBtn {
+    width: 70px;
+    height: 40px;
+    margin: 50px 0 0 10px;
+}
+.modReplyBtn, .modCancelBtn {
+    width: 70px;
+    height: 40px;
+    margin: 20px 0 0 10px;
+}
+.reply_list_wrap {
+    width: 70vw;
+    margin: 0 auto;
+}
+.reply_count {
+    margin-left: 10px;
+}
+.replyList, .messageBtn {
+    margin: 10px;
+}
+.if_reply_writer {
+    border: 1px solid red;
+    border-radius: 1em;
+    padding: 4px;
+    font-size: 12px;
+    margin-left: 5px;
+    font-weight: bold;
+    color: red;
+}
+.list_of_reply {
+    display: flex;
+    justify-content: space-between;
+    width: 70vw;
+    border-bottom: 1px solid #d3d3d3;
+    padding-bottom: 10px;
+}
+.img_wrap {
+    width: 12%;
+}
+.writer_btn_content_date_wrap {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+}
+.writer_btn_area {
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    padding: 20px 0;
+}
+.date_of_reply {
+    color: gray;
+    font-size: 12px;
+}
+.replyModifyForm, .reReplyModifyForm {
+    display: none;
+    border-bottom: 1px solid #d3d3d3;
+    padding:20px;
+    width: 70vw;
+}
+.textarea_btn_area {
+    display:flex;
+    flex-direction: row;
+}
+.mcontent {
+    padding: 10px;
+}
+.moreReplyBtn, .noMoreReplyBtn {
+    font-size: 11px;
+    color: #606060;
+    margin-top: 5px;
+}
+.list_of_reply_re {
+    display: flex;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 10px 0 10px 0;
+}
+.replyItem_re {
+    background: #f8f9fa;
+}
+.img_wrap_re {
+    width: 12%;
+    margin-left: 10px;
+}
+.reReplyAddForm, .reReReplyAddForm {
+    display:none;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 20px;
+}
+.annotation_text {
+    display: flex;
+}
+.reReReForm {
+    width: 110vh;
+}
+.reReForm {
+    width: 120vh;
+}
