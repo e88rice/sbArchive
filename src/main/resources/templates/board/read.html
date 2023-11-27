@@ -227,6 +227,9 @@
         });
 
 
+
+
+
         // 여기서부터 댓글 관련 자바스크립트
         // 새로고침 버튼 클릭 이벤트
         const refreshBtn=document.querySelector('.refreshBtn');
@@ -520,28 +523,45 @@
                             let maskedId = maskId(id);
                             isReplyWriter = id === username; // 현재 로그인된 아이디와 댓글 단 아이디가 같은지 여부
                             isBoardWriter = id === boardWriter; // 댓글 단 아이디와 게시글을 쓴 아이디가 같은지 여부
+                            const isReported=dto.reported;
+                            let isReportedReply='';
+
+                            if(isReported===true) {
+                                isReportedReply +=`
+
+                                    ↳ <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
+                                        <div class="writer_btn_area">관리자에 의해 규제된 댓글입니다.</div>
+                                    </div>
+
+                                `;
+                            } else {
+                                isReportedReply += `
+                                ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
+                                    <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
+                                </div>
+
+                                <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
+                                    <div class="writer_btn_area">
+                                        <div>
+                                            ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                        </div>
+                                        <div>
+                                         ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="reReplyReportBtn">신고</a>'}
+                                        </div>
+                                    </div>
+
+                                    <div>${dto.content}</div>
+                                    <div class="date_of_reply">${date}</div>
+                                </div>
+                                `;
+                            }
+
 
                             reReplyHTML += `
                     <li class="replyItem_re" data-replyId="${dto.replyId}">
                         <div class="list_of_reply_re">
+                        ${isReportedReply}
 
-                            ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
-                                <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
-                            </div>
-
-                            <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
-                                <div class="writer_btn_area">
-                                    <div>
-                                        ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
-                                    </div>
-                                    <div>
-                                     ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : '<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="reReplyReportBtn">신고</a>'}
-                                    </div>
-                                </div>
-
-                                <div>${dto.content}</div>
-                                <div class="date_of_reply">${date}</div>
-                            </div>
 
                         </div>
 
