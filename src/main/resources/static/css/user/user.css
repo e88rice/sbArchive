@@ -1,0 +1,182 @@
+/************** 로그인 */
+
+.login_form {
+    margin: 0 auto;
+    padding-top: 90px;
+    width: 600px;
+}
+
+.socialBtn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    width: 100%;
+    height: 45px;
+    cursor: pointer;
+}
+.socialBtn_Google {
+    background-color: #f2f2f2;
+}
+
+.socialBtn_Kakao{
+    background-color: #fee500;
+}
+
+.login_tit{
+    width:300px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+.login_tit > p {
+    font-size:14px;
+    color: #2e6da4;
+    font-weight: bold;
+}
+
+.login_section {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.btn_width_100 {
+    width: 100%;
+}
+
+.socialBtn > img {
+    height: 18px;
+}
+
+.socialBtn > span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.socialBtn > div {
+    width: 18px;
+}
+
+.find_btn_div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/************** end 로그인 */
+/************** 회원가입 */
+
+.join_div {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.join_div_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hide{
+    display: none;
+}
+
+.border_line_bottom {
+    border-bottom: 1px solid #ededed;
+}
+
+.tab_wrap {
+    display: flex;
+    justify-content: center;
+    height: 61px;
+    width: 600px;
+}
+
+.tab {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    top: 1px;
+    list-style: none;
+    height: 70px;
+}
+
+.tab > li {
+    float: left;
+    text-align: center;
+    width: 200px;
+    height: 60px;
+}
+
+.active {
+    border-bottom: 2px solid deepskyblue;
+}
+.active > p {
+    color: deepskyblue;
+}
+
+.my_content {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+
+}
+
+.join_title {
+    width: 600px;
+    padding-bottom: 20px;
+}
+
+.join_form {
+    margin-top: 15px;
+    width: 600px;
+}
+
+.input_flex {
+    display: flex;
+}
+
+.errorMsg {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+textarea {
+    padding: 20px;
+    width: 100%;
+    height: 150px;
+    overflow: auto;
+    border: 1px solid #ededed;
+    resize: none;
+}
+
+label > span {
+    color: red;
+    font-weight: bold;
+}
+
+/************** end 회원가입 */
+/************** 아이디 비밀번호 찾기 */
+
+.find_div {
+    margin: 0 auto;
+    padding-top: 90px;
+    width: 400px;
+}
+
+.find_tit {
+    width:400px;
+    margin: 0 auto;
+    padding-bottom: 25px;
+}
+
+.find_section {
+    width: 400px;
+    margin: 0 auto;
+}
+
+/************** end 아이디 비밀번호 찾기 */
+

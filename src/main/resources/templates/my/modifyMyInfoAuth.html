@@ -5,25 +5,15 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
       layout:decorate="~{/layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<style layout:fragment="style">
-    .auth_div {
-        margin: 0 auto;
-        width: 1170px;
-        padding-top: 90px;
-    }
-
-    .input_flex {
-        display: flex;
-    }
-</style>
 
 <div layout:fragment="content">
-    <div class="auth_div">
-        <div style="width:1170px; margin: 0 auto; padding: 0 15px 90px 15px;">
+    <link rel="stylesheet" href="/css/my/mypage.css">
+    <div class="modify_auth_div">
+        <div>
             <h1>비밀번호 재확인</h1>
             <p>회원의 정보를 안전하게 보호하기 위해 비밀번호를 다시 한번 확인 합니다.</p>
         </div>
-        <section style="width: 300px; margin: 0 auto;">
+        <section>
             <div class="w-100 h-100">
                 <form action="/my/modifyMyInfoAuth" method="post" class="w-100 p-4">
                     <div class="form-group">
@@ -38,21 +28,14 @@
                             <input type="password" placeholder="비밀번호" name="passwd" id="passwd" class="form-control">
                         </div>
                     </div>
-                    <div style="margin-bottom: 20px">
-                        <button type="submit" class="btn btn-secondary passwdCheck" style="width: 100%;">비밀번호 재확인</button>
+                    <div class="auth_btn_div">
+                        <button type="submit" class="btn btn-secondary passwdCheck">비밀번호 재확인</button>
                     </div>
                 </form>
             </div>
         </section>
     </div>
-    <script th:inline="javascript">
-        const msg = [[${msg}]];
-        console.log(msg);
-
-        if(msg != null){
-            alert(msg);
-        }
-    </script>
+    <script src="/js/my/msg.js"></script>
 </div>
 </html>
 <!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" 시큐리티 화면 인증처리 -->

@@ -1,0 +1,294 @@
+.mypage_div {
+    margin: 0 auto;
+    width: 1170px;
+}
+
+.border_line_bottom {
+    border-bottom: 1px solid #ededed;
+}
+
+.tab_wrap {
+    height: 61px;
+}
+
+.tab {
+    position: relative;
+    top: 1px;
+    list-style: none;
+    height: 70px;
+}
+
+.tab > li {
+    float: left;
+    text-align: center;
+    width: 150px;
+    height: 60px;
+}
+
+.active {
+    border-bottom: 2px solid deepskyblue;
+}
+.active > a {
+    color: deepskyblue;
+}
+
+.my_content {
+    width: 1170px;
+    padding: 30px 15px 0 15px;
+}
+
+.my_content > .col > .card > .card-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search_div {
+    display: flex;
+    justify-content: center
+}
+
+.search_div > .form-group {
+    display: flex;
+}
+
+.search_div > .form-group > .form-select {
+    width: 90px;
+    margin-right: 20px;
+    margin-bottom: 10px
+}
+
+.search_div > .form-group > .input-group {
+    display: flex;
+}
+
+.search_div > .form-group > .input-group > input {
+    width: 340px;
+}
+
+.no_list_div {
+    text-align: center;
+    margin-top: 60px;
+}
+
+/**************** basic set */
+
+table {
+    border-collapse: collapse;
+    width: 500px;
+    margin: 1rem auto;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+/* 테이블 행 */
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #ededed;
+}
+
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+    background-color: #d3d3d3;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+/* signBoard 테이블 비율 */
+.signBoard_table th:nth-child(1),
+.signBoard_table td:nth-child(1) {
+    width: 15%;
+}
+
+.signBoard_table th:nth-child(2),
+.signBoard_table td:nth-child(2) {
+    width: 55%;
+}
+
+.signBoard_table th:nth-child(3),
+.signBoard_table td:nth-child(3) {
+    width: 15%;
+}
+
+.signBoard_table th:nth-child(4),
+.signBoard_table td:nth-child(4) {
+    width: 15%;
+}
+
+/* board 테이블 비율 */
+.board_table th:nth-child(1),
+.board_table td:nth-child(1) {
+    width: 15%;
+}
+
+.board_table th:nth-child(2),
+.board_table td:nth-child(2) {
+    width: 40%;
+}
+
+.board_table th:nth-child(3),
+.board_table td:nth-child(3) {
+    width: 15%;
+}
+
+.board_table th:nth-child(4),
+.board_table td:nth-child(4) {
+    width: 15%;
+}
+
+.board_table th:nth-child(5),
+.board_table td:nth-child(5) {
+    width: 15%;
+}
+
+/* like 테이블 비율 */
+.like_table th:nth-child(1),
+.like_table td:nth-child(1) {
+    width: 15%;
+}
+
+.like_table th:nth-child(2),
+.like_table td:nth-child(2) {
+    width: 55%;
+}
+
+.like_table th:nth-child(3),
+.like_table td:nth-child(3) {
+    width: 30%;
+}
+
+/* reply 테이블 비율 */
+.reply_table th:nth-child(1),
+.reply_table td:nth-child(1) {
+    width: 15%;
+}
+
+.reply_table th:nth-child(2),
+.reply_table td:nth-child(2) {
+    width: 55%;
+}
+
+.reply_table th:nth-child(3),
+.reply_table td:nth-child(3) {
+    width: 15%;
+}
+
+.reply_table th:nth-child(4),
+.reply_table td:nth-child(4) {
+    width: 15%;
+}
+
+/* report 테이블 비율 */
+.report_table th:nth-child(1),
+.report_table td:nth-child(1) {
+    width: 15%;
+}
+
+.report_table th:nth-child(2),
+.report_table td:nth-child(2) {
+    width: 40%;
+}
+
+.report_table th:nth-child(3),
+.report_table td:nth-child(3) {
+    width: 15%;
+}
+
+.report_table th:nth-child(4),
+.report_table td:nth-child(4) {
+    width: 15%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 15%;
+}
+
+.auth_div {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 100px;
+}
+
+
+/******** modifyEmail 이메일 수정 */
+
+.modifyEmail_div {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 100px;
+}
+.hide{
+    display: none;
+}
+
+/******** modifyMyInfo 회원정보 수정 */
+.modifyMyInfo_div {
+    margin: 0 auto;
+    width: 1000px;
+    padding-top: 100px;
+}
+.errorMsg {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/******** modify auth */
+.modify_auth_div {
+    margin: 0 auto;
+    width: 1170px;
+    padding-top: 90px;
+}
+
+.modify_auth_div > div {
+    width:1170px;
+    margin: 0 auto;
+    padding: 0 15px 90px 15px;
+}
+
+.modify_auth_div > section {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.input_flex {
+    display: flex;
+}
+
+.auth_btn_div {
+    margin-bottom: 20px
+}
+
+.auth_btn_div > button {
+    width: 100%;
+}
+
+
+/******** modify passwd 소셜패스워드/패스워드 재설정 */
+.modify_div {
+    margin: 0 auto;
+    width: 400px;
+    padding-top: 90px;
+}
+
+.modify_div > div {
+    width:400px;
+    margin: 0 auto;
+    padding-bottom: 25px;
+}
+
+.modify_div > section {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.modify_btn_div {
+    display: flex;
+    justify-content: space-between;
+}

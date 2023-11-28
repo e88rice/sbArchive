@@ -4,90 +4,9 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{/layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<style layout:fragment="style">
-    .join_div {
-        margin: 0 auto;
-        width: 1000px;
-    }
-
-    .join_div_wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .hide{
-        display: none;
-    }
-
-    .border_line_bottom {
-        border-bottom: 1px solid #ededed;
-    }
-
-    .tab_wrap {
-        display: flex;
-        justify-content: center;
-        height: 61px;
-        width: 600px;
-    }
-
-    .tab {
-        margin: 0;
-        padding: 0;
-        position: relative;
-        top: 1px;
-        list-style: none;
-        height: 70px;
-    }
-
-    .tab > li {
-        float: left;
-        text-align: center;
-        width: 200px;
-        height: 60px;
-    }
-
-    .active {
-        border-bottom: 2px solid deepskyblue;
-    }
-    .active > p {
-        color: deepskyblue;
-    }
-
-    .my_content {
-        padding-top: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: left;
-        align-items: center;
-
-    }
-
-    .join_title {
-        width: 600px;
-        padding-bottom: 20px;
-    }
-
-    .join_form {
-        margin-top: 15px;
-        width: 600px;
-    }
-
-    textarea {
-        padding: 20px;
-        width: 100%;
-        height: 150px;
-        overflow: auto;
-        border: 1px solid #ededed;
-        resize: none;
-    }
-
-    label > span {
-        color: red;
-        font-weight: bold;
-    }
-</style>
 
 <div layout:fragment="content">
+    <link rel="stylesheet" href="/css/user/user.css">
     <div class="join_div">
         <div class="border_line_bottom join_div_wrap">
             <div class="tab_wrap">
@@ -109,7 +28,7 @@
                     <p>회원 가입에 필요한 정보를 입력합니다</p>
                 </div>
                 <div class="join_form">
-                    <form action="/user/joinAuth" method="post">
+                    <form action="/user/joinAuth" method="post" name="joinAuthForm">
                         <div class="form-group">
                             <div class="form-check">
                                 <input type="checkbox" name="checkAll" id="checkAll" class="form-check-input">
@@ -491,47 +410,7 @@
             </div>
         </div>
     </div>
-    <script th:inline="javascript">
-        // 전체 체크박스
-        const checkboxes = document.querySelectorAll('input[name="agree"]');
-        // 전체 동의 체크 박스
-        const checkAll = document.getElementById('checkAll');
-
-
-        function checkSelectAll()  {
-            // 선택된 체크박스가 전체 체크박스 갯수와 동일하면
-            const checked = document.querySelectorAll('input[name="agree"]:checked');
-            if(checkboxes.length === checked.length)  {
-                checkAll.checked = true;
-            }else {
-                checkAll.checked = false;
-            }
-        }
-
-        checkAll.addEventListener('change', function (e) {
-            let agreeChk = document.querySelectorAll('input[name=agree]');
-            for(let i = 0; i < agreeChk.length; i++){
-                agreeChk[i].checked = e.target.checked;
-            }
-        });
-
-
-        const joinAuthBtn = document.querySelector('.joinAuthBtn');
-        const authForm = document.querySelector('form');
-
-        joinAuthBtn.addEventListener('click', function (e){
-           e.stopPropagation();
-           e.preventDefault();
-
-           if(!agree1.checked || !agree2.checked){
-               alert("필수 이용약관에 동의하셔야 회원가입을 할 수 있습니다.")
-               return
-           }
-
-           authForm.submit();
-        });
-
-    </script>
+    <script src="/js/user/user.js"></script>
 </div>
 
 
