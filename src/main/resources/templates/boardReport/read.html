@@ -6,6 +6,10 @@
       layout:decorate="~{/layout/layout.html}">
 <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
 
+
+
+
+
 <div layout:fragment="content">
     <link rel="stylesheet" href="/css/boardReport/read.css">
     <div class="form1">
@@ -17,7 +21,7 @@
                 <div class="card">
                     <div class="card-body" >
                         <div class="input-group mb-3">
-                            <input  width="80px" type="text" name="title" class="form-control fc2" th:value="${dto.title}" readonly>
+                            <input  width="80px" type="text" name="title" id="fc2" class="form-control" th:value="${dto.title}" readonly>
                         </div>
                         <div class="flex-content fc1" >
 
@@ -25,7 +29,7 @@
                             </div>
                             <div class="report_board_info2"  th:if="${dto.isAnswered}">
                                 <span th:text="답변완료" class="isanswere"/>
-                                <span style="margin-left: 85%">
+                                <span style="margin-left: 72%;">
                                     <td  th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                                 </span>
                             </div>
@@ -37,7 +41,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <textarea name="content" id="content" class="form-control fc3" rows="25"  readonly>[[${dto.content}]]  </textarea>
+                            <textarea name="content" id="content"  class="form-control" rows="25"  readonly>[[${dto.content}]]  </textarea>
                         </div>
                         <div class="left_wrap">
                             <div class="left_wrap_subImg">
