@@ -1,0 +1,191 @@
+@font-face {
+    font-family: 'JalnanGothic';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.margin-container {
+    width: 80vw;
+    margin: 0 auto;
+    text-align: center;
+}
+.flex-row {
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-between;
+    width: 80%;
+}
+.left_wrap, .right-wrap {
+    /*border: 3px dashed violet;*/
+}
+.left_wrap {
+    width: 33%;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+.left_wrap > img {
+    width: 100%;
+    height: 455px;
+    max-height: 455px;
+    padding: 5px;
+    border-radius: 20px;
+}
+.left_wrap_subImg {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
+    max-height: 80px;
+    overflow-x: auto;
+}
+.left_wrap_subImg img {
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 3px;
+    height: 100%;
+}
+.right-wrap {
+    width: 65%;
+    height: 500px;
+}
+.right-wrap div {
+    display: flex;
+    width: 100%;
+    height: 10%;
+    line-height: 250%;
+    margin: 2px;
+    font-size: 20px;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+.right-wrap div > i {
+    color: #274f59;
+}
+.sb_info_span {
+    width: 30%;
+    font-weight: bold;
+    font-family: JalnanGothic;
+}
+.sb_info {
+    width: 70%;
+    font-family: JalnanGothic;
+}
+.sb_content_div {
+    height: 60% !important;
+    padding: 20px;
+}
+.sb_content_p {
+    width: 100%;
+    text-align: left;
+    white-space: pre-wrap; /* 개행문자 인식 */
+    font-size: 20px;
+    line-height: 24px;
+}
+.page_btns {
+    margin: 0 auto;
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+}
+.page_btns button {
+    margin: 40px 20px 0 20px;
+    width: 160px;
+    height: 60px;
+    border: none;
+    border-radius: 20px;
+    font-size: 26px;
+    background: #273756;
+    color: white;
+    font-family: JalnanGothic;
+}
+/*모달*/
+.show {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent !important;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+.modal-dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.modal_view_content {
+    width: 50vw;
+    height: 70vh;
+}
+.modal_view_header {
+    display: flex;
+    justify-content: right;
+    border: none;
+    height: 10%;
+}
+.btn-close {
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+}
+.modal-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 75%;
+}
+.modal_img_container, .modal_info_container {
+    width: 49%;
+    height: 100%;
+    text-align: left;
+}
+.modal_img_container > img {
+    width: 100%;
+    height: 450px;
+}
+.modal_info {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+.modal_info p {
+    width: 70%;
+}
+.modal_info_span, .modal_modify_span {
+    display: inline-block;
+    font-weight: bold;
+    width: 20%;
+}
+.modal_info_content {
+    max-height: 40%;
+    white-space: pre-wrap;
+    overflow: hidden scroll;
+}
+#map {
+    width: 100%;
+    height: 100px;
+}
+.modal-footer {
+    display: flex;
+    height: 10%;
+}
+.modal_footer_imgs > img {
+    width: 50px;
+    height: 50px;
+}
+.modal_footer_mod_del_btns {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+.modifyBtn, .removeBtn{
+    border: none;
+    border-radius: 5%;
+    margin: 0 10px;
+}

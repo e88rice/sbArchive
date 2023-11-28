@@ -11,7 +11,7 @@
 
     <select id="getAllMsgByReceiver" resultType="com.project.sbarchive.vo.message.MessageVO">
         SELECT * FROM message where receiverId = #{receiverId} AND isReceiverDeleted = false
-        order by `index` desc limit #{skip}, #{size};
+        order by `sendDate` desc limit #{skip}, #{size};
     </select>
 
     <select id="getAllMsgByReceiverCount" resultType="int">
@@ -21,7 +21,7 @@
 
     <select id="getAllMsgBySender" resultType="com.project.sbarchive.vo.message.MessageVO">
         SELECT * FROM message where senderId = #{senderId} AND isSenderDeleted = false
-        order by `index` desc limit #{skip}, #{size};
+        order by `sendDate` desc limit #{skip}, #{size};
     </select>
 
     <select id="getAllMsgBySenderCount" resultType="int">

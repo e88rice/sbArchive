@@ -41,7 +41,9 @@ public class MessageController {
 
         // 페이징된 객체 리스트를 받아옴
         PageResponseDTO<MessageDTO> responseDTO = messageService.getAllMsgByReceiver(receiverId, pageRequestDTO);
-        responseDTO.getDtoList().forEach(messageDTO -> log.info(messageDTO));
+        if(responseDTO.getDtoList() != null) {
+            responseDTO.getDtoList().forEach(messageDTO -> log.info(messageDTO));
+        }
 
         return responseDTO;
     }
@@ -58,7 +60,9 @@ public class MessageController {
         // 페이징된 객체 리스트를 받아옴
         PageResponseDTO<MessageDTO> responseDTO = messageService.getAllMsgBySender(senderId, pageRequestDTO);
         log.info("====================== 보낸 쪽지함 ==========================");
-        responseDTO.getDtoList().forEach(messageDTO -> log.info(messageDTO));
+        if(responseDTO.getDtoList() != null) {
+            responseDTO.getDtoList().forEach(messageDTO -> log.info(messageDTO));
+        }
 
         return responseDTO;
     }

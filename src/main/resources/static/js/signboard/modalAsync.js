@@ -20,7 +20,6 @@ async function updateSignboard(signboardId, content, files) {
         },
         data: formData,
     })
-    console.log(result)
     return result.data;
 }
 

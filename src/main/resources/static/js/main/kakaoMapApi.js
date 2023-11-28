@@ -237,14 +237,14 @@ function addInfoForm(signboard) {
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_nickname\">\n" +
         "                <span class=\"modal_info_span\">작성자</span>\n" +
-        "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/images/user/icon1.png'></p>\n" +
+        "                <p>" + signboard.nickname +"\n" +
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_date\">\n" +
         "                <span class=\"modal_info_span\">작성일</span>\n" +
         "                <p>" + date + "</p>\n" +
         "              </div>\n" +
         "              <div class=\"modal_info_content\">\n" +
-        "                " + signboard.content + "\n";
+        signboard.content+ "\n";
     "              </div>\n" +
     "            </div>";
 

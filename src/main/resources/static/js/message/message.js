@@ -35,11 +35,13 @@ getUsername().then(r => {
         // 페이지와 유저의 아이디를 받아 받은 쪽지함을 갱신해주는 함수
         function ReceivedMsgByPage(rPage, Id) {
             getReceivedMessage(rPage, Id).then( r => { // 1페이지 기준
-            addMsgPagingForm("received", r); // 1페이지 기준 페이징
-            addMsgForm("received", r);       // 1페이지 기준 쪽지 리스트
-            getPageNum("received");          // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
-            viewModalShow();                 // 클릭 시 쪽지 뷰 관련 모달 오픈 및 기능 함수
-            writeModalShow();               // 클릭 시 쪽지 작성 관련 모달 오픈 및 기능 함수
+                if(r.dtoList !== null){
+                    addMsgPagingForm("received", r); // 1페이지 기준 페이징
+                    addMsgForm("received", r);       // 1페이지 기준 쪽지 리스트
+                }
+                getPageNum("received");          // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
+                viewModalShow();                 // 클릭 시 쪽지 뷰 관련 모달 오픈 및 기능 함수
+                writeModalShow();               // 클릭 시 쪽지 작성 관련 모달 오픈 및 기능 함수
             }).catch( e => {
                 console.log(e)
             })
@@ -48,11 +50,13 @@ getUsername().then(r => {
         // 페이지와 유저의 아이디를 받아 보낸 쪽지함을 갱신해주는 함수
         function SentMsgByPage(rPage, Id) {
             getSentMessage(rPage, Id).then( r => { // 1페이지 기준
-            addMsgPagingForm("sent", r);       // 1페이지 기준 페이징
-            addMsgForm("sent", r);            // 1페이지 기준 쪽지 리스트
-            getPageNum("sent");               // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
-            viewModalShow();                 // 클릭 시 쪽지 뷰 관련 모달 오픈 및 기능 함수
-            writeModalShow();               // 클릭 시 쪽지 작성 관련 모달 오픈 및 기능 함수
+                if(r.dtoList !== null) {
+                    addMsgPagingForm("sent", r);       // 1페이지 기준 페이징
+                    addMsgForm("sent", r);            // 1페이지 기준 쪽지 리스트
+                }
+                getPageNum("sent");               // 페이지 a 태그를 클릭하면 해당하는 타입의 페이지 넘버를 변경해줌
+                viewModalShow();                 // 클릭 시 쪽지 뷰 관련 모달 오픈 및 기능 함수
+                writeModalShow();               // 클릭 시 쪽지 작성 관련 모달 오픈 및 기능 함수
             }).catch( e => {
                 console.log(e)
             })
@@ -182,7 +186,7 @@ getUsername().then(r => {
 
         function removeByIdxAndType(index, type) {
             removeByIndexAndType(index, type).then(r => {
-            console.log(r);
+                console.log(r);
             }).catch(e => {
                 console.log(e);
             })
@@ -252,6 +256,7 @@ getUsername().then(r => {
         function SendMsg(receiverName) {
             const rcvName = document.querySelector(".msgReceiverName");
             const msgContent = document.querySelector(".msgContent");
+            msgContent.value = "";
             rcvName.value = "";
             rcvName.readOnly = false;
             if(receiverName !== null) { // 답장하기 버튼으로 접근 시
