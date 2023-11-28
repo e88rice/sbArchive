@@ -55,7 +55,7 @@
 
                             <div class="left_wrap">
                                 <div class="left_wrap_subImg">
-                                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{images/board/}${dto.files[status.index]}|" class="imgWidth">
+                                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/images/board/}${dto.files[status.index]}|" class="imgWidth">
                                 </div>
                             </div>
 

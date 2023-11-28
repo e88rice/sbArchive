@@ -38,7 +38,7 @@
 <![endif]-->
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="/images/user/icon1.png">
+<link rel="shortcut icon" href="/images/img/favicon.png">
 <!--<link rel="shortcut icon" href="/static/assets/img/intro.jpg">-->
 <th:block layout:fragment="style">
 
@@ -70,7 +70,7 @@
         <span class="icon-bar"></span>
       </button>
       <!-- Your Logo -->
-      <a href="/" style="display: flex"><img src="/images/img/logo_.png" style="height: 70px" alt="로고"><img src="/images/img/logo_text.png" style="height: 80px" alt="로고"></a>
+      <a href="/" style="display: flex"><img src="/images/img/logo_.png" style="height: 60px; margin-top: 10px;" alt="로고"><img src="/images/img/logo_text.png" style="height: 80px" alt="로고"></a>
     </div>
     <!-- Start Navigation -->
     <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
@@ -85,12 +85,12 @@
           <a class="dropdown-item" href="/board/list">자유게시판</a>
         </li>
         <li>
-          <a class="dropdown-item" href="/user/login" sec:authorize="!isAuthenticated()">로그인</a>
-          <a class="dropdown-item" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
-        </li>
-        <li>
           <a class="dropdown-item" href="/user/joinAuth" sec:authorize="!isAuthenticated()">회원가입</a>
           <a class="dropdown-item" href="/my/mypage" sec:authorize="isAuthenticated()">마이페이지</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="/user/login" sec:authorize="!isAuthenticated()">로그인</a>
+          <a class="dropdown-item" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" style="background-color: white; color: black" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" sec:authorize="hasRole('ADMIN')">
@@ -108,8 +108,6 @@
 
 <div class="margin-block"></div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
 <th:block class="content" layout:fragment="content">
 
 
