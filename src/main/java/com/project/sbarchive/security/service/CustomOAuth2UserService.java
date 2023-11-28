@@ -1,10 +1,7 @@
 package com.project.sbarchive.security.service;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.security.dto.MemberSecurityDTO;
-import com.project.sbarchive.security.handler.Custom403Handler;
 import com.project.sbarchive.service.user.UserService;
 import com.project.sbarchive.vo.user.UserRole;
 import com.project.sbarchive.vo.user.UserVO;
@@ -12,23 +9,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-import java.util.stream.Collectors;
 
 import static java.time.LocalDate.now;
 
