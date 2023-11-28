@@ -1,10 +1,10 @@
 package com.project.sbarchive.service.signboard;
 
 import com.project.sbarchive.mapper.signboard.SignBoardFileMapper;
+import com.project.sbarchive.service.staticResource.StaticResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.coobird.thumbnailator.Thumbnailator;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,14 +23,19 @@ import java.util.UUID;
 public class SignBoardFileServiceImpl implements SignBoardFileService{
 
 
-    @Value("${com.example.upload.path}")
-    private String uploadPath;
-
     private final SignBoardFileMapper signBoardFileMapper;
+
+    private final StaticResourceService staticResourceService;
 
     @Override
     public void addSignboardImages(int signboardId, List<MultipartFile> files) {
+        log.info(staticResourceService.getStaticFolderPath());
+
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String uploadPath1 = uploadPath + "signboard\\";
+
+        log.info("uploadPath = \n" + uploadPath1);
 
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
             String originalName = multipartFile.getOriginalFilename(); // 전달 된 파일의 파일명
@@ -43,8 +48,11 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
             log.info("테스트 경로 : " + originalName);
 
             boolean isImage = false; // 전달 된 파일이 이미지 형식인지 판단
-
+            File Folder = new File(uploadPath1);
             try {
+                if(!Folder.exists()) {
+                    Folder.mkdirs();
+                }
                 multipartFile.transferTo(savePath); // 실제 파일 저장
                 // 이미지 파일이라면
                 if ( Files.probeContentType(savePath).startsWith("image")) {
@@ -72,6 +80,8 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
     @Override
     public void removeSignboardImages(int signboardId) {
         ArrayList<String> files = signBoardFileMapper.getSignboardImages(signboardId);
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String deletePath = uploadPath + "signboard\\";
         for(String file : files) {
             File filePath = new File(deletePath + file);

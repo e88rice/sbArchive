@@ -1,6 +1,7 @@
 package com.project.sbarchive.service.board;
 
 import com.project.sbarchive.mapper.board.BoardFileMapper;
+import com.project.sbarchive.service.staticResource.StaticResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -24,13 +25,15 @@ import java.util.UUID;
 public class BoardFileServiceImpl implements BoardFileService {
 
 
-    @Value("${com.example.upload.path}")
-    private String uploadPath;
+    private final StaticResourceService staticResourceService;
 
     private final BoardFileMapper boardFileMapper;
 
     @Override
     public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
+
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String uploadPath1 = uploadPath + "board\\";
 
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
@@ -76,6 +79,8 @@ public class BoardFileServiceImpl implements BoardFileService {
     @Override
     public void removeBoardImages(int boardId, String type) {
         ArrayList<String> files = boardFileMapper.getBoardImages(boardId, type);
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String deletePath = uploadPath + "board\\";
         for(String file : files) {
             File filePath = new File(deletePath + file);

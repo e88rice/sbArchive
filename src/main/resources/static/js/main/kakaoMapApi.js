@@ -38,7 +38,7 @@ function getSB() {
                 item = {
                     "title": r[i].title,
                     "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/img/" +r[i].files[0] +"'>  " + " <br> <b> "+ r[i].title +" </b>  <br>" + r[i].address + "</div>"
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src=" +r[i].files[0] +"'/imgs/'>  " + " <br> <b> "+ r[i].title +" </b>  <br>" + r[i].address + "</div>"
                 }
             }
             positions.push(item); // 객체 배열에 추가
@@ -124,7 +124,7 @@ function getSearch() {
                 item = {
                     "title": r[i].title,
                     "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/img/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src=" + r[i].files[0] + "'/imgs/'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
                 }
             }
             searchItemPositions.push(item); // 객체 배열에 추가
@@ -223,7 +223,7 @@ function addInfoForm(signboard) {
     let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
     let str = "<div class=\"modal_img_container\">\n" +
-        "              <img src=\"/img/" + signboard.files[0] + "\">\n" +
+        "              <img src=" + signboard.files[0] + "\"/imgs/\">\n" +
         "            </div>\n" +
         "            <div class=\"modal_info_container\">\n" +
         "              <div id=\"map\"></div>\n" +
@@ -237,7 +237,7 @@ function addInfoForm(signboard) {
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_nickname\">\n" +
         "                <span class=\"modal_info_span\">작성자</span>\n" +
-        "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/img/icon1.png'></p>\n" +
+        "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/imgs/icon1.png'></p>\n" +
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_date\">\n" +
         "                <span class=\"modal_info_span\">작성일</span>\n" +
@@ -251,7 +251,7 @@ function addInfoForm(signboard) {
     // 이미지 폼
     let imgs = "";
     for (let i = 0; i < signboard.files.length; i++) {
-        imgs += "              <img class='footer_imgs' src=\"/img/" + signboard.files[i] + "\">\n";
+        imgs += "              <img class='footer_imgs' src=" + signboard.files[i] + "\"/imgs/\">\n";
     }
     modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
     modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체

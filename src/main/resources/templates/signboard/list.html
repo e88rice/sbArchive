@@ -230,7 +230,7 @@
 
       <div class="sb_wrap" th:each="dto, status: ${response.getDtoList()}">
         <div class="sb_img_container">
-          <img th:src="|@{/img/}${dto.files[0]}|">
+          <img th:src="|@{imgs}${dto.files[0]}|">
         </div>
         <div class="sb_info_container" >
           <p>[[${dto.title}]]</p>
@@ -455,7 +455,7 @@
       let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
       let str = "<div class=\"modal_img_container\">\n" +
-              "              <img src=\"/img/"+ signboard.files[0] +"\">\n" +
+              "              <img src="+ signboard.files[0] +"\"/imgs/\">\n" +
               "            </div>\n" +
               "            <div class=\"modal_info_container\">\n" +
               "              <div id=\"map\"></div>\n" +
@@ -469,7 +469,7 @@
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_nickname\">\n" +
               "                <span class=\"modal_info_span\">작성자</span>\n" +
-              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/img/icon1.png'></p>\n" +
+              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/imgs/icon1.png'></p>\n" +
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_date\">\n" +
               "                <span class=\"modal_info_span\">작성일</span>\n" +
@@ -483,7 +483,7 @@
       // 이미지 폼
       let imgs = "";
       for(let i=0; i<signboard.files.length; i++) {
-        imgs += "              <img class='footer_imgs' src=\"/img/"+ signboard.files[i] +"\">\n";
+        imgs += "              <img class='footer_imgs' src="+ signboard.files[i] +"\"/imgs/\">\n";
       }
 
       // 수정 삭제 폼
@@ -570,7 +570,7 @@
       let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
       let str = "<div class=\"modal_img_container\">\n" +
-              "              <img src=\"/img/"+ signboard.files[0] +"\">\n" +
+              "              <img src="+ signboard.files[0] +"\"/imgs/\">\n" +
               "            </div>\n" +
               "            <div class=\"modal_info_container\">\n" +
               "              <div id=\"map\"></div>\n" +
@@ -585,7 +585,7 @@
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_nickname\">\n" +
               "                <span class=\"modal_info_span\">작성자</span>\n" +
-              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/img/icon1.png'></p>\n" +
+              "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/imgs/icon1.png'></p>\n" +
               "              </div>\n" +
               "              <div class=\"modal_info modal_info_date\">\n" +
               "                <span class=\"modal_info_span\">작성일</span>\n" +

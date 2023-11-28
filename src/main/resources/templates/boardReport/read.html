@@ -95,7 +95,7 @@
                         </div>
                         <div class="left_wrap">
                             <div class="left_wrap_subImg">
-                                <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/img/}${dto.files[status.index]}|">
+                                <img th:each="img, status : ${dto.getFiles()}" th:src="|@{imgs}${dto.files[status.index]}|">
                             </div>
                         </div>
                     </div>
