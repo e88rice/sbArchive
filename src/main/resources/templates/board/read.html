@@ -550,7 +550,7 @@
                             // 로그인한 사용자의 경우에만 답글쓰기, 신고 버튼 나오게
                             let isLogin='';
                             if(username!='guest') {
-                                isLogin=`<a class="reReplyAddBtn">답글쓰기</a>\n<a class="replyReportBtn">신고</a>`;
+                                isLogin=`<a class="reReReplyAddBtn">답글쓰기</a>\n<a class="reReplyReportBtn">신고</a>`;
                             } else {
                                 isLogin='';
                             }
@@ -761,6 +761,7 @@
                         // 대댓글에 대댓글 등록 이벤트
                         document.querySelectorAll(".reReReplyAddBtn").forEach(function(reReReplyAddBtn) {
                             reReReplyAddBtn.addEventListener('click', function(e) {
+                                alert("누름");
                                 const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
                                 reReReplyAddForm.style.display='block';
 
