@@ -531,8 +531,7 @@
             return password1 === password2;
         }
         passwd.onkeyup = function () {
-
-            // console.log(passwd.value);
+            isPasswordMatchChecked = false;
             // 값을 입력한 경우
             if (passwd.value.length !== 0) {
                 if(strongPassword(passwd.value)) {
@@ -552,8 +551,6 @@
             }
         };
         passwdCheck.onkeyup = function () {
-
-            // console.log(passwdCheck.value);
             if (passwdCheck.value.length !== 0) {
                 if(isMatch(passwd.value, passwdCheck.value)) {
                     mismatchMessage.classList.add('hide'); // 실패 메시지 Xx
