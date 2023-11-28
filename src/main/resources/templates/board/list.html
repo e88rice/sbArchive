@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{/layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
@@ -17,6 +18,7 @@
         align-items: center;
     }
     .notice {
+        background-color: white;
         color: red;
         font-size: 12px;
         font-family: 함초롬바탕;
@@ -27,7 +29,7 @@
 
     }
     .admin-row {
-        background: #ce8483;
+        background: #d0d0d0;
         font-family: 함초롬바탕;
     }
     th {
@@ -63,10 +65,10 @@
                             </div>
 
                             <div>
-                                <button class="btn btn-outline-secondary addboard" type="button" style="margin-left: 5px; background: #01B0D1">게시물작성</button>
+                                <button class="btn btn-outline-secondary addboard" type="button" style="margin-left: 5px; background: #c3dbdf">게시물작성</button>
                             </div>
                             <div>
-                                <button th:if="${name != null and name == 'admin'}"
+                                <button sec:authorize="hasRole('ADMIN')"
                                         class="btn btn-outline-secondary addnotice" type="button" style="margin-left: 5px; background: #01B0D1">공지사항작성</button>
                             </div>
                         </div>
@@ -81,11 +83,11 @@
                 <th>조회</th>
                 <th>좋아요</th>
             </tr>
-            <tr th:each="dto, status :${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}, no=${responseDTO.sno}" th:class="${dto.userId == 'admin' ? 'admin-row' : ''}">
-                <td><i th:if="${dto.userId}==admin" class="notice">공지사항</i><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${no - status.index}]]</a></td>
+            <tr th:each="dto, status :${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}, no=${responseDTO.sno}" th:class="${dto.userId == 'SB_Admin' ? 'admin-row' : ''}">
+                <td><i th:if="${dto.userId}=='SB_Admin'" class="notice">공지사항</i><a th:if="${dto.userId}!='SB_Admin'" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${no - status.index}]]</a></td>
                 <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
                 <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.nickname}]]
-                    <span>( [[${dto.userId.substring(0, 4)  + '******'}]])</span></a></td>
+                    <span th:if="${dto.userId}!='SB_Admin'">( [[${dto.userId.substring(0, 4)  + '******'}]])</span></a></td>
                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
                 <td th:if="${dto.addDate != dto.modDate}" th:text="${dto.modDate.toString().substring(0, 10)}"></td>
                 <td th:text="${dto.hit}"></td> <!-- 이 부분 수정 -->

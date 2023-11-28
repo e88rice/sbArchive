@@ -203,9 +203,9 @@
         <div class="flex-row">
 
             <div class="left_wrap">
-                <img th:src="|@{imgs}${dto.getFiles()[0]}|">
+                <img th:src="|@{/images/signboard/}${dto.getFiles()[0]}|">
                 <div class="left_wrap_subImg">
-                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{imgs}${dto.files[status.index]}|">
+                    <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/images/signboard/}${dto.files[status.index]}|">
                 </div>
             </div>
 
@@ -321,7 +321,7 @@
             let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
             let str = "<div class=\"modal_img_container\">\n" +
-                "              <img src="+ signboard.files[0] +"\"/imgs/\">\n" +
+                "              <img src="+ signboard.files[0] +"\"/images/\">\n" +
                 "            </div>\n" +
                 "            <div class=\"modal_info_container\">\n" +
                 "              <div id=\"map\"></div>\n" +
@@ -336,7 +336,7 @@
                 "              </div>\n" +
                 "              <div class=\"modal_info modal_info_nickname\">\n" +
                 "                <span class=\"modal_info_span\">작성자</span>\n" +
-                "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/imgs/icon1.png'></p>\n" +
+                "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/images/icon1.png'></p>\n" +
                 "              </div>\n" +
                 "              <div class=\"modal_info modal_info_date\">\n" +
                 "                <span class=\"modal_info_span\">작성일</span>\n" +

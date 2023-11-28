@@ -55,7 +55,7 @@
         <if test="types != null and types.length > 0">
             AND delDate > NOW()
         </if>
-        ORDER BY CASE WHEN userId = 'admin' THEN 0 ELSE 1 END, boardId DESC
+        ORDER BY CASE WHEN userId = 'SB_Admin' THEN 0 ELSE 1 END, boardId DESC
         LIMIT #{skip}, #{size}
     </select>
     <select id="getCount" resultType="int">
