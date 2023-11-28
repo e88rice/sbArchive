@@ -13,7 +13,7 @@ var searchMapContainer = document.getElementById('map2'), // 지도를 표시할
     };
 var searchMap = new kakao.maps.Map(searchMapContainer, searchMapOption); // 지도를 생성합니다
 // 마커 이미지의 이미지 주소입니다
-var imageSrc = '/images/user/icon1.png';
+var imageSrc = '/images/img/favicon.png';
 // 마커 이미지의 이미지 크기 입니다
 var imageSize = new kakao.maps.Size(35, 35);
 
@@ -124,7 +124,7 @@ function getSearch() {
                 item = {
                     "title": r[i].title,
                     "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard'" + r[i].files[0] + ">  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
                 }
             }
             searchItemPositions.push(item); // 객체 배열에 추가

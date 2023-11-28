@@ -97,12 +97,12 @@
 }
 
 .received_message_content_container, .sent_message_content_container {
-    text-align: left !important;
-    border-collapse: separate;
+    width: 100%;
     border-spacing: 20px;
+    font-size: 14px;
 }
 .received_message_content_container th, .sent_message_content_container th {
-    text-align: left !important;
+    text-align: center;
 }
 .message_content_wrap {
     font-weight: bold;

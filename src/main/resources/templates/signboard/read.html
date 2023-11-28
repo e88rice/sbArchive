@@ -321,7 +321,7 @@
             let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
             let str = "<div class=\"modal_img_container\">\n" +
-                "              <img src="+ signboard.files[0] +"\"/images/\">\n" +
+                "              <img src='/images/signboard/"+ signboard.files[0] +"'>\n" +
                 "            </div>\n" +
                 "            <div class=\"modal_info_container\">\n" +
                 "              <div id=\"map\"></div>\n" +
@@ -336,7 +336,7 @@
                 "              </div>\n" +
                 "              <div class=\"modal_info modal_info_nickname\">\n" +
                 "                <span class=\"modal_info_span\">작성자</span>\n" +
-                "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/images/icon1.png'></p>\n" +
+                "                <p>" + signboard.nickname + "<img style='width: 20px; height: 20px' src='/images/user/icon1.png'></p>\n" +
                 "              </div>\n" +
                 "              <div class=\"modal_info modal_info_date\">\n" +
                 "                <span class=\"modal_info_span\">작성일</span>\n" +
