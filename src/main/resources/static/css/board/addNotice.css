@@ -1,0 +1,27 @@
+.board_form {
+    margin: 0 auto;
+    padding-top: 150px;
+    width: 700px;
+    height: 1000px;
+}
+textarea {
+    width: 100%;
+    height: 6.25em;
+    border: none;
+    resize: none;
+}
+.topline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.fc1 {
+    background: none; border: none;
+}
+.fc2 {
+    height: 35px; background: white;
+}
+.cc1 {
+    padding: 20px; background: none;
+}

@@ -1,0 +1,108 @@
+.mypage_div {
+    margin: 0 auto;
+    width: 1170px;
+}
+
+.border_line_bottom {
+    border-bottom: 1px solid #ededed;
+}
+
+.tab_wrap {
+    height: 61px;
+}
+
+.tab {
+    position: relative;
+    top: 1px;
+    list-style: none;
+    height: 70px;
+}
+
+.tab > li {
+    float: left;
+    text-align: center;
+    width: 150px;
+    height: 60px;
+}
+
+.active {
+    border-bottom: 2px solid deepskyblue;
+}
+.active > a {
+    color: deepskyblue;
+}
+
+.my_content {
+    width: 1170px;
+    padding: 30px 15px 0 15px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 500px;
+    margin: 1rem auto;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+/* 테이블 행 */
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #ededed;
+}
+
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+    background-color: #d3d3d3;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+/* 테이블 비율 */
+th:nth-child(1),
+td:nth-child(1) {
+    width: 15%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 40%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    width: 15%;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    width: 15%;
+}
+
+th:nth-child(5),
+td:nth-child(5) {
+    width: 15%;
+}
+.ch1 {
+    display: flex; justify-content: space-between;
+}
+.anser1 {
+    color: red; border-radius: 15px;padding: 4px;
+    margin-left: 5px;border: 2px solid red;
+}
+.noanser {
+    color: #dfdfdf; border-radius: 15px;padding: 4px;
+    border: 2px solid #9d9d9d; color: #0b0b0b; margin-left: 5px;
+}
+.fs2 {
+    width: 90px; margin-right: 20px;margin-bottom: 10px;
+}
+.list1 {
+    display: flex; justify-content: center;
+}

@@ -1,0 +1,56 @@
+/* 여기서부터 /board/read 관련 css */
+.readBoard_form {
+    margin: 0 auto;
+    padding-top: 150px;
+    width: 700px;
+}
+textarea {
+    width: 100%;
+    height: 6.25em;
+    border: none;
+    resize: none;
+}
+.form1 {
+    height: 100%;
+}
+
+.btnend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flex-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.reportboard {
+    font-size: 14px;
+}
+
+.report_board_info2 {
+    display: flex;
+    justify-content: end;
+}
+.report_board_info2 span {
+    display: inline-block;
+    margin: 0 10px;
+}
+/* 여기까지 /board/read 관련 css */
+.notanswere {
+    color: #dfdfdf; border-radius: 15px; padding: 1px 4px;
+    border: 2px solid #9d9d9d; color: #0b0b0b; margin: 0 0 10px 5px;
+}
+.isanswere {
+    color: red; border-radius: 15px;padding: 2px 4px;
+    margin: 0 0 10px 5px;border: 2px solid red;
+}
+.fc1 {
+    padding: 10px;
+}
+.fc2 {
+    font-size: 30px; background: none; border: none;
+}
+.fc3 {
+    padding: 20px; background: none;
+}

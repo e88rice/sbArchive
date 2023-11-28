@@ -1,0 +1,53 @@
+.boardList_form {
+    margin: 0 auto;
+    padding-top: -50px;
+    width: 100%
+
+}
+.searchline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.notice {
+    background-color: white;
+    color: red;
+    font-size: 12px;
+    font-family: 함초롬바탕;
+    border: 2px solid red;
+    border-radius: 10px;
+    padding: 4px;
+    margin: 0 4px;
+
+}
+.admin-row {
+    background: #d0d0d0;
+    font-family: 함초롬바탕;
+}
+th {
+    text-align: center !important;
+}
+.c1 {
+    text-align: center;
+}
+.d1 {
+    padding: 80px; width: 70%; margin: 0 auto;
+}
+.fs1 {
+    margin-right: 20px;
+}
+.fc1 {
+    width: 300px;
+}
+.searchBtn {
+    margin: 0 5px;
+}
+.addboard {
+    margin-left: 5px; background: #c3dbdf
+}
+.addnotice {
+    margin-left: 5px; background: #01B0D1;
+}
+.title1 {
+    width: 480px; text-align: center;
+}

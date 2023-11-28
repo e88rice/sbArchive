@@ -6,50 +6,10 @@
       layout:decorate="~{/layout/layout.html}">
 <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
 
-<style layout:fragment="style">
-    /* 여기서부터 /board/read 관련 css */
-    .readBoard_form {
-        margin: 0 auto;
-        padding-top: 100px;
-        width: 800px;
 
-    }
-    textarea {
-        margin: 0 auto;
-        border: 2px solid #d3d3d3;
-        border-radius: 10px;
-        width: 100%;
-        height: 6.25em;
-        resize: none;
-    }
-    .form1 {
-        border: #d3d3d3;
-        height: 100%;
-    }
-
-    .btnend {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 50px;
-    }
-
-    .topline {
-        margin-bottom: 20px;
-
-    }
-    .card-body1 {
-        border: 2px solid #d3d3d3;
-        border-radius: 10px;
-    }
-    .imgWidth {
-        max-width: 400px;
-    }
-
-    /* 여기까지 /board/read 관련 css */
-</style>
 
 <div layout:fragment="content">
+    <link rel="stylesheet" href="/css/board/read.css">
     <link rel="stylesheet" href="/css/reply/reply.css"> <!-- 댓글 css -->
     <div class="form1">
 
@@ -59,39 +19,38 @@
                     <div class="card">
                         <div class="card-body1" >
                             <div class="input-group mb-3">
-                                <input style="font-size: 30px; background: none; border: none;width: 100%; margin: 10px;"   type="text" name="title" class="form-control" th:value="${dto.title}" readonly>
+                                <input type="text" name="title" class="form-control" id="fc1" th:value="${dto.title}" readonly>
                             </div>
                             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
-                            <div class="flex-content" style="padding: 20px">
+                            <div class="flex-content fc2">
                                 <div>
                                     [[${dto.nickname}]] (
                                     [[${dto.userId.substring(0, 4)  + '******'}]] )
                                 </div>
                                 <div class="topline">
-                                    <button th:if="${dto.likeId}"  class="fa-solid fa-heart fasol" type="button" style="border: none;background: none;color: red";>
+                                    <button th:if="${dto.likeId}"  class="fa-solid fa-heart fasol" type="button" >
                                         좋아요
                                     </button>
                                     <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                    <button th:unless="${dto.likeId}"  class="fa-regular fa-heart" type="button" style="border: none;background: none;color: red";>
+                                    <button th:unless="${dto.likeId}"  class="fa-regular fa-heart ff1" type="button" >
                                         좋아요
                                     </button>
-                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count" style="margin-right: 250px" >
+                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count" >
                                 <li class="fa-solid fa-comment fa-flip-horizontal;" ></li> 댓글 총 [[${dto.replyCount}]]개</span>
 
 
                                     <tr>
-                                        <td th:if="${dto.addDate == dto.modDate}" style="text-align: right;">
+                                        <td th:if="${dto.addDate == dto.modDate}" class="dd1">
                                             <span th:text="${#strings.replace(dto.addDate.toString(), 'T', ' ')}"></span>
                                         </td>
-                                        <td th:if="${dto.addDate != dto.modDate}" style="text-align: right;">
+                                        <td th:if="${dto.addDate != dto.modDate}" class="dd1">
                                             <span th:text="${#strings.replace(dto.modDate.toString(), 'T', ' ')}"></span>
                                         </td>
                                     </tr>
                                 </div>
                             </div>
                             <div class="form-group">
-                            <textarea name="content" id="content" class="form-control" rows="25"  readonly
-                                      style="padding: 20px; background: none">[[${dto.content}]]  </textarea>
+                            <textarea name="content" id="content" class="form-control" rows="25"  readonly>[[${dto.content}]]  </textarea>
                             </div>
 
                             <div class="left_wrap">
@@ -128,7 +87,7 @@
             <input th:value="${dto.userId}" name="userId" hidden="hidden">
             <input th:value="${dto.title}" name="title" hidden="hidden">
             <button th:if="${name != null and name == 'admin'}"
-                    class="btn btn-outline-secondary reportBtn" type="submit" style="margin-left: 850px; background: #d43f3a">현재게시글 REPOT
+                    class="btn btn-outline-secondary reportBtn" type="submit" >현재게시글 REPOT
             </button>
         </form>
     </div>
