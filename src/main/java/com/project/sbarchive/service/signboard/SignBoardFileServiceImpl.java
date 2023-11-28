@@ -31,7 +31,7 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
     public void addSignboardImages(int signboardId, List<MultipartFile> files) {
         log.info(staticResourceService.getStaticFolderPath());
 
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\img\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String uploadPath1 = uploadPath + "signboard\\";
 
@@ -80,7 +80,7 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
     @Override
     public void removeSignboardImages(int signboardId) {
         ArrayList<String> files = signBoardFileMapper.getSignboardImages(signboardId);
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\img\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String deletePath = uploadPath + "signboard\\";
         for(String file : files) {

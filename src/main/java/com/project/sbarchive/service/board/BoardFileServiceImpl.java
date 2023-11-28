@@ -32,7 +32,7 @@ public class BoardFileServiceImpl implements BoardFileService {
     @Override
     public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
 
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\img\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String uploadPath1 = uploadPath + "board\\";
 
@@ -79,7 +79,7 @@ public class BoardFileServiceImpl implements BoardFileService {
     @Override
     public void removeBoardImages(int boardId, String type) {
         ArrayList<String> files = boardFileMapper.getBoardImages(boardId, type);
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\imgs\\";
+        String uploadPath = staticResourceService.getStaticFolderPath() + "\\img\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String deletePath = uploadPath + "board\\";
         for(String file : files) {
