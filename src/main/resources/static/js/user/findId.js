@@ -1,8 +1,3 @@
-let msg = [[${msg}]];
-
-if(msg != null) {
-    alert(msg);
-}
 
 let confirmKey = "";
 
