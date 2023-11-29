@@ -980,8 +980,9 @@
             uplike.addEventListener('click',function (e) {
                 e.preventDefault();
                 likeDown(boardId,username);
+                setTimeout(1000)
                 location.reload();
-                setTimeout(500)
+
                 return;
             });
         }else {
@@ -989,8 +990,9 @@
             notlike.addEventListener('click', function (e) {
                 e.preventDefault();
                 likeUp(boardId, username);
+                setTimeout(1000)
                 location.reload();
-                setTimeout(500)
+
             });
         }
         document.querySelector(".reportPage").addEventListener("click",function (e) {

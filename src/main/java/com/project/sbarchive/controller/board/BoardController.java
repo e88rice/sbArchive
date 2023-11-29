@@ -180,7 +180,6 @@ public class BoardController {
         }
         boardFileService.addBoardImages(boardId, files,"board"); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         return "redirect:/board/read?boardId="+boardId;
-
     }
 
     @PreAuthorize("principal.username == #boardDTO.userId") // 로그인 정보와 전달받은 boardDTO의 네임이 같다면 작업 허용
@@ -210,7 +209,7 @@ public class BoardController {
         log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");
         boardService.remove(boardId);
 
-        return "redirect:/board/list?"+pageRequestDTO.getLink();
+        return "redirect:/board/list?types=n&keyword=";
     }
 
     @PostMapping("/removeReply/admin")
