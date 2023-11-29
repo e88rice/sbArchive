@@ -383,7 +383,7 @@
                     <div class="list_of_reply">
 
                         <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
-                            <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
+                            <img class="user_image" src="/images/img/logo_.png" alt=""> <!-- 나중에 th:src 수정 -->
                         </div>
 
                         <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
@@ -496,7 +496,7 @@
                             let boardWriter=[[${dto.userId}]]; // 게시글 쓴 아이디
 
                             function maskId(id) { // 아이디 앞 4글자 제외하고 *로 대체하는 함수
-                                return id.substring(0, 4) + id.substring(4).replace(/./g, '*');
+                                return id.substring(0, 4) + '******';
                             }
 
                             let contentA=dto.content.split('/');
@@ -529,7 +529,7 @@
                             } else {
                                 isReportedReply += `
                                 ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
-                                    <img class="user_image" th:src="@{/img/12d5fb18-37a5-480b-8d0b-e102ba20a069_pic7.png}" alt=""> <!-- 나중에 th:src 수정 -->
+                                    <img class="user_image" src="/images/img/logo_.png" alt=""> <!-- 나중에 th:src 수정 -->
                                 </div>
 
                                 <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
