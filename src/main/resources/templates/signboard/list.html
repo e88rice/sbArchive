@@ -238,7 +238,7 @@
       let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
       let str = "<div class=\"modal_img_container\">\n" +
-              "              <img src= /images/signboard/"+ signboard.files[0] +">\n" +
+              "              <img src='/images/signboard/"+ signboard.files[0] +"'>\n" +
               "            </div>\n" +
               "            <div class=\"modal_info_container\">\n" +
               "              <div id=\"map\"></div>\n" +
@@ -266,7 +266,7 @@
       // 이미지 폼
       let imgs = "";
       for(let i=0; i<signboard.files.length; i++) {
-        imgs += "              <img class='footer_imgs' src= /images/signboard/"+ signboard.files[i] +">\n";
+        imgs += "              <img class='footer_imgs' src='/images/signboard/"+ signboard.files[i] +"'>\n";
       }
 
       // 수정 삭제 폼
