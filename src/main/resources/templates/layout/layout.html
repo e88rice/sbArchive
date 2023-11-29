@@ -54,6 +54,12 @@
     font-weight: 700;
     font-style: normal;
   }
+
+  .login_toggle {
+    padding:32px 0 5px 0;
+    margin:0 15px;
+    cursor: pointer;
+  }
 </style>
 <body>
 <!-- End Hero Bg
@@ -76,24 +82,35 @@
     <nav class="collapse navbar-collapse bs-navbar-collapse navbar-right" role="navigation">
       <ul class="nav navbar-nav">
         <li>
-          <a class="dropdown-item" href="/">지도</a>
+          <a href="/">지도</a>
         </li>
         <li>
-          <a class="dropdown-item" href="/signboard/list/1">외국어 간판 모음집</a>
+          <a href="/signboard/list/1">외국어 간판 모음집</a>
         </li>
         <li>
-          <a class="dropdown-item" href="/board/list?types=n&keyword=">자유게시판</a>
+          <a href="/board/list?types=n&keyword=">자유게시판</a>
         </li>
-        <li>
-          <a class="dropdown-item" href="/user/joinAuth" sec:authorize="!isAuthenticated()">회원가입</a>
-          <a class="dropdown-item" href="/my/mypage" sec:authorize="isAuthenticated()">마이페이지</a>
+        <li sec:authorize="isAuthenticated()">
+          <a class="dropdown-item" href="/my/mypage">마이페이지</a>
         </li>
-        <li>
-          <a class="dropdown-item" href="/user/login" sec:authorize="!isAuthenticated()">로그인</a>
-          <a class="dropdown-item" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
+        <li sec:authorize="isAuthenticated()" class="dropdown">
+            <i class='bx bxs-user dropdown-toggle login_toggle' data-bs-toggle="dropdown" aria-expanded="false"></i>
+            <ul class="dropdown-menu dropdown-menu-end" style="z-index: 1000">
+              <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/my/withdrawal">회원탈퇴</a></li>
+            </ul>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+          <a class="dropdown-item" href="/user/login">로그인</a>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+          <a class="dropdown-item" href="/user/joinAuth">회원가입</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" style="background-color: white; color: black" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link dropdown-toggle" style="background-color: white; color: black"
+             href="#" id="adminDropdown" role="button"
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" sec:authorize="hasRole('ADMIN')">
             관리 <i class="fa-solid fa-gear"></i>
           </a>
           <div class="dropdown-menu animated fadeIn" aria-labelledby="adminDropdown">

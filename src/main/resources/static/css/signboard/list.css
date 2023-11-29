@@ -96,7 +96,7 @@
 }
 
 /*모달*/
-.show {
+div.show {
     top: 0;
     left: 0;
     width: 100%;
