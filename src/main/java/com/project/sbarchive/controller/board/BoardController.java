@@ -103,7 +103,7 @@ public class BoardController {
             }
             boardFileService.addBoardImages(boardId, files,"board");
         }
-        return "redirect:/board/list";
+        return "redirect:/board/list?types=n&keyword=";
     }
 
     @GetMapping("/list")
