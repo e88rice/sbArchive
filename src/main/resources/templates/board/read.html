@@ -981,6 +981,7 @@
                 e.preventDefault();
                 likeDown(boardId,username);
                 location.reload();
+                setTimeout(500)
                 return;
             });
         }else {
@@ -989,6 +990,7 @@
                 e.preventDefault();
                 likeUp(boardId, username);
                 location.reload();
+                setTimeout(500)
             });
         }
         document.querySelector(".reportPage").addEventListener("click",function (e) {
