@@ -12,7 +12,7 @@ textarea {
 }
 .topline {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     font-size: 20px;
 
@@ -27,4 +27,13 @@ textarea {
 }
 .fc1 {
     padding: 20px; background: none;
+}
+.board_target_info {
+    padding: 20px 0 0 20px;
+    position: absolute;
+}
+#content {
+    position: relative;
+    padding: 80px 0 0 20px;
+    background: none;
 }

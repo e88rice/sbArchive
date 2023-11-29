@@ -82,7 +82,7 @@
           <a class="dropdown-item" href="/signboard/list/1">외국어 간판 모음집</a>
         </li>
         <li>
-          <a class="dropdown-item" href="/board/list">자유게시판</a>
+          <a class="dropdown-item" href="/board/list?types=n&keyword=">자유게시판</a>
         </li>
         <li>
           <a class="dropdown-item" href="/user/joinAuth" sec:authorize="!isAuthenticated()">회원가입</a>
@@ -98,7 +98,8 @@
           </a>
           <div class="dropdown-menu animated fadeIn" aria-labelledby="adminDropdown">
             <a class="dropdown-item" href="/admin/management">종합관리</a><br>
-            <a class="dropdown-item" href="/admin/exBoards/1">자유게시판 관리</a>
+            <a class="dropdown-item" href="/admin/exBoards/1">자유게시판 관리</a><br>
+            <a class="dropdown-item" href="/boardReport/list?page=1">신고게시판 관리</a>
           </div>
         </li>
       </ul>

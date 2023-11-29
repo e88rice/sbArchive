@@ -89,7 +89,7 @@ public class BoardReportController {
         UserVO userVO = userService.getUserInfo(userId);
         userService.checkLevelUp(userId, userVO.getLevel(), userVO.getLvPoint());
 
-        return "redirect:/board/list";
+        return "redirect:/board/list?types=n&keyword=";
     }
 
     @GetMapping("/list")
@@ -130,6 +130,6 @@ public class BoardReportController {
 
 
 
-        return "redirect:/boardReport/list";
+        return "redirect:/boardReport/list?types=n&keyword=";
     }
 }
