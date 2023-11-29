@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div>
-                                    <button th:if="${dto.userId} != ${name} and ${name} != 'admin'
+                                    <button th:if="${dto.userId} != ${name} and ${name} != 'SB_Admin'
                                     " type="button" class="btn btn-danger reportPage">이글 신고하기</button>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
             <input th:value="${dto.boardId}" name="boardId" hidden="hidden">
             <input th:value="${dto.userId}" name="userId" hidden="hidden">
             <input th:value="${dto.title}" name="title" hidden="hidden">
-            <button th:if="${name != null and name == 'admin'}"
+            <button th:if="${name != null and name == 'SB_Admin'}"
                     class="btn btn-outline-secondary reportBtn" type="submit" >현재게시글 REPOT
             </button>
         </form>

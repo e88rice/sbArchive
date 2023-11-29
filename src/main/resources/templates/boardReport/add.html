@@ -18,6 +18,8 @@
         <h2 class="mb-4"></h2>
         <form action="/boardReport/add" method="post" name="frmAdd" enctype="multipart/form-data">
             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
+            <input hidden="hidden" name="nickname" th:value="${dto.nickname}">
+            <input hidden="hidden" name="userId" th:value="${dto.userId}">
             <div class="topline">
                 <div class="form-group">
                     신고자 /
@@ -52,7 +54,8 @@
                     <div>신고 게시글 내용: [[${dto.content}]]</div>
                 </div>
                 <textarea name="content" id="content" class="form-control fc1" rows="25"
-                          placeholder="허위신고시 제재 대상이 될 수 있습니다."></textarea>
+                          placeholder="허위신고시 제재 대상이 될 수 있습니다.">
+                </textarea>
             </div>
             <div class="topline">
                 <div class="form-group">
