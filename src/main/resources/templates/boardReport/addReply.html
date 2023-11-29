@@ -52,7 +52,7 @@
 
             <div class="form-group">
                 <div class="report_target_info">
-                    <div>신고 대상: [[${dto.nickname}]] ( [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]] )</div>
+                    <div>신고 대상: [[${dto.nickname}]] ( [[${dto.userId.substring(0, 4) + '*' * (dto.userId.length() - 4)}]] )</div>
                     <div>신고 리플 내용: [[${dto.content}]]</div>
                 </div>
                 <textarea name="content" id="content" class="form-control" rows="25"

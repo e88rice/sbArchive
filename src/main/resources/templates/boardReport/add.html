@@ -20,15 +20,15 @@
             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
             <div class="topline">
                 <div class="form-group">
-                    신고자
+                    신고자 /
                     ( [[${user.getName}]] )
                 </div>
-                <i class="fa-solid fa-arrow-right"> </i>
+<!--                <i class="fa-solid fa-arrow-right"> </i>-->
                 <div class="form-group">
-                        신고글 제목: [[${dto.title}]]
-                        신고자 정보: [[${dto.nickname}]] (
-                        [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]]
-                        )
+<!--                        신고글 제목: [[${dto.title}]]-->
+<!--                        신고자 정보: [[${dto.nickname}]] (-->
+<!--                        [[${dto.userId.substring(0, 3) + '*' * (dto.userId.length() - 4)}]]-->
+<!--                        )-->
                 </div>
 
             </div>
@@ -47,8 +47,12 @@
             </div>
 
             <div class="form-group">
+                <div class="board_target_info">
+                    <div>신고 대상: [[${dto.nickname}]] ( [[${dto.userId.substring(0, 4) + '*' * (dto.userId.length() - 4)}]] )</div>
+                    <div>신고 게시글 내용: [[${dto.content}]]</div>
+                </div>
                 <textarea name="content" id="content" class="form-control fc1" rows="25"
-                          placeholder="허위신고시 제재대상이 될수 있습니다."></textarea>
+                          placeholder="허위신고시 제재 대상이 될 수 있습니다."></textarea>
             </div>
             <div class="topline">
                 <div class="form-group">
