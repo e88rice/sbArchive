@@ -2,14 +2,6 @@ const strongPasswordMessage = document.querySelector('.strongPassword-message');
 const mismatchMessage = document.querySelector('.mismatch-message');
 
 
-const msg = [[${msg}]];
-console.log(msg);
-
-if(msg != null){
-    alert(msg);
-}
-
-
 // 비밀번호 공백 제거
 function noSpaceFormReset(obj) {
     let str_space = /\s/;  // 공백체크

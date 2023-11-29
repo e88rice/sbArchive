@@ -173,12 +173,16 @@
             const urlParams2 = new URL(window.location.href).searchParams;
             let admin = urlParams2.get('admin');
 
-            if(my === 'board') {
+            if(my === 'board') {us
                 self.location.href = `/my/myBoardList?${link}`;
             }
             else if (my === 'reply') {
                 self.location.href = `/my/myReplyList?${link}`;
-            } else if (admin === "admin") {
+            }
+            else if (my === 'like') {
+                self.location.href = `/my/myLikedList?${link}`;
+            }
+            else if (admin === "admin") {
                 self.location.href = `/admin/management`;
             }
             else {
