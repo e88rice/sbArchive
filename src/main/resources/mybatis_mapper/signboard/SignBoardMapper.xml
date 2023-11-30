@@ -25,39 +25,39 @@
 <!--    </resultMap>-->
 
     <insert id="addSignboard" parameterType="com.project.sbarchive.vo.signboard.SignBoardVO" useGeneratedKeys="true" keyProperty="signboardId">
-        INSERT INTO signboard (userId, nickname, xOffSet, yOffSet, title, address, content, addDate, modDate)
+        INSERT INTO `signboard` (`userId`, `nickname`, `xOffSet`, `yOffSet`, `title`, `address`, `content`, `addDate`, `modDate`)
         VALUES (#{userId}, #{nickname}, #{xOffSet}, #{yOffSet}, #{title}, #{address}, #{content}, now(), now())
     </insert>
 
     <select id="getSignboard" resultType="com.project.sbarchive.vo.signboard.SignBoardVO">
-        select * from signboard where signboardId = #{signboardId};
+        select * from `signboard` where `signboardId` = #{signboardId};
     </select>
 
     <select id="getSignboardList" resultMap="getListWithImages">
-        select sb.*, sf.fileName from signboard sb LEFT JOIN signboard_file sf on sb.signboardId = sf.signboardId;
+        select sb.*, sf.`fileName` from `signboard` sb LEFT JOIN `signboard_file` sf on sb.`signboardId` = sf.`signboardId`;
     </select>
 
     <select id="getSearchSignboardList" resultMap="getListWithImages">
-        select sb.*, sf.fileName from signboard sb left join signboard_file sf on sb.signboardId = sf.signboardId
+        select sb.*, sf.`fileName` from `signboard` sb left join `signboard_file` sf on sb.`signboardId` = sf.`signboardId`
         where `title` LIKE concat('%', #{keyword}, '%') OR `address` LIKE concat('%', #{keyword}, '%')
     </select>
 
     <select id="getSignboardListWithPaging" resultMap="getListWithImages">
-        select sb.*, sf.fileName from signboard sb
-        LEFT JOIN signboard_file sf
-        on sb.signboardId = sf.signboardId group by signboardId order by signboardId desc limit #{skip}, #{size};
+        select sb.*, sf.`fileName` from `signboard` sb
+        LEFT JOIN `signboard_file` sf
+        on sb.`signboardId` = sf.`signboardId` group by `signboardId` order by `signboardId` desc limit #{skip}, #{size};
     </select>
 
     <select id="getCount" resultType="int">
-        select count(*) from signboard;
+        select count(*) from `signboard`;
     </select>
     
     <update id="modifySignboard">
-        update signboard set content = #{content}, modDate = now() where signboardId = #{signboardId}
+        update `signboard` set `content` = #{content}, `modDate` = now() where `signboardId` = #{signboardId}
     </update>
 
     <delete id="removeSignboard">
-        delete from signboard where signboardId = #{signboardId}
+        delete from `signboard` where `signboardId` = #{signboardId}
     </delete>
 
 </mapper>

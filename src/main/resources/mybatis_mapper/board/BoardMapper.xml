@@ -5,31 +5,31 @@
 <mapper namespace="com.project.sbarchive.mapper.board.BoardMapper">
 
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId">
-        INSERT INTO board (userId, title, content, hit, likeUp,  addDate,modDate, nickname ,delDate)
+        INSERT INTO `board` (`userId`, `title`, `content`, `hit`, `likeUp`,  `addDate`,`modDate`, `nickname` ,`delDate`)
         VALUES (#{userId} , #{title}, #{content}, 0, 0, now(),now(),#{nickname}, '3000-01-01' )
     </insert>
     <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardVO">
-        select * from board order by boardId desc
+        select * from `board` order by `boardId` desc
     </select>
     <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardVO">
-        select * from board where boardId =  #{boardId}
+        select * from `board` where `boardId` =  #{boardId}
     </select>
     <update id="modify" >
-        update board set  title = #{title}, content =#{content}, modDate = now()  where boardId = #{boardId}
+        update `board` set  `title` = #{title}, `content` =#{content}, `modDate` = now()  where `boardId` = #{boardId}
     </update>
     <update id="hitCount" >
-        UPDATE board  SET hit = hit + 1  WHERE boardId = #{boardId}
+        UPDATE `board`  SET `hit` = `hit` + 1  WHERE `boardId` = #{boardId}
     </update>
     <update id="boardlikeUp" >
-        UPDATE board  SET `likeUp` = `likeUp` + 1  WHERE boardId = #{boardId}
+        UPDATE `board`  SET `likeUp` = `likeUp` + 1  WHERE `boardId` = #{boardId}
     </update>
     <update id="boardlikeDown" >
-        UPDATE board  SET `likeUp` = `likeUp` - 1  WHERE boardId = #{boardId}
+        UPDATE `board`  SET `likeUp` = `likeUp` - 1  WHERE `boardId` = #{boardId}
     </update>
 
 
     <delete id="remove" >
-        delete from board where boardId = (#{boardId})
+        delete from `board` where `boardId` = (#{boardId})
     </delete>
     <sql id="search">
         <where>
@@ -50,50 +50,50 @@
         </where>
     </sql>
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardVO">
-        SELECT * FROM board
+        SELECT * FROM `board`
         <include refid="search" />
         <if test="types != null and types.length > 0">
-            AND delDate > NOW()
+            AND `delDate` > NOW()
         </if>
-        ORDER BY CASE WHEN userId = 'SB_Admin' THEN 0 ELSE 1 END, boardId DESC
+        ORDER BY CASE WHEN `userId` = 'SB_Admin' THEN 0 ELSE 1 END, `boardId` DESC
         LIMIT #{skip}, #{size}
     </select>
     <select id="getCount" resultType="int">
-        select count(*) from board
+        select count(*) from `board`
         <include refid="search" />
     </select>
 
 
 
     <select id="getUserCount" resultType="int">
-        select count(*) from board
+        select count(*) from `board`
         <include refid="search" />
     </select>
 
     <insert id="likeUp" >
-        insert into board_like (boardId, userId, addDate,title) values (#{boardId} , #{userId}, now(), #{title})
+        insert into `board_like` (`boardId`, `userId`, `addDate`,`title`) values (#{boardId} , #{userId}, now(), #{title})
     </insert>
 
     <delete id="likeDown" >
-        delete from board_like where boardId = (#{boardId}) and userId = #{userId}
+        delete from `board_like` where `boardId` = (#{boardId}) and `userId` = #{userId}
     </delete>
     <select id="getLike" resultType="int">
-        select count(*) from board_like where boardId = #{boardId} and userId = #{userId}
+        select count(*) from `board_like` where `boardId` = #{boardId} and `userId` = #{userId}
     </select>
     <insert id="addNotice" parameterType="com.project.sbarchive.vo.board.BoardVO" useGeneratedKeys="true" keyProperty="boardId" >
-        INSERT INTO board (userId, title, content, hit, likeUp,  addDate, nickname, modDate, delDate)
+        INSERT INTO `board` (`userId`, `title`, `content`, `hit`, `likeUp`,  `addDate`, `nickname`, `modDate`, `delDate`)
         VALUES (#{userId} , #{title}, #{content}, 0, 0, now(), #{nickname} , #{modDate}, #{delDate})
     </insert>
 
     <select id="getExBoards" resultType="com.project.sbarchive.vo.board.BoardVO">
-        select * from board where delDate <![CDATA[<]]> now() LIMIT #{skip}, #{size};
+        select * from `board` where `delDate` <![CDATA[<]]> now() LIMIT #{skip}, #{size};
     </select>
     <select id="getExBoardsCount" resultType="int">
-        select count(*) from board where delDate <![CDATA[<]]> now();
+        select count(*) from `board` where `delDate` <![CDATA[<]]> now();
     </select>
 
     <delete id="deleteAllDelDate">
-        DELETE FROM board WHERE delDate <![CDATA[<]]> now()
+        DELETE FROM `board` WHERE `delDate` <![CDATA[<]]> now()
     </delete>
 
 </mapper>

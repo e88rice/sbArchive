@@ -19,35 +19,35 @@
     </sql>
 
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
-        INSERT INTO report_board ( userId, title, content,   isAnswered, addDate, boardId, replyId)
+        INSERT INTO `report_board` ( `userId`, `title`, `content`,   `isAnswered`, `addDate`, `boardId`, `replyId`)
         VALUES (#{userId},#{title},#{content}, 0, now(), #{boardId}, #{replyId} )
     </insert>
 
     <select id="getBoard" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board where rBoardId =  #{rBoardId}
+        select * from `report_board` where `rBoardId` =  #{rBoardId}
     </select>
 
     <update id="isAnswered">
-        UPDATE report_board  SET isAnswered = isAnswered + 1  WHERE rBoardId = #{rBoardId}
+        UPDATE `report_board`  SET `isAnswered` = `isAnswered` + 1  WHERE `rBoardId` = #{rBoardId}
     </update>
     <select id="getCount" resultType="int">
-        select count(*) from report_board
+        select count(*) from `report_board`
     </select>
 
     <select id="getMyReportCount" resultType="int" >
-        select count(*) from report_board where userId = #{userId} <include refid="search" />
+        select count(*) from `report_board` where `userId` = #{userId} <include refid="search" />
     </select>
 
     <select id="getMyReportList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board where userId = #{userId} order by rBoardId desc limit #{skip}, #{size}
+        select * from `report_board` where `userId` = #{userId} order by `rBoardId` desc limit #{skip}, #{size}
     </select>
 
     <select id="selectList" resultType="com.project.sbarchive.vo.board.BoardReportVO" >
-        select * from report_board
-        order by rBoardId desc limit #{skip}, #{size}
+        select * from `report_board`
+        order by `rBoardId` desc limit #{skip}, #{size}
     </select>
     <select id="getBoardList" resultType="com.project.sbarchive.vo.board.BoardReportVO">
-        select * from report_board order by userId desc
+        select * from `report_board` order by `userId` desc
     </select>
 
 

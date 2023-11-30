@@ -5,17 +5,17 @@
 <mapper namespace="com.project.sbarchive.mapper.signboard.SignBoardFileMapper">
 
     <insert id="addSignboardImages">
-        INSERT INTO signboard_file (signboardId, fileName)
+        INSERT INTO `signboard_file` (`signboardId`, `fileName`)
         VALUES (#{signboardId}, #{fileName});
     </insert>
 
     <select id="getSignboardImages" resultType="String">
-        select fileName from signboard_file sf where sf.signboardId = #{signboardId};
+        select `fileName` from `signboard_file` sf where sf.`signboardId` = #{signboardId};
     </select>
 
 
     <delete id="removeSignboardImages">
-        delete from signboard_file where signboardId = #{signboardId}
+        delete from `signboard_file` where `signboardId` = #{signboardId}
     </delete>
 
 </mapper>
