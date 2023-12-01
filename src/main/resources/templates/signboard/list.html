@@ -121,11 +121,6 @@
     let idx = 0;
     const username = '[[${username}]]';
 
-    console.log("page = " + page);
-    console.log("last = " + last);
-    console.log("size = " + size);
-    console.log("lpli = " + lpli);
-
     // 뷰 모달
     const modalShowBtn = document.querySelectorAll(".modal_show"); // 모달 보이게하는 버튼들
     const modalContainer = new bootstrap.Modal(document.querySelector(".modal_container")); // 모달 컨테이너
@@ -272,7 +267,6 @@
       // 수정 삭제 폼
       let btns = "";
       isLogin = signboard.userId === username;
-      console.log(isLogin);
       if(isLogin) { // 내꺼
         btns += "              <button class=\"modifyBtn\">수정하기 <i class=\"fa-solid fa-wrench\"></i></button>\n" +
                 "              <button class=\"removeBtn\">삭제하기 <i class=\"fa-solid fa-trash\"></i></button>";
@@ -281,9 +275,6 @@
         document.querySelector(".modal_footer_mod_del_btns").innerHTML ='';
       }
 
-
-
-      // console.log(str);
       modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
       modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
 
@@ -294,7 +285,6 @@
     function getSignboardtoModal(page, index) {
 
       getSignboard(page, index).then(r => {
-        console.log(r);
         isLogin = false;
         isLogin = addInfoForm(r); // HTML 요소로써 모달창에 표시
         changeImage();  // 모달창의 대기 이미지 hover시 메인 이미지로 바뀌게 하는 이벤트를 걸어둠
@@ -438,7 +428,6 @@
       removeBtn.addEventListener("click", function (e){
 
         const signboardId = document.querySelector(".modal_modify_id").value;
-        console.log(signboardId);
         if(confirm("삭제 후 되돌릴 수 없습니다. 삭제하시겠습니까?")){
           let result = deleteSignboard(signboardId).then( result => {
             if(result > 0){ // 삭제 성공

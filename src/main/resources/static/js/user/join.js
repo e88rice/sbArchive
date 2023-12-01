@@ -123,7 +123,6 @@ btnSendEmail.addEventListener('click', function (e){
         xhr.onload = function() {
             if (xhr.status === 200) {
                 // 서버 응답이 성공인 경우
-                console.log(xhr.response);
                 if(xhr.response == 1){ // 서버에 이메일이 있는 경우
                     failureMessage.classList.remove('hide'); // 사용할 수 없는 이메일입니다.
 
@@ -132,14 +131,12 @@ btnSendEmail.addEventListener('click', function (e){
 
                     const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
                     mailTo = email.value;
-                    console.log(mailTo);
                     xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
                     xhr.onload = function() {
                         if (xhr.status === 200) {
                             // 서버 응답이 성공인 경우
                             reset();
                             alert("이메일로 인증키를 확인해주세요");
-                            console.log(xhr.response); //(추후에 삭제하기)
                             setItemWithExpireTime("confirmKey", xhr.response, 180000)
                             timerDiv.classList.remove("hide");
                             timer();
@@ -238,8 +235,6 @@ userId.onkeydown = function () {
 }
 
 userId.onchange = function () {
-    console.log("isIdChecked = " + isIdChecked)
-    console.log("isIdValid = " + isIdValid)
     isIdChecked = false;
     // 값을 입력한 경우
     if (userId.value.length !== 0) {
@@ -295,7 +290,6 @@ idCheck.addEventListener('click', function (e){
         xhr.onload = function() {
             if (xhr.status === 200) {
                 // 서버 응답이 성공인 경우
-                console.log(xhr.response);
                 if(xhr.response == 1){ // 서버에 아이디가 있는 경우
                     successMessage.classList.add('hide');
                     failureMessage2.classList.add('hide');

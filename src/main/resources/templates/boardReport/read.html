@@ -128,7 +128,6 @@
     function SendMsg(receiverName) {
         const rcvName =  document.querySelector('.msgReceiverName');
         const msgContent = document.querySelector(".msgContent");
-        console.log("1111111111111111111111111")
         rcvName.readOnly = false;
         if(receiverName !== null) { // 답장하기 버튼으로 접근 시
             rcvName.value = receiverName;
@@ -145,7 +144,6 @@
                 return;
             }
             addMessageReport(rcvName.value, msgContent.value, rboardId ).then( r => {
-                console.log(r);
                 if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
                 else {
                     alert("쪽지 전송 완료");

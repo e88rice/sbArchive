@@ -21,7 +21,6 @@ btnSendEmail.addEventListener('click', function (e){
     xhr.onload = function() {
         if (xhr.status === 200) {
             // 서버 응답이 성공인 경우
-            console.log(xhr.response);
             if(xhr.response == 0){ // 서버에 이메일과 아이디가 없는 경우
                 failureMessage.classList.remove('hide'); // 이메일 정보를 찾을 수 없습니다
 
@@ -30,13 +29,11 @@ btnSendEmail.addEventListener('click', function (e){
 
                 const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
                 let mailTo = email.value;
-                console.log(mailTo);
                 xhr.open('GET', '/mail/sendConfirmMail?mailTo=' + mailTo );
                 xhr.onload = function() {
                     if (xhr.status === 200) {
                         // 서버 응답이 성공인 경우
                         alert("이메일로 인증키를 확인해주세요");
-                        console.log(xhr.response); //(추후에 삭제하기)
                         confirmKey = xhr.response; //(controller 에서 반환된 confirmKey 불러오기)
 
                     } else {
@@ -62,11 +59,9 @@ const form = document.querySelector('form');
 auth_check.addEventListener("click", function (e){
     e.preventDefault();
 
-    console.log(confirmKey)
     if(confirmKey == emailCheck.value) {
         const xhr = new XMLHttpRequest(); // ajax 작업을 위한 객체 생성
         let mailTo = email.value;
-        console.log(mailTo);
         xhr.open('GET', '/mail/sendTempPwMail?mailTo=' + mailTo );
         xhr.onload = function() {
             if (xhr.status === 200) {

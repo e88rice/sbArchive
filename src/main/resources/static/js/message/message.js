@@ -1,9 +1,7 @@
 
 let isAnonymous = '';
 getUsername().then(r => {
-    console.log(r[0] === 'null');
     isAnonymous = r[0];
-    console.log(isAnonymous);
 
     let receivedPage = 1; // 수신 처음 페이지는 1
     let sentPage = 1; // 발신 처음 페이지는 1
@@ -186,7 +184,6 @@ getUsername().then(r => {
 
         function removeByIdxAndType(index, type) {
             removeByIndexAndType(index, type).then(r => {
-                console.log(r);
             }).catch(e => {
                 console.log(e);
             })
@@ -214,9 +211,7 @@ getUsername().then(r => {
                     const Messageindex = parseInt(wrap.firstElementChild.firstElementChild.value);
                     const type = wrap.firstElementChild.nextElementSibling.className.split("_")[1];
                     msgViewModal.show();
-                    console.log("index : " + Messageindex + " & type : " + type);
                     getMessage(Messageindex, type).then( r => {
-                        console.log(r);
                         let str = "";
                         if(type === "receiver") {
                             str += "<div class=\"message_writer\"><span>받은 사람 </span> " + r.receiverId +"</div>\n" +
@@ -273,7 +268,6 @@ getUsername().then(r => {
                     return;
                 }
                 addMessage(rcvName.value, msgContent.value).then( r => {
-                    console.log(r);
                     if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
                     else {
                         alert("쪽지 전송 완료");
