@@ -251,7 +251,6 @@
             // 대댓글이 아닌, 원댓글만 출력
             getReplyList({boardId, replyDepth, page, size, goLast}).then( // reply.js(axios)에 정보 넘겨주고 페이징된 데이터 받아옴
                 data => {
-                    console.log("data: "+data.dtoList);
                     printReplyList(data.dtoList); // pageResponseDTO의 dtoList
                     printPages(data);
                 }
@@ -458,7 +457,6 @@
             document.querySelectorAll('.replyReportBtn').forEach(function(replyReportBtn) {
                 replyReportBtn.addEventListener('click', function(e) {
                     const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                    // alert("replyId: "+replyId);
                     if(confirm("이 댓글을 신고하시겠습니까?")) {
                         location.href=`/boardReport/addReply?replyId=`+replyId +`&boardId=` + boardId;
                     } else return;
@@ -470,7 +468,6 @@
             // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
             document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
                 cancelBtn.addEventListener('click', function(e) {
-                    // alert('취소 버튼 누름');
                     const reReplyAddForm=e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
                     const rcontent=reReplyAddForm.children[1].children[0].children[1];
                     rcontent.value='';
@@ -617,7 +614,6 @@
                         document.querySelectorAll('.reReplyReportBtn').forEach(function(reReplyReportBtn) {
                             reReplyReportBtn.addEventListener('click', function(e) {
                                 const replyId= e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                                // alert("replyId: "+replyId);
                                 if(confirm("이 댓글을 신고하시겠습니까?")) {
                                     location.href=`/boardReport/addReply?replyId=`+replyId;
                                 } else return;
@@ -665,7 +661,6 @@
                         document.querySelectorAll('.reReplyModBtn').forEach(function(reReplyModBtn) {
                             reReplyModBtn.addEventListener('click', function(e) {
                                 const replyId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
-                                console.log("replyId: "+replyId);
 
                                 // 출력된 해당 댓글
                                 const list = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.list_of_reply_re');
@@ -724,7 +719,6 @@
                         // 대댓글에 대댓글 등록 이벤트
                         document.querySelectorAll(".reReReplyAddBtn").forEach(function(reReReplyAddBtn) {
                             reReReplyAddBtn.addEventListener('click', function(e) {
-                                alert("누름");
                                 const reReReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(".reReReplyAddForm");
                                 reReReplyAddForm.style.display='block';
 
@@ -762,7 +756,6 @@
 
                                 // 대댓글 등록 함수
                                 addReReply(replyObj).then(result => { // reply.js(axios)
-                                    // alert(result.data.replyId); // 확인용
                                     replycontent.value='';
                                     reReReplyAddForm.style.display='none';
                                     location.reload();
@@ -797,7 +790,6 @@
             // 원 댓글에 대댓글 등록 버튼 클릭 이벤트
             document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
                 addReBtn.addEventListener('click', function(e) {
-                    // alert("답글 폼 전송 버튼 클릭"); // 삭제 예정
                     const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
 
                     let replyContent=e.target.previousElementSibling.children[1];
@@ -952,7 +944,6 @@
                         return;
                     }
                     addMessage(rcvName.value, msgContent.value).then( r => {
-                        console.log(r);
                         if(!r) alert("존재하지 않는 사용자입니다. \n다시 입력해주세요.");
                         else {
                             alert("쪽지 전송 완료");
