@@ -13,7 +13,8 @@ var searchMapContainer = document.getElementById('map2'), // 지도를 표시할
     };
 var searchMap = new kakao.maps.Map(searchMapContainer, searchMapOption); // 지도를 생성합니다
 // 마커 이미지의 이미지 주소입니다
-var imageSrc = '/images/img/favicon.png';
+// var imageSrc = '/images/img/favicon.png';
+var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
 // 마커 이미지의 이미지 크기 입니다
 var imageSize = new kakao.maps.Size(35, 35);
 

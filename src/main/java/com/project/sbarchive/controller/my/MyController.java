@@ -57,9 +57,9 @@ public class MyController {
 
 
         if(userService.isSocialPassword(email)){
-            return "/my/modifySocialPasswd";
+            return "my/modifySocialPasswd";
         } else if (userService.isTempPassword(email)) {
-            return "/my/modifyPasswd";
+            return "my/modifyPasswd";
         }else {
             UserDTO userDTO = userService.getUserInfoByEmail(email);
 
@@ -90,7 +90,7 @@ public class MyController {
         } else {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
             model.addAttribute("username", userId);
-            return "/my/modifyMyInfoAuth";
+            return "my/modifyMyInfoAuth";
         }
     }
 
@@ -135,7 +135,7 @@ public class MyController {
         } else {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
             model.addAttribute("username", userId);
-            return "/my/modifyEmailAuth";
+            return "my/modifyEmailAuth";
         }
     }
 
@@ -191,7 +191,7 @@ public class MyController {
         }
         else {
             model.addAttribute("msg", "기존 비밀번호가 일치하지 않습니다");
-            return "/my/modifyPasswd";
+            return "my/modifyPasswd";
         }
     }
 
@@ -386,7 +386,7 @@ public class MyController {
             return "redirect:/logout";
         } else {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
-            return "/my/withdrawal";
+            return "my/withdrawal";
         }
     }
 

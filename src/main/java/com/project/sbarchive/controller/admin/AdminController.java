@@ -50,7 +50,7 @@ public class AdminController {
 
 
 
-        return "/admin/exBoardList";
+        return "admin/exBoardList";
     }
     @PostMapping("/targetDeleteAdmin")
     public String deleteSelectedBoard(int[] boardId) {

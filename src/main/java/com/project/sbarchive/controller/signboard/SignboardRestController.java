@@ -6,9 +6,12 @@ import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
 import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
+import com.project.sbarchive.service.staticResource.StaticResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
@@ -19,6 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor // 의존성 주입 위해
 public class SignboardRestController {
 
+    private final StaticResourceService sTest;
     private final SignBoardService signBoardService;
     private final SignBoardFileService signBoardFileService;
     private final ModelMapper modelMapper;
@@ -79,6 +83,11 @@ public class SignboardRestController {
             log.info("ㅎㅇ");
         }
         return signBoardService.getSearchSignboardList(keyword);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        return sTest.getStaticFolderPath().replace("build\\resources\\main\\", "src\\main\\resources\\")+"signboard";
     }
 
 

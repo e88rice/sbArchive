@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @Log4j2
+@RequestMapping("/")
 public class MainController {
 
     @RequestMapping({"/index", "/main", "/"})
@@ -17,7 +18,7 @@ public class MainController {
         if(authentication != null) {
             log.info(authentication.getPrincipal());
         }
-        return "/main/main";
+        return "main/main";
     }
 
     @GetMapping("/error/dupl")

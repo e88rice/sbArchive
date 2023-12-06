@@ -32,9 +32,12 @@ public class BoardFileServiceImpl implements BoardFileService {
     @Override
     public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
 
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
+        String uploadPath = staticResourceService.getStaticFolderPath().substring(1);
+//        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String uploadPath1 = uploadPath + "board\\";
+        log.info(uploadPath1);
+//        String uploadPath1 = uploadPath + "board\\";
 
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
             String originalName = multipartFile.getOriginalFilename(); // 전달 된 파일의 파일명
@@ -79,9 +82,11 @@ public class BoardFileServiceImpl implements BoardFileService {
     @Override
     public void removeBoardImages(int boardId, String type) {
         ArrayList<String> files = boardFileMapper.getBoardImages(boardId, type);
-        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
+        String uploadPath = staticResourceService.getStaticFolderPath().substring(1);
+//        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
         uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
         String deletePath = uploadPath + "board\\";
+//        String deletePath = uploadPath + "board\\";
         for(String file : files) {
             File filePath = new File(deletePath + file);
             File thumbnail = new File(deletePath + "s_" + file);

@@ -24,7 +24,7 @@ public class UserController {
     @GetMapping("/joinAuth")
     public String joinAuthGET() {
         log.info("=============== joinAuth Get Controller ===============");
-        return "/user/joinAuth";
+        return "user/joinAuth";
     }
 
     @PostMapping("/joinAuth")
@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/join")
     public String registerGET() {
         log.info("=============== registerUser Get Controller ===============");
-        return "/user/join";
+        return "user/join";
     }
 
     @PostMapping("/join")
@@ -50,7 +50,7 @@ public class UserController {
     @GetMapping("/joinSuccess")
     public String joinSuccess() {
         log.info("=============== joinSuccess Get Controller ===============");
-        return "/user/joinSuccess";
+        return "user/joinSuccess";
     }
 
     @PostMapping("/emailCheck")
@@ -81,13 +81,13 @@ public class UserController {
         if(principal != null){ // 로그인 상태면 인덱스로 돌아감. 로그인페이지로 접근금지.
             return "redirect:/index";
         }
-        return "/user/login";
+        return "user/login";
     }
 
     @GetMapping("/findId")
     public String findId(){
         log.info("=============== findId GET Controller ===============");
-        return "/user/findId";
+        return "user/findId";
     }
 
     @PostMapping("/foundId")
@@ -96,20 +96,20 @@ public class UserController {
 
         model.addAttribute("userId", userService.getUserId(email));
         log.info(userService.getUserId(email));
-        return "/user/foundId";
+        return "user/foundId";
 
     }
 
     @GetMapping("/foundId")
     public String foundId() {
         log.info("=============== foundId Get Controller ===============");
-        return "/user/foundId";
+        return "user/foundId";
     }
 
     @GetMapping("/findPassword")
     public String findPasswordGet() {
         log.info("=============== findPassword Get Controller ===============");
-        return "/user/findPassword";
+        return "user/findPassword";
     }
 
     @PostMapping("/accountCheck")

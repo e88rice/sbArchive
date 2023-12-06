@@ -47,7 +47,7 @@ public class SignboardController {
 
         UserVO userVO = userService.getUserInfo(principal.getName());
         model.addAttribute("user", userVO);
-        return "/signboard/add";
+        return "signboard/add";
     }
 
     // 게시글 등록
@@ -89,7 +89,7 @@ public class SignboardController {
             username = principal.getName();
         };
         model.addAttribute("username", username);
-        return "/signboard/list";
+        return "signboard/list";
     }
 
     // 게시글 상세 페이지
@@ -102,7 +102,7 @@ public class SignboardController {
         model.addAttribute("dto", signBoardAllDTO);
         model.addAttribute("page", pageNum);
 
-        return "/signboard/read";
+        return "signboard/read";
     }
 
 
