@@ -29,18 +29,21 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
 
     @Override
     public void addSignboardImages(int signboardId, List<MultipartFile> files) {
-        log.info("ㅎㅇㅎㅇ");
         log.info(staticResourceService.getStaticFolderPath());
 
+        // build 의 static 폴더를 가져옴
         String uploadPath = staticResourceService.getStaticFolderPath().substring(1);
-        log.info(uploadPath);
-//        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
-        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
-//        String uploadPath1 = uploadPath + "signboard\\";
-        String uploadPath1 = uploadPath + "signboard\\";
-        log.info(uploadPath1);
 
-        log.info("uploadPath = \n" + uploadPath1);
+        // build의 signboard 폴더 경로
+        String buildUploadPath = uploadPath + "signboard/";
+
+        log.info("build 경로 : " + buildUploadPath);
+
+        // src의 signboard 폴더 경로
+        uploadPath = uploadPath.replace("build/resources/main/", "src/main/resources/");
+        String srcUploadPath = uploadPath + "signboard/";
+
+        log.info("src 경로 : " + srcUploadPath);
 
         for(MultipartFile multipartFile : files) { // 전달된 파일의 수 만큼 순회
             String originalName = multipartFile.getOriginalFilename(); // 전달 된 파일의 파일명
@@ -49,22 +52,25 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
             String uuid = UUID.randomUUID().toString(); // 16자리. 파일명이 겹치지 않게 임의의 값을 생성해주는 친구
 
             // uploadPath = c:\\upload  uuid = bf8f3461-c18d-4485-a526-519727e881a4  originalName = sprite__common.png
-            Path savePath = Paths.get(uploadPath1, uuid + "_" + originalName);
+            Path srcSavePath = Paths.get(srcUploadPath, uuid + "_" + originalName);
+            Path buildSavePath = Paths.get(buildUploadPath, uuid + "_" + originalName);
             log.info("테스트 경로 : " + originalName);
 
             boolean isImage = false; // 전달 된 파일이 이미지 형식인지 판단
-            File Folder = new File(uploadPath1);
+            File srcFolder = new File(srcUploadPath);
+            File buildFolder = new File(buildUploadPath);
             try {
-                if(!Folder.exists()) {
-                    Folder.mkdirs();
+                if(!srcFolder.exists()) {
+                    srcFolder.mkdirs();
                 }
-                multipartFile.transferTo(savePath); // 실제 파일 저장
+                if(!buildFolder.exists()) {
+                    buildFolder.mkdirs();
+                }
+                multipartFile.transferTo(srcSavePath); // 실제 파일 저장
+                multipartFile.transferTo(buildSavePath); // 실제 파일 저장
                 // 이미지 파일이라면
-                if ( Files.probeContentType(savePath).startsWith("image")) {
-                    log.info(Files.probeContentType(savePath)); // image/jpeg
+                if ( Files.probeContentType(srcSavePath).startsWith("image")) {
                     isImage = true;
-                    File thumbFile = new File(uploadPath1, "s_" + uuid + "_" + originalName);
-                    log.info("1" + savePath.toFile());
                     // savePath.toFile() = 원본 파일의 경로. c:\\upload\\6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // thumbFile = 새로 생기는 파일의 경로 및 파일 이름. c:\\upload\\s_6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // width, height = 이미지 파일의 최대 크기
@@ -85,18 +91,25 @@ public class SignBoardFileServiceImpl implements SignBoardFileService{
     @Override
     public void removeSignboardImages(int signboardId) {
         ArrayList<String> files = signBoardFileMapper.getSignboardImages(signboardId);
-        String uploadPath = staticResourceService.getStaticFolderPath().substring(1);
-//        String uploadPath = staticResourceService.getStaticFolderPath() + "\\images\\";
-        uploadPath = uploadPath.replace("build\\resources\\main\\", "src\\main\\resources\\");
-//        String deletePath = uploadPath + "signboard\\";
-        String deletePath = uploadPath + "signboard\\";
+        String deletePath = staticResourceService.getStaticFolderPath().substring(1);
+
+        // build의 signboard 폴더 경로
+        String buildDeletePath = deletePath + "signboard/";
+
+        log.info("build 경로 : " + buildDeletePath);
+
+        // src의 signboard 폴더 경로
+        deletePath = deletePath.replace("build/resources/main/", "src/main/resources/");
+        String srcDeletePath = deletePath + "signboard/";
+
+        log.info("src 경로 : " + buildDeletePath);
         for(String file : files) {
-            File filePath = new File(deletePath + file);
-            File thumbnail = new File(deletePath + "s_" + file);
-            log.info(filePath.getPath());
-            log.info(thumbnail.getPath());
-            filePath.delete();
-            thumbnail.delete();
+            File sFilePath = new File(srcDeletePath + file);
+            File bFilePath = new File(buildDeletePath + file);
+            log.info(sFilePath.getPath());
+            log.info(bFilePath.getPath());
+            sFilePath.delete();
+            bFilePath.delete();
         }
         signBoardFileMapper.removeSignboardImages(signboardId);
     }

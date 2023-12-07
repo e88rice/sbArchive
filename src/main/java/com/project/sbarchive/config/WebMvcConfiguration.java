@@ -29,6 +29,5 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
         registry.addResourceHandler("layout/**").addResourceLocations("classpath:/templates/layout");
 
-//        file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/
     }
 }
