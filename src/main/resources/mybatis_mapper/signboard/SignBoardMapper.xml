@@ -39,7 +39,7 @@
 
     <select id="getSearchSignboardList" resultMap="getListWithImages">
         select sb.*, sf.`fileName` from `signboard` sb left join `signboard_file` sf on sb.`signboardId` = sf.`signboardId`
-        where `title` LIKE concat('%', #{keyword}, '%') OR `address` LIKE concat('%', #{keyword}, '%')
+        where `title` LIKE concat('%', #{keyword}, '%') OR `address` LIKE concat('%', #{keyword}, '%') order by sb.`signboardId` desc limit #{skip}, #{size};
     </select>
 
     <select id="getSignboardListWithPaging" resultMap="getListWithImages">
@@ -50,6 +50,10 @@
 
     <select id="getCount" resultType="int">
         select count(*) from `signboard`;
+    </select>
+
+    <select id="getSearchCount" resultType="int">
+        select count(*) from `signboard` where `title` LIKE concat('%', #{keyword}, '%') OR `address` LIKE concat('%', #{keyword}, '%')
     </select>
     
     <update id="modifySignboard">

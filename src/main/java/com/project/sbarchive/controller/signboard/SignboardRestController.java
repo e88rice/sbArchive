@@ -77,12 +77,13 @@ public class SignboardRestController {
         return signBoardAllDTO;
     }
 
-    @GetMapping("/get/search/{keyword}")
-    public ArrayList<SignBoardAllDTO> getSearchSignboards(@PathVariable("keyword") String keyword) {
+    @GetMapping("/get/search/{keyword}/{page}")
+    public PageResponseDTO<SignBoardAllDTO> getSearchSignboards(@PathVariable("keyword") String keyword, @PathVariable("page") int page) {
         if (keyword.equals("#############")){
             log.info("ㅎㅇ");
         }
-        return signBoardService.getSearchSignboardList(keyword);
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(page).size(6).build();
+        return signBoardService.getSearchSignboardList(keyword, pageRequestDTO);
     }
 
     @GetMapping("/test")

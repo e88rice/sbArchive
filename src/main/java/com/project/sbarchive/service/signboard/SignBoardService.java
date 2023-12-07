@@ -25,5 +25,7 @@ public interface SignBoardService {
     int removeSignboard(int signboardId); // 해당 signboardId를 참조하는 이미지 데이터들을 삭제
 
     // 메인페이지에서 검색 기능 이용 시 키워드에 해당하는 객체를 반환받음
-    ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword);
+    PageResponseDTO<SignBoardAllDTO> getSearchSignboardList(String keyword, PageRequestDTO pageRequestDTO);
+
+    int getSearchCount(String keyword);
 }

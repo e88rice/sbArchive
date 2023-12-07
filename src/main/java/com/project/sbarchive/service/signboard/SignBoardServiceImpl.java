@@ -5,6 +5,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.dto.user.UserDTO;
 import com.project.sbarchive.mapper.signboard.SignBoardFileMapper;
 import com.project.sbarchive.mapper.signboard.SignBoardMapper;
 import com.project.sbarchive.vo.signboard.SignBoardVO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -89,8 +91,21 @@ public class SignBoardServiceImpl implements SignBoardService {
     }
 
     @Override
-    public ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword) {
-        return signBoardMapper.getSearchSignboardList(keyword);
+    public PageResponseDTO<SignBoardAllDTO> getSearchSignboardList(String keyword, PageRequestDTO pageRequestDTO) {
+        List<SignBoardAllDTO> dtoList = signBoardMapper.getSearchSignboardList(keyword, pageRequestDTO.getSkip(), pageRequestDTO.getSize());
+
+        int total = signBoardMapper.getSearchCount(keyword);
+        log.info(total);
+
+        return PageResponseDTO.<SignBoardAllDTO>withAll()
+                .dtoList(dtoList)
+                .total(total)
+                .pageRequestDTO(pageRequestDTO).build();
+    }
+
+    @Override
+    public int getSearchCount(String keyword) {
+        return signBoardMapper.getSearchCount(keyword);
     }
 
 }

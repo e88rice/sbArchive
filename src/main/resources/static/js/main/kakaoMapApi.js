@@ -13,8 +13,8 @@ var searchMapContainer = document.getElementById('map2'), // 지도를 표시할
     };
 var searchMap = new kakao.maps.Map(searchMapContainer, searchMapOption); // 지도를 생성합니다
 // 마커 이미지의 이미지 주소입니다
-// var imageSrc = '/images/img/favicon.png';
-var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+var imageSrc = '/images/img/favicon.png';
+// var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
 // 마커 이미지의 이미지 크기 입니다
 var imageSize = new kakao.maps.Size(35, 35);
 
@@ -27,6 +27,7 @@ getSB();
 
 function getSB() {
     getSBList().then(r => {
+        console.log(r);
         // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
         var positions = [];
         for(let i=0; i<r.length; i++){
@@ -98,34 +99,38 @@ function getSearch() {
     if(mapSearchBar.value.trim() === "") { // 검색어가 없다면
         document.getElementById("map").style.display = "block";
         document.getElementById("map2").style.display = "none";
+        document.querySelector(".try_search_wrap").style.display = "block";
+        document.querySelector(".infos_wrap").style.display = "none";
         return;
     }
 
     let keyword = mapSearchBar.value;
 
     // 키워드로 장소를 검색합니다
-    getSearchSBList(keyword).then(r => {
+    getSearchSBList(keyword, 1).then(r => {
 
         if(r.length === 0) {
             alert("조회된 결과가 없습니다.");
             document.getElementById("map").style.display = "block";
             document.getElementById("map2").style.display = "none";
+            document.querySelector(".try_search_wrap").style.display = "block";
+            document.querySelector(".infos_wrap").style.display = "none";
             return;
         }
-
+        getSearchItems(keyword, 1);
 
         var searchItemPositions = [];
-        for (let i = 0; i < r.length; i++) {
+        for (let i = 0; i < r.dtoList.length; i++) {
             let item = {
-                "title": r[i].title,
-                "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                "content": "가게명 : " + r[i].title + "<br>" + r[i].address
+                "title": r.dtoList[i].title,
+                "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
+                "content": "가게명 : " + r.dtoList[i].title + "<br>" + r.dtoList[i].address
             }
-            if (r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
+            if (r.dtoList[i].files != null && r.dtoList[i].files.length > 0) { // 만약 파일이 존재한다면
                 item = {
-                    "title": r[i].title,
-                    "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
+                    "title": r.dtoList[i].title,
+                    "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r.dtoList[i].files[0] + "'>  " + " <br> <b> " + r.dtoList[i].title + " </b>  <br>" + r.dtoList[i].address + "</div>"
                 }
             }
             searchItemPositions.push(item); // 객체 배열에 추가
@@ -154,7 +159,7 @@ function getSearch() {
                 var bounds = new kakao.maps.LatLngBounds();
 
                 for (var i = 0; i < searchItemPositions.length; i++) {
-                    displayMarker(searchItemPositions[i], r[i].signboardId);
+                    displayMarker(searchItemPositions[i], r.dtoList[i].signboardId);
                     bounds.extend(searchItemPositions[i].latlng);
                 }
 
@@ -268,4 +273,78 @@ function changeImage() {
             mainImage.src = img.src;
         })
     })
+}
+
+// 검색 시 페이지 정보와 객체 정보들을 가져와 요소로 채워넣는 함수
+function getSearchItems(keyword, page) {
+
+    getSearchSBList(keyword, page).then(r => {
+        console.log("페이지 정보 : ")
+        console.log(r);
+        console.log("객체 리스트 정보 : ")
+        console.log(r.dtoList);
+        getSearchItemsForm(r.dtoList);
+        getSearchItemsPagingForm(r);
+    }).catch(e => {
+        console.log(e);
+    })
+}
+function getSearchItemsForm(dtoList) {
+    let itemsForm = "";
+    for(let i=0; i<dtoList.length; i++) {
+        itemsForm += "                <div class=\"s_info_wrap\">\n" +
+            "                    <div class=\"info_box\">\n" +
+            "                        <div>" + dtoList[i].title + "</div>\n" +
+            "                        <div>" + dtoList[i].nickname + "</div>\n" +
+            "                        <div>" + dtoList[i].content + "</div>\n" +
+            "                    </div>\n" +
+            "                    <div class=\"img_box\">\n" +
+            "                        <img src=\"/images/signboard/" + dtoList[i].files[0] +"\">\n" +
+            "                    </div>\n" +
+            "                </div>\n" +
+            "                <hr>";
+    }
+    // 검색결과를 표시하지 않고 있을 때 보여주는 이미지 요소
+    let trySearchWrap = document.querySelector(".try_search_wrap");
+    if(trySearchWrap.style.display !== "none") trySearchWrap.style.display = "none";
+    // 검색결과를 표시하는 요소들의 컨테이너
+    let infosWrap = document.querySelector(".infos_wrap");
+    infosWrap.style.display = "block";
+    infosWrap.innerHTML = itemsForm;
+}
+
+function getSearchItemsPagingForm(response) {
+    let pageForm = "      <ul class=\"s_paging_wrap\">\n";
+    // 이전 버튼이 존재한다면
+    if(response.prev) {
+        pageForm +=         "        <li class=\"s_page_prev\">\n" +
+            "          <a data-num=\""+response.start-1+"\">\n" +
+            "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev\n" +
+            "          </a>\n" +
+            "        </li>\n";
+    }
+    for(let i=response.start; i<=response.end; i++) {
+        pageForm +=         "          <li class=\"s_page_wraper\">\n";
+        if(response.page === i) {
+            pageForm += "<a class='s_page active' data-num=\""+i+"\">"+ i +"</a>\n";
+        } else {
+            pageForm += "<a class='s_page' data-num=\""+i+"\">"+ i +"</a>\n";
+        }
+        pageForm += "          </li>\n";
+    }
+    if(response.next) {
+        pageForm +=         "        <li class=\"s_page_next\">\n" +
+            "          <a data-num=\""+response.end+1+"\">\n" +
+            "            Next<i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
+            "          </a>\n" +
+            "        </li>\n";
+    }
+    pageForm += "      </ul>";
+
+    document.querySelector(".s_page_wrap").innerHTML = pageForm;
+}
+
+function searchItemsChangePage() {
+    let keyword = mapSearchBar.value;
+    let page = document.getElementById("sPageNumber");
 }
