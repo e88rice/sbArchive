@@ -24,7 +24,12 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/img",
                         "file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/board",
                         "file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/signboard",
-                        "file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/user");
+                        "file:/var/app/current/application.jar!/BOOT-INF/classes!/static/images/user",
+                        "file:/var/app/current/upload",
+                        "file:/var/app/current/upload/user",
+                        "file:/var/app/current/upload/board",
+                        "/var/app/current/file:/var/app/current/upload/signboard",
+                        "file:/var/app/current/upload/img");
 
 
         registry.addResourceHandler("layout/**").addResourceLocations("classpath:/templates/layout");

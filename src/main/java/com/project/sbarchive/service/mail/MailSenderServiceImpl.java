@@ -62,7 +62,7 @@ public class MailSenderServiceImpl implements MailSenderService{
         context.setVariable("confirmKey", confirmKey);
 
         // Thymeleaf 템플릿 엔진을 사용하여 메일 본문 생성
-        String messageText = templateEngine.process("/mail/add_member", context);
+        String messageText = templateEngine.process("mail/add_member", context);
 
         MimeMessage message = mailSender.createMimeMessage();
         message.addRecipients(Message.RecipientType.TO, mailTo); // 보내는 대상
