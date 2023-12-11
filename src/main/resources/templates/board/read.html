@@ -975,8 +975,9 @@
             uplike.addEventListener('click',function (e) {
                 e.preventDefault();
                 likeDown(boardId,username);
-                setTimeout(1000)
-                location.reload();
+                setTimeout(function (){
+                    location.reload()
+                } , 200)
 
                 return;
             });
@@ -985,8 +986,10 @@
             notlike.addEventListener('click', function (e) {
                 e.preventDefault();
                 likeUp(boardId, username);
-                setTimeout(1000)
-                location.reload();
+                setTimeout(function (){
+                    location.reload()
+                } , 200)
+
 
             });
         }
