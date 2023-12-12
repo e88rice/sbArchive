@@ -82,7 +82,7 @@ public class SignboardRestController {
         if (keyword.equals("#############")){
             log.info("ㅎㅇ");
         }
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(page).size(6).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(page).size(5).build();
         return signBoardService.getSearchSignboardList(keyword, pageRequestDTO);
     }
 

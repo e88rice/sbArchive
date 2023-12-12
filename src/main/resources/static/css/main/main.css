@@ -246,3 +246,35 @@ div.show {
 .try_search_icon {
     font-size: 200px;
 }
+
+.info_title {
+    margin: 20px 0 5px 0;
+    text-align: center;
+    font-size: 20px;
+}
+.info_date {
+    text-align: right;
+    color: #686868;
+    font-size: 12px;
+}
+.info_nickname {
+    text-align: right;
+}
+.info_tap {
+    background-color: white;
+    display: flex;
+    width: 100%;
+    margin: 20px 0;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+}
+.info_tap p {
+    width: 50%;
+    text-align: center;
+    line-height: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+}
+.info_tap p:nth-child(1) {
+    border-right: 1px solid rgba(0, 0, 0, 0.6);
+}
