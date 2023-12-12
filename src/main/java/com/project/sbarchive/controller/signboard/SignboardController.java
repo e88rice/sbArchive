@@ -4,7 +4,6 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
-import com.project.sbarchive.security.service.CustomUserDetailService;
 import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
 import com.project.sbarchive.service.user.UserService;
@@ -66,9 +65,11 @@ public class SignboardController {
         }
 
         System.out.println(signBoardId);
+
         if(files.size() > 0) {
             signBoardFileService.addSignboardImages(signBoardId, files); // 받아온 id값에 해당하는 보드의 파일들도 DB에 저장
         }
+
         String userId = principal.getName();
         userService.lvPointUp(userId);
         UserVO userVO = userService.getUserInfo(userId);

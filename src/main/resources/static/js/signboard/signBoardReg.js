@@ -74,8 +74,42 @@ function printSearchList(searchList) {
             alert("가게의 사진을 첨부해주세요")
             return;
         }
+        for(let i=0; i<files.files.length; i++) {
+            let file = files.files[i];
+            let fileSize = files.files[i].size;
+            console.log(fileSize);
+            console.log(50*1024*1024);
+            if(imageCheck(file, fileSize) === "not-image") {
+                alert("이미지 파일만 업로드 가능합니다")
+                return;
+            }
+            if(imageCheck(file, fileSize) === "over-size") {
+                alert("50MB 미만의 이미지 파일만 업로드 가능합니다")
+                return;
+            }
+        }
+        const formObj = new FormData();
+        for(const file of files.files) {
+            formObj.append('files', file);
+        }
+        addFiles(formObj);
         regForm.submit();
     })
 }
+
+function imageCheck(imgFile, fileSize) {
+    var fileName = imgFile.name;
+    var fileExt = fileName.substring(fileName.lastIndexOf(".")+1); // 확장자 구하기
+    fileExt = fileExt.toLowerCase(); //  소문자 변화
+    if ("jpg" != fileExt && "jpeg" != fileExt && "gif" != fileExt && "png" != fileExt && "bmp" != fileExt) {
+        return "not-image";
+    }
+    var maxSize = 50 * 1024 * 1024;
+    if (fileSize === maxSize) {
+        alert("파일 사이즈는 5MB까지 가능");
+        return "over-size";
+    }
+}
+
 
 /** 검색 관련 영역 끝 **/

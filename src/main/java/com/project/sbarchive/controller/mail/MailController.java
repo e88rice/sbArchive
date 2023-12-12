@@ -22,6 +22,7 @@ public class MailController {
     @GetMapping("/sendConfirmMail")
     @ResponseBody
     public String sendConfirmMail(String mailTo, HttpSession session) throws Exception {
+        log.info("ㅎㅇ");
         if(mailSenderService.sendMailByAddMember(mailTo)) { // 제대로 발송이 됐다면
             session.setAttribute("confirmKey", mailSenderService.getConfirmKey()); // 현재 발급한 인증키를 세션에 저장하고
             return mailSenderService.getConfirmKey(); // "confirmKey" 반환

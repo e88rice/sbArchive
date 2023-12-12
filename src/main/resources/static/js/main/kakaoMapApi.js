@@ -5,6 +5,7 @@ const modalContainer = new bootstrap.Modal(document.querySelector(".modal_contai
 const modalBody = document.querySelector(".modal-body"); // 모달 컨텐츠 영역
 const modalImgs = document.querySelector(".modal_footer_imgs"); // 모달 이미지들 영역
 const mapSearchBar = document.querySelector("#map_search"); // 검색 영역
+let isSearch = false;
 
 var searchMapContainer = document.getElementById('map2'), // 지도를 표시할 div
     searchMapOption = {
@@ -97,6 +98,7 @@ function getSearch() {
     var ps = new kakao.maps.services.Places();
 
     if(mapSearchBar.value.trim() === "") { // 검색어가 없다면
+        isSearch = false;
         document.getElementById("map").style.display = "block";
         document.getElementById("map2").style.display = "none";
         document.querySelector(".try_search_wrap").style.display = "block";
@@ -111,12 +113,14 @@ function getSearch() {
 
         if(r.length === 0) {
             alert("조회된 결과가 없습니다.");
+            isSearch = false;
             document.getElementById("map").style.display = "block";
             document.getElementById("map2").style.display = "none";
             document.querySelector(".try_search_wrap").style.display = "block";
             document.querySelector(".infos_wrap").style.display = "none";
             return;
         }
+        isSearch = true;
         getSearchItems(keyword, 1);
 
         var searchItemPositions = [];
@@ -285,6 +289,7 @@ function getSearchItems(keyword, page) {
         console.log(r.dtoList);
         getSearchItemsForm(r.dtoList);
         getSearchItemsPagingForm(r);
+        searchItemsChangePage(r.end);
     }).catch(e => {
         console.log(e);
     })
@@ -324,7 +329,7 @@ function getSearchItemsPagingForm(response) {
             "        </li>\n";
     }
     for(let i=response.start; i<=response.end; i++) {
-        pageForm +=         "          <li class=\"s_page_wraper\">\n";
+        pageForm +=         "          <li class=\"s_page_wrapper\">\n";
         if(response.page === i) {
             pageForm += "<a class='s_page active' data-num=\""+i+"\">"+ i +"</a>\n";
         } else {
@@ -344,7 +349,21 @@ function getSearchItemsPagingForm(response) {
     document.querySelector(".s_page_wrap").innerHTML = pageForm;
 }
 
-function searchItemsChangePage() {
-    let keyword = mapSearchBar.value;
+// 페이지 번호를 누르면 현재 키워드와 페이지를 받아서 키워드와 페이지로 아이템들을 표시해주는 함수를 호출함
+function searchItemsChangePage(end) {
+    if(end <= 1) {
+        return;
+    }
+    let keyword = mapSearchBar;
     let page = document.getElementById("sPageNumber");
+
+    const sPageWrap = document.querySelectorAll(".s_page");
+    sPageWrap.forEach( sPage => {
+        sPage.addEventListener("click", function () {
+            page = sPage.dataset.num;
+            console.log("keyword = " + keyword.value);
+            console.log("page = " + page);
+            getSearchItems(keyword.value, page)
+        })
+    })
 }

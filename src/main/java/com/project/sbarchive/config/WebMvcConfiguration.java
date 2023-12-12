@@ -28,7 +28,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         "file:/var/app/current/upload",
                         "file:/var/app/current/upload/user",
                         "file:/var/app/current/upload/board",
-                        "/var/app/current/file:/var/app/current/upload/signboard",
+                        "file:/var/app/current/upload/signboard",
                         "file:/var/app/current/upload/img");
 
 
