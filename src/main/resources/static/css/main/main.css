@@ -254,7 +254,7 @@ body {
 .search_bar_wrap i {
     width: 0;
 }
-#map_search {
+.search_bar_wrap #map_search {
     margin: 20px auto 0 auto;
     height: 40px;
     width: 90%;
@@ -373,4 +373,14 @@ body {
     width: 48%;
     height: auto;
     /*height: 150px;*/
+}
+
+.background-filter {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #61b0da;
+    opacity: 0.1;
+    z-index: 2;
+    pointer-events: none;
 }
