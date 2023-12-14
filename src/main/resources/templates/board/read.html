@@ -70,7 +70,7 @@
                                 </div>
 
                                 <div>
-                                    <button th:if="${dto.userId} != ${name} and ${name} != 'SB_Admin'
+                                    <button th:if="${dto.userId} != ${name} and ${name} != 'SB_Admin' and ${name} != 'guest'
                                     " type="button" class="btn btn-danger reportPage">이글 신고하기</button>
                                 </div>
                             </div>
