@@ -14,6 +14,7 @@
 - HTML
 - CSS
 - JavaScript
+- JQuery
 - Bootstrap
 - Axios
 - Ajax
@@ -32,7 +33,6 @@
 - lombok
 - JUnit5
 - Swagger-UI
-- 
 
 ### 개발 및 배포 환경
 - intellij
