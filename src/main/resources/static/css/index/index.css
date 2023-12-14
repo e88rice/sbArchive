@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+}
+
 .index_map {
     position: relative;
     width: 100%;
@@ -145,7 +149,6 @@
 }
 
 .index_board {
-    height: 320px;
     display: flex;
     justify-content: space-between;
 }
@@ -178,4 +181,62 @@
 
 .board_init {
     font-size: 16px;
+}
+
+@media all and (min-width:1024px) {
+    .index_map {
+        min-height: 720px;
+    }
+}
+
+/* 테블릿 가로 (해상도 768px ~ 1023px)*/
+@media all and (min-width:768px) and (max-width:1023px) {
+
+}
+
+/* 모바일 가로 & 테블릿 세로 (해상도 480px ~ 767px)*/
+@media all and (min-width:480px) and (max-width:767px) {
+//스타일 입력
+}
+
+/* 모바일 세로 (해상도 ~ 479px)*/
+@media all and (max-width:479px) {
+    body{
+        overflow-x: scroll;
+    }
+
+    .index_map {
+        height: 560px;
+    }
+
+    .index_search {
+        width: 375px;
+    }
+
+    .index_board {
+        min-width: 220px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .index_board > .container {
+        margin: 0;
+        padding: 0 0 20px 0;
+    }
+
+    .index_intro {
+        min-width: 220px;
+    }
+
+    .index_intro > * {
+        min-width: 220px;
+    }
+
+    .swiper-container, .swiper-wrapper {
+        overflow-x: hidden;
+    }
+
+    .swiper-slide {
+        min-width: 220px;
+    }
 }
