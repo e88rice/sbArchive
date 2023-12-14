@@ -65,6 +65,7 @@ li {
 .reply_list_wrap {
     width: 70vw;
     margin: 0 auto;
+    margin-top: 5%;
 }
 .reply_count_ {
     margin-left: 10px;
