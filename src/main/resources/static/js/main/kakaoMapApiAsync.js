@@ -9,3 +9,8 @@ async function getSearchSBList(keyword, page) {
     const result = await axios.get(`/signboard/get/search/${keyword}/${page}`)
     return result.data;
 }
+
+async function getItem(signboardId){
+    const result = await axios.get(`/signboard/get/${signboardId}`);
+    return result.data;
+}

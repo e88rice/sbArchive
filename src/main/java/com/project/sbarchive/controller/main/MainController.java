@@ -18,6 +18,15 @@ public class MainController {
         if(authentication != null) {
             log.info(authentication.getPrincipal());
         }
+        return "index/index";
+    }
+
+    @RequestMapping("/testIndex")
+    public String test(Authentication authentication) {
+        log.info("HI");
+        if(authentication != null) {
+            log.info(authentication.getPrincipal());
+        }
         return "main/main";
     }
 

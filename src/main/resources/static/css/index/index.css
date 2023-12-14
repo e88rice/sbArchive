@@ -1,0 +1,181 @@
+.index_map {
+    position: relative;
+    width: 100%;
+    height: 830px;
+    background-color: #3c3c3c;
+}
+
+.index_search {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 400px;
+    height: 100px;
+    padding: 15px;
+    justify-self: center;
+    background-color: #fff;
+    transform: translate(-50%);
+    text-align: center;
+    transition: all ease-in-out 0.4s;
+    z-index: 1500;
+}
+
+.index_search i {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.index_search_form {
+    display: none;
+    margin-top: 15px;
+}
+
+.index_search_form .input_div {
+    display: flex;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.index_search_form a {
+    margin-top: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.index_search_form p {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.hide {
+    display: none;
+}
+
+.border_bottom{
+    border-bottom: 1px solid  #3c3c3c;
+}
+
+.index_content_wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 35px;
+    box-sizing: border-box;
+}
+
+.index_intro {
+    height: 500px;
+    background-color: #ffffff;
+}
+
+.sub_title{
+    display: block;
+    font-size: 20px;
+}
+
+.title {
+    display: block;
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.index_intro article {
+    margin-top: 15px;
+    letter-spacing: -0.25px;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.index_signboard {
+    width: 100%;
+    height: 600px;
+    margin: 0 auto;
+}
+
+.index_signboard .swiper-container {
+    max-width: 1200px;
+    height: 400px;
+    overflow: visible;
+    position: relative;
+}
+
+.swiper-button-next{
+    position: absolute;
+    right: 0;
+}
+
+.swiper-button-prev{
+    position: absolute;
+    right: 0;
+}
+
+.swiper-slide {
+    border: 1px solid #c4c4c4;
+    background-color: #fff;
+    opacity:0.4;
+    transition: opacity 0.3s;
+}
+
+.swiper-slide-active,
+.swiper-slide-active + .swiper-slide,
+.swiper-slide-active + .swiper-slide + .swiper-slide,
+.swiper-slide-active + .swiper-slide + .swiper-slide + .swiper-slide {opacity:1}
+
+.slide_img {
+    position: relative;
+    width: 100%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.slide_img img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.slide_txt {
+    padding: 20px;
+}
+
+.slide_txt p {
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.index_board {
+    height: 320px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.index_board .board_txt {
+    width: 250px;
+}
+
+.board_con_div{
+    padding: 5px !important;
+    height: 115px;
+    background-color: #fff;
+}
+
+.board_con_div_item {
+    border: 1px solid #c4c4c4;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.board_tit {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.board_init {
+    font-size: 16px;
+}

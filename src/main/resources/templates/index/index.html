@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout/layout.html}">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<style layout:fragment="style">
+
+</style>
+
+<div layout:fragment="content">
+    <link rel="stylesheet" href="/css/index/index.css">
+    <section class="index_map">
+        <!-- 지도 넣어줄 자리!! -->
+
+        <div class="index_search">
+            <div class="index_search_init">
+                <i class='bx bx-chevrons-up fa-bounce searchUpBtn'></i>
+                <i class='bx bx-chevrons-down fa-bounce searchDownBtn hide'></i>
+                <h4>외국어 간판 찾아보기</h4>
+            </div>
+            <div class="index_search_form">
+                <div class="input-group input_div">
+                    <input type="text" class="form-control" placeholder="가게 이름을 입력해보세요" aria-describedby="button-addon2">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                </div>
+                <p>외국어 간판이 등록되어 있지 않다면? <a href="/signboard/add">아카이브 하러가기>></a></p>
+            </div>
+        </div>
+    </section>
+    <section class="border_bottom">
+        <div class="index_intro index_content_wrap" data-aos="fade-up">
+            <span class="title">외국어 간판 아카이브</span>
+            <article>
+                저긴 대체 뭐 하는 가게야…? 🤔 외국어로만 되어 있는 간판들, 사실은 불법이라는 거 알고 계셨나요?<br>
+                암행어사는 우리 주변에 있는 <strong>외국어 간판들을 기록하는 아카이브 웹 사이트</strong>입니다.<br>
+                우리 주변에 얼마나 많은 외국어 간판이 있는지 기록하고, 어떤 가게인지 정보를 기록해 주세요!
+            </article>
+            <!-- 이미지 하나 제작해서 넣을거임 -->
+        </div>
+    </section>
+    <section class="index_signboard border_bottom ">
+        <div class="index_content_wrap">
+            <span class="title"><a href="/signboard/list/1">모아보기</a></span>
+        </div>
+        <!-- Slider main container -->
+        <div class="swiper-container container-md" data-aos="fade-left">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides ::슬라이더 -->
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=100" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 1</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=101" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 2</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=102" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 3</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=103" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 4</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=104" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 5</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=99" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 6</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=106" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 7</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="#">
+                        <div class="slide_img">
+                            <img src="https://picsum.photos/700/400/?image=107" alt="300 * 300 size image">
+                        </div>
+                        <div class="slide_txt">
+                            <p>slide 8</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
+                    <a href="/signboard/list/1">
+                        <div class="slide_txt">
+                            <p>더보기 >> </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- If we need navigation buttons ::양옆 좌우 버튼(선택) -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+    <section class="index_board index_content_wrap" data-aos="fade-up">
+        <div class="container col-md-4">
+            <span class="title"><a href="/board/list?types=n&keyword=">자유게시판</a></span>
+            <span class="sub_title">외국어 사용 실태에 대해 이야기해요</span>
+        </div>
+        <div class="container col-md-8">
+            <div class="row gy-4">
+                <div class="board_con_div col-lg-6">
+                    <div class="board_con_div_item">
+                        <div>
+                            <span class="board_tit">
+                                board title..1
+                            </span>
+                            <span class="board_init">
+                                board content.........1
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#">본문보기>></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="board_con_div col-lg-6">
+                    <div class="board_con_div_item">
+                        <div>
+                            <span class="board_tit">
+                                board title..2
+                            </span>
+                            <span class="board_init">
+                                board content.........2
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#">본문보기>></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="board_con_div col-lg-6">
+                    <div class="board_con_div_item">
+                        <div>
+                            <span class="board_tit">
+                                board title..3
+                            </span>
+                            <span class="board_init">
+                                board content.........3
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#">본문보기>></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="board_con_div col-lg-6">
+                    <div class="board_con_div_item">
+                        <div>
+                            <span class="board_tit">
+                                board title..4
+                            </span>
+                            <span class="board_init">
+                                board content.........4
+                            </span>
+                        </div>
+                        <div>
+                            <a href="#">본문보기>></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        AOS.init();
+
+        // 서치 폼
+        $('.searchUpBtn').click(function(e){
+            $(this).addClass('hide');
+            $('.searchDownBtn').removeClass('hide');
+            $('.index_search_form').fadeIn(200);
+            $('.index_search').css('height', 180);
+        });
+        $('.searchDownBtn').click(function(e){
+            $(this).addClass('hide');
+            $('.searchUpBtn').removeClass('hide');
+            $('.index_search_form').fadeOut(200);
+            $('.index_search').css('height', 100);
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            var mySwiper = new Swiper('.swiper-container', {
+                slidesPerView: 4,
+                slidesPerGroup: 4,
+                observer: true,
+                observeParents: true,
+                spaceBetween: 24,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    1280: {
+                        slidesPerView: 3,
+                        slidesPerGroup: 3,
+                    },
+                    720: {
+                        slidesPerView: 1,
+                        slidesPerGroup: 1,
+                    }
+                }
+            });
+
+        });
+    </script>
+</div>
+
+
+</html>
+<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" 시큐리티 화면 인증처리 -->

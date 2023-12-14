@@ -95,10 +95,16 @@ div.show {
     z-index: 2;
     width: 40%;
     height: 850px;
-    background-color: #c17373;
+    /*background-color: #c17373;*/
 }
 .search_wrap {
+    background-color: #5fb99e;
     width: 50%;
+    overflow-y: auto;
+}
+
+.infos_wrap {
+    max-height: 80%;
     overflow-y: auto;
 }
 .s_info_wrap {
@@ -109,10 +115,18 @@ div.show {
 }
 .s_page_wrap {
     position: absolute;
-    bottom: 10%;
-    left: 20%;
+    width: 50%;
+    bottom: 0%;
+    left: 0;
     height: 5%;
+    margin-top: 1px;
+    padding-top: 10px;
     text-align: center;
+    border-top: 2px solid rgba(232, 232, 232, 0.66);
+    font-weight: lighter;
+}
+hr {
+    border-color: #3b3c3d;
 }
 .s_page_wrapper {
     margin: 0 10px;
@@ -147,8 +161,16 @@ div.show {
     height: 100%;
 }
 .info_wrap {
+    background-color: #5fb99e;
+    padding: 20px;
     width: 50%;
     overflow-y: auto;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+}
+.info_box div:nth-child(3) {
+    margin: 20px 0;
 }
 .info_wrap .img_box {
     width: 100%;
@@ -183,11 +205,14 @@ div.show {
     display: flex;
     padding-bottom: 20px;
 }
+.search_bar_wrap i {
+    width: 0;
+}
 #map_search {
-    margin-top: 20px;
+    margin: 20px auto 0 auto;
     height: 40px;
-    width: 100%;
-    padding: 0 35px;
+    width: 90%;
+    padding: 0 35px 0 45px;
     border: saddlebrown;
     border-radius: 0.45em;
 }
@@ -222,7 +247,7 @@ div.show {
     color: black;
 }
 .add_sb_link_btn button {
-    width: 100%;
+    width: 95%;
     border-radius: 5px;
     height: 50px;
     background-color: white;
@@ -254,7 +279,7 @@ div.show {
 }
 .info_date {
     text-align: right;
-    color: #686868;
+    color: #5b5b5bab;
     font-size: 12px;
 }
 .info_nickname {
@@ -263,6 +288,7 @@ div.show {
 .info_tap {
     background-color: white;
     display: flex;
+    justify-content: center;
     width: 100%;
     margin: 20px 0;
     border: 1px solid rgba(0, 0, 0, 0.6);
@@ -274,7 +300,31 @@ div.show {
     height: 30px;
     margin: 0;
     padding: 0;
+    color: dimgray;
 }
 .info_tap p:nth-child(1) {
     border-right: 1px solid rgba(0, 0, 0, 0.6);
+}
+.info_tap .active {
+    font-weight: bold;
+    color: black !important;
+}
+.tap_info, .tap_images {
+    cursor: pointer;
+}
+.tap_info:hover, .tap_images:hover {
+    font-weight: bold;
+    color: blue;
+}
+.info_images {
+    display: flex;
+    flex-wrap: wrap;
+}
+.info_images img {
+    margin: 2px;
+    border: 2px solid black;
+    border-radius: 0.35em;
+    width: 48%;
+    height: auto;
+    /*height: 150px;*/
 }

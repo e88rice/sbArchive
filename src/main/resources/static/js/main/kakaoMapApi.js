@@ -31,23 +31,23 @@ function getSB() {
         console.log(r);
         // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
         var positions = [];
-        for(let i=0; i<r.length; i++){
+        for (let i = 0; i < r.length; i++) {
             let item = {
                 "title": r[i].title,
                 "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
                 "content": "가게명 : " + r[i].title + "<br>" + r[i].address
             }
-            if(r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
+            if (r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
                 item = {
                     "title": r[i].title,
                     "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" +r[i].files[0] +"'>  " + " <br> <b> "+ r[i].title +" </b>  <br>" + r[i].address + "</div>"
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
                 }
             }
             positions.push(item); // 객체 배열에 추가
         }
-        var lastY = r[positions.length-1].yoffSet;
-        var lastX = r[positions.length-1].xoffSet;
+        var lastY = r[positions.length - 1].yoffSet;
+        var lastX = r[positions.length - 1].xoffSet;
 
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -63,13 +63,13 @@ function getSB() {
          ################################ 마커 마우스오버,아웃 이벤트 #################################
          ########################################################################################## **/
 
-        for (var i = 0; i < positions.length; i ++) {
+        for (var i = 0; i < positions.length; i++) {
             // 마커를 생성합니다
             var marker = new kakao.maps.Marker({
                 map: map, // 마커를 표시할 지도
                 position: positions[i].latlng, // 마커의 위치
-                title : positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image : markerImage // 마커 이미지
+                title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                image: markerImage // 마커 이미지
             });
 
             // 마커에 표시할 인포윈도우를 생성합니다
@@ -78,13 +78,13 @@ function getSB() {
             });
 
 
-
             // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
             // 이벤트 리스너로는 클로저를 만들어 등록합니다
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
             kakao.maps.event.addListener(marker, 'click', modalShow(r[i].signboardId));
+            console.log(r[i].signboardId);
         }
 
     }).catch(e => {
@@ -93,16 +93,19 @@ function getSB() {
 }
 
 mapSearchBar.addEventListener("change", getSearch);
+
 function getSearch() {
     // 장소 검색 객체를 생성합니다
     var ps = new kakao.maps.services.Places();
 
-    if(mapSearchBar.value.trim() === "") { // 검색어가 없다면
+    if (mapSearchBar.value.trim() === "") { // 검색어가 없다면
         isSearch = false;
         document.getElementById("map").style.display = "block";
         document.getElementById("map2").style.display = "none";
         document.querySelector(".try_search_wrap").style.display = "block";
         document.querySelector(".infos_wrap").style.display = "none";
+        document.querySelector(".s_page_wrap").style.display = "none";
+        document.querySelector(".info_wrap").style.opacity = '0';
         return;
     }
 
@@ -111,16 +114,19 @@ function getSearch() {
     // 키워드로 장소를 검색합니다
     getSearchSBList(keyword, 1).then(r => {
 
-        if(r.length === 0) {
+        if (r.length === 0) {
             alert("조회된 결과가 없습니다.");
             isSearch = false;
             document.getElementById("map").style.display = "block";
             document.getElementById("map2").style.display = "none";
             document.querySelector(".try_search_wrap").style.display = "block";
             document.querySelector(".infos_wrap").style.display = "none";
+            document.querySelector(".s_page_wrap").style.display = "none";
+            document.querySelector(".info_wrap").style.opacity = '0';
             return;
         }
         isSearch = true;
+        document.querySelector(".s_page_wrap").style.display = "block";
         getSearchItems(keyword, 1);
 
         var searchItemPositions = [];
@@ -145,7 +151,7 @@ function getSearch() {
         searchMapContainer.style.display = "block";
 
         // 기존 마커배열들을 순회하며 마커 삭제
-        searchMarkers.forEach( marker => {
+        searchMarkers.forEach(marker => {
             marker.setMap(null);
         })
         // 마커들의 배열 초기화
@@ -177,8 +183,8 @@ function getSearch() {
             var marker = new kakao.maps.Marker({
                 map: searchMap, // 마커를 표시할 지도
                 position: place.latlng, // 마커의 위치
-                title : place.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                image : markerImage // 마커 이미지
+                title: place.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                image: markerImage // 마커 이미지
             });
 
             searchMarkers.push(marker);
@@ -205,7 +211,7 @@ function getSearch() {
 
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
 function makeOverListener(map, marker, infowindow) {
-    return function() {
+    return function () {
         infowindow.open(map, marker);
     };
 }
@@ -220,20 +226,24 @@ function makeOutListener(infowindow) {
 function modalShow(signboardId) {
     return function () {
         modalContainer.show();
-        justGetSignboard(signboardId).then( r => {
+        justGetSignboard(signboardId).then(r => {
             addInfoForm(r);
+            // addSInfoForm(r); 이것도할까?
+        }).catch(e => {
+            console.log(e);
         })
     }
 }
 
 // 객체의 정보를 받고 HTML 요소로 추가
 function addInfoForm(signboard) {
+    console.log("ㅎㅇ");
     let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
     let modDate = signboard.modDate;
     let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
 
     let str = "<div class=\"modal_img_container\">\n" +
-        "              <img src='/images/signboard/"+ signboard.files[0] +"'>\n" +
+        "              <img src='/images/signboard/" + signboard.files[0] + "'>\n" +
         "            </div>\n" +
         "            <div class=\"modal_info_container\">\n" +
         "              <div id=\"map\"></div>\n" +
@@ -247,21 +257,23 @@ function addInfoForm(signboard) {
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_nickname\">\n" +
         "                <span class=\"modal_info_span\">작성자</span>\n" +
-        "                <p>" + signboard.nickname +"\n" +
+        "                <p>" + signboard.nickname + "\n" +
         "              </div>\n" +
         "              <div class=\"modal_info modal_info_date\">\n" +
         "                <span class=\"modal_info_span\">작성일</span>\n" +
         "                <p>" + date + "</p>\n" +
         "              </div>\n" +
         "              <div class=\"modal_info_content\">\n" +
-        signboard.content+ "\n";
+        signboard.content + "\n";
     "              </div>\n" +
     "            </div>";
+
+
 
     // 이미지 폼
     let imgs = "";
     for (let i = 0; i < signboard.files.length; i++) {
-        imgs += "              <img src='/images/signboard/"+ signboard.files[i] +"'>\n";
+        imgs += "              <img src='/images/signboard/" + signboard.files[i] + "'>\n";
     }
     modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
     modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
@@ -271,8 +283,8 @@ function addInfoForm(signboard) {
 // hover시 해당 이미지로 메인 이미지가 바뀌는 이벤트 걸기
 function changeImage() {
     const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
-    footerImgs.forEach( img => {
-        img.addEventListener("mouseenter", function (e){
+    footerImgs.forEach(img => {
+        img.addEventListener("mouseenter", function (e) {
             const mainImage = document.querySelector(".modal_img_container img")
             mainImage.src = img.src;
         })
@@ -290,28 +302,30 @@ function getSearchItems(keyword, page) {
         getSearchItemsForm(r.dtoList);
         getSearchItemsPagingForm(r);
         searchItemsChangePage(r.end);
+        showInfoWrap();
     }).catch(e => {
         console.log(e);
     })
 }
+
 function getSearchItemsForm(dtoList) {
     let itemsForm = "";
-    for(let i=0; i<dtoList.length; i++) {
-        itemsForm += "                <div class=\"s_info_wrap\">\n" +
+    for (let i = 0; i < dtoList.length; i++) {
+        itemsForm += "                <div class=\"s_info_wrap\" data-id=\""+ dtoList[i].signboardId +"\">\n" +
             "                    <div class=\"info_box\">\n" +
             "                        <div>" + dtoList[i].title + "</div>\n" +
             "                        <div>" + dtoList[i].nickname + "</div>\n" +
             "                        <div>" + dtoList[i].content + "</div>\n" +
             "                    </div>\n" +
             "                    <div class=\"img_box\">\n" +
-            "                        <img src=\"/images/signboard/" + dtoList[i].files[0] +"\">\n" +
+            "                        <img src=\"/images/signboard/" + dtoList[i].files[0] + "\">\n" +
             "                    </div>\n" +
             "                </div>\n" +
             "                <hr>";
     }
     // 검색결과를 표시하지 않고 있을 때 보여주는 이미지 요소
     let trySearchWrap = document.querySelector(".try_search_wrap");
-    if(trySearchWrap.style.display !== "none") trySearchWrap.style.display = "none";
+    if (trySearchWrap.style.display !== "none") trySearchWrap.style.display = "none";
     // 검색결과를 표시하는 요소들의 컨테이너
     let infosWrap = document.querySelector(".infos_wrap");
     infosWrap.style.display = "block";
@@ -321,25 +335,25 @@ function getSearchItemsForm(dtoList) {
 function getSearchItemsPagingForm(response) {
     let pageForm = "      <ul class=\"s_paging_wrap\">\n";
     // 이전 버튼이 존재한다면
-    if(response.prev) {
-        pageForm +=         "        <li class=\"s_page_prev\">\n" +
-            "          <a data-num=\""+response.start-1+"\">\n" +
+    if (response.prev) {
+        pageForm += "        <li class=\"s_page_prev\">\n" +
+            "          <a data-num=\"" + response.start - 1 + "\">\n" +
             "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev\n" +
             "          </a>\n" +
             "        </li>\n";
     }
-    for(let i=response.start; i<=response.end; i++) {
-        pageForm +=         "          <li class=\"s_page_wrapper\">\n";
-        if(response.page === i) {
-            pageForm += "<a class='s_page active' data-num=\""+i+"\">"+ i +"</a>\n";
+    for (let i = response.start; i <= response.end; i++) {
+        pageForm += "          <li class=\"s_page_wrapper\">\n";
+        if (response.page === i) {
+            pageForm += "<a class='s_page active' data-num=\"" + i + "\">" + i + "</a>\n";
         } else {
-            pageForm += "<a class='s_page' data-num=\""+i+"\">"+ i +"</a>\n";
+            pageForm += "<a class='s_page' data-num=\"" + i + "\">" + i + "</a>\n";
         }
         pageForm += "          </li>\n";
     }
-    if(response.next) {
-        pageForm +=         "        <li class=\"s_page_next\">\n" +
-            "          <a data-num=\""+response.end+1+"\">\n" +
+    if (response.next) {
+        pageForm += "        <li class=\"s_page_next\">\n" +
+            "          <a data-num=\"" + response.end + 1 + "\">\n" +
             "            Next<i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
             "          </a>\n" +
             "        </li>\n";
@@ -351,14 +365,14 @@ function getSearchItemsPagingForm(response) {
 
 // 페이지 번호를 누르면 현재 키워드와 페이지를 받아서 키워드와 페이지로 아이템들을 표시해주는 함수를 호출함
 function searchItemsChangePage(end) {
-    if(end <= 1) {
+    if (end <= 1) {
         return;
     }
     let keyword = mapSearchBar;
     let page = document.getElementById("sPageNumber");
 
     const sPageWrap = document.querySelectorAll(".s_page");
-    sPageWrap.forEach( sPage => {
+    sPageWrap.forEach(sPage => {
         sPage.addEventListener("click", function () {
             page = sPage.dataset.num;
             console.log("keyword = " + keyword.value);
@@ -366,4 +380,91 @@ function searchItemsChangePage(end) {
             getSearchItems(keyword.value, page)
         })
     })
+}
+
+function showInfoWrap() {
+    const items = document.querySelectorAll(".s_info_wrap");
+    items.forEach(item => {
+        item.addEventListener("click", function (){
+            const id = item.dataset.id;
+            getItem(id).then(r => {
+                document.querySelector(".info_wrap").style.opacity = '1';
+                // document.querySelector("");
+                addSInfoForm(r);
+                tapChange();
+            }).catch( e => {
+                console.log(e);
+            })
+        })
+    })
+}
+
+function addSInfoForm(response) {
+    let date = response.addDate === response.modDate ? response.modDate : (response.modDate + " (수정됨)");
+    let content = response.content !== "";
+
+    let form = "<div class=\"img_box\">\n" +
+        "                    <img src=\"/images/signboard/"+ response.files[0] +"\">\n" +
+        "                </div>\n" +
+        "                <div class=\"info_box\">\n" +
+        "                    <div class=\"info_title\">"+ response.title +"</div>\n" +
+        "                    <div class=\"info_date\">" + date + "</div>\n" +
+        "                    <div class=\"info_nickname\">작성자 : " + response.nickname + "</div>\n" +
+        "                    <div class=\"info_tap\">\n" +
+        "                        <p class=\"tap_info active\">정보</p>\n" +
+        "                        <p class=\"tap_images\">사진</p>\n" +
+        "                    </div>\n" +
+        "                    <div class=\"info_content\">" + response.content + "</div>\n" +
+        "                    <div class=\"info_images\" style=\"display: none\">\n";
+    for(let i=0; i<response.files.length; i++){
+        form += "                        <img class='image' src=\"/images/signboard/"+ response.files[i] +"\">\n";
+    }
+        form += "                    </div>\n" +
+            "                </div>";
+    document.querySelector(".info_wrap").innerHTML = form;
+
+    if(!content) {
+        document.querySelector(".tap_info").style.display = "none";
+        document.querySelector(".info_images").style.display = "block";
+        document.querySelector(".tap_images").classList.add("active");
+    }
+
+    document.querySelectorAll(".image").forEach( image => {
+        image.addEventListener("mouseenter", function (){
+            document.querySelector(".info_wrap .img_box > img").src = image.src;
+        })
+    })
+
+    function panTo() {
+        // 이동할 위도 경도 위치를 생성합니다
+        var moveLatLon = new kakao.maps.LatLng(response.yoffSet, response.xoffSet);
+
+        // 지도 중심을 부드럽게 이동시킵니다
+        // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+        searchMap.panTo(moveLatLon);
+    }
+    panTo();
+}
+
+function tapChange() {
+    const tapInfo = document.querySelector(".tap_info");
+    const tapImages = document.querySelector(".tap_images");
+
+    const infoContent = document.querySelector(".info_content");
+    const infoImages = document.querySelector(".info_images");
+
+    tapInfo.addEventListener("click", function (){
+        infoContent.style.display = "block";
+        infoImages.style.display = "none";
+        tapInfo.classList.toggle('active');
+        tapImages.classList.toggle('active');
+    })
+
+    tapImages.addEventListener("click", function (){
+        infoContent.style.display = "none";
+        infoImages.style.display = "block";
+        tapInfo.classList.toggle('active');
+        tapImages.classList.toggle('active');
+    })
+
 }

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/main/main.css">
 
     <div class="kakao_map_container">
-<!--        <div class="main_title_container"><h2>외국어 간판 현황</h2></div>-->
 <!--        <div class="main_title_container"><h2>< 외국어 간판 지도 ></h2></div>-->
         <div class="info_container">
             <!-- 검색 칸 -->
@@ -17,7 +16,6 @@
                 <div class="search_bar_wrap">
                     <i class="fa-solid fa-magnifying-glass search_icon"></i>
                     <input type="text" id="map_search" placeholder="가게를 검색해보세요">
-                    <i class="fa-solid fa-xmark x_icon"></i>
                 </div>
                 <hr>
                 <div class="try_search_wrap">
@@ -28,67 +26,13 @@
                     <p> 가게를 검색해보세요 </p>
                 </div>
                 <div class="infos_wrap">
-<!--                    <div class="s_info_wrap">-->
-<!--                        <div class="info_box">-->
-<!--                            <div>나나샵</div>-->
-<!--                            <div>tester</div>-->
-<!--                            <div>대치동에 위치한 나나샵입니다..</div>-->
-<!--                        </div>-->
-<!--                        <div class="img_box">-->
-<!--                            <img src="/images/img/favicon.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
-<!--                    <div class="s_info_wrap">-->
-<!--                        <div class="info_box">-->
-<!--                            <div>나나샵</div>-->
-<!--                            <div>tester</div>-->
-<!--                            <div>대치동에 위치한 나나샵입니다..</div>-->
-<!--                        </div>-->
-<!--                        <div class="img_box">-->
-<!--                            <img src="/images/img/favicon.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
-<!--                    <div class="s_info_wrap">-->
-<!--                        <div class="info_box">-->
-<!--                            <div>나나샵</div>-->
-<!--                            <div>tester</div>-->
-<!--                            <div>대치동에 위치한 나나샵입니다..</div>-->
-<!--                        </div>-->
-<!--                        <div class="img_box">-->
-<!--                            <img src="/images/img/favicon.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
-<!--                    <div class="s_info_wrap">-->
-<!--                        <div class="info_box">-->
-<!--                            <div>나나샵</div>-->
-<!--                            <div>tester</div>-->
-<!--                            <div>대치동에 위치한 나나샵입니다..</div>-->
-<!--                        </div>-->
-<!--                        <div class="img_box">-->
-<!--                            <img src="/images/img/favicon.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
-<!--                    <div class="s_info_wrap">-->
-<!--                        <div class="info_box">-->
-<!--                            <div>나나샵</div>-->
-<!--                            <div>tester</div>-->
-<!--                            <div>대치동에 위치한 나나샵입니다..</div>-->
-<!--                        </div>-->
-<!--                        <div class="img_box">-->
-<!--                            <img src="/images/img/favicon.png">-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <hr>-->
+
                 </div>
                 <div class="s_page_wrap">
 <!--<    1    2    3    4    5    >-->
                 </div>
                 <input type="hidden" id="sPageNumber" value="1">
-                <div class="add_sb_link_btn"> <a href="/signboard/add"><button>외국어 간판 기록하기</button></a> </div>
+<!--                <div class="add_sb_link_btn"> <a href="/signboard/add"><button>외국어 간판 기록하기</button></a> </div>-->
             </div>
             <!-- 검색 결과 칸 -->
             <div class="info_wrap">
@@ -100,10 +44,16 @@
                     <div class="info_date">2023-12-12 14:38:57</div>
                     <div class="info_nickname">작성자 : tester</div>
                     <div class="info_tap">
-                        <p>정보</p>
-                        <p>사진</p>
+                        <p class="tap_info active">정보</p>
+                        <p class="tap_images">사진</p>
                     </div>
                     <div class="info_content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae consectetur cumque inventore iure nostrum odio quod repudiandae rerum similique veritatis? Ad aliquam at beatae debitis delectus esse in natus tempore?</div>
+                    <div class="info_images" style="display: none">
+                        <img src="/images/img/favicon.png" alt="">
+                        <img src="/images/img/g-logo.png" alt="">
+                        <img src="/images/img/gitnub_logo.png" alt="">
+                        <img src="/images/img/logo_.png" alt="">
+                    </div>
                 </div>
             </div>
         </div>
