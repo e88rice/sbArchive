@@ -5,21 +5,24 @@
       layout:decorate="~{layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
 <style layout:fragment="style">
-    * {}
-    .outer_wrap {  }
-    .inner_wrap { width: 100%; margin: 0 auto; }
-    .text_wrap { text-align: center; }
-    .intro_wrap { }
-    .full_blue { width: 100vw; background: #bcd4e6; }
-    .intro { padding: 2%; }
-    .inner_intro { display: flex; justify-content: center; align-items: center; text-align: center; }
-    .inner_intro .intro_pic img { width: 45vw; margin-right: 15px; }
-    .inner_intro .intro_text { width: 45vw; }
-    .inner_intro .intro_text .title { font-size: 40px; font-weight: bold; }
-    .news_wrap { padding: 2%; margin: 0 auto; }
-    .blue_box {border: 2px solid #bcd4e6; padding: 2%; flex: 1; border-radius: 0.2rem; }
-    .blue_box a > img { transition: transform 0.3s ease-in-out; }
-    .blue_box a:hover img { transform: scale(1.1); }
+  * {}
+  .outer_wrap { margin-top: 3%; }
+  .inner_wrap { width: 100%; margin: 0 auto; }
+  .text_wrap { text-align: center; }
+  .intro_wrap { }
+  .full_blue { width: 100vw; background: #bcd4e6; }
+  .intro { padding: 2%; }
+  .inner_intro { display: flex; justify-content: center; align-items: center; text-align: center; }
+  .inner_intro .intro_pic img { width: 45vw; margin-right: 15px; }
+  .inner_intro .intro_text { width: 45vw; }
+  .inner_intro .intro_text .title { font-size: 40px; font-weight: bold; }
+  .news_wrap { padding: 2%; margin: 0 auto; }
+  .blue_box { border: 2px solid #bcd4e6; padding: 2%; flex: 1; border-radius: 0.2rem; }
+  .blue_box a > img { transition: transform 0.3s ease-in-out; }
+  .blue_box a:hover img { transform: scale(1.1); }
+  .inner_news { margin-top: 3%; text-align: center; }
+  .inner_blue_box { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+  .box_area { display: flex; margin-top: 3%; }
 </style>
 
 <div layout:fragment="content">
@@ -60,12 +63,12 @@
 
       <div class="news_wrap">
 
-        <div class="inner_news">
+        <div class="inner_news" data-aos="fade-up" data-aos-easing="ease-in-cubic">
 
-          <h2 style="text-align: center;">외국어 간판 사용 실태 🔎</h2>
-          <div style="display: flex;">
+          <h2>외국어 간판 사용 실태 🔎</h2>
+          <div class="box_area">
             <div class="blue_box" style="margin-right: 24px;">
-              <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+              <div class="inner_blue_box">
                 외국어 간판 일색…한글 사용 늘려야
               </div>
               <a href="https://youtu.be/3kSafscpDLM?si=2M9oB_6PWuxI3o3i">
@@ -73,7 +76,7 @@
               </a>
             </div>
             <div class="blue_box" style="margin-right: 24px;">
-              <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+              <div class="inner_blue_box">
                 지나친 외국어 간판…"고령층 소외" 우려
               </div>
               <a href="https://youtu.be/eu2HZWZjYMY?si=_vBR8Je2TQsAHdvi">
@@ -81,7 +84,7 @@
               </a>
             </div>
             <div class="blue_box">
-              <div style="font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px;">
+              <div class="inner_blue_box">
                 내가 갔던 감성 카페…알고 보니 불법이라고?!
               </div>
               <a href="https://news.sbs.co.kr/news/endPage.do?news_id=N1007188347">
@@ -98,6 +101,10 @@
     </div>
 
   </div>
+
+  <script>
+    AOS.init();
+  </script>
 
 </div>
 

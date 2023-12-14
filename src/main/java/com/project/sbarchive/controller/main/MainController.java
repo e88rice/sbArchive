@@ -35,5 +35,16 @@ public class MainController {
 
     }
 
+    @RequestMapping({"/intro/introduction"})
+    public String intro(Authentication authentication) {
+        log.info("HI");
+        if(authentication != null) {
+            log.info(authentication.getPrincipal());
+        }
+        return "intro/introduction";
+    }
+
+    
+
 
 }
