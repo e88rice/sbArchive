@@ -419,8 +419,11 @@ function addSInfoForm(response) {
     for(let i=0; i<response.files.length; i++){
         form += "                        <img class='image' src=\"/images/signboard/"+ response.files[i] +"\">\n";
     }
-        form += "                    </div>\n" +
-            "                </div>";
+    form += "                    </div>\n" +
+        "                </div>";
+    form += "                <div class=\"close_box\">\n" +
+        "                    <box-icon class='close_info_btn' name='chevron-left'></box-icon>\n" +
+        "                </div>";
     document.querySelector(".info_wrap").innerHTML = form;
 
     if(!content) {
@@ -466,5 +469,14 @@ function tapChange() {
         tapInfo.classList.toggle('active');
         tapImages.classList.toggle('active');
     })
+    document.querySelector(".close_box").style.display = 'block';
+    closeTap();
+}
 
+function closeTap() {
+    document.querySelector(".close_box").addEventListener("click", function () {
+        console.log("ㅎㅇ");
+        document.querySelector(".info_wrap").style.opacity = '0';
+        document.querySelector(".close_box").style.display = 'none';
+    })
 }
