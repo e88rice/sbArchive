@@ -113,7 +113,8 @@ public class BoardController {
         if(bindingResult.hasErrors()) {
             pageRequestDTO = PageRequestDTO.builder().build();
         }
-
+            LocalDateTime currentTime = LocalDateTime.now();
+            model.addAttribute("currentTime", currentTime);
             PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
             model.addAttribute("responseDTO",boardDTOPageResponseDTO );
 

@@ -5,7 +5,6 @@ const modalContainer = new bootstrap.Modal(document.querySelector(".modal_contai
 const modalBody = document.querySelector(".modal-body"); // 모달 컨텐츠 영역
 const modalImgs = document.querySelector(".modal_footer_imgs"); // 모달 이미지들 영역
 const mapSearchBar = document.querySelector("#map_search"); // 검색 영역
-let isSearch = false;
 
 var searchMapContainer = document.getElementById('map2'), // 지도를 표시할 div
     searchMapOption = {
@@ -84,7 +83,6 @@ function getSB() {
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
             kakao.maps.event.addListener(marker, 'click', modalShow(r[i].signboardId));
-            console.log(r[i].signboardId);
         }
 
     }).catch(e => {
@@ -102,10 +100,6 @@ function getSearch() {
         isSearch = false;
         document.getElementById("map").style.display = "block";
         document.getElementById("map2").style.display = "none";
-        document.querySelector(".try_search_wrap").style.display = "block";
-        document.querySelector(".infos_wrap").style.display = "none";
-        document.querySelector(".s_page_wrap").style.display = "none";
-        document.querySelector(".info_wrap").style.opacity = '0';
         return;
     }
 
@@ -119,15 +113,8 @@ function getSearch() {
             isSearch = false;
             document.getElementById("map").style.display = "block";
             document.getElementById("map2").style.display = "none";
-            document.querySelector(".try_search_wrap").style.display = "block";
-            document.querySelector(".infos_wrap").style.display = "none";
-            document.querySelector(".s_page_wrap").style.display = "none";
-            document.querySelector(".info_wrap").style.opacity = '0';
             return;
         }
-        isSearch = true;
-        document.querySelector(".s_page_wrap").style.display = "block";
-        getSearchItems(keyword, 1);
 
         var searchItemPositions = [];
         for (let i = 0; i < r.dtoList.length; i++) {
@@ -228,7 +215,6 @@ function modalShow(signboardId) {
         modalContainer.show();
         justGetSignboard(signboardId).then(r => {
             addInfoForm(r);
-            // addSInfoForm(r); 이것도할까?
         }).catch(e => {
             console.log(e);
         })
@@ -288,195 +274,5 @@ function changeImage() {
             const mainImage = document.querySelector(".modal_img_container img")
             mainImage.src = img.src;
         })
-    })
-}
-
-// 검색 시 페이지 정보와 객체 정보들을 가져와 요소로 채워넣는 함수
-function getSearchItems(keyword, page) {
-
-    getSearchSBList(keyword, page).then(r => {
-        console.log("페이지 정보 : ")
-        console.log(r);
-        console.log("객체 리스트 정보 : ")
-        console.log(r.dtoList);
-        getSearchItemsForm(r.dtoList);
-        getSearchItemsPagingForm(r);
-        searchItemsChangePage(r.end);
-        showInfoWrap();
-    }).catch(e => {
-        console.log(e);
-    })
-}
-
-function getSearchItemsForm(dtoList) {
-    let itemsForm = "";
-    for (let i = 0; i < dtoList.length; i++) {
-        itemsForm += "                <div class=\"s_info_wrap\" data-id=\""+ dtoList[i].signboardId +"\">\n" +
-            "                    <div class=\"info_box\">\n" +
-            "                        <div>" + dtoList[i].title + "</div>\n" +
-            "                        <div>" + dtoList[i].nickname + "</div>\n" +
-            "                        <div>" + dtoList[i].content + "</div>\n" +
-            "                    </div>\n" +
-            "                    <div class=\"img_box\">\n" +
-            "                        <img src=\"/images/signboard/" + dtoList[i].files[0] + "\">\n" +
-            "                    </div>\n" +
-            "                </div>\n" +
-            "                <hr>";
-    }
-    // 검색결과를 표시하지 않고 있을 때 보여주는 이미지 요소
-    let trySearchWrap = document.querySelector(".try_search_wrap");
-    if (trySearchWrap.style.display !== "none") trySearchWrap.style.display = "none";
-    // 검색결과를 표시하는 요소들의 컨테이너
-    let infosWrap = document.querySelector(".infos_wrap");
-    infosWrap.style.display = "block";
-    infosWrap.innerHTML = itemsForm;
-}
-
-function getSearchItemsPagingForm(response) {
-    let pageForm = "      <ul class=\"s_paging_wrap\">\n";
-    // 이전 버튼이 존재한다면
-    if (response.prev) {
-        pageForm += "        <li class=\"s_page_prev\">\n" +
-            "          <a data-num=\"" + response.start - 1 + "\">\n" +
-            "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev\n" +
-            "          </a>\n" +
-            "        </li>\n";
-    }
-    for (let i = response.start; i <= response.end; i++) {
-        pageForm += "          <li class=\"s_page_wrapper\">\n";
-        if (response.page === i) {
-            pageForm += "<a class='s_page active' data-num=\"" + i + "\">" + i + "</a>\n";
-        } else {
-            pageForm += "<a class='s_page' data-num=\"" + i + "\">" + i + "</a>\n";
-        }
-        pageForm += "          </li>\n";
-    }
-    if (response.next) {
-        pageForm += "        <li class=\"s_page_next\">\n" +
-            "          <a data-num=\"" + response.end + 1 + "\">\n" +
-            "            Next<i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
-            "          </a>\n" +
-            "        </li>\n";
-    }
-    pageForm += "      </ul>";
-
-    document.querySelector(".s_page_wrap").innerHTML = pageForm;
-}
-
-// 페이지 번호를 누르면 현재 키워드와 페이지를 받아서 키워드와 페이지로 아이템들을 표시해주는 함수를 호출함
-function searchItemsChangePage(end) {
-    if (end <= 1) {
-        return;
-    }
-    let keyword = mapSearchBar;
-    let page = document.getElementById("sPageNumber");
-
-    const sPageWrap = document.querySelectorAll(".s_page");
-    sPageWrap.forEach(sPage => {
-        sPage.addEventListener("click", function () {
-            page = sPage.dataset.num;
-            console.log("keyword = " + keyword.value);
-            console.log("page = " + page);
-            getSearchItems(keyword.value, page)
-        })
-    })
-}
-
-function showInfoWrap() {
-    const items = document.querySelectorAll(".s_info_wrap");
-    items.forEach(item => {
-        item.addEventListener("click", function (){
-            const id = item.dataset.id;
-            getItem(id).then(r => {
-                document.querySelector(".info_wrap").style.opacity = '1';
-                // document.querySelector("");
-                addSInfoForm(r);
-                tapChange();
-            }).catch( e => {
-                console.log(e);
-            })
-        })
-    })
-}
-
-function addSInfoForm(response) {
-    let date = response.addDate === response.modDate ? response.modDate : (response.modDate + " (수정됨)");
-    let content = response.content !== "";
-
-    let form = "<div class=\"img_box\">\n" +
-        "                    <img src=\"/images/signboard/"+ response.files[0] +"\">\n" +
-        "                </div>\n" +
-        "                <div class=\"info_box\">\n" +
-        "                    <div class=\"info_title\">"+ response.title +"</div>\n" +
-        "                    <div class=\"info_date\">" + date + "</div>\n" +
-        "                    <div class=\"info_nickname\">작성자 : " + response.nickname + "</div>\n" +
-        "                    <div class=\"info_tap\">\n" +
-        "                        <p class=\"tap_info active\">정보</p>\n" +
-        "                        <p class=\"tap_images\">사진</p>\n" +
-        "                    </div>\n" +
-        "                    <div class=\"info_content\">" + response.content + "</div>\n" +
-        "                    <div class=\"info_images\" style=\"display: none\">\n";
-    for(let i=0; i<response.files.length; i++){
-        form += "                        <img class='image' src=\"/images/signboard/"+ response.files[i] +"\">\n";
-    }
-    form += "                    </div>\n" +
-        "                </div>";
-    form += "                <div class=\"close_box\">\n" +
-        "                    <box-icon class='close_info_btn' name='chevron-left'></box-icon>\n" +
-        "                </div>";
-    document.querySelector(".info_wrap").innerHTML = form;
-
-    if(!content) {
-        document.querySelector(".tap_info").style.display = "none";
-        document.querySelector(".info_images").style.display = "block";
-        document.querySelector(".tap_images").classList.add("active");
-    }
-
-    document.querySelectorAll(".image").forEach( image => {
-        image.addEventListener("mouseenter", function (){
-            document.querySelector(".info_wrap .img_box > img").src = image.src;
-        })
-    })
-
-    function panTo() {
-        // 이동할 위도 경도 위치를 생성합니다
-        var moveLatLon = new kakao.maps.LatLng(response.yoffSet, response.xoffSet);
-
-        // 지도 중심을 부드럽게 이동시킵니다
-        // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-        searchMap.panTo(moveLatLon);
-    }
-    panTo();
-}
-
-function tapChange() {
-    const tapInfo = document.querySelector(".tap_info");
-    const tapImages = document.querySelector(".tap_images");
-
-    const infoContent = document.querySelector(".info_content");
-    const infoImages = document.querySelector(".info_images");
-
-    tapInfo.addEventListener("click", function (){
-        infoContent.style.display = "block";
-        infoImages.style.display = "none";
-        tapInfo.classList.toggle('active');
-        tapImages.classList.toggle('active');
-    })
-
-    tapImages.addEventListener("click", function (){
-        infoContent.style.display = "none";
-        infoImages.style.display = "block";
-        tapInfo.classList.toggle('active');
-        tapImages.classList.toggle('active');
-    })
-    document.querySelector(".close_box").style.display = 'block';
-    closeTap();
-}
-
-function closeTap() {
-    document.querySelector(".close_box").addEventListener("click", function () {
-        console.log("ㅎㅇ");
-        document.querySelector(".info_wrap").style.opacity = '0';
-        document.querySelector(".close_box").style.display = 'none';
     })
 }

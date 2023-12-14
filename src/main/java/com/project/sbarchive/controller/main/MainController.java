@@ -14,19 +14,15 @@ public class MainController {
 
     @RequestMapping({"/index", "/main", "/"})
     public String index(Authentication authentication) {
-        log.info("HI");
         if(authentication != null) {
             log.info(authentication.getPrincipal());
         }
         return "index/index";
     }
 
-    @RequestMapping("/testIndex")
-    public String test(Authentication authentication) {
-        log.info("HI");
-        if(authentication != null) {
-            log.info(authentication.getPrincipal());
-        }
+    @RequestMapping("/archive/map")
+    public String showMap() {
+
         return "main/main";
     }
 
@@ -37,7 +33,6 @@ public class MainController {
 
     @RequestMapping({"/intro/introduction"})
     public String intro(Authentication authentication) {
-        log.info("HI");
         if(authentication != null) {
             log.info(authentication.getPrincipal());
         }

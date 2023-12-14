@@ -12,6 +12,36 @@
     <link rel="stylesheet" href="/css/index/index.css">
     <section class="index_map">
         <!-- 지도 넣어줄 자리!! -->
+        <link rel="stylesheet" href="/css/main/main.css">
+
+        <div class="kakao_map_container">
+            <!--        <div class="main_title_container"><h2>< 외국어 간판 지도 ></h2></div>-->
+            <div class="background-filter"></div>
+            <div class="map_container" style="width: 100%">
+                <div id="map"></div>
+                <div id="map2"></div>
+            </div>
+        </div>
+
+        <div class="modal modal_container" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content modal_view_content">
+                    <div class="modal-header modal_view_header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="modal_footer_imgs">
+
+                        </div>
+                        <div class="modal_footer_btns">
+                        </div>
+                    </div> <!-- Modal footer End -->
+                </div> <!-- Modal Content End -->
+            </div> <!-- Modal Dialog End -->
+        </div><!-- Modal Container End -->
 
         <div class="index_search">
             <div class="index_search_init">
@@ -21,16 +51,23 @@
             </div>
             <div class="index_search_form">
                 <div class="input-group input_div">
-                    <input type="text" class="form-control" placeholder="가게 이름을 입력해보세요" aria-describedby="button-addon2">
+                    <input type="text" class="form-control" id="map_search" placeholder="가게 이름을 입력해보세요" aria-describedby="button-addon2">
                     <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
                 </div>
                 <p>외국어 간판이 등록되어 있지 않다면? <a href="/signboard/add">아카이브 하러가기>></a></p>
             </div>
         </div>
+        <script src="/js/signboard/modalAsync.js"></script>
+        <script src="/js/main/kakaoMapApiAsync.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <!--  API 호출  -->
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8acb6543ebcddde72944ae402428a215&libraries=services"></script>
+        <!-- API 설정 ( 지도를 담을 DOM, 중심 좌표, 지도의 확대, 축소의 정도 )을 담은 JS.  API는 해당 설정을 바탕으로 객체를 반환해줌 -->
+        <script src="/js/index/kakaoMapApi.js"></script>
     </section>
     <section class="border_bottom">
         <div class="index_intro index_content_wrap" data-aos="fade-up">
-            <span class="title">외국어 간판 아카이브</span>
+            <span class="title"><a href="/intro/introduction">외국어 간판 아카이브</a></span>
             <article>
                 저긴 대체 뭐 하는 가게야…? 🤔 외국어로만 되어 있는 간판들, 사실은 불법이라는 거 알고 계셨나요?<br>
                 암행어사는 우리 주변에 있는 <strong>외국어 간판들을 기록하는 아카이브 웹 사이트</strong>입니다.<br>

@@ -56,8 +56,11 @@
                 <th>좋아요</th>
             </tr>
             <tr th:each="dto, status :${responseDTO.dtoList}" th:with="link=${pageRequestDTO.getLink}, no=${responseDTO.sno}" th:class="${dto.userId == 'SB_Admin' ? 'admin-row' : ''}">
-                <td><i th:if="${dto.userId}=='SB_Admin'" class="notice">공지사항</i><a th:if="${dto.userId}!='SB_Admin'" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${no - status.index}]]</a></td>
-                <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span></a></td>
+                <td><i th:if="${dto.userId}=='SB_Admin'" class="notice">공지사항</i><a th:if="${dto.userId}!='SB_Admin'" th:href="|@{/board/read(boardId=${dto.boardId})} ${link}|">[[${no - status.index}]]</a></td>
+                <td><a style="margin-left: 50px" th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.title}]] <span style="color: red;">([[${dto.replyCount}]])</span>
+                    <span  th:if="${currentTime.toString().substring(0,10) == dto.addDate.toString().substring(0, 10)}" style="font-size: 12px; color: red" >  new!</span>
+
+                </a></td>
                 <td><a th:href="|@{/board/read(boardId=${dto.boardId})}&${link}|">[[${dto.nickname}]]
                     <span th:if="${dto.userId}!='SB_Admin'">( [[${dto.userId.substring(0, 4)  + '******'}]])</span></a></td>
                 <td th:if="${dto.addDate == dto.modDate}" th:text="${dto.addDate.toString().substring(0, 10)}"></td>
