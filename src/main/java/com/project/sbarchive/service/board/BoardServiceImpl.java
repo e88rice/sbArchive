@@ -151,7 +151,10 @@ public class BoardServiceImpl implements BoardService {
         boardMapper.deleteAllDelDate();
     }
 
-
+    @Override
+    public int getAllBoardLike(int boardId) {
+        return boardMapper.getAllBoardLike(boardId);
+    }
 
 
 }

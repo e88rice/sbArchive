@@ -42,6 +42,8 @@ public interface BoardService {
 
     void  deleteAllDelDate();
 
+    int getAllBoardLike(int boardId);
+
 
 
 }

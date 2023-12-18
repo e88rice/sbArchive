@@ -47,6 +47,8 @@ public interface BoardMapper {
 
     int getReportUserCount( String userId);
 
+    int getAllBoardLike(int boardId);
+
 
 
 

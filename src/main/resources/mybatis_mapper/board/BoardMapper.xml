@@ -96,4 +96,8 @@
         DELETE FROM `board` WHERE `delDate` <![CDATA[<]]> now()
     </delete>
 
+    <select id="getAllBoardLike" resultType="int">
+        select count(*) from `board_like` where boardId = #{boardId};
+    </select>
+
 </mapper>

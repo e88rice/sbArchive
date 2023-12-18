@@ -116,6 +116,9 @@ public class BoardController {
             LocalDateTime currentTime = LocalDateTime.now();
             model.addAttribute("currentTime", currentTime);
             PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
+            for(BoardDTO a : boardDTOPageResponseDTO.getDtoList()){
+                a.setLikeUp(boardService.getAllBoardLike(a.getBoardId()));
+            }
             model.addAttribute("responseDTO",boardDTOPageResponseDTO );
 
         if(principal != null) {
@@ -133,6 +136,7 @@ public class BoardController {
         BoardDTO boardDTO = boardService.getBoard(boardId);
 
         BoardAllDTO boardAllDTO = modelMapper.map(boardDTO, BoardAllDTO.class);
+        boardAllDTO.setLikeUp(boardService.getAllBoardLike(boardId));
         boardAllDTO.setFiles(boardFileService.getBoardImages(boardId , "board"));
         model.addAttribute("dto", boardAllDTO);
         log.info("CONTROLLER VIEW!!" + boardDTO);
