@@ -94,14 +94,8 @@ public class BoardController {
 
         boardDTO.setModDate(LocalDateTime.now());
 
-        int boardId = boardService.addNotice(boardDTO);
-        for(MultipartFile file : files) {
-            log.info(file);
-        }
         if (files != null && !files.isEmpty()) {
-            for (MultipartFile file : files) {
-                log.info("File: " + file.getOriginalFilename());
-            }
+            int boardId = boardService.addNotice(boardDTO);
             boardFileService.addBoardImages(boardId, files,"board");
         }
         return "redirect:/board/list?types=n&keyword=";

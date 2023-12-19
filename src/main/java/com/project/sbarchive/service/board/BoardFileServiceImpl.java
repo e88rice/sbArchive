@@ -78,9 +78,9 @@ public class BoardFileServiceImpl implements BoardFileService {
                 }
                 multipartFile.transferTo(srcSavePath); // 실제 파일 저장
                 multipartFile.transferTo(buildSavePath); // 실제 파일 저장
-                multipartFile.transferTo(serverSavePath); // 실제 파일 저장
+                multipartFile.transferTo(serverSavePath);
                 // 이미지 파일이라면
-                if ( Files.probeContentType(srcSavePath).startsWith("image")) {
+                if (Files.probeContentType(srcSavePath) != null && Files.probeContentType(srcSavePath).startsWith("image")) {
                     isImage = true;
                     // savePath.toFile() = 원본 파일의 경로. c:\\upload\\6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
                     // thumbFile = 새로 생기는 파일의 경로 및 파일 이름. c:\\upload\\s_6dde0d36-c580-4fe4-865a-9dde6fbf7a0a_고양이.jpg
