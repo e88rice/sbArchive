@@ -29,6 +29,9 @@ public class BoardFileServiceImpl implements BoardFileService {
 
     private final BoardFileMapper boardFileMapper;
 
+    @Value("${com.project.sbarchive.upload.board.path}")
+    private String uploadBoardPath;
+
     @Override
     public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
 
@@ -53,22 +56,29 @@ public class BoardFileServiceImpl implements BoardFileService {
             String uuid = UUID.randomUUID().toString(); // 16자리. 파일명이 겹치지 않게 임의의 값을 생성해주는 친구
 
             // uploadPath = c:\\upload  uuid = bf8f3461-c18d-4485-a526-519727e881a4  originalName = sprite__common.png
+            File srcFolder = new File(srcUploadPath);
+            File buildFolder = new File(buildUploadPath);
+            File serverFolder = new File(uploadBoardPath);
+
             Path srcSavePath = Paths.get(srcUploadPath, uuid + "_" + originalName);
             Path buildSavePath = Paths.get(buildUploadPath, uuid + "_" + originalName);
+            Path serverSavePath = Paths.get(uploadBoardPath, uuid + "_" + originalName);
             log.info("테스트 경로 : " + originalName);
 
             boolean isImage = false; // 전달 된 파일이 이미지 형식인지 판단
-            File srcFolder = new File(srcUploadPath);
-            File buildFolder = new File(buildUploadPath);
+
             try {
                 if(!srcFolder.exists()) {
                     srcFolder.mkdirs();
                 }
                 if(!buildFolder.exists()) {
                     buildFolder.mkdirs();
+                } if(!serverFolder.exists()) {
+                    serverFolder.mkdirs();
                 }
                 multipartFile.transferTo(srcSavePath); // 실제 파일 저장
                 multipartFile.transferTo(buildSavePath); // 실제 파일 저장
+                multipartFile.transferTo(serverSavePath); // 실제 파일 저장
                 // 이미지 파일이라면
                 if ( Files.probeContentType(srcSavePath).startsWith("image")) {
                     isImage = true;
