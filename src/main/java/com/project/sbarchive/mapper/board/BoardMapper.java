@@ -49,8 +49,6 @@ public interface BoardMapper {
 
     int getAllBoardLike(int boardId);
 
-
-
-
+    List<BoardVO> getIndexList();
 
 }

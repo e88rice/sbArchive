@@ -1174,7 +1174,7 @@ img.mfp-img {
 					margin:0 7px;
 	}
 }
-@media (max-width:767px) {
+@media (max-width:1199px) {
 	.section,.parallax.section .container {
 					padding-top:30px;
 					padding-bottom:30px;
@@ -1201,7 +1201,7 @@ img.mfp-img {
 					padding: 90px 0px;
 	}
 }
-@media (max-width:767px) {
+@media (max-width:1199px) {
 	body {
 					font-size:14px;
 	}

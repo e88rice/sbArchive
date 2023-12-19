@@ -89,7 +89,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100px;
     min-height: 50px;
     transition: top 0.3s ease-in-out;
@@ -113,31 +113,6 @@
     padding: 35px;
     box-sizing: border-box;
     margin: 0 auto;
-  }
-
-  .header .nav ul {
-    display: flex;
-    margin: 0 !important;
-  }
-
-  .header .nav ul li {
-    box-sizing: border-box;
-    text-align: center;
-    height: 21px;
-  }
-
-  .header .nav ul li::after {
-    content: "*";
-    padding: 0 20px;
-  }
-
-  .li_last_child::after{
-    content: "" !important;
-    padding: 0 !important;
-  }
-
-  .header .nav ul li a {
-    font-size: 18px;
   }
 
   .dropdown-item {
@@ -169,17 +144,88 @@
     margin: 0 auto;
   }
 
-  /* */
-  @media all and (min-width:1279px) and (max-width: 1919px) {
+  .toggle_nav {
+    display: none;
+  }
 
+
+  @media (min-width: 1200px) {
+    .header .nav ul {
+      display: flex;
+      margin: 0 !important;
+    }
+
+    .header .nav ul li {
+      box-sizing: border-box;
+      text-align: center;
+      height: 21px;
+    }
+
+    .header .nav ul li::after {
+      content: "*";
+      padding: 0 20px;
+    }
+
+    .li_last_child::after{
+      content: "" !important;
+      padding: 0 !important;
+    }
+
+    .header .nav ul li a {
+      font-size: 18px;
+    }
+  }
+
+
+  @media all and (max-width:1199px){
+    .nav {
+      display: none;
+      position: absolute;
+      width: 100vw;
+      top: 100px;
+      right: 0;
+      background: #fff;
+      padding: 25px;
+      box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+    }
+
+    .nav ul {
+      display: block;
+      margin: 0;
+    }
+
+    .nav ul li {
+      padding: 10px 0;
+    }
+
+    .nav ul li a {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .nav ul li:hover {
+      font-weight: bold;
+    }
+
+    .toggle_nav {
+      display: block;
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    .header_wrap{
+      width: 100%;
+      min-width: 470px;
+    }
   }
 
   /* 모바일 세로 (해상도 ~ 479px)*/
   @media all and (max-width:479px) {
-    .footer {
-      padding: 30px 0;
+    body {
+      overflow-x: scroll;
     }
   }
+
 </style>
 <body>
 <!-- End Hero Bg
@@ -189,16 +235,11 @@
 <header class="header">
   <div class="header_wrap">
     <div class="logo">
-      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
       <a href="/">
         <img src="/images/img/logo_.png" style="height: 60px;" alt="로고">
       </a>
     </div>
+    <i class="fa fa-bars toggle_nav"></i>
     <nav class="nav">
       <ul>
         <li>
@@ -215,15 +256,15 @@
         </li>
 <!--        비회원 메뉴-->
         <li sec:authorize="!isAuthenticated()">
-          <a class="dropdown-item" href="/user/login">로그인</a>
+          <a href="/user/login">로그인</a>
         </li>
         <li sec:authorize="!isAuthenticated()" class="li_last_child">
-          <a class="dropdown-item" href="/user/joinAuth">회원가입</a>
+          <a href="/user/joinAuth">회원가입</a>
         </li>
 <!--        비회원 메뉴 end -->
 <!--        회원 메뉴-->
         <li sec:authorize="isAuthenticated()">
-          <a class="dropdown-item" href="/my/mypage">마이페이지</a>
+          <a href="/my/mypage">마이페이지</a>
         </li>
         <li sec:authorize="isAuthenticated()" class="nav-item dropdown li_last_child">
           <a href="#" class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -243,6 +284,7 @@
 <!--        회원 메뉴 end-->
       </ul>
     </nav>
+
   </div>
 </header>
 
@@ -324,43 +366,13 @@
     }
   });
 
-  /**
-   * Mobile nav toggle
-   */
-  const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
-
-  function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
-  }
-  mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
-        mobileNavToogle();
-      }
-    });
-
+  $('.toggle_nav').click(function (){
+    $('.nav').slideToggle();
   });
 
-  /**
-   * Toggle mobile nav dropdowns
-   */
-  document.querySelectorAll('.navmenu .has-dropdown i').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
-      if (document.querySelector('.mobile-nav-active')) {
-        e.preventDefault();
-        this.parentNode.classList.toggle('active');
-        this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
-        e.stopImmediatePropagation();
-      }
-    });
-  });
+
+
+
   // ***************** 상단 nav 관련 제이쿼리 끝 *****************
 </script>
 

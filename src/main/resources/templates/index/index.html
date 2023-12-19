@@ -85,83 +85,13 @@
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
                 <!-- Slides ::슬라이더 -->
-                <div class="swiper-slide">
-                    <a href="#">
+                <div class="swiper-slide" th:each="dto, status: ${signBoardResponse.getDtoList()}">
+                    <a th:href="|@{/signboard/read/}${signBoardResponse.getPage()}@{/}${dto.getSignboardId()}|">
                         <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=100" alt="300 * 300 size image">
+                            <img th:src="|@{/images/signboard/}${dto.files[0]}|">
                         </div>
                         <div class="slide_txt">
-                            <p>slide 1</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=101" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 2</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=102" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 3</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=103" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 4</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=104" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 5</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=99" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 6</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=106" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 7</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#">
-                        <div class="slide_img">
-                            <img src="https://picsum.photos/700/400/?image=107" alt="300 * 300 size image">
-                        </div>
-                        <div class="slide_txt">
-                            <p>slide 8</p>
+                            <p>[[${dto.title}]]</p>
                         </div>
                     </a>
                 </div>

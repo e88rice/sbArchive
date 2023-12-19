@@ -1,22 +1,43 @@
 package com.project.sbarchive.controller.main;
 
+import com.project.sbarchive.dto.board.BoardDTO;
+import com.project.sbarchive.dto.page.PageRequestDTO;
+import com.project.sbarchive.dto.page.PageResponseDTO;
+import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
+import com.project.sbarchive.service.board.BoardService;
 import com.project.sbarchive.service.signboard.SignBoardService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 @Log4j2
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class MainController {
+    private final SignBoardService signBoardService;
+    private final BoardService boardService;
 
     @RequestMapping({"/index", "/main", "/"})
-    public String index(Authentication authentication) {
+    public String index(Authentication authentication, Model model) {
         if(authentication != null) {
             log.info(authentication.getPrincipal());
         }
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(8).build();
+        PageResponseDTO<SignBoardAllDTO> responseDTO = signBoardService.getSignboardListWithPaging(pageRequestDTO);
+        model.addAttribute("signBoardResponse", responseDTO);
+        log.info("@@@@@@@@@@@@@@@@@@@@ signBoardResponse @@@@@@@@@@@@@@@@@@@@@@@");
+        log.info(responseDTO);
+
+
         return "index/index";
     }
 
@@ -38,8 +59,6 @@ public class MainController {
         }
         return "intro/introduction";
     }
-
-    
 
 
 }
