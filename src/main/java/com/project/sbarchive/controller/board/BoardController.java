@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 
@@ -118,6 +119,11 @@ public class BoardController {
             PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
             for(BoardDTO a : boardDTOPageResponseDTO.getDtoList()){
                 a.setLikeUp(boardService.getAllBoardLike(a.getBoardId()));
+                if(a.getUserId().equals("SB_Admin")) {
+                    if(a.getDelDate().getDayOfYear() < currentTime.toLocalDate().getDayOfYear()){
+                        boardService.remove(a.getBoardId());
+                    }
+                }
             }
             model.addAttribute("responseDTO",boardDTOPageResponseDTO );
 
