@@ -4,29 +4,9 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/layout.html}">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<style layout:fragment="style">
-  * {}
-  .outer_wrap { margin-top: 3%; }
-  .inner_wrap { width: 100%; margin: 0 auto; }
-  .text_wrap { text-align: center; margin: 2%; }
-  .intro_wrap { }
-  .full_blue { width: 100vw; background: #bcd4e6; }
-  .intro { padding: 2%; }
-  .inner_intro { display: flex; justify-content: center; align-items: center; text-align: center; }
-  .inner_intro .intro_pic img { width: 45vw; margin-right: 15px; }
-  .inner_intro .intro_text { width: 45vw; }
-  .inner_intro .intro_text .title { font-size: 40px; font-weight: bold; }
-  .news_wrap { padding: 2%; margin: 0 auto; }
-  .blue_box { border: 3px solid #bcd4e6; padding: 2%; flex: 1; border-radius: 1rem; }
-  .blue_box a > img { transition: transform 0.3s ease-in-out; }
-  .blue_box a:hover img { transform: scale(1.1); }
-  .inner_news { margin-top: 3%; text-align: center; }
-  .inner_blue_box { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
-  .box_area { display: flex; margin-top: 3%; }
-  .news_pic { width: 100%; border-radius: 0.2rem; height: 30vh; }
-</style>
 
 <div layout:fragment="content">
+  <link rel="stylesheet" href="/css/intro/introduction.css">
 
   <div class="outer_wrap">
 
@@ -41,7 +21,7 @@
         <div class="intro">
           <div class="inner_intro">
             <div class="intro_pic">
-              <img src="https://img.sbs.co.kr/newimg/news/20151010/200876191_700.jpg" alt="" style="opacity: 0.9; border-radius: 0.2rem;">
+              <img src="/images/img/street1.png" alt="" style="opacity: 0.9; border-radius: 0.2rem;">
             </div>
 
             <div class="intro_text">
@@ -52,11 +32,7 @@
               <p style="font-size: 17px;">
                 이른바 ‘핫 플레이스’로 떠오르는 거리나 식당, 카페를 가면 외국어로만 되어 있는 간판을 많이 발견할 수 있습니다.
                 이는 <b>옥외광고법에 어긋날</b> 뿐더러 <b>고령화 사회의 노인 소외 현상의 문제점</b>으로도 간주됩니다.<br>
-                <br> 이에
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAARJJREFUSEtjZKAxYKSx+QwjyALB0Lv8f1kFrf///y/F8O+/CAMjo/B/hv+cX1aI5OALZqKCiCfyjRPDfwZ/BgYGZnTDKLaAK+yVFxMTkxc2V/5nYPjydYVIBdk+4A99ofiXmaUYzYD/jIz/d/35w3ju+2rhZwwMjP/JtoA78k0M438GC2QDGBmZVnxeLnSE2OSNNw54w193/Wdk5EIy7O+Xv8JFDKsZ/1JuQdp/Vp5Pb/sJGfSfkfHO1+XCE3Cpw+sDnog3UwhZAJL/skI4F1dcjFoADsHRICKYkCgJoskMDATrjPdfVojUkpcPwt/kMDAyaODxwguG/382fFkpcYUsCwiGDREKiKoPiDAHp5KhbwEAQPlpGaXqYKoAAAAASUVORK5CYII="/>
-                <b>팀 암행어사</b>
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAP5JREFUSEtjZKAxYKSx+QzD3ALuyJd6jP9Z/BkY/ovjCsr//xlvf10pPBGXPN4g4ol808Lwn0GAUDx9WSGSQ54FEW+mEDIcJD9qAcFQGg0i2gURd/jbfEbG/6oEbPj7ZYVIPln5AEOTw38WHom3/QwMiDKMkZHh6eflIu1UsYAn7JUdAxNTGLJhjP//7/i8UnQLBRb8Z+SMeCfDwsBk+J/hryuy6xkYGP6y/mWqe79a6CPZFnBHvOlgZGDgwWbAf0bGjV+XC+/GF0cE6wMebOXRf8bfDEz/NnxZLnqQUBIj1YIXjAzMl9i//dn/ZpPoZ0KGg+QJWkCMIRQF0agFAEoHXhnIVpKXAAAAAElFTkSuQmCC"/>
-                는 누구나 쉽게 이용할 수 있고 외국어 간판의 실태를 전 국민이 기록하고 열람할 수 있는, <u>지도 기반 외국어 간판 아카이빙 사이트</u>를 기획했습니다.
+                <br> 이에 <b>팀 암행어사</b>는 누구나 쉽게 이용할 수 있고 외국어 간판의 실태를 전 국민이 기록하고 열람할 수 있는, <u>지도 기반 외국어 간판 아카이빙 사이트</u>를 기획했습니다.
               </p>
             </div>
           </div>
