@@ -100,4 +100,8 @@
         select count(*) from `board_like` where boardId = #{boardId};
     </select>
 
+    <select id="getIndexList" resultType="com.project.sbarchive.vo.board.BoardVO">
+        SELECT * FROM `board` WHERE `userId` != 'SB_Admin' ORDER BY `boardId` DESC LIMIT 4;
+    </select>
+
 </mapper>

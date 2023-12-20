@@ -156,5 +156,13 @@ public class BoardServiceImpl implements BoardService {
         return boardMapper.getAllBoardLike(boardId);
     }
 
+    @Override
+    public ArrayList<BoardDTO> getIndexList() {
+        List<BoardVO> boardVOList = boardMapper.getIndexList();
+        ArrayList<BoardDTO> boardDTOList = new ArrayList<>();
+        boardVOList.forEach(boardVO -> boardDTOList.add(modelMapper.map(boardVO,BoardDTO.class)));
+        return boardDTOList;
+    }
+
 
 }

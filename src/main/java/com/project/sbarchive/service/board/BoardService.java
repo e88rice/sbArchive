@@ -5,6 +5,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.vo.board.BoardVO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface BoardService {
@@ -44,6 +45,6 @@ public interface BoardService {
 
     int getAllBoardLike(int boardId);
 
-
+    ArrayList<BoardDTO> getIndexList();
 
 }

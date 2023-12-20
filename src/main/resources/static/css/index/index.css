@@ -68,9 +68,20 @@ body{
 }
 
 .index_intro {
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between;
+    width: 1200px;
+    height: 500px;
+    background-image: url("/images/img/3.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.index_intro > article {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.index_intro > article > .title {
+    margin-top: 10px;
 }
 
 .sub_title{
@@ -186,15 +197,30 @@ body{
     justify-content: space-between;
 }
 
+.item_1 {
+    width: 75%;
+}
+
+.item_2 {
+    width: 25%;
+}
+
 
 .board_tit {
     display: block;
     font-size: 20px;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .board_init {
+    display: block;
     font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 @media all and (min-width:1024px) {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -36,6 +37,11 @@ public class MainController {
         model.addAttribute("signBoardResponse", responseDTO);
         log.info("@@@@@@@@@@@@@@@@@@@@ signBoardResponse @@@@@@@@@@@@@@@@@@@@@@@");
         log.info(responseDTO);
+
+        ArrayList<BoardDTO> responseDTO2 = boardService.getIndexList();
+        model.addAttribute("responseDTO2", responseDTO2);
+        log.info("@@@@@@@@@@@@@@@@@@@@ responseDTO2 @@@@@@@@@@@@@@@@@@@@@@@");
+        log.info(responseDTO2);
 
 
         return "index/index";

@@ -9,7 +9,7 @@
 </style>
 
 <div layout:fragment="content">
-    <link rel="stylesheet" href="/css/index/index.css">
+    <link rel="stylesheet" href="/css/index/index.css?">
     <section class="index_map">
         <!-- 지도 넣어줄 자리!! -->
         <link rel="stylesheet" href="/css/main/main.css">
@@ -67,7 +67,6 @@
     </section>
     <section class="border_bottom">
         <div class="index_intro index_content_wrap" data-aos="fade-up">
-
             <article>
                 <span class="title"><a href="/intro/introduction">외국어 간판 아카이브</a></span>
                 <span class="intro_con">
@@ -76,7 +75,6 @@
                     우리 주변에 얼마나 많은 외국어 간판이 있는지 기록하고, 어떤 가게인지 정보를 기록해 주세요!
                 </span>
             </article>
-            <img src="/images/img/2.png" alt="" style="width: 400px">
             <!-- 이미지 하나 제작해서 넣을거임 -->
         </div>
     </section>
@@ -119,63 +117,18 @@
         </div>
         <div class="container col-md-8">
             <div class="row gy-4">
-                <div class="board_con_div col-lg-6">
+                <div class="board_con_div col-lg-6" th:each="dto2, status: ${responseDTO2}">
                     <div class="board_con_div_item">
-                        <div>
+                        <div class="item_1">
                             <span class="board_tit">
-                                board title..1
+                                [[${dto2.title}]]
                             </span>
                             <span class="board_init">
-                                board content.........1
+                                [[${dto2.content}]]
                             </span>
                         </div>
-                        <div>
-                            <a href="#">본문보기>></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="board_con_div col-lg-6">
-                    <div class="board_con_div_item">
-                        <div>
-                            <span class="board_tit">
-                                board title..2
-                            </span>
-                            <span class="board_init">
-                                board content.........2
-                            </span>
-                        </div>
-                        <div>
-                            <a href="#">본문보기>></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="board_con_div col-lg-6">
-                    <div class="board_con_div_item">
-                        <div>
-                            <span class="board_tit">
-                                board title..3
-                            </span>
-                            <span class="board_init">
-                                board content.........3
-                            </span>
-                        </div>
-                        <div>
-                            <a href="#">본문보기>></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="board_con_div col-lg-6">
-                    <div class="board_con_div_item">
-                        <div>
-                            <span class="board_tit">
-                                board title..4
-                            </span>
-                            <span class="board_init">
-                                board content.........4
-                            </span>
-                        </div>
-                        <div>
-                            <a href="#">본문보기>></a>
+                        <div class="item_2">
+                            <a th:href="|@{/board/read(boardId=${dto2.boardId})}|">본문보기>></a>
                         </div>
                     </div>
                 </div>
