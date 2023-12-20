@@ -111,14 +111,17 @@ public class BoardController {
             LocalDateTime currentTime = LocalDateTime.now();
             model.addAttribute("currentTime", currentTime);
             PageResponseDTO<BoardDTO> boardDTOPageResponseDTO = boardService.getList(pageRequestDTO);
-            for(BoardDTO a : boardDTOPageResponseDTO.getDtoList()){
-                a.setLikeUp(boardService.getAllBoardLike(a.getBoardId()));
-                if(a.getUserId().equals("SB_Admin")) {
-                    if(a.getDelDate().getDayOfYear() < currentTime.toLocalDate().getDayOfYear()){
-                        boardService.remove(a.getBoardId());
+            if(boardDTOPageResponseDTO.getDtoList() != null) {
+                for(BoardDTO a : boardDTOPageResponseDTO.getDtoList()){
+                    a.setLikeUp(boardService.getAllBoardLike(a.getBoardId()));
+                    if(a.getUserId().equals("SB_Admin")) {
+                        if(a.getDelDate().getDayOfYear() < currentTime.toLocalDate().getDayOfYear()){
+                            boardService.remove(a.getBoardId());
+                        }
                     }
                 }
             }
+
             model.addAttribute("responseDTO",boardDTOPageResponseDTO );
 
         if(principal != null) {

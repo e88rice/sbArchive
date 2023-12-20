@@ -91,10 +91,10 @@
                     "                    </tr>\n";
                 for(let user of users.dtoList) {
                     str += "                    <tr class=\"table_row\">\n" +
-                        "                        <td>"+ user.userId +"</td>\n" +
-                        "                        <td>"+ user.email +"</td>\n" +
-                        "                        <td>"+ user.regDate[0]+"-"+user.regDate[1]+"-"+user.regDate[2]+"</td>\n" +
-                        "                        <td><i class=\"fa-solid fa-trash user-trash\" data-pk='"+user.userId+"'></i></td>\n" +
+                        "                        <td class='user_td'>"+ user.userId +"</td>\n" +
+                        "                        <td class='user_td'>"+ user.email +"</td>\n" +
+                        "                        <td class='user_td'>"+ user.regDate[0]+"-"+user.regDate[1]+"-"+user.regDate[2]+"</td>\n" +
+                        "                        <td class='user_td'><i class=\"fa-solid fa-trash user-trash\" data-pk='"+user.userId+"'></i></td>\n" +
                         "                    </tr>";
                 }
                 str += "</table>";

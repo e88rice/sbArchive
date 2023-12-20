@@ -90,7 +90,7 @@
     display: flex;
     justify-content: space-between;
 }
-.page_btns button {
+.page_btns div > button {
     margin: 40px 20px 0 20px;
     width: 160px;
     height: 60px;
@@ -98,8 +98,11 @@
     border-radius: 20px;
     font-size: 26px;
     background: #273756;
-    color: white;
+    color: white !important;
     font-family: JalnanGothic;
+}
+.page_btns div > button > i {
+    color: white !important;
 }
 /*모달*/
 div.show {

@@ -21,14 +21,19 @@
             </div>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="/js/my/msg.js"></script>
+    <script src="/js/my/withdrawal.js"></script>
     <script th:inline="javascript">
+
+
         const withdrawalForm = document.querySelector('form');
         document.querySelector('.passwdCheck').addEventListener('click', function (e){
            e.preventDefault();
            e.stopPropagation();
 
            if(confirm("정말 탈퇴하시겠습니까?")){
+
                withdrawalForm.submit();
            }
         });

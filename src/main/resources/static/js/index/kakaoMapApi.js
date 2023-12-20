@@ -9,6 +9,7 @@ const mapSearchBar = document.querySelector("#map_search"); // 검색 영역
 var searchMapContainer = document.getElementById('map2'), // 지도를 표시할 div
     searchMapOption = {
         center: new kakao.maps.LatLng(126.8912251, 37.4515942), // 지도의 중심좌표
+        draggable: false,
         level: 8 // 지도의 확대 레벨
     };
 var searchMap = new kakao.maps.Map(searchMapContainer, searchMapOption); // 지도를 생성합니다
@@ -27,7 +28,6 @@ getSB();
 
 function getSB() {
     getSBList().then(r => {
-        console.log(r);
         // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
         var positions = [];
         for (let i = 0; i < r.length; i++) {
@@ -53,11 +53,22 @@ function getSB() {
             mapOption = {
                 // center: new kakao.maps.LatLng(35.8661170068962, 128.593835998552), // 지도의 중심좌표
                 center: new kakao.maps.LatLng(lastY, lastX), // 지도의 중심좌표 y, x
+                draggable: false,
                 level: 3 // 지도의 확대 레벨
             };
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+        // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
+        setDraggable();
+
+        function setDraggable() {
+            // 마우스 드래그로 지도 이동 가능여부를 설정합니다
+            map.setDraggable(true);
+        }
         /** #######################################################################################
          ################################ 마커 마우스오버,아웃 이벤트 #################################
          ########################################################################################## **/
@@ -82,7 +93,8 @@ function getSB() {
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-            kakao.maps.event.addListener(marker, 'click', modalShow(r[i].signboardId));
+            // kakao.maps.event.addListener(marker, 'click', modalShow(r[i].signboardId));
+            kakao.maps.event.addListener(marker, 'click', goRead(r[i].signboardId));
         }
 
     }).catch(e => {
@@ -186,13 +198,19 @@ function getSearch() {
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(searchMap, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-            kakao.maps.event.addListener(marker, 'click', modalShow(signboardId));
+            kakao.maps.event.addListener(marker, 'click', goRead(signboardId));
         }
 
         searchMap.relayout();
     }).catch(e => {
         console.log(e);
     })
+}
+s
+function goRead(signboardId) {
+    return function () {
+        self.location.href=`/signboard/read/1/${signboardId}?nat=index`;
+    }
 }
 
 
@@ -210,69 +228,71 @@ function makeOutListener(infowindow) {
     };
 }
 
-function modalShow(signboardId) {
-    return function () {
-        modalContainer.show();
-        justGetSignboard(signboardId).then(r => {
-            addInfoForm(r);
-        }).catch(e => {
-            console.log(e);
-        })
-    }
-}
+// function modalShow(signboardId) {
+//     return function () {
+//         modalContainer.show();
+//         justGetSignboard(signboardId).then(r => {
+//             addInfoForm(r);
+//         }).catch(e => {
+//             console.log(e);
+//         })
+//     }
+// }
 
 // 객체의 정보를 받고 HTML 요소로 추가
-function addInfoForm(signboard) {
-    console.log("ㅎㅇ");
-    let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
-    let modDate = signboard.modDate;
-    let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
-
-    let str = "<div class=\"modal_img_container\">\n" +
-        "              <img src='/images/signboard/" + signboard.files[0] + "'>\n" +
-        "            </div>\n" +
-        "            <div class=\"modal_info_container\">\n" +
-        "              <div id=\"map\"></div>\n" +
-        "              <div class=\"modal_info modal_info_title\">\n" +
-        "                <span class=\"modal_info_span\">가게명</span>\n" +
-        "                <p> " + signboard.title + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_address\">\n" +
-        "                <span class=\"modal_info_span\">주소</span>\n" +
-        "                <p> " + signboard.address + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_nickname\">\n" +
-        "                <span class=\"modal_info_span\">작성자</span>\n" +
-        "                <p>" + signboard.nickname + "\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_date\">\n" +
-        "                <span class=\"modal_info_span\">작성일</span>\n" +
-        "                <p>" + date + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info_content\">\n" +
-        signboard.content + "\n";
-    "              </div>\n" +
-    "            </div>";
-
-
-
-    // 이미지 폼
-    let imgs = "";
-    for (let i = 0; i < signboard.files.length; i++) {
-        imgs += "              <img src='/images/signboard/" + signboard.files[i] + "'>\n";
-    }
-    modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
-    modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
-    changeImage();
-}
+// function addInfoForm(signboard) {
+//     console.log("ㅎㅇ");
+//     let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
+//     let modDate = signboard.modDate;
+//     let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
+//
+//     let str = "<div class=\"modal_img_container\">\n" +
+//         "              <img src='/images/signboard/" + signboard.files[0] + "'>\n" +
+//         "            </div>\n" +
+//         "            <div class=\"modal_info_container\">\n" +
+//         "              <div id=\"map\"></div>\n" +
+//         "              <div class=\"modal_info modal_info_title\">\n" +
+//         "                <span class=\"modal_info_span\">가게명</span>\n" +
+//         "                <p> " + signboard.title + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_address\">\n" +
+//         "                <span class=\"modal_info_span\">주소</span>\n" +
+//         "                <p> " + signboard.address + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_nickname\">\n" +
+//         "                <span class=\"modal_info_span\">작성자</span>\n" +
+//         "                <p>" + signboard.nickname + "\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_date\">\n" +
+//         "                <span class=\"modal_info_span\">작성일</span>\n" +
+//         "                <p>" + date + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info_content\">\n" +
+//         signboard.content + "\n";
+//     "              </div>\n" +
+//     "            </div>";
+//
+//
+//
+//     // 이미지 폼
+//     let imgs = "";
+//     for (let i = 0; i < signboard.files.length; i++) {
+//         imgs += "              <img src='/images/signboard/" + signboard.files[i] + "'>\n";
+//     }
+//     modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
+//     modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
+//     changeImage();
+// }
 
 // hover시 해당 이미지로 메인 이미지가 바뀌는 이벤트 걸기
-function changeImage() {
-    const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
-    footerImgs.forEach(img => {
-        img.addEventListener("mouseenter", function (e) {
-            const mainImage = document.querySelector(".modal_img_container img")
-            mainImage.src = img.src;
-        })
-    })
-}
+// function changeImage() {
+//     const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
+//     footerImgs.forEach(img => {
+//         img.addEventListener("mouseenter", function (e) {
+//             const mainImage = document.querySelector(".modal_img_container img")
+//             mainImage.src = img.src;
+//         })
+//     })
+//
+// }
+

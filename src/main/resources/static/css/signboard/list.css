@@ -54,8 +54,16 @@
     font-family: JalnanGothic;
     color: white;
     /*background-color: #547dad;*/
-    background-color: rgba(97, 98, 98, 0.62);
+    background-color: rgb(97, 98, 98);
 }
+.sb_info_container > p {
+    color: white !important;
+}
+
+.sb_info_links a > i {
+    color: white !important;
+}
+
 .sb_list_paging_wrap {
     display: flex;
     list-style: none;
@@ -92,7 +100,7 @@
 }
 .sb_list_paging_wrap .active {
     background-color: #000000;
-    color: white;
+    color: white !important;
 }
 
 /*모달*/

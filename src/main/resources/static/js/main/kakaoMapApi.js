@@ -28,7 +28,6 @@ getSB();
 
 function getSB() {
     getSBList().then(r => {
-        console.log(r);
         // 마커를 표시할 좌표, 해당 좌표의 title, 해당 좌표의 주소를 가진 객체 배열
         var positions = [];
         for (let i = 0; i < r.length; i++) {
@@ -54,10 +53,21 @@ function getSB() {
             mapOption = {
                 // center: new kakao.maps.LatLng(35.8661170068962, 128.593835998552), // 지도의 중심좌표
                 center: new kakao.maps.LatLng(lastY, lastX), // 지도의 중심좌표 y, x
+                draggable: false,
                 level: 3 // 지도의 확대 레벨
             };
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+        // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+        setDraggable();
+
+        function setDraggable() {
+            // 마우스 드래그로 지도 이동 가능여부를 설정합니다
+            map.setDraggable(true);
+        }
 
         /** #######################################################################################
          ################################ 마커 마우스오버,아웃 이벤트 #################################
@@ -83,12 +93,9 @@ function getSB() {
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-            kakao.maps.event.addListener(marker, 'click', modalShow(r[i].signboardId));
-            console.log(r[i].signboardId);
+            kakao.maps.event.addListener(marker, 'click', goRead(r[i].signboardId));
         }
 
-    }).catch(e => {
-        console.log(e)
     });
 }
 
@@ -199,13 +206,11 @@ function getSearch() {
             // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(searchMap, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-            kakao.maps.event.addListener(marker, 'click', modalShow(signboardId));
+            kakao.maps.event.addListener(marker, 'click', goRead(signboardId));
         }
 
         searchMap.relayout();
-    }).catch(e => {
-        console.log(e);
-    })
+    });
 }
 
 
@@ -223,88 +228,88 @@ function makeOutListener(infowindow) {
     };
 }
 
-function modalShow(signboardId) {
+function goRead(signboardId) {
     return function () {
-        modalContainer.show();
-        justGetSignboard(signboardId).then(r => {
-            addInfoForm(r);
-            // addSInfoForm(r); 이것도할까?
-        }).catch(e => {
-            console.log(e);
-        })
+        self.location.href=`/signboard/read/1/${signboardId}?nat=map`;
     }
 }
+
+// function modalShow(signboardId) {
+//     return function () {
+//         modalContainer.show();
+//         justGetSignboard(signboardId).then(r => {
+//             addInfoForm(r);
+//             // addSInfoForm(r); 이것도할까?
+//         }).catch(e => {
+//             console.log(e);
+//         })
+//     }
+// }
 
 // 객체의 정보를 받고 HTML 요소로 추가
-function addInfoForm(signboard) {
-    console.log("ㅎㅇ");
-    let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
-    let modDate = signboard.modDate;
-    let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
-
-    let str = "<div class=\"modal_img_container\">\n" +
-        "              <img src='/images/signboard/" + signboard.files[0] + "'>\n" +
-        "            </div>\n" +
-        "            <div class=\"modal_info_container\">\n" +
-        "              <div id=\"map\"></div>\n" +
-        "              <div class=\"modal_info modal_info_title\">\n" +
-        "                <span class=\"modal_info_span\">가게명</span>\n" +
-        "                <p> " + signboard.title + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_address\">\n" +
-        "                <span class=\"modal_info_span\">주소</span>\n" +
-        "                <p> " + signboard.address + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_nickname\">\n" +
-        "                <span class=\"modal_info_span\">작성자</span>\n" +
-        "                <p>" + signboard.nickname + "\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info modal_info_date\">\n" +
-        "                <span class=\"modal_info_span\">작성일</span>\n" +
-        "                <p>" + date + "</p>\n" +
-        "              </div>\n" +
-        "              <div class=\"modal_info_content\">\n" +
-        signboard.content + "\n";
-    "              </div>\n" +
-    "            </div>";
-
-
-
-    // 이미지 폼
-    let imgs = "";
-    for (let i = 0; i < signboard.files.length; i++) {
-        imgs += "              <img src='/images/signboard/" + signboard.files[i] + "'>\n";
-    }
-    modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
-    modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
-    changeImage();
-}
+// function addInfoForm(signboard) {
+//     console.log("ㅎㅇ");
+//     let addDate = signboard.addDate; // 날짜 배열을 설정한 문자열로 변환
+//     let modDate = signboard.modDate;
+//     let date = addDate === modDate ? modDate : (modDate + " (수정됨)");
+//
+//     let str = "<div class=\"modal_img_container\">\n" +
+//         "              <img src='/images/signboard/" + signboard.files[0] + "'>\n" +
+//         "            </div>\n" +
+//         "            <div class=\"modal_info_container\">\n" +
+//         "              <div id=\"map\"></div>\n" +
+//         "              <div class=\"modal_info modal_info_title\">\n" +
+//         "                <span class=\"modal_info_span\">가게명</span>\n" +
+//         "                <p> " + signboard.title + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_address\">\n" +
+//         "                <span class=\"modal_info_span\">주소</span>\n" +
+//         "                <p> " + signboard.address + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_nickname\">\n" +
+//         "                <span class=\"modal_info_span\">작성자</span>\n" +
+//         "                <p>" + signboard.nickname + "\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info modal_info_date\">\n" +
+//         "                <span class=\"modal_info_span\">작성일</span>\n" +
+//         "                <p>" + date + "</p>\n" +
+//         "              </div>\n" +
+//         "              <div class=\"modal_info_content\">\n" +
+//         signboard.content + "\n";
+//     "              </div>\n" +
+//     "            </div>";
+//
+//
+//
+//     // 이미지 폼
+//     let imgs = "";
+//     for (let i = 0; i < signboard.files.length; i++) {
+//         imgs += "              <img src='/images/signboard/" + signboard.files[i] + "'>\n";
+//     }
+//     modalBody.innerHTML = str; // 전달받은 signboard로 모달 컨텐츠 영역 교체
+//     modalImgs.innerHTML = imgs; // 전달받은 signboard의 이미지들로 푸터 영역 교체
+//     changeImage();
+// }
 
 // hover시 해당 이미지로 메인 이미지가 바뀌는 이벤트 걸기
-function changeImage() {
-    const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
-    footerImgs.forEach(img => {
-        img.addEventListener("mouseenter", function (e) {
-            const mainImage = document.querySelector(".modal_img_container img")
-            mainImage.src = img.src;
-        })
-    })
-}
+// function changeImage() {
+//     const footerImgs = document.querySelectorAll(".modal_footer_imgs img");
+//     footerImgs.forEach(img => {
+//         img.addEventListener("mouseenter", function (e) {
+//             const mainImage = document.querySelector(".modal_img_container img")
+//             mainImage.src = img.src;
+//         })
+//     })
+// }
 
 // 검색 시 페이지 정보와 객체 정보들을 가져와 요소로 채워넣는 함수
 function getSearchItems(keyword, page) {
 
     getSearchSBList(keyword, page).then(r => {
-        console.log("페이지 정보 : ")
-        console.log(r);
-        console.log("객체 리스트 정보 : ")
-        console.log(r.dtoList);
         getSearchItemsForm(r.dtoList);
         getSearchItemsPagingForm(r);
         searchItemsChangePage(r.end);
         showInfoWrap();
-    }).catch(e => {
-        console.log(e);
     })
 }
 
@@ -338,8 +343,13 @@ function getSearchItemsPagingForm(response) {
     if (response.prev) {
         pageForm += "        <li class=\"s_page_prev\">\n" +
             "          <a data-num=\"" + response.start - 1 + "\">\n" +
-            "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev\n" +
+            "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>\n" +
             "          </a>\n" +
+            "        </li>\n";
+    }
+    else {
+        pageForm += "        <li class=\"s_page_prev\">\n" +
+            "            <i class=\"fa-solid fa-chevron-left\" style=\"color: #3f4040;\"></i>\n" +
             "        </li>\n";
     }
     for (let i = response.start; i <= response.end; i++) {
@@ -354,8 +364,13 @@ function getSearchItemsPagingForm(response) {
     if (response.next) {
         pageForm += "        <li class=\"s_page_next\">\n" +
             "          <a data-num=\"" + response.end + 1 + "\">\n" +
-            "            Next<i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
+            "            <i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
             "          </a>\n" +
+            "        </li>\n";
+    }
+    else {
+        pageForm += "        <li class=\"s_page_next\">\n" +
+            "            <i class=\"fa-solid fa-chevron-right\" style=\"color: #3f4040;\"></i>\n" +
             "        </li>\n";
     }
     pageForm += "      </ul>";
@@ -371,12 +386,10 @@ function searchItemsChangePage(end) {
     let keyword = mapSearchBar;
     let page = document.getElementById("sPageNumber");
 
-    const sPageWrap = document.querySelectorAll(".s_page");
+    const sPageWrap = document.querySelectorAll(".s_paging_wrap li > a");
     sPageWrap.forEach(sPage => {
         sPage.addEventListener("click", function () {
             page = sPage.dataset.num;
-            console.log("keyword = " + keyword.value);
-            console.log("page = " + page);
             getSearchItems(keyword.value, page)
         })
     })
@@ -392,9 +405,7 @@ function showInfoWrap() {
                 // document.querySelector("");
                 addSInfoForm(r);
                 tapChange();
-            }).catch( e => {
-                console.log(e);
-            })
+            });
         })
     })
 }
@@ -475,7 +486,6 @@ function tapChange() {
 
 function closeTap() {
     document.querySelector(".close_box").addEventListener("click", function () {
-        console.log("ㅎㅇ");
         document.querySelector(".info_wrap").style.opacity = '0';
         document.querySelector(".close_box").style.display = 'none';
     })

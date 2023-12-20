@@ -386,7 +386,7 @@ public class MyController {
             return "redirect:/logout";
         } else {
             model.addAttribute("msg", "비밀번호가 일치하지 않습니다");
-            return "my/withdrawal";
+            return "redirect:/my/withdrawal";
         }
     }
 

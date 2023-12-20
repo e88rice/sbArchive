@@ -47,12 +47,6 @@ public class MainController {
         return "index/index";
     }
 
-    @RequestMapping("/archive/map")
-    public String showMap() {
-
-        return "main/main";
-    }
-
     @GetMapping("/error/dupl")
     public void duplErrorPage() {
 

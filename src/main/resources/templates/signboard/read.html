@@ -6,7 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
 
 <div layout:fragment="content">
-    <link rel="stylesheet" href="/css/signboard/read.css">
+    <link rel="stylesheet" href="/css/signboard/read.css?">
     <div class="margin-container">
         <hr>
         <div class="flex-row">
@@ -90,10 +90,15 @@
             e.stopPropagation();
             const urlParams2 = new URL(window.location.href).searchParams;
             let admin = urlParams2.get('admin');
+            let native = urlParams2.get('nat');
 
             if([[${page}]] === 0) {
                 self.location.href = "/my/mySignBoardList";
-            } else if(admin === 'admin') {
+            } else if(native === 'index') {
+                self.location.href = "/";
+            } else if(native === 'map') {
+                self.location.href = "/archive/map";
+            }else if(admin === 'admin') {
               self.location.href = "/admin/management";
             } else {
                 self.location.href = "/signboard/list/"+[[${page}]];

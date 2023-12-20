@@ -89,3 +89,10 @@
     position: relative;
     left: 30%;
 }
+
+.user_td {
+    max-width: 50px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
