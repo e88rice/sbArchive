@@ -31,18 +31,11 @@ public class ReplyController {
     private final ReplyService replyService;
     private final UserService userService;
 
-//    @GetMapping(value="/add")
-//    public String addReplyGET() {
-//        log.info("/reply/boardId/addGET");
-//        return "/reply/add";
-//    }
-
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @ApiOperation(value="Reply add POST", notes="댓글 등록")
-    @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE) // consumes=데이터가 어떤 타입인지 명시
-    public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult, Principal principal) throws BindException { // RequestBody: JSON 문자열을 ReplyDTO로 변환
+    @PostMapping(value="/add", consumes= MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Integer> addReplyPOST(@Valid @RequestBody ReplyDTO replyDTO, BindingResult bindingResult, Principal principal) throws BindException {
 
-        log.info("replyDTO: "+replyDTO);
         if(bindingResult.hasErrors()) {
             throw new BindException((bindingResult));
         }
@@ -66,7 +59,7 @@ public class ReplyController {
     @ApiOperation(value = "Update Reply", notes="PUT 방식으로 특정 댓글 수정")
     @PutMapping(value = "/replyId/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Integer> modifyReplyId(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
-        replyDTO.setReplyId(replyId); // 번호 일치시킴
+        replyDTO.setReplyId(replyId);
         replyService.modifyReplyId(replyDTO);
         Map<String, Integer> resultMap=new HashMap<>();
 
@@ -75,11 +68,6 @@ public class ReplyController {
         return resultMap;
     }
 
-//    @GetMapping(value="/addRe")
-//    public String addReReplyGET() {
-//        log.info("/reply/boardId/addReGET");
-//        return "/reply/addRe";
-//    }
 
     @PreAuthorize("hasRole('USER')") // Role이 유저인 유저만 접근 가능
     @ApiOperation(value="ReReply add POST", notes="POST 방식으로 댓글 등록")
@@ -115,7 +103,6 @@ public class ReplyController {
                                                   PageRequestDTO pageRequestDTO) {
 
         PageResponseDTO<ReplyDTO> responseDTO=replyService.getReplyList(boardId, replyDepth, pageRequestDTO);
-        log.info("댓글 리스트 조회: "+responseDTO);
         return responseDTO;
 
     }
@@ -127,7 +114,6 @@ public class ReplyController {
                                        @PathVariable("replyDepth") boolean replyDepth) {
 
         List<ReplyDTO> replyDTO=replyService.getReReplies(boardId, parentReplyId, replyDepth);
-        log.info("대댓글 리스트 조회: "+replyDTO);
         return replyDTO;
     }
 
@@ -136,14 +122,13 @@ public class ReplyController {
     public ReplyDTO getReply(@PathVariable("replyId") int replyId, Model model) {
         ReplyDTO replyDTO=replyService.getReply(replyId);
         model.addAttribute("dto", replyDTO);
-        log.info("replyDTO::: "+replyDTO);
         return replyDTO;
     }
 
     @ApiOperation(value = "Update Reply", notes="특정 댓글/대댓글 수정")
     @PutMapping(value = "/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Integer> modifyReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
-        replyDTO.setReplyId(replyId); // 번호 일치시킴
+        replyDTO.setReplyId(replyId);
         replyService.modifyReply(replyDTO);
         Map<String, Integer> resultMap=new HashMap<>();
 
@@ -167,7 +152,7 @@ public class ReplyController {
     @ApiOperation(value = "Update Reply", notes="댓글 논리적 삭제")
     @PutMapping(value = "/re/{replyId}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Integer> removeReply(@PathVariable("replyId") int replyId, @RequestBody ReplyDTO replyDTO) {
-        replyDTO.setReplyId(replyId); // 번호 일치시킴
+        replyDTO.setReplyId(replyId);
         replyDTO = replyService.getReply(replyId);
         log.info(replyDTO.getBoardId());
         replyService.downReplyCount(replyDTO.getBoardId());

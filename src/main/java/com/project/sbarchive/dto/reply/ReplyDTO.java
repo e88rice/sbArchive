@@ -50,6 +50,7 @@ public class ReplyDTO {
     // 댓글 깊이. 0(댓글), 1(대댓글). default 0
     private boolean replyDepth;
 
+    // 신고 처리당한 댓글일 때, '관리자에 의해 규제된 댓글입니다' 문구 출력
     private boolean isReported;
 
     // (대댓글이 달린다면) 대댓글의 부모 replyId
@@ -60,8 +61,5 @@ public class ReplyDTO {
 
     // 대댓글 개수
     private int reReplyCount;
-
-    // 신고 처리당한 댓글일 때, '관리자에 의해 규제된 댓글입니다' 문구 출력
-//    private boolean isReported;
 
 }
