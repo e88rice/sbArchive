@@ -100,8 +100,6 @@
     <!-- 댓글 리스트 출력 -->
     <div class="reply_list_wrap">
         <div>
-<!--            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count_">댓글 총 [[${dto.replyCount}]]개</span>&lt;!&ndash;<span>총 [[${dto.replyCount}]]개</span>&ndash;&gt;-->
-<!--            <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>-->
             <ul class="list-group replyList">
                 <!-- 댓글 출력 -->
             </ul>
@@ -122,7 +120,7 @@
                 <div class="reply_add_form">
                     <input type="hidden" name="nickname" class="anickname" th:value="${nickname}">
                     <input type="hidden" name="userId" class="auserId" th:value="${name}">
-                    <div>[[${nickname}]]<span>([[${name}]])</span></div>
+                    <div style="padding: 10px">[[${nickname}]]<span>([[${name}]])</span></div>
                     <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control"></textarea>
                     <button type="button" class="btn btn-primary addBtn">등록</button>
                 </div>
@@ -430,22 +428,29 @@
                             <div>${dto.nickname}(${id})</div>
                         </div>
                         <div class="textarea_btn_area">
-                            <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control">${dto.content}</textarea>
+                            <div style="position: relative">
+                                <textarea placeholder="댓글을 입력해 주세요." class="mcontent form-control">${dto.content}</textarea>
+                                <i class="fa-solid fa-xmark btn-done cancelBtn"></i>
+                            </div>
                             <button type="button" class="btn btn-primary modReplyBtn">수정</button>
-                            <button type="button" class="btn btn-done modCancelBtn">취소</button>
+<!--                            <button type="button" class="btn btn-done modCancelBtn">취소</button>-->
                         </div>
+
                      </div>
 
                      <!-- 대댓글 등록 폼 -->
                      <div class="reReplyAddForm">
                         <div>${nickname}<span>(${username})</span></div>
-                        <div class="annotation_text">
-                            <div>
-                                <p>@${dto.nickname}/</p>
-                                <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control reReForm"></textarea>
+                        <p style="margin: 0">@${dto.nickname}/</p>
+                        <div>
+                            <div class="annotation_text">
+                                <div style="position: relative">
+                                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="rcontent form-control reReForm"></textarea>
+                                    <a class="btn-done cancelBtn"><i class="fa-solid fa-xmark"></i></a>
+                                </div>
+                                <button type="button" class="btn btn-primary addReBtn">등록</button>
+    <!--                            <button type="button" class="btn btn-done cancelBtn">취소</button>-->
                             </div>
-                            <button type="button" class="btn btn-primary addReBtn">등록</button>
-                            <button type="button" class="btn btn-done cancelBtn">취소</button>
                         </div>
 
                     </div>
@@ -474,8 +479,8 @@
             // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
             document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
                 cancelBtn.addEventListener('click', function(e) {
-                    const reReplyAddForm=e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-                    const rcontent=reReplyAddForm.children[1].children[0].children[1];
+                    const reReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                    const rcontent=reReplyAddForm.children[2].children[0].children[0];
                     rcontent.value='';
                     reReplyAddForm.style.display='none';
                 });
@@ -582,16 +587,17 @@
                         <!-- 대댓글 수정 폼 -->
                         <div class="reReplyModifyForm">
                             <div>${dto.nickname}(${id})</div>
-                            <div class="annotation_text">
-                                <div>
-                                    <p>${contentA[0]}</p>
-                                    <textarea placeholder="댓글을 입력해 주세요." class="mrcontent form-control reReReForm">${contentA[1]}</textarea>
+                            <div>
+                                <p style="margin: 0">${contentA[0]}</p>
+                                <div class="annotation_text">
+                                    <div style="position: relative">
+                                        <textarea placeholder="댓글을 입력해 주세요." class="mrcontent form-control reReReForm">${contentA[1]}</textarea>
+                                        <a class="btn btn-done cancelBtn"><i class="fa-solid fa-xmark"></i></a>
+                                    </div>
+                                    <button type="button" class="btn btn-primary modReReplyBtn">수정</button>
                                 </div>
-                                <button type="button" class="btn btn-primary modReReplyBtn">수정</button>
-                                <button type="button" class="btn btn-done cancelBtn">취소</button>
                             </div>
                         </div>
-
                     </li>
                 `;
                         });

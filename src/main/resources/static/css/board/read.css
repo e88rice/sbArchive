@@ -14,7 +14,7 @@ textarea {
 .mt-3 {
     width: 1200px;
     margin: 25px;
-    padding: 35px;
+    padding: 35px 35px 0 35px;
 }
 .btn_end {
     display: flex;
@@ -30,7 +30,7 @@ textarea {
 
 }
 .card-body1 {
-    border: 2px solid #d3d3d3;
+    border: 1px solid #d3d3d3;
     border-radius: 10px;
 }
 .imgWidth {
