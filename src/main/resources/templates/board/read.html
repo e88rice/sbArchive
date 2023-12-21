@@ -21,6 +21,8 @@
                             <div class="input-group mb-3">
                                 <input type="text" name="title" class="form-control" id="fc1" th:value="${dto.title}" readonly>
                             </div>
+
+                            <input hidden="hidden" name="userId"  th:value="${dto.userId}" >
                             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
                             <div class="flex-content fc2">
                                 <div>
@@ -53,38 +55,31 @@
                                 <div class="left_wrap_subImg">
                                     <img th:each="img, status : ${dto.getFiles()}" th:src="|@{/images/board/}${dto.files[status.index]}|" class="imgWidth">
                                 </div>
+                                <div class="my-4">
+                                    <div class="content-between">
+                                        <div class="float-end btn_end" style="padding: 20px">
+                                            <div>
+                                                <button type="button" class="btn btn-secondary">목록</button>
+                                            </div>
+                                            <div>
+                                                <button th:if="${dto.userId} == ${name}" type="submit" class="btn btn-primary">수정</button>
+                                                <button th:if="${dto.userId} != ${name} and ${dto.userId} != 'SB_Admin' and ${name} != 'SB_Admin' and ${name} != 'guest'"
+                                                        type="button" class="btn btn-info reportPage">신고</button>
+                                                <button th:if="${name != null and name == 'SB_Admin'}"
+                                                        class="btn btn-outline-secondary removeBtn" type="button" >삭제
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div><!-- end card -->
-                    <div class="my-4">
-                        <div class="content-between">
-                            <div class="float-end btnend">
-                                <div>
-                                    <button th:if="${dto.userId} == ${name}" type="submit" class="btn btn-primary">수정</button>
-                                    <button type="button" class="btn btn-secondary">목록</button>
-                                </div>
 
-                                <div>
-                                    <button th:if="${dto.userId} != ${name} and ${name} != 'SB_Admin' and ${name} != 'guest'
-                                    " type="button" class="btn btn-danger reportPage">이글 신고하기</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
                 </div>
             </div>
             <script src="/js/board/board.js"></script>
-        </form>
-        <form action="/board/remove/admin" method="post">
-            <input th:value="${dto.boardId}" name="boardId" hidden="hidden">
-            <input th:value="${dto.userId}" name="userId" hidden="hidden">
-            <input th:value="${dto.title}" name="title" hidden="hidden">
-            <button th:if="${name != null and name == 'SB_Admin'}"
-                    class="btn btn-outline-secondary reportBtn" type="submit" >신고
-            </button>
         </form>
     </div>
 
@@ -167,7 +162,16 @@
 
         const boardId = [[${dto.boardId}]]; // board Idx
         const link = [[${pageRequestDTO.getLink()}]];
+        const removeBtn = document.querySelector(".removeBtn");
 
+        if(removeBtn !== null) {
+            removeBtn.addEventListener("click", function () {
+                let form = document.forms[0];
+                form.action = "/board/remove/admin";
+                form.method = "post";
+                form.submit();
+            })
+        }
 
         document.querySelector(".btn-secondary").addEventListener("click",function (e) {
             const urlParams1 = new URL(window.location.href).searchParams;
@@ -387,9 +391,9 @@
                         isParentDeleted=`
                     <div class="list_of_reply">
 
-                        <div class="img_wrap"> <!-- 이미지 나오는 부분 -->
-                            <img class="user_image" src="/images/img/logo_.png" alt=""> <!-- 나중에 th:src 수정 -->
-                        </div>
+<!--                        <div class="img_wrap"> &lt;!&ndash; 이미지 나오는 부분 &ndash;&gt;-->
+<!--                            <img class="user_image" src="/images/img/logo_.png" alt=""> &lt;!&ndash; 나중에 th:src 수정 &ndash;&gt;-->
+<!--                        </div>-->
 
                         <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                             <div class="writer_btn_area" data-id="${dto.userId}">
@@ -531,9 +535,10 @@
                                 `;
                             } else {
                                 isReportedReply += `
-                                ↳ <div class="img_wrap_re"> <!-- 이미지 나오는 부분 -->
-                                    <img class="user_image" src="/images/img/logo_.png" alt=""> <!-- 나중에 th:src 수정 -->
-                                </div>
+                                <p style="padding: 10px 10px 10px 0">↳</p>
+<!--                                <div class="img_wrap_re"> &lt;!&ndash; 이미지 나오는 부분 &ndash;&gt;-->
+<!--                                    <img class="user_image" src="/images/img/logo_.png" alt=""> &lt;!&ndash; 나중에 th:src 수정 &ndash;&gt;-->
+<!--                                </div>-->
 
                                 <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                                     <div class="writer_btn_area">
@@ -995,13 +1000,16 @@
 
             });
         }
-        document.querySelector(".reportPage").addEventListener("click",function (e) {
-            e.preventDefault();
-            var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
-            if(userConfirmed) {
-                location.href = `/boardReport/add?boardId=${boardId}`;
-            }else return;
-        });
+        if(document.querySelector(".reportPage") != null) {
+            document.querySelector(".reportPage").addEventListener("click", function (e) {
+                e.preventDefault();
+                var userConfirmed = confirm("이 게시글을 신고하시겠습니까?");
+                if(userConfirmed) {
+                    location.href = `/boardReport/add?boardId=${boardId}`;
+                }else return;
+            });
+        }
+
 
 
     </script>

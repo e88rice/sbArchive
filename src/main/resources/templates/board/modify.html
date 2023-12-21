@@ -10,7 +10,6 @@
 <div layout:fragment="content">
     <link rel="stylesheet" href="/css/board/modify.css">
     <form action="/board/modify" method="post" class="boardModify_form" enctype="multipart/form-data" >
-        <h2 class="mb-4">게시판 글 수정</h2>
         <form action="/board/modify" method="post" name="frmAdd" enctype="multipart/form-data">
             <input hidden="hidden" th:value="${dto.boardId}" name="boardId">
             <div class="topline">
@@ -27,12 +26,10 @@
                 <div>
                     <input type="text" id="nickname" name="nickname"  class="form-group fc1" th:value="${#authentication.principal.nickname}" readonly>
                 </div>
-                <div class="form-group addDat" >작성일
-                    <input th:value="${dto.addDate}"  style="border: none " class="form-group" readonly>
+                <div class="form-group" >
+                    <label for="addDate">작성일</label>
+                    <input th:value="${dto.addDate}" id="addDate" style="border: none " class="form-group fc1" readonly>
                 </div>
-
-
-
             </div>
 
             <div class="form-group">

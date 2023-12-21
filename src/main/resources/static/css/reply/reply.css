@@ -30,7 +30,6 @@ li {
     font-weight: bold !important;
 }
 .reply_add_wrap {
-    margin: 50px;
 }
 .reply_add_inner_wrap {
     width: 1140px;
@@ -65,13 +64,15 @@ li {
 .reply_list_wrap {
     width: 70vw;
     margin: 0 auto;
-    margin-top: 5%;
 }
 .reply_count_ {
     margin-left: 10px;
 }
 .replyList, .messageBtn {
     margin: 10px;
+}
+.replyList {
+    width: 100%;
 }
 .if_reply_writer {
     border: 1px solid red;
@@ -80,7 +81,7 @@ li {
     font-size: 12px;
     margin-left: 5px;
     font-weight: bold;
-    color: red;
+    color: red !important;
 }
 .list_of_reply {
     display: flex;
@@ -95,13 +96,13 @@ li {
 .writer_btn_content_date_wrap {
     display: flex;
     flex-direction: column;
-    width: 85%;
+    width: 100%;
 }
 .writer_btn_area {
     display: flex;
     justify-content: space-between;
     height: 60px;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 .date_of_reply {
     color: gray;
@@ -127,11 +128,12 @@ li {
 }
 .list_of_reply_re {
     display: flex;
-    border-bottom: 1px solid #d3d3d3;
     padding: 10px 0 10px 0;
 }
 .replyItem_re {
     background: #f8f9fa;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 0 25px;
 }
 .img_wrap_re {
     width: 12%;
@@ -154,5 +156,5 @@ li {
 
 .reply_btns {
     width: 1130px;
-    margin: 30px auto 0 auto;
+    margin: 0 auto;
 }

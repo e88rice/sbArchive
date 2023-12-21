@@ -1,8 +1,8 @@
+
 .boardModify_form {
-    margin: 0 auto;
-    padding-top: 150px;
-    width: 800px;
-    height: 1000px;
+    margin: 25px auto;
+    padding: 35px;
+    width: 1200px;
 
 }
 textarea {
@@ -13,7 +13,7 @@ textarea {
 }
 .topline {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
 }
 .btnBot{
