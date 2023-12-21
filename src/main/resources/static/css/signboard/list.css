@@ -12,7 +12,7 @@
 }
 .sb_list_container {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     flex-wrap: wrap;
     width: 60%;
 }

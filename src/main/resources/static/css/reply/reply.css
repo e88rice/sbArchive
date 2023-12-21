@@ -46,16 +46,6 @@ li {
     padding: 10px;
     font-size: 16px;
 }
-/*.addBtn {*/
-/*    width: 70px;*/
-/*    height: 40px;*/
-/*    margin-top: 15px;*/
-/*}*/
-/*.addReBtn, .addReReBtn, .modReReplyBtn {*/
-/*    width: 70px;*/
-/*    height: 40px;*/
-/*    margin: 50px 0 0 10px;*/
-/*}*/
 .cancelBtn, .modCancelBtn {
     position: absolute;
     right: 0;
@@ -63,11 +53,6 @@ li {
     padding: 10px;
     cursor: pointer;
 }
-/*.modReplyBtn, .modCancelBtn {*/
-/*    width: 70px;*/
-/*    height: 40px;*/
-/*    margin: 20px 0 0 10px;*/
-/*}*/
 
 .reply_list_wrap {
     width: 1200px;
@@ -161,12 +146,6 @@ li {
     display: grid;
     grid-template-columns: 10fr 0.5fr;
 }
-/*.reReReForm {*/
-/*    width: 110vh;*/
-/*}*/
-/*.reReForm {*/
-/*    width: 120vh;*/
-/*}*/
 
 .reReReForm, .reReForm {
     font-size: 16px;
