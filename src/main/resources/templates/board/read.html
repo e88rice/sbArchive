@@ -479,8 +479,8 @@
             // 대댓글 등록 폼의 취소 버튼 클릭 이벤트
             document.querySelectorAll('.cancelBtn').forEach(function(cancelBtn) {
                 cancelBtn.addEventListener('click', function(e) {
-                    const reReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
-                    const rcontent=reReplyAddForm.children[2].children[0].children[0];
+                    const reReplyAddForm=e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                    const rcontent=reReplyAddForm.children[2].children[0].children[0].children[0];
                     rcontent.value='';
                     reReplyAddForm.style.display='none';
                 });
@@ -803,18 +803,19 @@
             // 원 댓글에 대댓글 등록 버튼 클릭 이벤트
             document.querySelectorAll(".addReBtn").forEach(function(addReBtn) {
                 addReBtn.addEventListener('click', function(e) {
-                    const reReplyAddForm = e.target.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
+                    const reReplyAddForm = e.target.parentNode.parentNode.parentNode.parentNode.querySelector('.reReplyAddForm');
 
-                    let replyContent=e.target.previousElementSibling.children[1];
-                    const annotation=replyContent.previousElementSibling.textContent;
+                    let replyContent=e.target.previousElementSibling.children[0];
+                    const annotation = replyContent.parentElement.parentElement.parentElement.previousElementSibling.textContent;
                     const rcontent=annotation+" "+replyContent.value;
+
 
                     if(replyContent.value.trim().length < 3) {
                         alert('최소 3자 이상 입력해 주세요.');
                         return;
                     }
 
-                    const parentReplyId=e.target.parentNode.parentNode.parentNode.getAttribute("data-replyId");
+                    const parentReplyId=e.target.parentNode.parentNode.parentNode.parentNode.getAttribute("data-replyId");
                     const replyObj={boardId:boardId, content:rcontent, userId:username, parentReplyId:parentReplyId, nickname:nickname};
 
 
