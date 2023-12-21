@@ -12,7 +12,7 @@ public class MapController {
     @RequestMapping("/archive/map")
     public String showMap() {
 
-        return "main/main";
+        return "map/map";
     }
 
 }

@@ -13,22 +13,20 @@
     display: flex;
     margin: 0 auto;
     justify-content: space-between;
+    padding: 20px;
     width: 80%;
+    border: 1px solid rgba(0,0,0,0.2);
 }
 .left_wrap, .right-wrap {
     /*border: 3px dashed violet;*/
 }
 .left_wrap {
     width: 33%;
-    border: 4px solid black;
-    border-radius: 20px;
 }
 .left_wrap > img {
     width: 100%;
     height: 455px;
     max-height: 455px;
-    padding: 5px;
-    border-radius: 20px;
 }
 .left_wrap_subImg {
     display: flex;
@@ -42,8 +40,7 @@
     overflow-x: auto;
 }
 .left_wrap_subImg img {
-    border: 2px solid;
-    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.2);
     padding: 3px;
     height: 100%;
 }
@@ -58,20 +55,21 @@
     line-height: 250%;
     margin: 2px;
     font-size: 20px;
-    border: 4px solid black;
-    border-radius: 20px;
+    /*border: 4px solid black;*/
+    /*border-radius: 20px;*/
 }
 .right-wrap div > i {
     color: #274f59;
 }
 .sb_info_span {
-    width: 30%;
+    width: 20%;
+    padding-left: 3%;
     font-weight: bold;
-    font-family: JalnanGothic;
+    text-align: left;
 }
 .sb_info {
-    width: 70%;
-    font-family: JalnanGothic;
+    text-align: left;
+    width: 80%;
 }
 .sb_content_div {
     height: 60% !important;
@@ -92,17 +90,15 @@
 }
 .page_btns div > button {
     margin: 40px 20px 0 20px;
-    width: 160px;
-    height: 60px;
+    width: 80px;
+    height: 30px;
     border: none;
-    border-radius: 20px;
-    font-size: 26px;
-    background: #273756;
-    color: white !important;
-    font-family: JalnanGothic;
+    font-size: 18px;
+    background: #dcdcdc;
+    color: black !important;
 }
 .page_btns div > button > i {
-    color: white !important;
+    color: black !important;
 }
 /*모달*/
 div.show {

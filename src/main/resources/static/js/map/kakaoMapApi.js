@@ -338,21 +338,26 @@ function getSearchItemsForm(dtoList) {
 }
 
 function getSearchItemsPagingForm(response) {
+    let start;
+    let end;
+    let last = response.last;
+    end = Math.ceil(response.page / 5.0) * 5;
+    start = end - (5 - 1);
+
+    if (end > last) {
+        end = last;
+    }
+    let prev = start > 1;
     let pageForm = "      <ul class=\"s_paging_wrap\">\n";
     // 이전 버튼이 존재한다면
-    if (response.prev) {
+    if (prev) {
         pageForm += "        <li class=\"s_page_prev\">\n" +
-            "          <a data-num=\"" + response.start - 1 + "\">\n" +
-            "            <i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>\n" +
+            "          <a data-num=\"" + (start - 1) + "\">\n" +
+            "            <i class=\"fa-solid fa-chevron-left\" style=\"color: #3f4040;\"></i>\n" +
             "          </a>\n" +
             "        </li>\n";
     }
-    else {
-        pageForm += "        <li class=\"s_page_prev\">\n" +
-            "            <i class=\"fa-solid fa-chevron-left\" style=\"color: #3f4040;\"></i>\n" +
-            "        </li>\n";
-    }
-    for (let i = response.start; i <= response.end; i++) {
+    for (let i = start; i <= end; i++) {
         pageForm += "          <li class=\"s_page_wrapper\">\n";
         if (response.page === i) {
             pageForm += "<a class='s_page active' data-num=\"" + i + "\">" + i + "</a>\n";
@@ -363,14 +368,9 @@ function getSearchItemsPagingForm(response) {
     }
     if (response.next) {
         pageForm += "        <li class=\"s_page_next\">\n" +
-            "          <a data-num=\"" + response.end + 1 + "\">\n" +
-            "            <i class=\"fa-solid fa-right-long\" style=\"color: #3f4040;\"></i>\n" +
-            "          </a>\n" +
-            "        </li>\n";
-    }
-    else {
-        pageForm += "        <li class=\"s_page_next\">\n" +
+            "          <a data-num=\"" + (end + 1) + "\">\n" +
             "            <i class=\"fa-solid fa-chevron-right\" style=\"color: #3f4040;\"></i>\n" +
+            "          </a>\n" +
             "        </li>\n";
     }
     pageForm += "      </ul>";

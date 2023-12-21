@@ -10,28 +10,24 @@
     align-items: center;
 }
 .notice {
-    background-color: white;
-    color: red;
-    font-size: 12px;
-    font-family: 함초롬바탕;
-    border: 2px solid red;
-    border-radius: 10px;
-    padding: 4px;
-    margin: 0 4px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 2px;
+    margin: 0 2px;
 
 }
 .admin-row {
-    background: #d0d0d0;
-    font-family: 함초롬바탕;
+    background: #e7e7e7;
 }
 th {
     text-align: center !important;
 }
 .c1 {
-    text-align: center;
+    display: flex; flex-direction: column; text-align: center;
+    align-items: center;
 }
 .d1 {
-    padding: 80px; width: 70%; margin: 0 auto;
+    width: 1200px; margin: 25px; padding: 35px;
 }
 .fs1 {
     margin-right: 20px;
@@ -49,5 +45,10 @@ th {
     margin-left: 5px; background: #01B0D1;
 }
 .title1 {
-    width: 480px; text-align: center;
+    text-align: center;
+}
+
+.table > tbody > tr > td {
+    line-height: normal;
+    vertical-align: center;
 }

@@ -33,7 +33,7 @@ li {
     margin: 50px;
 }
 .reply_add_inner_wrap {
-    width: 70vw;
+    width: 1140px;
     padding: 10px;
     margin: 0 auto;
     border: 2px solid #d3d3d3;
@@ -150,4 +150,9 @@ li {
 }
 .reReForm {
     width: 120vh;
+}
+
+.reply_btns {
+    width: 1130px;
+    margin: 30px auto 0 auto;
 }

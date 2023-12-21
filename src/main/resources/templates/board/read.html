@@ -28,29 +28,25 @@
                                     [[${dto.userId.substring(0, 4)  + '******'}]] )
                                 </div>
                                 <div class="topline">
-                                    <button th:if="${dto.likeId}"  class="fa-solid fa-heart fasol" type="button" >
-                                        좋아요
-                                    </button>
-                                    <!-- 버튼이 좋아요 상태가 아닌 경우 -->
-                                    <button th:unless="${dto.likeId}"  class="fa-regular fa-heart ff1" type="button" >
-                                        좋아요
-                                    </button>
-                                    [[${dto.likeUp}]]개    조회 [[${dto.hit}]] <span class="reply_count" >
-                                <li class="fa-solid fa-comment fa-flip-horizontal;" ></li> 댓글 총 [[${dto.replyCount}]]개</span>
+                                    <div th:if="${dto.addDate == dto.modDate}" class="dd1">
+                                        <span th:text="${#strings.replace(dto.addDate.toString(), 'T', ' ')}"></span>
+                                        <i class="fa-solid fa-eye"></i> [[${dto.hit}]]
+                                    </div>
+                                    <div th:if="${dto.addDate != dto.modDate}" class="dd1">
+                                        <span th:text="${#strings.replace(dto.modDate.toString(), 'T', ' ')}"></span>
+                                        &nbsp&nbsp<i class="fa-solid fa-eye"></i> [[${dto.hit}]]
+                                    </div>
 
-
-                                    <tr>
-                                        <td th:if="${dto.addDate == dto.modDate}" class="dd1">
-                                            <span th:text="${#strings.replace(dto.addDate.toString(), 'T', ' ')}"></span>
-                                        </td>
-                                        <td th:if="${dto.addDate != dto.modDate}" class="dd1">
-                                            <span th:text="${#strings.replace(dto.modDate.toString(), 'T', ' ')}"></span>
-                                        </td>
-                                    </tr>
+                                    <div>
+                                        <button th:if="${dto.likeId}"  class="fa-solid fa-heart fasol" type="button" ></button>
+                                        <!-- 버튼이 좋아요 상태가 아닌 경우 -->
+                                        <button th:unless="${dto.likeId}"  class="fa-regular fa-heart ff1" type="button" ></button>
+                                        [[${dto.likeUp}]]
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                            <textarea name="content" id="content" class="form-control" rows="25"  readonly>[[${dto.content}]]  </textarea>
+                                <p id="content" class="form-control"> [[${dto.content}]]  </p>
                             </div>
 
                             <div class="left_wrap">
@@ -60,7 +56,7 @@
                             </div>
 
                         </div>
-                    </div><!-- end card body -->
+                    </div><!-- end card -->
                     <div class="my-4">
                         <div class="content-between">
                             <div class="float-end btnend">
@@ -98,28 +94,19 @@
     <script src="/js/reply/reply.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <div class="reply_add_wrap">
-        <div class="reply_add_inner_wrap">
-            <div>
-                <div class="reply_add_form">
-                    <input type="hidden" name="nickname" class="anickname" th:value="${nickname}">
-                    <input type="hidden" name="userId" class="auserId" th:value="${name}">
-                    <div>[[${nickname}]]<span>([[${name}]])</span></div>
-                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control"></textarea>
-                    <button type="button" class="btn btn-primary addBtn">등록</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- 댓글 등록 영역 끝 -->
 
-
+    <div class="reply_btns">
+        <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count_">댓글 [[${dto.replyCount}]]</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
+        <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
+    </div>
     <!-- 댓글 리스트 출력 -->
     <div class="reply_list_wrap">
         <div>
-            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count_">댓글 총 [[${dto.replyCount}]]개</span><!--<span>총 [[${dto.replyCount}]]개</span>-->
-            <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>
+<!--            <i class="fa-solid fa-comment fa-flip-horizontal"></i><span class="reply_count_">댓글 총 [[${dto.replyCount}]]개</span>&lt;!&ndash;<span>총 [[${dto.replyCount}]]개</span>&ndash;&gt;-->
+<!--            <a class="refreshBtn"><i class="fa-solid fa-arrow-rotate-right" style="color: #000000;"></i></a>-->
             <ul class="list-group replyList">
                 <!-- 댓글 출력 -->
             </ul>
@@ -133,6 +120,21 @@
         </div>
 
     </div> <!-- 댓글 목록 끝 -->
+
+    <div class="reply_add_wrap">
+        <div class="reply_add_inner_wrap">
+            <div>
+                <div class="reply_add_form">
+                    <input type="hidden" name="nickname" class="anickname" th:value="${nickname}">
+                    <input type="hidden" name="userId" class="auserId" th:value="${name}">
+                    <div>[[${nickname}]]<span>([[${name}]])</span></div>
+                    <textarea placeholder="댓글을 입력해 주세요." name="content" class="acontent form-control"></textarea>
+                    <button type="button" class="btn btn-primary addBtn">등록</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
     <!-- 쪽지 모달 영역 시작 -->

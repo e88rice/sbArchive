@@ -4,9 +4,9 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout/layout.html}">
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>-->
-
+˙
 <div layout:fragment="content">
-  <link rel="stylesheet" href="/css/signboard/list.css?a">
+  <link rel="stylesheet" href="/css/signboard/list.css">
   <div class="flex_column_center">
 
     <div th:if="${response.getDtoList() == null}" >등록된 간판 게시물이 없습니다</div>
@@ -32,7 +32,7 @@
       <ul class="sb_list_paging_wrap">
         <li class="sb_page_prev" th:if="${response.prev}">
           <a th:href="|@{/signboard/list/}${response.start - 1}|" th:data-num="${response.start - 1}">
-            <i class="fa-solid fa-left-long" style="color: #3f4040;"></i>Prev
+            <i class="fa-solid fa-chevron-left"></i>
           </a>
         </li>
         <th:block th:if="${response.total > 0}" th:each="i: ${#numbers.sequence(response.start, response.end)}">
@@ -41,7 +41,7 @@
           </li>
         </th:block>
         <li class="sb_page_next" th:if="${response.next}">
-          <a th:href="|@{/signboard/list/}${response.end+1}|" th:data-num="${response.end+1}">Next <i class="fa-solid fa-right-long" style="color: #3f4040;"></i></a>
+          <a th:href="|@{/signboard/list/}${response.end+1}|" th:data-num="${response.end+1}"><i class="fa-solid fa-chevron-right"></i></a>
         </li>
       </ul>
     </div>
@@ -271,8 +271,8 @@
         let btns = "";
         isLogin = signboard.userId === username;
         if(isLogin) { // 내꺼
-          btns += "              <button class=\"modifyBtn\">수정하기 <i class=\"fa-solid fa-wrench\"></i></button>\n" +
-                  "              <button class=\"removeBtn\">삭제하기 <i class=\"fa-solid fa-trash\"></i></button>";
+          btns += "              <button class=\"modifyBtn\">수정 <i class=\"fa-solid fa-wrench\"></i></button>\n" +
+                  "              <button class=\"removeBtn\">삭제 <i class=\"fa-solid fa-trash\"></i></button>";
           document.querySelector(".modal_footer_mod_del_btns").innerHTML = btns;
         } else {
           document.querySelector(".modal_footer_mod_del_btns").innerHTML ='';

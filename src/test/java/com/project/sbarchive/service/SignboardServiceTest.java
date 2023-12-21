@@ -31,9 +31,10 @@ public class SignboardServiceTest {
     public void addDummy() {
         for(int i=0; i<= 50; i++){
             int id = signBoardService.addSignboard(SignBoardDTO.builder()
-                    .userId("admin")
-                    .xOffSet("128.593835998552")
-                    .yOffSet("35.8661170068962")
+                    .userId("papago")
+                    .nickname("papago")
+                    .xOffSet("126.9843643")
+                    .yOffSet("37.5704300")
                     .title("코리아 IT 아카데미 대구지점"+i)
                     .address("대구광역시 중구 중앙대로 366")
                     .content("테스트.."+i).build());

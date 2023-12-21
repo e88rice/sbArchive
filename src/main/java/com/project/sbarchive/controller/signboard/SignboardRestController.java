@@ -83,6 +83,7 @@ public class SignboardRestController {
             log.info("ㅎㅇ");
         }
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(page).size(5).build();
+        // defaultPageSize를 5로 바뀨고 싶음
         return signBoardService.getSearchSignboardList(keyword, pageRequestDTO);
     }
 

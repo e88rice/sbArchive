@@ -19,10 +19,14 @@
             </div>
 
             <div class="right-wrap">
-                <div><span class="sb_info_span">가게명 <i class="fa-solid fa-store"></i></span><p class="sb_info">[[${dto.title}]]</p></div>
-                <div><span class="sb_info_span">주소 <i class="fa-regular fa-map"></i></span><p class="sb_info">[[${dto.address}]]</p></div>
-                <div><span class="sb_info_span">작성자 <i class="fa-brands fa-redhat"></i></span><p class="sb_info">[[${dto.nickname}]]</p></div>
-                <div><span class="sb_info_span">작성일 <i class="fa-regular fa-calendar"></i></span><p class="sb_info" th:text="${dto.modDate == dto.addDate ? (dto.modDate+'') : (dto.modDate + ' (수정됨)')}"></p></div>
+<!--                <i class="fa-solid fa-store"></i>-->
+<!--                <i class="fa-regular fa-map"></i>-->
+<!--                <i class="fa-brands fa-redhat"></i>-->
+<!--                <i class="fa-regular fa-calendar"></i>-->
+                <div><span class="sb_info_span">가게명</span><p class="sb_info">[[${dto.title}]]</p></div>
+                <div><span class="sb_info_span">주소 </span><p class="sb_info">[[${dto.address}]]</p></div>
+                <div><span class="sb_info_span">작성자 </span><p class="sb_info">[[${dto.nickname}]]</p></div>
+                <div><span class="sb_info_span">작성일 </span><p class="sb_info" th:text="${dto.modDate == dto.addDate ? (dto.modDate+'') : (dto.modDate + ' (수정됨)')}"></p></div>
                 <div class="sb_content_div">
                     <p class="sb_content_p">[[${dto.content}]]</p>
                 </div>
