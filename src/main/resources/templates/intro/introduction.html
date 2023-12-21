@@ -13,27 +13,128 @@
     <div class="inner_wrap">
 
       <div class="text_wrap">
-        <h1>🕵️ 외국어 간판 아카이브</h1>
+<!--        <h1>🕵️ 외국어 간판 아카이브</h1>-->
+        <h1><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAATtJREFUSEvd1TErhVEcx/HPZbAwkIVCVkYpA5vJGzAZeAMGZVAMDBaTN0DkHdhsymKXYhGyKINSIvGceu7tuD33ueemO7hneur/7fd9+p/zP6eizavS5nydL5jGBgYx16SdhWyjFi3gGANR6CgeCiSlbJFgESfozsNusJsLv+oETdl6wRQu0YXvTLKTfW+jPjh4kth6wXnU632slvQ9iY0F8zjLAz8wjqcGgmQ2FhxhKQoMbbnHRdaiTdxFtWQ2FoSAsQZ//IpJPOb1ZLYqCCfmk9LJPsRyfrpS2VpgH8Jflq1rTKAVtibowXsTwRt6s5lohf3VkrChIyWSMMVhmsNKZuNN3sNaieAgC17J68lsLBjCFfoLJC+YwW1eS2aLrop1zGIYzzjFVnREq/5wVTRlO//B+fOT/f9b9ANlNFIZOkbpxwAAAABJRU5ErkJggg=="/> 저긴 대체 뭐 하는 가게야...? 🤔 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAW5JREFUSEvt1b9LkEEYwPGPqIHiJDUEUWBgS1BL5P8QjgWZ6C4kOAgOgkFTS5tjU7suDdEQLkW7m4LhYOgQDRk1GHYnN1zH++MQ3Lzpfbnv+3zvnue5ewdc8Bi44PguBb0ZLlN0K3zxAo9wDQd4j2X8KKJVsbngDj5jvGFZu3iYSarZXPAWsx17foWVNF/N5oJvuN4h+IqJNF/N5oJfGO2p2jBOQk2q2Vywjbs9gpGQpj+oZnPBayx1COLKr+AU1WwuuIqY57EWSeykyTRXzZbn4DZeht6fws3wPJjJYufMZe9VbNdddCME3EMsbBzTeNeyu1a2S7COhRQwFvVeyn+To5VtEgyFQGuhHVdTpOMUPO6mHCX7E/fTzs/YXBCfn2ERD1Kkv3iCjSJyDPwUzwv2cVjMZs7mgljU/WzyO2bwoWHlJbsTOnAeX0q2TFG87A7xBlvpxLYdjU84SuxH/G4CL/9oPVfX/13UC58H+AcDIVAZANpwBAAAAABJRU5ErkJggg=="/></h1>
       </div>
 
       <div class="intro_wrap full_blue">
 
         <div class="intro">
           <div class="inner_intro">
-            <div class="intro_pic">
-              <img src="/images/img/street1.png" alt="" style="opacity: 0.9; border-radius: 0.2rem;">
+<!--            <div class="intro_pic">-->
+<!--              <img src="/images/img/street1.png" alt="" style="opacity: 0.9; border-radius: 0.2rem;">-->
+<!--            </div>-->
+            <div class="intro_pic" style="display: flex">
+              <div class="chart-container" style="position: relative; width: 500px; height: 400px;">
+                <canvas id="pie-chart"></canvas>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #333;">
+                  <div>70대 이상 응답자는 <br> 3500개의 외국어 표현 중 <br><b>3258개를 모르겠다</b> </div>
+                </div>
+              </div>
+
+              <div class="chart-container" style="position: relative; width: 500px; height: 400px;">
+                <canvas id="bar-chart"></canvas>
+              </div>
+
+              <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+              <script>
+                // 도넛 차트 설정
+                const pieChartData = {
+                  labels: [
+                    '이해한다',
+                    '모르겠다',
+                  ],
+                  datasets: [{
+                    label: '3500개 외국어 표현 중 70대 이상 응답자가 이해하는 단어',
+                    data: [6.9, 93.1],
+                    backgroundColor: ['#DDDDDD', '#FF6384'],
+                    hoverOffset: 4
+                  }]
+                };
+
+                const pieChartConfig = {
+                  type: 'doughnut',
+                  data: pieChartData,
+                  options: {
+                    maintainAspectRatio: false,
+                    cutout: '80%'
+                  }
+                };
+
+                const pieChart = new Chart(
+                        document.getElementById('pie-chart'),
+                        pieChartConfig
+                );
+
+                // 막대 차트 설정
+                const barChartLabels = [
+                  '전혀 사용하고 있지 않는 것 같다',
+                  '보통이다',
+                  '다소 사용하고 있는 것 같다',
+                  '매우 많이 사용한다'];
+                const barChartData = {
+                  labels: barChartLabels,
+                  datasets: [{
+                    label: '일상에서 외국어/외국문자 사용 수준에 대한 인식',
+                    data: [6, 19, 45, 30],
+                    backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(255, 159, 64)',
+                      'rgb(255, 205, 86)',
+                      'rgb(75, 192, 192)',
+                    ],
+                    borderColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(255, 159, 64)',
+                      'rgb(255, 205, 86)',
+                      'rgb(75, 192, 192)',
+                    ],
+                    borderWidth: 1
+                  }]
+                };
+
+                const barChartConfig = {
+                  type: 'bar',
+                  data: barChartData,
+                  options: {
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                        grid: {
+                          display: false, // 격자 표시 여부
+                        },
+                      }
+                    }
+                  },
+                };
+
+                const barChart = new Chart(
+                        document.getElementById('bar-chart'),
+                        barChartConfig
+                );
+              </script>
             </div>
 
             <div class="intro_text">
 
-              <h2 class="title">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAATtJREFUSEvd1TErhVEcx/HPZbAwkIVCVkYpA5vJGzAZeAMGZVAMDBaTN0DkHdhsymKXYhGyKINSIvGceu7tuD33ueemO7hneur/7fd9+p/zP6eizavS5nydL5jGBgYx16SdhWyjFi3gGANR6CgeCiSlbJFgESfozsNusJsLv+oETdl6wRQu0YXvTLKTfW+jPjh4kth6wXnU632slvQ9iY0F8zjLAz8wjqcGgmQ2FhxhKQoMbbnHRdaiTdxFtWQ2FoSAsQZ//IpJPOb1ZLYqCCfmk9LJPsRyfrpS2VpgH8Jflq1rTKAVtibowXsTwRt6s5lohf3VkrChIyWSMMVhmsNKZuNN3sNaieAgC17J68lsLBjCFfoLJC+YwW1eS2aLrop1zGIYzzjFVnREq/5wVTRlO//B+fOT/f9b9ANlNFIZOkbpxwAAAABJRU5ErkJggg=="/> 저긴 대체 뭐 하는 가게야...? 🤔 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAW5JREFUSEvt1b9LkEEYwPGPqIHiJDUEUWBgS1BL5P8QjgWZ6C4kOAgOgkFTS5tjU7suDdEQLkW7m4LhYOgQDRk1GHYnN1zH++MQ3Lzpfbnv+3zvnue5ewdc8Bi44PguBb0ZLlN0K3zxAo9wDQd4j2X8KKJVsbngDj5jvGFZu3iYSarZXPAWsx17foWVNF/N5oJvuN4h+IqJNF/N5oJfGO2p2jBOQk2q2Vywjbs9gpGQpj+oZnPBayx1COLKr+AU1WwuuIqY57EWSeykyTRXzZbn4DZeht6fws3wPJjJYufMZe9VbNdddCME3EMsbBzTeNeyu1a2S7COhRQwFvVeyn+To5VtEgyFQGuhHVdTpOMUPO6mHCX7E/fTzs/YXBCfn2ERD1Kkv3iCjSJyDPwUzwv2cVjMZs7mgljU/WzyO2bwoWHlJbsTOnAeX0q2TFG87A7xBlvpxLYdjU84SuxH/G4CL/9oPVfX/13UC58H+AcDIVAZANpwBAAAAABJRU5ErkJggg=="/>
-              </h2>
+<!--              <h2 class="title">-->
+<!--                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAATtJREFUSEvd1TErhVEcx/HPZbAwkIVCVkYpA5vJGzAZeAMGZVAMDBaTN0DkHdhsymKXYhGyKINSIvGceu7tuD33ueemO7hneur/7fd9+p/zP6eizavS5nydL5jGBgYx16SdhWyjFi3gGANR6CgeCiSlbJFgESfozsNusJsLv+oETdl6wRQu0YXvTLKTfW+jPjh4kth6wXnU632slvQ9iY0F8zjLAz8wjqcGgmQ2FhxhKQoMbbnHRdaiTdxFtWQ2FoSAsQZ//IpJPOb1ZLYqCCfmk9LJPsRyfrpS2VpgH8Jflq1rTKAVtibowXsTwRt6s5lohf3VkrChIyWSMMVhmsNKZuNN3sNaieAgC17J68lsLBjCFfoLJC+YwW1eS2aLrop1zGIYzzjFVnREq/5wVTRlO//B+fOT/f9b9ANlNFIZOkbpxwAAAABJRU5ErkJggg=="/> 저긴 대체 뭐 하는 가게야...? 🤔 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAW5JREFUSEvt1b9LkEEYwPGPqIHiJDUEUWBgS1BL5P8QjgWZ6C4kOAgOgkFTS5tjU7suDdEQLkW7m4LhYOgQDRk1GHYnN1zH++MQ3Lzpfbnv+3zvnue5ewdc8Bi44PguBb0ZLlN0K3zxAo9wDQd4j2X8KKJVsbngDj5jvGFZu3iYSarZXPAWsx17foWVNF/N5oJvuN4h+IqJNF/N5oJfGO2p2jBOQk2q2Vywjbs9gpGQpj+oZnPBayx1COLKr+AU1WwuuIqY57EWSeykyTRXzZbn4DZeht6fws3wPJjJYufMZe9VbNdddCME3EMsbBzTeNeyu1a2S7COhRQwFvVeyn+To5VtEgyFQGuhHVdTpOMUPO6mHCX7E/fTzs/YXBCfn2ERD1Kkv3iCjSJyDPwUzwv2cVjMZs7mgljU/WzyO2bwoWHlJbsTOnAeX0q2TFG87A7xBlvpxLYdjU84SuxH/G4CL/9oPVfX/13UC58H+AcDIVAZANpwBAAAAABJRU5ErkJggg=="/>-->
+<!--              </h2>-->
               <p style="font-size: 17px;">
                 이른바 ‘핫 플레이스’로 떠오르는 거리나 식당, 카페를 가면 외국어로만 되어 있는 간판을 많이 발견할 수 있습니다.
                 이는 <b>옥외광고법에 어긋날</b> 뿐더러 <b>고령화 사회의 노인 소외 현상의 문제점</b>으로도 간주됩니다.<br>
-                <br> 이에 <b>팀 암행어사</b>는 누구나 쉽게 이용할 수 있고 외국어 간판의 실태를 전 국민이 기록하고 열람할 수 있는, <u>지도 기반 외국어 간판 아카이빙 사이트</u>를 기획했습니다.
               </p>
+              <span>
+                문화체육관광부와 한글문화연대가 2020년 발표한 외국어 표현에 대한 일반 국민 인식조사에 따르면,
+                일반 국민 74%가 일상에서 외국어나 외국 문자 등 외국어 표현을 "많이 사용하고 있다"고 인식하고 있었으며,
+                일상 속 외국어 사용에 대해 긍정적으로 인식한 비율은 36.1%에 불과했습니다.
+                또 연령대가 높을수록 외국어 표현 사용에 대해 부정적으로 인식하는 경향이 드러났으며,
+                일반적으로 이해하기 쉽다는 외국어 표현조차 세대 간 이해도 격차가 컸습니다.
+                이 가운데 70대 이상 응답자 60% 이상이 이해하는 단어는 3,500개 중 242개(6.9%)뿐이었습니다.
+              </span>
+              <p><b>팀 암행어사</b>는 누구나 쉽게 이용할 수 있고 외국어 간판의 실태를 전 국민이 기록하고 열람할 수 있는, <u>지도 기반 외국어 간판 아카이빙 사이트</u>를 기획했습니다.</p>
             </div>
           </div>
 
@@ -70,15 +171,15 @@
               </a>
             </div>
           </div>
-
+<!--          box_area end-->
         </div>
-
+<!--        inner_news end-->
       </div>
-
-
+<!--      news_wrap end-->
     </div>
-
+<!--    inner_wrap end-->
   </div>
+<!--  outer_wrap end-->
 
   <script>
     AOS.init();
