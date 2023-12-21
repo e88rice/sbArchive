@@ -150,6 +150,10 @@
 
 
   @media (min-width: 1200px) {
+    .nav {
+      display: block !important;
+    }
+
     .header .nav ul {
       display: flex;
       margin: 0 !important;
@@ -158,6 +162,7 @@
     .header .nav ul li {
       box-sizing: border-box;
       text-align: center;
+      line-height: 21px;
       height: 21px;
     }
 
@@ -240,7 +245,7 @@
   <div class="header_wrap">
     <div class="logo">
       <a href="/">
-        <img src="/images/img/logo_.png" style="height: 60px;" alt="로고">
+        <h3 style="margin: 0">외국어 간판 아카이브</h3>
       </a>
     </div>
     <i class="fa fa-bars toggle_nav"></i>
@@ -374,8 +379,6 @@
   $('.toggle_nav').click(function (){
     $('.nav').slideToggle();
   });
-
-
 
 
   // ***************** 상단 nav 관련 제이쿼리 끝 *****************
