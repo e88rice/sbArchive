@@ -1,14 +1,20 @@
 .board_form {
-    margin: 0 auto;
-    padding-top: 150px;
-    width: 700px;
-    height: 1000px;
+    margin: 25px auto;
+    padding: 35px;
+    width: 1200px;
 }
-textarea {
-    width: 100%;
-    height: 6.25em;
-    border: none;
+
+#files {
+    font-size: 16px;
+}
+
+#content {
+    width: 1140px;
+    height: 60vh;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-color: #ecf0f1;
     resize: none;
+    font-size: 18px;
 }
 .topline {
     display: flex;
@@ -34,6 +40,16 @@ textarea {
 }
 #content {
     position: relative;
-    padding: 80px 0 0 20px;
+    padding: 20px;
     background: none;
+}
+
+.report_content {
+    display: none;
+    width: 1130px;
+    word-wrap: break-word;
+}
+
+.moreViewBtn, .closeViewBtn {
+    padding: 0 5px;
 }

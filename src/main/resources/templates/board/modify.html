@@ -14,21 +14,10 @@
             <input hidden="hidden" th:value="${dto.boardId}" name="boardId">
             <div class="topline">
                 <div class="form-group">
-                    <span for="userId">아이디</span>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="userId" name="userId" class="form-control fc1"  th:value="${#authentication.principal.username}" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="nickname">닉네임</label>
+                    <input type="hidden" id="userId" name="userId" class="form-control fc1"  th:value="${#authentication.principal.username}" readonly>
                 </div>
                 <div>
-                    <input type="text" id="nickname" name="nickname"  class="form-group fc1" th:value="${#authentication.principal.nickname}" readonly>
-                </div>
-                <div class="form-group" >
-                    <label for="addDate">작성일</label>
-                    <input th:value="${dto.addDate}" id="addDate" style="border: none " class="form-group fc1" readonly>
+                    <input type="hidden" id="nickname" name="nickname"  class="form-group fc1" th:value="${#authentication.principal.nickname}" readonly>
                 </div>
             </div>
 
@@ -40,24 +29,16 @@
             <div class="form-group">
                 <textarea name="content" id="content" class="form-control con1" rows="25" placeholder="내용을 입력해 주세요">[[${dto.content}]]</textarea>
             </div>
-            <div class="topline">
+            <div class="topline btn_bot">
                 <div class="form-group">
                     <input type="file" id="files" name="files" multiple class="form-control-file" placeholder="파일추가" >
                 </div>
 
-                <div class="form-group btnBot">
-                    <button type="submit" class="btn btn-primary">글 수정</button>
-                </div>
-                <div class="form-group btnBot">
-                    <button type="reset" class="btn btn-secondary">리셋</button>
-                </div>
-                <div class="form-group btnBot">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">수정</button>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
                     <button type="button" class="btn btn-danger btnRemove">삭제</button>
                 </div>
-
-
-
-
             </div>
         </form>
     </form>
@@ -72,9 +53,9 @@
             frm.method = "post";
             frm.submit();
         } );
-        document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-            location.href = `/board/list?${link}`;
-        });
+        // document.querySelector(".btn-secondary").addEventListener("click",function (e) {
+        //     location.href = `/board/list?${link}`;
+        // });
 
 
 

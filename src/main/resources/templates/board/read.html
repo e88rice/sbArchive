@@ -19,9 +19,9 @@
                     <div class="card">
                         <div class="card-body1" >
                             <div class="input-group mb-3">
-                                <input type="text" name="title" class="form-control" id="fc1" th:value="${dto.title}" readonly>
+                                <p class="form-control" id="fc1" th:text="${dto.title}"></p>
                             </div>
-
+                            <input hidden="hidden" name="title"  th:value="${dto.title}" >
                             <input hidden="hidden" name="userId"  th:value="${dto.userId}" >
                             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
                             <div class="flex-content fc2">

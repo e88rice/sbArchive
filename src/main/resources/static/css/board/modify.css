@@ -1,23 +1,30 @@
-
 .boardModify_form {
     margin: 25px auto;
     padding: 35px;
     width: 1200px;
 
 }
-textarea {
+#content {
     width: 100%;
-    height: 6.25em;
-    border: none;
+    height: 60vh;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-color: #ecf0f1;
     resize: none;
+    font-size: 18px;
+}
+#title {
+    height: 60px;
+    padding-left: 20px;
+    font-size: 30px;
 }
 .topline {
     display: flex;
     justify-content: left;
     align-items: center;
 }
-.btnBot{
-    margin-right: 5px;
+.btn_bot{
+    display: flex;
+    justify-content: space-between;
 }
 .fc1 {
     background: none; border: none;
@@ -30,4 +37,7 @@ textarea {
 }
 .fc2 {
     height: 35px; background: white;
+}
+.btnRemove {
+    color: white !important;
 }
