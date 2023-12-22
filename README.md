@@ -62,9 +62,9 @@
 <img width="700" alt="" src="https://github.com/e88rice/sbArchive/assets/146898798/f1cc95db-145d-4f9d-8450-3dfb4903e2a4">
 </p>
 
-**<p align="center">4. [쪽지](https://www.notion.so/9a227e8b324e4b708b897345343664b2)</p>**
+**<p align="center">4. [쪽지](https://pepper-bug-8ea.notion.site/9a227e8b324e4b708b897345343664b2)</p>**
 
-**<p align="center">5. [무한 답글](https://www.notion.so/39c7527a2f374540b50f026287a30879)</p>**
+**<p align="center">5. [무한 답글](https://pepper-bug-8ea.notion.site/39c7527a2f374540b50f026287a30879)</p>**
 
 **<p align="center">6. 관리자 공지사항</p>**
 <p align="center">
@@ -74,8 +74,8 @@
 ***
 
 ## 📄 기획 및 설계
-🖥 [전체 기능 소개](https://www.notion.so/6e814f3eef7e4fc09b8267c37c6b6a88)
+🖥 [전체 기능 소개](https://pepper-bug-8ea.notion.site/6e814f3eef7e4fc09b8267c37c6b6a88)
 
-📋 [API/URI 명세서](https://www.notion.so/API-URI-080e237dbd3a493d8c39384311219d8b)
+📋 [API/URI 명세서](https://pepper-bug-8ea.notion.site/API-URI-080e237dbd3a493d8c39384311219d8b)
 
-📐 [ERD/와이어프레임](https://www.notion.so/ERD-67885fe63b79472687674f13f735b9ee)
+📐 [ERD/와이어프레임](https://pepper-bug-8ea.notion.site/ERD-67885fe63b79472687674f13f735b9ee)
