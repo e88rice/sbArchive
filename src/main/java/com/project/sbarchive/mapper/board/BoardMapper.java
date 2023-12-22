@@ -51,4 +51,6 @@ public interface BoardMapper {
 
     List<BoardVO> getIndexList();
 
+
+
 }

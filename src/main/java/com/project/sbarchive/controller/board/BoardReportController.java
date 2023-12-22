@@ -73,7 +73,8 @@ public class BoardReportController {
                            RedirectAttributes redirectAttributes) {
         log.info("addBoard -------" +  boardDTO);
         boardDTO.setUserId(principal.getName());
-        int boardId = boardReportService.add(boardDTO);
+        int boardId = boardDTO.getBoardId();
+        boardReportService.add(boardDTO);
         for(MultipartFile file : files) {
             log.info(file);
         }

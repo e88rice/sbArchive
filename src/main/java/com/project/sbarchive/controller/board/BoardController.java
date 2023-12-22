@@ -215,6 +215,8 @@ public class BoardController {
             }
         }
         log.info(boardId+ "번 삭제!!!!!!!!!!!!!!");
+        boardFileService.removeBoardImages(boardId,"board");
+        boardFileService.removeBoardImages(boardId,"report");
         boardService.remove(boardId);
 
         return "redirect:/board/list?types=n&keyword=";
