@@ -18,6 +18,10 @@
 - Bootstrap
 - Axios
 - Ajax
+- AOS.js
+- Chart.js
+- Swiper.js
+
 
 ### Back
 - mariaDB
