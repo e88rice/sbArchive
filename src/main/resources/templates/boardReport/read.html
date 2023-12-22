@@ -54,7 +54,7 @@
                     <div class="content-between">
                         <div class="float-end btnend">
                             <div>
-                            <button type="button" class="btn btn-secondary">목록</button>
+                            <button type="button" class="btn btn-secondary" onclick="history.back()">목록</button>
                             <button type="button" class="btn messageBtn">답변</button>
                             </div>
                             <button th:if="${dto.replyId != 0}" type="submit" class="btn btn-danger">리플 제재</button>
@@ -96,11 +96,6 @@
     const boardId = [[${dto.boardId}]]; // board Idx
     const link = [[${pageRequestDTO.getLink()}]];
     const rboardId = [[${dto.rBoardId}]]
-
-
-    document.querySelector(".btn-secondary").addEventListener("click",function (e) {
-        location.href = `/reportBoard/list?${link}`;
-    });
 
     const username = [[${dto.userId}]]; // 현재 로그인된 아이디
     const nickname = [[${#authentication.principal.nickname}]]; // 현재 로그인된 아이디의 닉네임

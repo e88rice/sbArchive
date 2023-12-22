@@ -33,7 +33,7 @@ public class BoardFileServiceImpl implements BoardFileService {
     private String uploadBoardPath;
 
     @Override
-    public void addBoardImages(int boardId, List<MultipartFile> files,String type) {
+    public void addBoardImages(int boardId, List<MultipartFile> files, String type) {
 
         // build 의 static 폴더를 가져옴
         String uploadPath = staticResourceService.getStaticFolderPath().substring(1);
