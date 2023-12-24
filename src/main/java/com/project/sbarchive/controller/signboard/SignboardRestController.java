@@ -49,6 +49,7 @@ public class SignboardRestController {
 
         log.info("content : " + content);
         log.info("signboardId : " + signboardId);
+        content = content == null ? "" : content;
 
         for(MultipartFile file : files) {
             log.info(file.getOriginalFilename());
