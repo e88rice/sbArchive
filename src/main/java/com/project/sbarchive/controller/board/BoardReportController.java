@@ -78,12 +78,15 @@ public class BoardReportController {
         for(MultipartFile file : files) {
             log.info(file);
         }
+        log.info(boardId);
         if (files != null && !files.isEmpty()) {
             for (MultipartFile file : files) {
                 log.info("File: " + file.getOriginalFilename());
             }
             boardFileService.addBoardImages(boardId, files,"report");
         }
+
+        
 
         String userId = principal.getName();
         userService.lvPointUp(userId);

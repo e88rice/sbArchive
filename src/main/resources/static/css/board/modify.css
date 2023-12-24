@@ -5,6 +5,7 @@
 
 }
 #content {
+    white-space: pre-line;
     width: 100%;
     height: 60vh;
     border: 1px solid rgba(0,0,0,0.1);

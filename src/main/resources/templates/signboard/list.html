@@ -398,7 +398,9 @@
           }
 
           if(confirm("이대로 수정하시겠습니까?")){
-            const newContent = document.querySelector(".modal_modify_content textarea").value;
+            let newContent = document.querySelector(".modal_modify_content textarea").value;
+            console.log(newContent);
+            newContent = " ";
             updateSignboard(modifySignboardId, newContent, files[0].files).then(r => {
               if(r === 1) {
                 result = r;

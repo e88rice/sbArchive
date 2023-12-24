@@ -19,7 +19,7 @@
     </sql>
 
     <insert id="add" parameterType="com.project.sbarchive.vo.board.BoardReportVO" useGeneratedKeys="true" keyProperty="rBoardId">
-        INSERT INTO `report_board` ( `userId`, `title`, `content`,   `isAnswered`, `addDate`, `boardId`, `replyId`)
+        INSERT INTO `report_board` ( `userId`, `title`, `content`, `isAnswered`, `addDate`, `boardId`, `replyId`)
         VALUES (#{userId},#{title},#{content}, 0, now(), #{boardId}, #{replyId} )
     </insert>
 

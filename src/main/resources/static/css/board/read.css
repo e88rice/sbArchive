@@ -57,8 +57,12 @@ textarea {
     text-align: right;
 }
 #content {
-    padding: 20px; background: none; min-height: 60px;
+    padding: 20px; background: none; min-height: 60px; white-space: pre-line;
 }
 .reportBtn {
     background: #d43f3a; color: white !important;
+}
+
+.left_wrap_subImg {
+    padding: 20px;
 }

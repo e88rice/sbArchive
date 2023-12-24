@@ -1,6 +1,5 @@
 .manage_container {
     width: 80%;
-    height: 100vh;
     margin: 0 auto;
     background-color: #f6f6f6;
 }
@@ -17,7 +16,7 @@
     position: relative;
     background-color: white;
     width: 48%;
-    height: 43%;
+    height: 50vh;
     margin: 20px 10px;
 }
 
@@ -90,9 +89,10 @@
     left: 30%;
 }
 
-.user_td {
+.table_row td {
     max-width: 50px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
+    padding: 0 10px;
 }

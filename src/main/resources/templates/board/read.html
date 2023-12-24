@@ -26,8 +26,7 @@
                             <input hidden="hidden" name="boardId" th:value="${dto.boardId}">
                             <div class="flex-content fc2">
                                 <div>
-                                    [[${dto.nickname}]] (
-                                    [[${dto.userId.substring(0, 4)  + '******'}]] )
+                                    [[${dto.nickname}]]
                                 </div>
                                 <div class="topline">
                                     <div th:if="${dto.addDate == dto.modDate}" class="dd1">
@@ -48,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <p id="content" class="form-control"> [[${dto.content}]]  </p>
+                                <p id="content"> [[${dto.content}]]  </p>
                             </div>
 
                             <div class="left_wrap">
@@ -391,7 +390,7 @@
                         <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                             <div class="writer_btn_area" data-id="${dto.userId}">
                                 <div>
-                                    ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                    ${dto.nickname}${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
                                     ${isReplyWriter ? '' : `${isLogin_msg}`}
                                 </div>
                                 <div>
@@ -537,7 +536,7 @@
                                 <div class="writer_btn_content_date_wrap"> <!-- 닉네임(아이디), 버튼, textarea, date 나오는 부분 -->
                                     <div class="writer_btn_area">
                                         <div>
-                                            ${dto.nickname}(${maskedId})${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
+                                            ${dto.nickname}${isBoardWriter ? '<span class="if_reply_writer">작성자</span>' : ''}
                                         </div>
                                         <div>
                                          ${isReplyWriter ? '<a class="reReplyModBtn">수정</a>\n<a class="reReplyRemoveBtn">삭제</a>' : `${isLogin}`}
@@ -561,7 +560,7 @@
 
                         <!-- 대댓글에 대한 대댓글 등록 폼 -->
                         <div class="reReReplyAddForm">
-                            <div>${nickname}<span>(${username})</span></div>
+                            <div>${nickname}</div>
                             <p style="margin: 0">@${dto.nickname}/</p>
                             <div>
                                 <div class="annotation_text">

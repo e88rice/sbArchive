@@ -42,12 +42,10 @@ public class SignboardRestController {
         return signBoardAllDTO;
     }
 
-    @PostMapping("/modify/{signboardId}/{content}")
+    @PostMapping({"/modify/{signboardId}","/modify/{signboardId}/{content}"})
     public Integer modifySignboard(@RequestPart List<MultipartFile> files,
                               @PathVariable("signboardId") int signboardId,
-                              @PathVariable("content") String content) {
-//        List<String> fileNames = Arrays.stream(files.split("\\|")).toList();
-//        List<MultipartFile> resultFiles = new ArrayList<>();
+                              @PathVariable(required = false) String content) {
 
         log.info("content : " + content);
         log.info("signboardId : " + signboardId);
