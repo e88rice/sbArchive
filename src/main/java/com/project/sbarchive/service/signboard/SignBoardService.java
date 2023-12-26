@@ -27,5 +27,6 @@ public interface SignBoardService {
     // 메인페이지에서 검색 기능 이용 시 키워드에 해당하는 객체를 반환받음
     PageResponseDTO<SignBoardAllDTO> getSearchSignboardList(String keyword, PageRequestDTO pageRequestDTO);
 
+    ArrayList<SignBoardAllDTO> getSearchSBList(String keyword);
     int getSearchCount(String keyword);
 }

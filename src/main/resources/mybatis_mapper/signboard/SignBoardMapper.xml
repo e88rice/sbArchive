@@ -65,4 +65,10 @@
         delete from `signboard` where `signboardId` = #{signboardId}
     </delete>
 
+    <select id="getSearchSBList" resultMap="getListWithImages">
+        select sb.*, sf.`fileName` from `signboard` sb left join `signboard_file` sf on sb.`signboardId` = sf.`signboardId`
+        where `title` LIKE concat('%', #{keyword}, '%') OR `address` LIKE concat('%', #{keyword}, '%') group by sb.signboardId
+        order by sb.`signboardId` desc;
+    </select>
+
 </mapper>

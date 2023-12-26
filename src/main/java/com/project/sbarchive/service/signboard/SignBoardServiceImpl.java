@@ -104,6 +104,11 @@ public class SignBoardServiceImpl implements SignBoardService {
     }
 
     @Override
+    public ArrayList<SignBoardAllDTO> getSearchSBList(String keyword) {
+        return signBoardMapper.getSearchSBList(keyword);
+    }
+
+    @Override
     public int getSearchCount(String keyword) {
         return signBoardMapper.getSearchCount(keyword);
     }

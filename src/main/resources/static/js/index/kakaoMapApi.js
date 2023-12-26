@@ -116,9 +116,10 @@ function getSearch() {
     }
 
     let keyword = mapSearchBar.value;
+    let page = null;
 
     // 키워드로 장소를 검색합니다
-    getSearchSBList(keyword, 1).then(r => {
+    getSearchSBList(keyword, page).then(r => {
 
         if (r.length === 0) {
             alert("조회된 결과가 없습니다.");
@@ -129,17 +130,17 @@ function getSearch() {
         }
 
         var searchItemPositions = [];
-        for (let i = 0; i < r.dtoList.length; i++) {
+        for (let i = 0; i < r.length; i++) {
             let item = {
-                "title": r.dtoList[i].title,
-                "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
-                "content": "가게명 : " + r.dtoList[i].title + "<br>" + r.dtoList[i].address
+                "title": r[i].title,
+                "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
+                "content": "가게명 : " + r[i].title + "<br>" + r[i].address
             }
-            if (r.dtoList[i].files != null && r.dtoList[i].files.length > 0) { // 만약 파일이 존재한다면
+            if (r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
                 item = {
-                    "title": r.dtoList[i].title,
-                    "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r.dtoList[i].files[0] + "'>  " + " <br> <b> " + r.dtoList[i].title + " </b>  <br>" + r.dtoList[i].address + "</div>"
+                    "title": r[i].title,
+                    "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
                 }
             }
             searchItemPositions.push(item); // 객체 배열에 추가
@@ -168,7 +169,7 @@ function getSearch() {
                 var bounds = new kakao.maps.LatLngBounds();
 
                 for (var i = 0; i < searchItemPositions.length; i++) {
-                    displayMarker(searchItemPositions[i], r.dtoList[i].signboardId);
+                    displayMarker(searchItemPositions[i], r[i].signboardId);
                     bounds.extend(searchItemPositions[i].latlng);
                 }
 
@@ -200,7 +201,15 @@ function getSearch() {
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
             kakao.maps.event.addListener(marker, 'click', goRead(signboardId));
         }
+        var zoomControl = new kakao.maps.ZoomControl();
+        searchMap.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
 
+        setDraggable();
+
+        function setDraggable() {
+            // 마우스 드래그로 지도 이동 가능여부를 설정합니다
+            searchMap.setDraggable(true);
+        }
         searchMap.relayout();
     }).catch(e => {
         console.log(e);

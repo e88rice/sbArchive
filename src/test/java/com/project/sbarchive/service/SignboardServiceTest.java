@@ -4,6 +4,7 @@ import com.project.sbarchive.dto.page.PageRequestDTO;
 import com.project.sbarchive.dto.page.PageResponseDTO;
 import com.project.sbarchive.dto.signboard.SignBoardAllDTO;
 import com.project.sbarchive.dto.signboard.SignBoardDTO;
+import com.project.sbarchive.mapper.signboard.SignBoardMapper;
 import com.project.sbarchive.service.reply.ReplyService;
 import com.project.sbarchive.service.signboard.SignBoardFileService;
 import com.project.sbarchive.service.signboard.SignBoardService;
@@ -22,6 +23,9 @@ public class SignboardServiceTest {
 
     @Autowired(required = false)
     private SignBoardService signBoardService;
+
+    @Autowired(required = false)
+    private SignBoardMapper signBoardMapper;
 
     @Autowired(required = false)
     private SignBoardFileService fileService;
@@ -92,6 +96,11 @@ public class SignboardServiceTest {
         fileService.removeSignboardImages(147);
     }
 
-
+    @Test
+    public void getSBList() {
+        signBoardService.getSearchSBList("이").forEach(
+                signBoardAllDTO -> log.info(signBoardAllDTO)
+        );
+    }
 
 }

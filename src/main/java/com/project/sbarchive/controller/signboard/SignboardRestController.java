@@ -85,6 +85,10 @@ public class SignboardRestController {
         // defaultPageSize를 5로 바뀨고 싶음
         return signBoardService.getSearchSignboardList(keyword, pageRequestDTO);
     }
+    @GetMapping("/get/search/{keyword}")
+    public ArrayList<SignBoardAllDTO> getSearchSignboards(@PathVariable("keyword") String keyword) {
+        return signBoardService.getSearchSBList(keyword);
+    }
 
     @GetMapping("/test")
     public String test() {

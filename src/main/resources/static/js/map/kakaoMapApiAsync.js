@@ -6,6 +6,11 @@ async function getSBList() {
 
 // 검색된 모든 간판 데이터를 받아오는 비동기 함수
 async function getSearchSBList(keyword, page) {
+
+    if(page == null) {
+        const result = await axios.get(`/signboard/get/search/${keyword}`)
+        return result.data;
+    }
     const result = await axios.get(`/signboard/get/search/${keyword}/${page}`)
     return result.data;
 }

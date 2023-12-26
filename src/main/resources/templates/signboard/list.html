@@ -6,10 +6,10 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>-->
 ˙
 <div layout:fragment="content">
-  <link rel="stylesheet" href="/css/signboard/list.css">
+  <link rel="stylesheet" href="/css/signboard/list.css?aaa">
   <div class="flex_column_center">
 
-    <div th:if="${response.getDtoList() == null}" >등록된 간판 게시물이 없습니다</div>
+    <div th:if="${response.getDtoList() == null}">등록된 간판 게시물이 없습니다</div>
 
     <div class="sb_list_container"> <!-- 전체 박스 컨테이너 시작 -->
 
@@ -120,7 +120,7 @@
       const last = [[${response.last}]];  // 모달창 비동기통신을 위한 마지막 page 번호
       const size = [[${response.size}]];  // 모달창 비동기통신을 위한 size
       const total = [[${response.total}]]; // 총 데이터 개수
-      const lpli = total % size -1; // 마지막 페이지의 마지막 인덱스
+      let lpli = (total-1) % size; // 마지막 페이지의 마지막 인덱스
       let idx = 0;
       const username = '[[${username}]]';
 
@@ -156,7 +156,7 @@
         console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
         if(page === 1 && parseInt(idx) === 0){ // 이전 버튼을 눌렀을 때 첫번째 화면 이라면
 
-          if(confirm("첫 화면입니다. 마지막 화면으로 이동하시겠습니까?")) { // 예 -> true
+          if(confirm("첫 게시글입니다. 마지막 게시글로 이동하시겠습니까?")) { // 예 -> true
             page = last; // 마지막 페이지로 설정
             idx = lpli; // 페이지 당 객체 9개. 마지막 인덱스의 객체를 보여줌
             getSignboardtoModal(page, idx);
@@ -180,7 +180,7 @@
         console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
         if(page === last && parseInt(idx) === lpli){ // 다음 버튼을 눌렀을 때 마지막 페이지 마지막 객체라면
 
-          if(confirm("마지막 화면입니다. 첫 화면으로 이동하시겠습니까?")) { // 예 -> true
+          if(confirm("마지막 게시글입니다. 첫 게시글로 이동하시겠습니까?")) { // 예 -> true
             page = 1; // 첫 페이지로 설정
             idx = 0; // 페이지 당 객체 9개. 첫번째 인덱스의 객체를 보여줌
             getSignboardtoModal(page, idx);

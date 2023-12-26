@@ -33,5 +33,7 @@ public interface SignBoardMapper {
     // 메인페이지에서 검색 기능 이용 시 키워드에 해당하는 객체를 반환받음
     ArrayList<SignBoardAllDTO> getSearchSignboardList(String keyword, int skip, int size);
 
+    ArrayList<SignBoardAllDTO> getSearchSBList(String keyword);
+
     int getSearchCount(String keyword);
 }

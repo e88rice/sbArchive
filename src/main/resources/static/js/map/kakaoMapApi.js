@@ -10,6 +10,7 @@ let isSearch = false;
 var searchMapContainer = document.getElementById('map2'), // 지도를 표시할 div
     searchMapOption = {
         center: new kakao.maps.LatLng(126.8912251, 37.4515942), // 지도의 중심좌표
+        draggable: false,
         level: 8 // 지도의 확대 레벨
     };
 var searchMap = new kakao.maps.Map(searchMapContainer, searchMapOption); // 지도를 생성합니다
@@ -117,9 +118,10 @@ function getSearch() {
     }
 
     let keyword = mapSearchBar.value;
+    let page = null
 
     // 키워드로 장소를 검색합니다
-    getSearchSBList(keyword, 1).then(r => {
+    getSearchSBList(keyword, page).then(r => {
 
         if (r.length === 0) {
             alert("조회된 결과가 없습니다.");
@@ -137,17 +139,17 @@ function getSearch() {
         getSearchItems(keyword, 1);
 
         var searchItemPositions = [];
-        for (let i = 0; i < r.dtoList.length; i++) {
+        for (let i = 0; i < r.length; i++) {
             let item = {
-                "title": r.dtoList[i].title,
-                "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
-                "content": "가게명 : " + r.dtoList[i].title + "<br>" + r.dtoList[i].address
+                "title": r[i].title,
+                "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
+                "content": "가게명 : " + r[i].title + "<br>" + r[i].address
             }
-            if (r.dtoList[i].files != null && r.dtoList[i].files.length > 0) { // 만약 파일이 존재한다면
+            if (r[i].files != null && r[i].files.length > 0) { // 만약 파일이 존재한다면
                 item = {
-                    "title": r.dtoList[i].title,
-                    "latlng": new kakao.maps.LatLng(parseFloat(r.dtoList[i].yoffSet), parseFloat(r.dtoList[i].xoffSet)),
-                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r.dtoList[i].files[0] + "'>  " + " <br> <b> " + r.dtoList[i].title + " </b>  <br>" + r.dtoList[i].address + "</div>"
+                    "title": r[i].title,
+                    "latlng": new kakao.maps.LatLng(parseFloat(r[i].yoffSet), parseFloat(r[i].xoffSet)),
+                    "content": "<div style='display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; width: 300px; height: 220px; padding: 10px;'> <img class='test-img' style='height: 80px; width: 80px; margin-top: 10px' src='/images/signboard/" + r[i].files[0] + "'>  " + " <br> <b> " + r[i].title + " </b>  <br>" + r[i].address + "</div>"
                 }
             }
             searchItemPositions.push(item); // 객체 배열에 추가
@@ -164,6 +166,8 @@ function getSearch() {
         // 마커들의 배열 초기화
         searchMarkers.splice(0);
 
+        console.log(searchMarkers);
+
         ps.keywordSearch(keyword, placesSearchCB);
 
 
@@ -176,7 +180,7 @@ function getSearch() {
                 var bounds = new kakao.maps.LatLngBounds();
 
                 for (var i = 0; i < searchItemPositions.length; i++) {
-                    displayMarker(searchItemPositions[i], r.dtoList[i].signboardId);
+                    displayMarker(searchItemPositions[i], r[i].signboardId);
                     bounds.extend(searchItemPositions[i].latlng);
                 }
 
@@ -207,6 +211,15 @@ function getSearch() {
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(searchMap, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
             kakao.maps.event.addListener(marker, 'click', goRead(signboardId));
+        }
+        var zoomControl = new kakao.maps.ZoomControl();
+        searchMap.addControl(zoomControl, kakao.maps.ControlPosition.BOTTOMRIGHT);
+
+        setDraggable();
+
+        function setDraggable() {
+            // 마우스 드래그로 지도 이동 가능여부를 설정합니다
+            searchMap.setDraggable(true);
         }
 
         searchMap.relayout();
@@ -305,7 +318,12 @@ function goRead(signboardId) {
 // 검색 시 페이지 정보와 객체 정보들을 가져와 요소로 채워넣는 함수
 function getSearchItems(keyword, page) {
 
+    if(page === null) {
+        return;
+    }
+
     getSearchSBList(keyword, page).then(r => {
+        console.log(r);
         getSearchItemsForm(r.dtoList);
         getSearchItemsPagingForm(r);
         searchItemsChangePage(r.end);
@@ -397,17 +415,42 @@ function searchItemsChangePage(end) {
 
 function showInfoWrap() {
     const items = document.querySelectorAll(".s_info_wrap");
+    isViewInfo = true;
     items.forEach(item => {
         item.addEventListener("click", function (){
             const id = item.dataset.id;
             getItem(id).then(r => {
+                document.querySelector(".info_container").style.zIndex = '2';
                 document.querySelector(".info_wrap").style.opacity = '1';
                 // document.querySelector("");
                 addSInfoForm(r);
                 tapChange();
+                const target1 = document.querySelector('.info_wrap'); // 요소의 id 값이 target이라 가정
+                const targetImages1 = document.querySelector('.info_images');
+                let clientRect = target1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+                let imagesRect = targetImages1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+                let relativeBottom = clientRect.bottom; // Viewport의 끝지점을 기준으로한 상대좌표 Y 값.
+                let imagesTop = imagesRect.top; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
+                document.querySelector(".info_images").style.height = (relativeBottom - 20 - imagesTop)+'px';
+                document.querySelector(".info_content").style.height = (relativeBottom - 20 - imagesTop)+'px';
+                window.addEventListener('resize', resizeInfoForm);
+                searchMap.setLevel(3);
+                searchMap.panTo(new kakao.maps.LatLng(r.yoffSet, r.xoffSet));
+                searchMap.relayout();
             });
         })
     })
+}
+
+function resizeInfoForm() {
+    const target1 = document.querySelector('.info_wrap'); // 요소의 id 값이 target이라 가정
+    const targetImages1 = document.querySelector('.info_images');
+    let clientRect = target1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+    let imagesRect = targetImages1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+    let relativeBottom = clientRect.bottom; // Viewport의 끝지점을 기준으로한 상대좌표 Y 값.
+    let imagesTop = imagesRect.top; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
+    document.querySelector(".info_images").style.height = (relativeBottom - 20 - imagesTop)+'px';
+    document.querySelector(".info_content").style.height = (relativeBottom - 20 - imagesTop)+'px';
 }
 
 function addSInfoForm(response) {
@@ -486,6 +529,8 @@ function tapChange() {
 
 function closeTap() {
     document.querySelector(".close_box").addEventListener("click", function () {
+        window.removeEventListener('resize', resizeInfoForm);
+        document.querySelector(".info_container").style.zIndex = '0';
         document.querySelector(".info_wrap").style.opacity = '0';
         document.querySelector(".close_box").style.display = 'none';
     })

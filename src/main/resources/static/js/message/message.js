@@ -91,14 +91,24 @@ getUsername().then(r => {
         })
 
         function addMsgPagingForm(type, response) {
+            let start;
+            let end;
+            let last = response.last;
+            end = Math.ceil(response.page / 5.0) * 5;
+            start = end - (5 - 1);
+
+            if (end > last) {
+                end = last;
+            }
+            let prev = start > 1;
             let str = "<div class=\"page_container\">\n" +
             "    <ul class=\"page_wrap\">\n";
-            if(response.prev) {
-                str +=             "      <li class=\"page_item\">\n" +
-                "        <a class=\"msg_page_link\" data-num=\""+ (response.start-1) +"\"><i class=\"fa-solid fa-left-long\" style=\"color: #3f4040;\"></i>Prev</a>\n" +
+            if(prev) {
+                str +=             "      <li class=\"page-item\">\n" +
+                "        <a class=\"msg_page_link\" data-num=\""+ (start-1) +"\"><i class=\"fa-solid fa-chevron-left\" style=\"color: #3f4040;\"></i>\</a>\n" +
                 "      </li>\n";
             }
-            for(let i=response.start; i<=response.end; i++) {
+            for(let i=start; i<=end; i++) {
                 if(response.page===i) {
                     str +=             "        <li class=\"page-item active\">\n" +
                     "          <a class=\"msg_page_link message_page\" data-num=\""+ i + "\">"+i+"</a>\n" +
@@ -111,7 +121,7 @@ getUsername().then(r => {
             }
             if(response.next) {
                 str +=             "      <li class=\"page-item\">\n" +
-                "        <a class=\"msg_page_link\" data-num=\"" + (response.end+1) +"\">Next</a>\n" +
+                "        <a class=\"msg_page_link\" data-num=\"" + (end+1) +"\"><i class=\"fa-solid fa-chevron-right\" style=\"color: #3f4040;\"></i></a>\n" +
                 "      </li>\n";
             }
             str +=             "    </ul>\n" +
@@ -138,7 +148,7 @@ getUsername().then(r => {
             if(type === "received") {
                 for(let i=0; i<response.dtoList.length; i++) {
                     let msg = response.dtoList[i];
-                    if(msg.read) str += "            <tr style='font-weight: lighter; color: #9a9a9a' class=\"message_content_wrap\">\n";
+                    if(msg.read) str += "            <tr class=\"message_content_wrap read\">\n";
                     else str += "            <tr class=\"message_content_wrap\">\n";
                     str += "              <td class=\"message_checkbox\" onclick=\"event.cancelBubble=true;\"> <input type=\"checkbox\" value=\"" + msg.index + "\"> </td>\n" +
                     "              <td class=\"message_sender\"> <p>" + msg.senderId + "</p> </td>\n" +
@@ -155,7 +165,7 @@ getUsername().then(r => {
                 "              <td class=\"message_receiver\"> <p>" + msg.receiverId + "</p> </td>\n" +
                 "              <td class=\"message_content\"> <p>" + msg.content + "</p> </td>\n" +
                 "              <td class=\"message_sendDate\"> <p> " + msg.sendDate[0]+"-"+msg.sendDate[1]+"-"+msg.sendDate[2] + "</p> </td>\n" +
-                "              <td class=\"message_sendDate\"> <p> " + (msg.read ? "읽음" : "읽지않음") + "</p> </td>\n" +
+                "              <td class=\"message_received\"> <p> " + (msg.read ? "읽음" : "읽지않음") + "</p> </td>\n" +
                 "            </tr>"
                 }
                 document.querySelector(".sent_message_content_container").innerHTML = str;
@@ -219,8 +229,7 @@ getUsername().then(r => {
                             "                        <p class=\"message_view_p\">"+ r.content +"</p>";
                             document.querySelector(".message_view_modal_footer").innerHTML = "";
                         } else {
-                            wrap.style.fontWeight = "lighter";
-                            wrap.style.color = "#9a9a9a";
+                            wrap.classList.add("read");
                             str += "<div class=\"message_writer\"><span>보낸 사람 </span> " + r.senderId + "</div>\n" +
                             "                        <hr>\n" +
                             "                        <p class=\"message_view_p\">"+ r.content +"</p>";
