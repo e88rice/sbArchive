@@ -427,12 +427,14 @@ function showInfoWrap() {
                 tapChange();
                 const target1 = document.querySelector('.info_wrap'); // 요소의 id 값이 target이라 가정
                 const targetImages1 = document.querySelector('.info_images');
+                const targetContent1 = document.querySelector('.info_content');
                 let clientRect = target1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
                 let imagesRect = targetImages1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+                let contentRect = targetContent1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
                 let relativeBottom = clientRect.bottom; // Viewport의 끝지점을 기준으로한 상대좌표 Y 값.
-                let imagesTop = imagesRect.top; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
-                document.querySelector(".info_images").style.height = (relativeBottom - 20 - imagesTop)+'px';
-                document.querySelector(".info_content").style.height = (relativeBottom - 20 - imagesTop)+'px';
+                let elementTop = contentRect.top > imagesRect.top ? contentRect.top : imagesRect.top ; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
+                document.querySelector(".info_images").style.height = (relativeBottom - 20 - elementTop)+'px';
+                document.querySelector(".info_content").style.height = (relativeBottom - 20 - elementTop)+'px';
                 window.addEventListener('resize', resizeInfoForm);
                 searchMap.setLevel(3);
                 searchMap.panTo(new kakao.maps.LatLng(r.yoffSet, r.xoffSet));
@@ -445,12 +447,14 @@ function showInfoWrap() {
 function resizeInfoForm() {
     const target1 = document.querySelector('.info_wrap'); // 요소의 id 값이 target이라 가정
     const targetImages1 = document.querySelector('.info_images');
+    const targetContent1 = document.querySelector('.info_content');
     let clientRect = target1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
     let imagesRect = targetImages1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
+    let contentRect = targetContent1.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
     let relativeBottom = clientRect.bottom; // Viewport의 끝지점을 기준으로한 상대좌표 Y 값.
-    let imagesTop = imagesRect.top; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
-    document.querySelector(".info_images").style.height = (relativeBottom - 20 - imagesTop)+'px';
-    document.querySelector(".info_content").style.height = (relativeBottom - 20 - imagesTop)+'px';
+    let elementTop = contentRect.top > imagesRect.top ? contentRect.top : imagesRect.top ; // Viewport의 시작지점을 기준으로한 상대좌표 Y 값.
+    document.querySelector(".info_images").style.height = (relativeBottom - 20 - elementTop)+'px';
+    document.querySelector(".info_content").style.height = (relativeBottom - 20 - elementTop)+'px';
 }
 
 function addSInfoForm(response) {
@@ -524,14 +528,18 @@ function tapChange() {
         tapImages.classList.toggle('active');
     })
     document.querySelector(".close_box").style.display = 'block';
+    console.log("ㅎㅇ")
+    resizeInfoForm();
     closeTap();
 }
 
 function closeTap() {
     document.querySelector(".close_box").addEventListener("click", function () {
         window.removeEventListener('resize', resizeInfoForm);
-        document.querySelector(".info_container").style.zIndex = '0';
         document.querySelector(".info_wrap").style.opacity = '0';
         document.querySelector(".close_box").style.display = 'none';
+        setTimeout(
+            () => document.querySelector(".info_container").style.zIndex = '0', 600
+        );
     })
 }

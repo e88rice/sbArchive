@@ -10,10 +10,15 @@ import com.project.sbarchive.service.staticResource.StaticResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.codec.StringDecoder;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @RestController
@@ -47,6 +52,11 @@ public class SignboardRestController {
                               @PathVariable("signboardId") int signboardId,
                               @PathVariable(required = false) String content) {
 
+        try {
+            content = UriUtils.decode(content, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         log.info("content : " + content);
         log.info("signboardId : " + signboardId);
         content = content == null ? "" : content;

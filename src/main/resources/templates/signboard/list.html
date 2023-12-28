@@ -146,13 +146,13 @@
       })
 
       // 모달창 닫기
-      modalCloseBtn.addEventListener("click", function (e){
+      modalCloseBtn.addEventListener("click", function (){
         page = [[${response.page}]];    // 모달창 비동기통신을 위한 page 번호
         modalContainer.hide();
       })
 
       // 모달창에서 이전 버튼 클릭 시
-      prevBtn.addEventListener("click", function (e){
+      prevBtn.addEventListener("click", function (){
         console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
         if(page === 1 && parseInt(idx) === 0){ // 이전 버튼을 눌렀을 때 첫번째 화면 이라면
 
@@ -176,7 +176,7 @@
       })
 
       // 모달창에서 다음 버튼 클릭 시
-      nextBtn.addEventListener("click", function (e){
+      nextBtn.addEventListener("click", function (){
         console.log("현재 페이지 : " + page + ", 현재 인덱스 : " + idx);
         if(page === last && parseInt(idx) === lpli){ // 다음 버튼을 눌렀을 때 마지막 페이지 마지막 객체라면
 
@@ -207,13 +207,13 @@
       const infoContainer = document.querySelectorAll(".sb_info_container");
 
       imgContainer.forEach(img => {
-        img.addEventListener("mouseenter", function (e){
+        img.addEventListener("mouseenter", function (){
           const info = img.nextElementSibling;
           info.style.display = "flex";
         })
       })
       infoContainer.forEach(info => {
-        info.addEventListener("mouseleave", function (e){
+        info.addEventListener("mouseleave", function (){
           info.style.display = "none";
         })
       })
@@ -334,7 +334,7 @@
       function modifyModalView(modifyModal) {
         const modifyModalShowBtn = document.querySelector(".modifyBtn"); // 수정 모달 뷰 버튼
 
-        modifyModalShowBtn.addEventListener("click", function (e){
+        modifyModalShowBtn.addEventListener("click", function (){
           modifyModal.show();
         })
       }
@@ -399,8 +399,9 @@
 
           if(confirm("이대로 수정하시겠습니까?")){
             let newContent = document.querySelector(".modal_modify_content textarea").value;
-            console.log(newContent);
-            newContent = " ";
+            if(!newContent) {
+              newContent = " ";
+            }
             updateSignboard(modifySignboardId, newContent, files[0].files).then(r => {
               if(r === 1) {
                 result = r;

@@ -19,6 +19,8 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 
 import javax.sql.DataSource;
 
@@ -66,6 +68,17 @@ public class CustomSecurityConfig {
         return httpSecurity.build();
         // filterChain() 메소드가 동작하면 이전과 달리 /board/list에 바로 접근 가능.
         // '/login' 에는 접근이 안 됨.
+    }
+
+    // 보안에 문제가 있을 수 있는 설정
+    // 기존 StrictHttpFirewall 은 특수 문자에 대한 엄격하게 검증 하는데
+    // 이를 느슨하게 만들어 보안이 다소 약해질 수 있음
+    // DefaultHttpFirewall 을 커스터마이징 해서 URL에 인코딩이 포함된 것도 허용하는 설정임.
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        DefaultHttpFirewall firewall = new DefaultHttpFirewall();
+        firewall.setAllowUrlEncodedSlash(true);
+        return firewall;
     }
 
     @Bean

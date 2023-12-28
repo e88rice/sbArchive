@@ -11,6 +11,7 @@ async function updateSignboard(signboardId, content, files) {
         formData.append("files", files[i]);
     }
 
+
     if(content === null || content.trim() === "") {
         const result = await axios({
             method: "POST",
@@ -24,6 +25,7 @@ async function updateSignboard(signboardId, content, files) {
         return result.data;
     }
 
+    content = encodeURIComponent(content);
     const result = await axios({
         method: "POST",
         url: `/signboard/modify/${signboardId}/${content}`,
