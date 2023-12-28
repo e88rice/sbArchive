@@ -1,6 +1,5 @@
 document.querySelector(".pagination").addEventListener("click",function (e) {
 
-
     const target = e.target;
 
     if (target.tagName !== 'A') {
@@ -18,6 +17,10 @@ document.querySelector(".pagination").addEventListener("click",function (e) {
 document.querySelector('.addboard').addEventListener('click',function (e) {
     location.href = '/board/add'
 });
-document.querySelector('.addnotice').addEventListener('click',function (e) {
-    location.href = '/board/addNotice'
-});
+
+if(document.querySelector(".addnotice")) {
+    document.querySelector('.addnotice').addEventListener('click',function (e) {
+        location.href = '/board/addNotice'
+    });
+}
+

@@ -37,7 +37,7 @@
 
                 <foreach collection="types" item="type" open="(" close=")" separator=" OR">
                     <if test="type == 'n'.toString()">
-                        `userId` like concat('%',#{keyword},'%')
+                        `nickname` like concat('%',#{keyword},'%')
                     </if>
                     <if test="type == 's'.toString()">
                         `title` like concat('%',#{keyword},'%')

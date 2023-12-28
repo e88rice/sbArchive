@@ -82,7 +82,7 @@
                                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                                 <div class="form-group">
                                     <select class="form-select" name="types" style="display: none">
-                                        <option value="c" th:selected="${pageRequestDTO.types == 'c'}">댓글내용</option>
+                                        <option value="c" th:selected="${pageRequestDTO.types[0] == 'c'}">댓글내용</option>
                                     </select>
                                     <div class="input-group">
                                         <input type="text" class="form-control" name="keyword" th:value="${pageRequestDTO.keyword}" >
